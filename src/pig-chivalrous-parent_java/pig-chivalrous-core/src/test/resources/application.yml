@@ -1,0 +1,14 @@
+push:
+  json:
+    country: M:country
+    source: M:source
+    title: M:title
+    url: M:url
+    content: M:content
+    pubTime: M:pubTime
+    category: S:category
+    description: E:description
+  type: push
+agentSource:
+  push:
+  - http: abc
