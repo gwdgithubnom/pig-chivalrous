@@ -7,18 +7,18 @@ import org.gjgr.pig.chivalrous.core.util.StrUtil;
  */
 public class JavaRuntimeInfo {
 
-    private final String JAVA_RUNTIME_NAME = SystemUtil.get("java.runtime.name", false);
-    private final String JAVA_RUNTIME_VERSION = SystemUtil.get("java.runtime.version", false);
-    private final String JAVA_HOME = SystemUtil.get("java.home", false);
-    private final String JAVA_EXT_DIRS = SystemUtil.get("java.ext.dirs", false);
-    private final String JAVA_ENDORSED_DIRS = SystemUtil.get("java.endorsed.dirs", false);
-    private final String JAVA_CLASS_PATH = SystemUtil.get("java.class.path", false);
-    private final String JAVA_CLASS_VERSION = SystemUtil.get("java.class.version", false);
-    private final String JAVA_LIBRARY_PATH = SystemUtil.get("java.library.path", false);
+    private final String JAVA_RUNTIME_NAME = JavaSystemCommand.get("java.runtime.name", false);
+    private final String JAVA_RUNTIME_VERSION = JavaSystemCommand.get("java.runtime.version", false);
+    private final String JAVA_HOME = JavaSystemCommand.get("java.home", false);
+    private final String JAVA_EXT_DIRS = JavaSystemCommand.get("java.ext.dirs", false);
+    private final String JAVA_ENDORSED_DIRS = JavaSystemCommand.get("java.endorsed.dirs", false);
+    private final String JAVA_CLASS_PATH = JavaSystemCommand.get("java.class.path", false);
+    private final String JAVA_CLASS_VERSION = JavaSystemCommand.get("java.class.version", false);
+    private final String JAVA_LIBRARY_PATH = JavaSystemCommand.get("java.library.path", false);
 
-    private final String SUN_BOOT_CLASS_PATH = SystemUtil.get("sun.boot.class.path", false);
+    private final String SUN_BOOT_CLASS_PATH = JavaSystemCommand.get("sun.boot.class.path", false);
 
-    private final String SUN_ARCH_DATA_MODEL = SystemUtil.get("sun.arch.data.model", false);
+    private final String SUN_ARCH_DATA_MODEL = JavaSystemCommand.get("sun.arch.data.model", false);
 
     public final String getSunBoothClassPath() {
         return SUN_BOOT_CLASS_PATH;
@@ -128,7 +128,7 @@ public class JavaRuntimeInfo {
      * @since Java 1.1
      */
     public final String[] getClassPathArray() {
-        return StrUtil.split(getClassPath(), SystemUtil.get("path.separator", false));
+        return StrUtil.split(getClassPath(), JavaSystemCommand.get("path.separator", false));
     }
 
     /**
@@ -168,7 +168,7 @@ public class JavaRuntimeInfo {
      * @return 属性值，如果不能取得（因为Java安全限制）或值不存在，则返回<code>null</code>。
      */
     public final String[] getLibraryPathArray() {
-        return StrUtil.split(getLibraryPath(), SystemUtil.get("path.separator", false));
+        return StrUtil.split(getLibraryPath(), JavaSystemCommand.get("path.separator", false));
     }
 
     /**
@@ -181,7 +181,7 @@ public class JavaRuntimeInfo {
      * @return 属性值，如果不能取得（因为Java安全限制）或值不存在，则返回<code>null</code>。
      */
     public final String getProtocolPackages() {
-        return SystemUtil.get("java.protocol.handler.pkgs", true);
+        return JavaSystemCommand.get("java.protocol.handler.pkgs", true);
     }
 
     /**
@@ -193,15 +193,15 @@ public class JavaRuntimeInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "Java Runtime Name:      ", getName());
-        SystemUtil.append(builder, "Java Runtime Version:   ", getVersion());
-        SystemUtil.append(builder, "Java Home Dir:          ", getHomeDir());
-        SystemUtil.append(builder, "Java Extension Dirs:    ", getExtDirs());
-        SystemUtil.append(builder, "Java Endorsed Dirs:     ", getEndorsedDirs());
-        SystemUtil.append(builder, "Java Class Path:        ", getClassPath());
-        SystemUtil.append(builder, "Java Class Version:     ", getClassVersion());
-        SystemUtil.append(builder, "Java Library Path:      ", getLibraryPath());
-        SystemUtil.append(builder, "Java Protocol Packages: ", getProtocolPackages());
+        JavaSystemCommand.append(builder, "Java Runtime Name:      ", getName());
+        JavaSystemCommand.append(builder, "Java Runtime Version:   ", getVersion());
+        JavaSystemCommand.append(builder, "Java Home Dir:          ", getHomeDir());
+        JavaSystemCommand.append(builder, "Java Extension Dirs:    ", getExtDirs());
+        JavaSystemCommand.append(builder, "Java Endorsed Dirs:     ", getEndorsedDirs());
+        JavaSystemCommand.append(builder, "Java Class Path:        ", getClassPath());
+        JavaSystemCommand.append(builder, "Java Class Version:     ", getClassVersion());
+        JavaSystemCommand.append(builder, "Java Library Path:      ", getLibraryPath());
+        JavaSystemCommand.append(builder, "Java Protocol Packages: ", getProtocolPackages());
 
         return builder.toString();
     }

@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.io;
 
-import org.gjgr.pig.chivalrous.core.base.LocationCommand;
+import org.gjgr.pig.chivalrous.core.file.LocationCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileReader;
 import org.gjgr.pig.chivalrous.core.io.file.FileWriter;
 import org.gjgr.pig.chivalrous.core.lang.Assert;

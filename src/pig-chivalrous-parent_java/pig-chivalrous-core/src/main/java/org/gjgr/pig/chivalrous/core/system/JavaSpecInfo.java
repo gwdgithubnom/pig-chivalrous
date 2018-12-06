@@ -5,9 +5,9 @@ package org.gjgr.pig.chivalrous.core.system;
  */
 public class JavaSpecInfo {
 
-    private final String JAVA_SPECIFICATION_NAME = SystemUtil.get("java.specification.name", false);
-    private final String JAVA_SPECIFICATION_VERSION = SystemUtil.get("java.specification.version", false);
-    private final String JAVA_SPECIFICATION_VENDOR = SystemUtil.get("java.specification.vendor", false);
+    private final String JAVA_SPECIFICATION_NAME = JavaSystemCommand.get("java.specification.name", false);
+    private final String JAVA_SPECIFICATION_VERSION = JavaSystemCommand.get("java.specification.version", false);
+    private final String JAVA_SPECIFICATION_VENDOR = JavaSystemCommand.get("java.specification.vendor", false);
 
     /**
      * 取得当前Java Spec.的名称（取自系统属性：<code>java.specification.name</code>）。
@@ -58,9 +58,9 @@ public class JavaSpecInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "Java Spec. Name:    ", getName());
-        SystemUtil.append(builder, "Java Spec. Version: ", getVersion());
-        SystemUtil.append(builder, "Java Spec. Vendor:  ", getVendor());
+        JavaSystemCommand.append(builder, "Java Spec. Name:    ", getName());
+        JavaSystemCommand.append(builder, "Java Spec. Version: ", getVersion());
+        JavaSystemCommand.append(builder, "Java Spec. Vendor:  ", getVendor());
 
         return builder.toString();
     }

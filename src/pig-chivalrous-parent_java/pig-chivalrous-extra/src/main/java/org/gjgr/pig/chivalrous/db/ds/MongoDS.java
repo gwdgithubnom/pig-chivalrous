@@ -13,7 +13,7 @@ import org.gjgr.pig.chivalrous.core.log.StaticLog;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
 import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
 import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.NetUtil;
+import org.gjgr.pig.chivalrous.core.net.NetworkCommand;
 import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 
@@ -364,7 +364,7 @@ public class MongoDS implements Closeable {
         }
 
         final int defaultPort = setting.getInt("port", group, 27017);
-        return new ServerAddress(NetUtil.buildInetSocketAddress(tmpHost, defaultPort));
+        return new ServerAddress(NetworkCommand.buildInetSocketAddress(tmpHost, defaultPort));
     }
 
     /**

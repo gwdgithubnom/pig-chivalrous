@@ -1,4 +1,4 @@
-package org.gjgr.pig.chivalrous.core.base;
+package org.gjgr.pig.chivalrous.core.file;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;

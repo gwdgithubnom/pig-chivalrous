@@ -1,5 +1,6 @@
-package org.gjgr.pig.chivalrous.core.base;
+package org.gjgr.pig.chivalrous.core.system;
 
+import org.gjgr.pig.chivalrous.core.file.LocationCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
