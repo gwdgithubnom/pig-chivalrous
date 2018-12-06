@@ -64,8 +64,8 @@ public class HostInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "Host Name:    ", getName());
-        SystemUtil.append(builder, "Host Address: ", getAddress());
+        JavaSystemCommand.append(builder, "Host Name:    ", getName());
+        JavaSystemCommand.append(builder, "Host Address: ", getAddress());
 
         return builder.toString();
     }

@@ -5,10 +5,10 @@ package org.gjgr.pig.chivalrous.core.system;
  */
 public class JvmInfo {
 
-    private final String JAVA_VM_NAME = SystemUtil.get("java.vm.name", false);
-    private final String JAVA_VM_VERSION = SystemUtil.get("java.vm.version", false);
-    private final String JAVA_VM_VENDOR = SystemUtil.get("java.vm.vendor", false);
-    private final String JAVA_VM_INFO = SystemUtil.get("java.vm.info", false);
+    private final String JAVA_VM_NAME = JavaSystemCommand.get("java.vm.name", false);
+    private final String JAVA_VM_VERSION = JavaSystemCommand.get("java.vm.version", false);
+    private final String JAVA_VM_VENDOR = JavaSystemCommand.get("java.vm.vendor", false);
+    private final String JAVA_VM_INFO = JavaSystemCommand.get("java.vm.info", false);
 
     /**
      * 取得当前JVM impl.的名称（取自系统属性：<code>java.vm.name</code>）。
@@ -71,10 +71,10 @@ public class JvmInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "JavaVM Name:    ", getName());
-        SystemUtil.append(builder, "JavaVM Version: ", getVersion());
-        SystemUtil.append(builder, "JavaVM Vendor:  ", getVendor());
-        SystemUtil.append(builder, "JavaVM Info:    ", getInfo());
+        JavaSystemCommand.append(builder, "JavaVM Name:    ", getName());
+        JavaSystemCommand.append(builder, "JavaVM Version: ", getVersion());
+        JavaSystemCommand.append(builder, "JavaVM Vendor:  ", getVendor());
+        JavaSystemCommand.append(builder, "JavaVM Info:    ", getInfo());
 
         return builder.toString();
     }

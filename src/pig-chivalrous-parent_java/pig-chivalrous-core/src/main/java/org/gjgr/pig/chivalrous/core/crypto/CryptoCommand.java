@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.crypto;
 
+import org.apache.commons.codec.binary.Hex;
 import org.gjgr.pig.chivalrous.core.crypto.asymmetric.AsymmetricType;
 import org.gjgr.pig.chivalrous.core.crypto.asymmetric.DSA;
 import org.gjgr.pig.chivalrous.core.crypto.asymmetric.RSA;
@@ -17,11 +18,13 @@ import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -453,6 +456,25 @@ public final class CryptoCommand {
      */
     public static String md5(File dataFile) {
         return new Digester(DigestType.MD5).digestHex(dataFile);
+    }
+
+    public static String hexMD5(String value) {
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+        messageDigest.reset();
+        try {
+            messageDigest.update(value.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+        byte[] digest = messageDigest.digest();
+        return Hex.encodeHexString(digest);
     }
 
     /**

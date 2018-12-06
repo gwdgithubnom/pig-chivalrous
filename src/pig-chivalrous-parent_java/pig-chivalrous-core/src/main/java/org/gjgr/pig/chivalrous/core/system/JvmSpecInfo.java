@@ -5,9 +5,9 @@ package org.gjgr.pig.chivalrous.core.system;
  */
 public class JvmSpecInfo {
 
-    private final String JAVA_VM_SPECIFICATION_NAME = SystemUtil.get("java.vm.specification.name", false);
-    private final String JAVA_VM_SPECIFICATION_VERSION = SystemUtil.get("java.vm.specification.version", false);
-    private final String JAVA_VM_SPECIFICATION_VENDOR = SystemUtil.get("java.vm.specification.vendor", false);
+    private final String JAVA_VM_SPECIFICATION_NAME = JavaSystemCommand.get("java.vm.specification.name", false);
+    private final String JAVA_VM_SPECIFICATION_VERSION = JavaSystemCommand.get("java.vm.specification.version", false);
+    private final String JAVA_VM_SPECIFICATION_VENDOR = JavaSystemCommand.get("java.vm.specification.vendor", false);
 
     /**
      * 取得当前JVM spec.的名称（取自系统属性：<code>java.vm.specification.name</code>）。
@@ -57,9 +57,9 @@ public class JvmSpecInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "JavaVM Spec. Name:    ", getName());
-        SystemUtil.append(builder, "JavaVM Spec. Version: ", getVersion());
-        SystemUtil.append(builder, "JavaVM Spec. Vendor:  ", getVendor());
+        JavaSystemCommand.append(builder, "JavaVM Spec. Name:    ", getName());
+        JavaSystemCommand.append(builder, "JavaVM Spec. Version: ", getVersion());
+        JavaSystemCommand.append(builder, "JavaVM Spec. Vendor:  ", getVendor());
 
         return builder.toString();
     }

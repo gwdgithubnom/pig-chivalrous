@@ -10,6 +10,7 @@ import java.util.HashMap;
  * Created by gwd on 2016/4/28.
  */
 public class Message implements Serializable {
+
     private Integer code;
     private String version;
     private String type;
@@ -114,7 +115,7 @@ public class Message implements Serializable {
         if (jsonObject.get("message").isJsonNull()) {
             jsonObject.remove("message");
         }
-        if (jsonObject.get("info").isJsonNull()) {
+        if (info.size()==0||jsonObject.get("info").isJsonNull()) {
             jsonObject.remove("info");
         }
         if (jsonObject.get("datum").isJsonNull()) {

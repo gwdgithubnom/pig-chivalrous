@@ -5,9 +5,9 @@ package org.gjgr.pig.chivalrous.core.system;
  */
 public class OsInfo {
 
-    private final String OS_VERSION = SystemUtil.get("os.version", false);
-    private final String OS_ARCH = SystemUtil.get("os.arch", false);
-    private final String OS_NAME = SystemUtil.get("os.name", false);
+    private final String OS_VERSION = JavaSystemCommand.get("os.version", false);
+    private final String OS_ARCH = JavaSystemCommand.get("os.arch", false);
+    private final String OS_NAME = JavaSystemCommand.get("os.name", false);
     private final boolean IS_OS_AIX = getOSMatches("AIX");
     private final boolean IS_OS_HP_UX = getOSMatches("HP-UX");
     private final boolean IS_OS_IRIX = getOSMatches("Irix");
@@ -26,9 +26,9 @@ public class OsInfo {
     private final boolean IS_OS_WINDOWS_XP = getOSMatches("Windows", "5.1");
 
     // 由于改变file.encoding属性并不会改变系统字符编码，为了保持一致，通过LocaleUtil取系统默认编码。
-    private final String FILE_SEPARATOR = SystemUtil.get("file.separator", false);
-    private final String LINE_SEPARATOR = SystemUtil.get("line.separator", false);
-    private final String PATH_SEPARATOR = SystemUtil.get("path.separator", false);
+    private final String FILE_SEPARATOR = JavaSystemCommand.get("file.separator", false);
+    private final String LINE_SEPARATOR = JavaSystemCommand.get("line.separator", false);
+    private final String PATH_SEPARATOR = JavaSystemCommand.get("path.separator", false);
 
     /**
      * 取得当前OS的架构（取自系统属性：<code>os.arch</code>）。
@@ -360,12 +360,12 @@ public class OsInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "OS Arch:        ", getArch());
-        SystemUtil.append(builder, "OS Name:        ", getName());
-        SystemUtil.append(builder, "OS Version:     ", getVersion());
-        SystemUtil.append(builder, "File Separator: ", getFileSeparator());
-        SystemUtil.append(builder, "Line Separator: ", getLineSeparator());
-        SystemUtil.append(builder, "Path Separator: ", getPathSeparator());
+        JavaSystemCommand.append(builder, "OS Arch:        ", getArch());
+        JavaSystemCommand.append(builder, "OS Name:        ", getName());
+        JavaSystemCommand.append(builder, "OS Version:     ", getVersion());
+        JavaSystemCommand.append(builder, "File Separator: ", getFileSeparator());
+        JavaSystemCommand.append(builder, "Line Separator: ", getLineSeparator());
+        JavaSystemCommand.append(builder, "Path Separator: ", getPathSeparator());
 
         return builder.toString();
     }

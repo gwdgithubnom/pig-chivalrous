@@ -5,11 +5,11 @@ package org.gjgr.pig.chivalrous.core.system;
  */
 public class JavaInfo {
 
-    private final String JAVA_VERSION = SystemUtil.get("java.version", false);
+    private final String JAVA_VERSION = JavaSystemCommand.get("java.version", false);
     private final float JAVA_VERSION_FLOAT = getJavaVersionAsFloat();
     private final int JAVA_VERSION_INT = getJavaVersionAsInt();
-    private final String JAVA_VENDOR = SystemUtil.get("java.vendor", false);
-    private final String JAVA_VENDOR_URL = SystemUtil.get("java.vendor.url", false);
+    private final String JAVA_VENDOR = JavaSystemCommand.get("java.vendor", false);
+    private final String JAVA_VENDOR_URL = JavaSystemCommand.get("java.vendor.url", false);
 
     // 1.1--1.3能否识别?
     private final boolean IS_JAVA_1_1 = getJavaVersionMatches("1.1");
@@ -308,9 +308,9 @@ public class JavaInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "Java Version:    ", getVersion());
-        SystemUtil.append(builder, "Java Vendor:     ", getVendor());
-        SystemUtil.append(builder, "Java Vendor URL: ", getVendorURL());
+        JavaSystemCommand.append(builder, "Java Version:    ", getVersion());
+        JavaSystemCommand.append(builder, "Java Vendor:     ", getVendor());
+        JavaSystemCommand.append(builder, "Java Vendor URL: ", getVendorURL());
 
         return builder.toString();
     }

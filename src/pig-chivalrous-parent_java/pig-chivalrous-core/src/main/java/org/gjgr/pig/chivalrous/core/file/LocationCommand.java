@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.gjgr.pig.chivalrous.core.base;
+package org.gjgr.pig.chivalrous.core.file;
 
 import org.gjgr.pig.chivalrous.core.io.FileCommand;
 

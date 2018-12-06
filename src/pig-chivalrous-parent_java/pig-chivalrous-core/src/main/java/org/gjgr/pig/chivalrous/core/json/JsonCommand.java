@@ -25,6 +25,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
+import org.gjgr.pig.chivalrous.core.file.YmlNode;
 import org.gjgr.pig.chivalrous.core.io.IORuntimeException;
 import org.gjgr.pig.chivalrous.core.io.file.FileReader;
 import org.gjgr.pig.chivalrous.core.json.bean.Json;
@@ -36,6 +37,8 @@ import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
 import org.gjgr.pig.chivalrous.core.util.ObjectUtil;
 import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.core.xml.XmlBetweenJsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +73,7 @@ public class JsonCommand {
 
     private static Gson gson = null;
     private static GsonBuilder gsonBuilder = new GsonBuilder();
+    private static Logger logger = LoggerFactory.getLogger(JsonCommand.class);
 
     static {
         gsonBuilder.serializeNulls();
@@ -229,8 +233,6 @@ public class JsonCommand {
         return (T) obj;
     }
 
-    //-------------------------------------------------------------------- bean start
-
     /**
      * 转为实体类对象，转换异常将被抛出
      *
@@ -266,7 +268,6 @@ public class JsonCommand {
     public static <T> T bean(JsonObject json, Class<T> beanClass, boolean ignoreError) {
         return null == json ? null : json.toBean(beanClass, ignoreError);
     }
-    //-------------------------------------------------------------------- bean end
 
     /**
      * 将json格式转换成list对象
@@ -283,6 +284,8 @@ public class JsonCommand {
         }
         return objList;
     }
+
+    //-------------------------------------------------------------------- bean start
 
     public static Set<?> beanSet(String jsonStr) {
         Set<?> objSet = null;
@@ -323,6 +326,7 @@ public class JsonCommand {
         }
         return objSet;
     }
+    //-------------------------------------------------------------------- bean end
 
     /**
      * 将json格式转换成map对象
@@ -361,8 +365,6 @@ public class JsonCommand {
         map = (Map<String, HashSet<String>>) gson.fromJson(str, map.getClass());
         return map;
     }
-
-    //-------------------------------------------------------------------- Pause start
 
     /**
      * json字符串转成对象
@@ -409,6 +411,8 @@ public class JsonCommand {
         }
         return new com.google.gson.JsonObject();
     }
+
+    //-------------------------------------------------------------------- Pause start
 
     /**
      * Map转化为JSONObject
@@ -540,10 +544,6 @@ public class JsonCommand {
         return json;
     }
 
-    //-------------------------------------------------------------------- Pause end
-
-    //-------------------------------------------------------------------- Read start
-
     /**
      * 读取JSON
      *
@@ -579,9 +579,6 @@ public class JsonCommand {
     public static JsonArray readJSONArray(File file, Charset charset) throws IORuntimeException {
         return newJsonArray(FileReader.create(file, charset).readString());
     }
-    //-------------------------------------------------------------------- Read end
-
-    //-------------------------------------------------------------------- toString start
 
     /**
      * 转为JSON字符串
@@ -593,6 +590,10 @@ public class JsonCommand {
     public static String string(Json json, int indentFactor) {
         return json.toJSONString(indentFactor);
     }
+
+    //-------------------------------------------------------------------- Pause end
+
+    //-------------------------------------------------------------------- Read start
 
     /**
      * 转为JSON字符串
@@ -630,6 +631,9 @@ public class JsonCommand {
         }
         return str;
     }
+    //-------------------------------------------------------------------- Read end
+
+    //-------------------------------------------------------------------- toString start
 
     /**
      * 转换为格式化后的JSON字符串
@@ -650,7 +654,6 @@ public class JsonCommand {
     public static String stringXml(Json json) {
         return XmlBetweenJsonObject.toString(json);
     }
-    //-------------------------------------------------------------------- toString end
 
     /**
      * 对所有双引号做转义处理（使用双反斜杠做转义）<br>
@@ -789,5 +792,168 @@ public class JsonCommand {
         } catch (Exception exception) {
             return null;
         }
+    }
+
+    public static com.google.gson.JsonObject format(YmlNode ymlNode, com.google.gson.JsonObject jsonObject) {
+        com.google.gson.JsonObject messageData = new com.google.gson.JsonObject();
+        Map scheme = ymlNode.get("data").map();
+        scheme.forEach((key, value) -> {
+            if (value instanceof String) {
+                Object oo = getEntity(jsonObject, value.toString());
+                if (oo != null) {
+                    messageData.addProperty(key.toString(), oo.toString());
+                } else {
+                    messageData.add(key.toString(), com.google.gson.JsonNull.INSTANCE);
+                }
+            } else if (value instanceof List) {
+                com.google.gson.JsonArray array = (com.google.gson.JsonArray) getEntity(jsonObject, value);
+                if (array != null && array.size() > 0) {
+                    messageData.add(key.toString(), array);
+                } else {
+                    messageData.add(key.toString(), com.google.gson.JsonNull.INSTANCE);
+                }
+            } else if (value instanceof Map) {
+                com.google.gson.JsonObject object = (com.google.gson.JsonObject) getEntity(jsonObject, value);
+                if (object != null && object.size() > 0) {
+                    messageData.add(key.toString(), object);
+                } else {
+                    messageData.add(key.toString(), com.google.gson.JsonNull.INSTANCE);
+                }
+            }
+        });
+        return messageData;
+    }
+    //-------------------------------------------------------------------- toString end
+
+    private static JsonElement getJsonEntity(com.google.gson.JsonObject data, String key) {
+        JsonElement oo = null;
+        if (data.has(key)) {
+            if (data.get(key).isJsonPrimitive()) {
+                oo = data.get(key).getAsJsonPrimitive();
+            } else if (data.get(key).isJsonArray()) {
+                oo = data.get(key).getAsJsonArray();
+            } else if (data.get(key).isJsonObject()) {
+                oo = data.get(key).getAsJsonObject();
+            } else {
+                oo = null;
+            }
+        } else {
+            oo = com.google.gson.JsonNull.INSTANCE;
+        }
+        return oo;
+    }
+
+    private static Object getEntity(com.google.gson.JsonObject data, Object key) {
+        Object oo;
+        if (key instanceof String && data.has(key.toString())) {
+            if (data.get(key.toString()).isJsonPrimitive()) {
+                JsonPrimitive jsonPrimitive = data.get(key.toString()).getAsJsonPrimitive();
+                if (jsonPrimitive.isString()) {
+                    oo = jsonPrimitive.getAsString();
+                } else if (jsonPrimitive.isBoolean()) {
+                    oo = jsonPrimitive.getAsBoolean();
+                } else if (jsonPrimitive.isNumber()) {
+                    oo = jsonPrimitive.getAsNumber();
+                } else {
+                    oo = jsonPrimitive.getAsString();
+                }
+            } else if (data.get(key.toString()).isJsonArray()) {
+                com.google.gson.JsonArray jsonElements = data.get(key.toString()).getAsJsonArray();
+                StringBuilder stringBuilder = new StringBuilder();
+                jsonElements.forEach(element -> {
+                    stringBuilder.append(element.toString());
+                });
+                oo = stringBuilder.toString();
+            } else if (data.get(key.toString()).isJsonObject()) {
+                StringBuilder stringBuilder = new StringBuilder();
+                com.google.gson.JsonObject jsonObject = data.get(key.toString()).getAsJsonObject();
+                jsonObject.entrySet().forEach(entry -> {
+                    stringBuilder.append(getEntity(data, entry.getKey()));
+                });
+                oo = stringBuilder.toString();
+            } else {
+                oo = null;
+            }
+        } else if (key instanceof List) {
+            com.google.gson.JsonArray jsonArray = new com.google.gson.JsonArray();
+            List list = (List) key;
+            list.forEach(l -> {
+                if (l instanceof String) {
+                    JsonElement ooo = getJsonEntity(data, l.toString());
+                    if (ooo instanceof com.google.gson.JsonArray) {
+                        jsonArray.addAll((com.google.gson.JsonArray) ooo);
+                    } else {
+                        jsonArray.add(ooo);
+                    }
+
+                } else {
+                    Object ooo = getEntity(data, l);
+                    if (ooo != null) {
+                        if (ooo instanceof JsonElement) {
+                            jsonArray.add((JsonElement) ooo);
+                        } else {
+                            jsonArray.add(ooo.toString());
+                        }
+                    }
+                }
+            });
+            oo = jsonArray;
+        } else if (key instanceof Map) {
+            com.google.gson.JsonObject jsonObject = new com.google.gson.JsonObject();
+            Map map = (Map) key;
+            map.forEach((k, v) -> {
+                if (v instanceof String) {
+                    JsonElement ooo = getJsonEntity(data, v.toString());
+                    jsonObject.add(k.toString(), ooo);
+                } else {
+                    Object ooo = getEntity(data, v);
+                    jsonObject.addProperty(k.toString(), ooo.toString());
+                }
+            });
+            oo = jsonObject;
+        } else {
+            logger.warn("did not support this type:{} for yml config in the map config file.", key);
+            return null;
+        }
+        return oo;
+    }
+
+    public static com.google.gson.JsonArray formatToArray(YmlNode ymlNode, com.google.gson.JsonObject jsonObject) {
+        com.google.gson.JsonArray jsonArray = new com.google.gson.JsonArray();
+        String index = ymlNode.get("index").string();
+        if (index == null) {
+            logger.error("config error could not covert the data to array.");
+        } else {
+            try {
+                int size = jsonObject.get(index).getAsJsonArray().size();
+                for (int i = 0; i < size; i++) {
+                    com.google.gson.JsonObject covert = new com.google.gson.JsonObject();
+                    List scheme = ymlNode.get("scheme").list();
+                    int[] j = new int[1];
+                    j[0] = i;
+                    scheme.forEach(s -> {
+                        if (jsonObject.has(s.toString()) && jsonObject.get(s.toString()) != null) {
+                            if (jsonObject.get(s.toString()).isJsonArray()) {
+                                covert.add(s.toString(), jsonObject.get(s.toString()).getAsJsonArray().get(j[0]));
+                            } else if (jsonObject.get(s.toString()).isJsonPrimitive()) {
+                                covert.add(s.toString(), jsonObject.get(s.toString()).getAsJsonPrimitive());
+                            } else if (jsonObject.get(s.toString()).isJsonObject()) {
+                                covert.add(s.toString(), jsonObject.get(s.toString()).getAsJsonObject());
+                            } else {
+                                covert.add(s.toString(), com.google.gson.JsonNull.INSTANCE);
+                            }
+                        } else {
+                            covert.add(s.toString(), null);
+                        }
+                    });
+                    com.google.gson.JsonObject result = format(ymlNode, covert);
+                    jsonArray.add(result);
+                }
+            } catch (Exception e) {
+                logger.error("type not correct {}. cause by {}", jsonObject, e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        }
+        return jsonArray;
     }
 }

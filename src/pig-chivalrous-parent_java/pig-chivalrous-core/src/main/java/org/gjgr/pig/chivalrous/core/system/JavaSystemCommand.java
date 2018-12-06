@@ -14,7 +14,7 @@ import java.util.Properties;
  *
  * @author Looly
  */
-public final class SystemUtil {
+public final class JavaSystemCommand {
 
     /***** Java运行时环境信息 *****/
     // Java 运行时环境规范名称
@@ -82,7 +82,7 @@ public final class SystemUtil {
     // 用户的当前工作目录
     public final static String USER_DIR = "user.dir";
 
-    private SystemUtil() {
+    private JavaSystemCommand() {
     }
 
     //----------------------------------------------------------------------- Basic start
@@ -110,7 +110,7 @@ public final class SystemUtil {
             return System.getProperty(name);
         } catch (SecurityException e) {
             if (!quiet) {
-                Console.error("Caught a SecurityException reading the system property '{}'; the SystemUtil property value will default to null.", name);
+                Console.error("Caught a SecurityException reading the system property '{}'; the JavaSystemCommand property value will default to null.", name);
             }
             return null;
         }

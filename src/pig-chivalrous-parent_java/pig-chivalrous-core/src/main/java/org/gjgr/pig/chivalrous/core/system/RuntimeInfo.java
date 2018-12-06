@@ -55,10 +55,10 @@ public class RuntimeInfo {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "Max Memory:    ", FileCommand.readableFileSize(getMaxMemory()));
-        SystemUtil.append(builder, "Total Memory:     ", FileCommand.readableFileSize(getTotalMemory()));
-        SystemUtil.append(builder, "Free Memory:     ", FileCommand.readableFileSize(getFreeMemory()));
-        SystemUtil.append(builder, "Usable Memory:     ", FileCommand.readableFileSize(getUsableMemory()));
+        JavaSystemCommand.append(builder, "Max Memory:    ", FileCommand.readableFileSize(getMaxMemory()));
+        JavaSystemCommand.append(builder, "Total Memory:     ", FileCommand.readableFileSize(getTotalMemory()));
+        JavaSystemCommand.append(builder, "Free Memory:     ", FileCommand.readableFileSize(getFreeMemory()));
+        JavaSystemCommand.append(builder, "Usable Memory:     ", FileCommand.readableFileSize(getUsableMemory()));
 
         return builder.toString();
     }

@@ -5,12 +5,12 @@ package org.gjgr.pig.chivalrous.core.system;
  */
 public class UserInfo {
 
-    private final String USER_NAME = SystemUtil.get("user.name", false);
-    private final String USER_HOME = SystemUtil.get("user.home", false);
-    private final String USER_DIR = SystemUtil.get("user.dir", false);
-    private final String USER_LANGUAGE = SystemUtil.get("user.language", false);
-    private final String USER_COUNTRY = ((SystemUtil.get("user.country", false) == null) ? SystemUtil.get("user.region", false) : SystemUtil.get("user.country", false));
-    private final String JAVA_IO_TMPDIR = SystemUtil.get("java.io.tmpdir", false);
+    private final String USER_NAME = JavaSystemCommand.get("user.name", false);
+    private final String USER_HOME = JavaSystemCommand.get("user.home", false);
+    private final String USER_DIR = JavaSystemCommand.get("user.dir", false);
+    private final String USER_LANGUAGE = JavaSystemCommand.get("user.language", false);
+    private final String USER_COUNTRY = ((JavaSystemCommand.get("user.country", false) == null) ? JavaSystemCommand.get("user.region", false) : JavaSystemCommand.get("user.country", false));
+    private final String JAVA_IO_TMPDIR = JavaSystemCommand.get("java.io.tmpdir", false);
 
     /**
      * 取得当前登录用户的名字（取自系统属性：<code>user.name</code>）。
@@ -102,12 +102,12 @@ public class UserInfo {
     public final String toString() {
         StringBuilder builder = new StringBuilder();
 
-        SystemUtil.append(builder, "User Name:        ", getName());
-        SystemUtil.append(builder, "User Home Dir:    ", getHomeDir());
-        SystemUtil.append(builder, "User Current Dir: ", getCurrentDir());
-        SystemUtil.append(builder, "User Temp Dir:    ", getTempDir());
-        SystemUtil.append(builder, "User Language:    ", getLanguage());
-        SystemUtil.append(builder, "User Country:     ", getCountry());
+        JavaSystemCommand.append(builder, "User Name:        ", getName());
+        JavaSystemCommand.append(builder, "User Home Dir:    ", getHomeDir());
+        JavaSystemCommand.append(builder, "User Current Dir: ", getCurrentDir());
+        JavaSystemCommand.append(builder, "User Temp Dir:    ", getTempDir());
+        JavaSystemCommand.append(builder, "User Language:    ", getLanguage());
+        JavaSystemCommand.append(builder, "User Country:     ", getCountry());
 
         return builder.toString();
     }
