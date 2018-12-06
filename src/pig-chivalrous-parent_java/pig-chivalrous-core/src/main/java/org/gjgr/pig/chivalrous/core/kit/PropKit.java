@@ -16,7 +16,7 @@
 
 package org.gjgr.pig.chivalrous.core.kit;
 
-import org.gjgr.pig.chivalrous.core.base.Const;
+import org.gjgr.pig.chivalrous.core.lang.ConstValueCommand;
 
 import java.io.File;
 import java.util.Map;
@@ -39,7 +39,7 @@ public class PropKit {
      * @see #use(String, String)
      */
     public static Prop use(String fileName) {
-        return use(fileName, Const.DEFAULT_ENCODING);
+        return use(fileName, ConstValueCommand.DEFAULT_ENCODING);
     }
 
     /**
@@ -77,7 +77,7 @@ public class PropKit {
      * @see #use(File, String)
      */
     public static Prop use(File file) {
-        return use(file, Const.DEFAULT_ENCODING);
+        return use(file, ConstValueCommand.DEFAULT_ENCODING);
     }
 
     /**

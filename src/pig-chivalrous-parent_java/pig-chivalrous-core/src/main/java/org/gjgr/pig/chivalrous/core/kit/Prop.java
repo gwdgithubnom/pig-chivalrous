@@ -16,7 +16,7 @@
 
 package org.gjgr.pig.chivalrous.core.kit;
 
-import org.gjgr.pig.chivalrous.core.base.Const;
+import org.gjgr.pig.chivalrous.core.lang.ConstValueCommand;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +38,7 @@ public class Prop {
      * @see #Prop(String, String)
      */
     public Prop(String fileName) {
-        this(fileName, Const.DEFAULT_ENCODING);
+        this(fileName, ConstValueCommand.DEFAULT_ENCODING);
     }
 
     /**
@@ -82,7 +82,7 @@ public class Prop {
      * @see #Prop(File, String)
      */
     public Prop(File file) {
-        this(file, Const.DEFAULT_ENCODING);
+        this(file, ConstValueCommand.DEFAULT_ENCODING);
     }
 
     /**
