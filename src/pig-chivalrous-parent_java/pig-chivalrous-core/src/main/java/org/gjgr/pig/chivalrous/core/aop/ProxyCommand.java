@@ -11,9 +11,9 @@ import java.lang.reflect.Proxy;
  *
  * @author Looly
  */
-public final class ProxyUtil {
+public final class ProxyCommand {
 
-    private ProxyUtil() {
+    private ProxyCommand() {
     }
 
     /**
