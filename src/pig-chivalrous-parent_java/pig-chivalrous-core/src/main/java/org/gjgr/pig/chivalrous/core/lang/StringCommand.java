@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -323,6 +324,20 @@ public class StringCommand {
             result.add(cell.trim());
         }
         return result;
+    }
+
+    public static String[] array(String string) {
+        String[] strings = null;
+        if (string.startsWith("[") && string.endsWith("]")) {
+            try {
+                strings = JsonCommand.fromJson(string, String[].class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+
+        }
+        return strings;
     }
 
     public static String string(InputStream is) {
