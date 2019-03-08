@@ -1293,6 +1293,7 @@
                    <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-snapshots</url>
                    <layout>maven-2-default</layout>
                </snapshotRepository>
+               10.132.106.221
        -->
         <repository>
             <id>archiva.internal</id>
