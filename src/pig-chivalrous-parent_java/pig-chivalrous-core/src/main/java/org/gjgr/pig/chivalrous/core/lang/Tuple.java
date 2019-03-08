@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.clone.CloneSupport;
-
 import java.io.Serializable;
 import java.util.Arrays;
+
+import org.gjgr.pig.chivalrous.core.clone.CloneSupport;
 
 /**
  * 不可变数组类型，用于多值返回
@@ -15,7 +15,7 @@ public class Tuple extends CloneSupport<Tuple> implements Serializable {
 
     private Object[] members;
 
-    public Tuple(Object... members) {
+    public Tuple(Object...members) {
         this.members = members;
     }
 

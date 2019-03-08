@@ -1,11 +1,8 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * 断言<br>
@@ -19,8 +16,51 @@ public final class Assert {
     }
 
     /**
+     * Assert that the given String is not empty; that is, it must not be {@code null} and not the empty String.
+     * 
+     * <pre class="code">
+     * Assert.hasLength(name, "Name must not be empty");
+     * </pre>
+     * 
+     * @param text the String to check
+     * @param message the exception message to use if the assertion fails
+     * @sees StringUtils#hasLength
+     * @throws IllegalArgumentException if the text is empty
+     */
+    public static void hasLength(@Nullable String text, String message) {
+        if (!StringCommand.hasLength(text)) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    /**
+     * Assert that the given String is not empty; that is, it must not be {@code null} and not the empty String.
+     * 
+     * <pre class="code">
+     * Assert.hasLength(name, () -&gt; "Name for account '" + account.getId() + "' must not be empty");
+     * </pre>
+     * 
+     * @param text the String to check
+     * @param messageSupplier a supplier for the exception message to use if the assertion fails
+     * @sees StringUtils#hasLength
+     * @throws IllegalArgumentException if the text is empty
+     * @since 5.0
+     */
+    public static void hasLength(@Nullable String text, Supplier<String> messageSupplier) {
+        if (!StringCommand.hasLength(text)) {
+            throw new IllegalArgumentException(nullSafeGet(messageSupplier));
+        }
+    }
+
+    @Nullable
+    private static String nullSafeGet(@Nullable Supplier<String> messageSupplier) {
+        return (messageSupplier != null ? messageSupplier.get() : null);
+    }
+
+    /**
      * 断言是否为真，如果为 {@code false} 抛出 {@code IllegalArgumentException} 异常<br>
      * <p>
+     * 
      * <pre class="code">
      * Assert.isTrue(i &gt; 0, "The value must be greater than zero");
      * </pre>
@@ -38,6 +78,7 @@ public final class Assert {
     /**
      * 断言是否为真，如果为 {@code false} 抛出 {@code IllegalArgumentException} 异常<br>
      * <p>
+     * 
      * <pre class="code">
      * Assert.isTrue(i &gt; 0, "The value must be greater than zero");
      * </pre>
@@ -52,6 +93,7 @@ public final class Assert {
     /**
      * Assert that an object is {@code null} .
      * <p>
+     * 
      * <pre class="code">
      * Assert.isNull(value, "The value must be null");
      * </pre>
@@ -69,6 +111,7 @@ public final class Assert {
     /**
      * Assert that an object is {@code null} .
      * <p>
+     * 
      * <pre class="code">
      * Assert.isNull(value);
      * </pre>
@@ -83,6 +126,7 @@ public final class Assert {
     /**
      * Assert that an object is not {@code null} .
      * <p>
+     * 
      * <pre class="code">
      * Assert.notNull(clazz, "The class must not be null");
      * </pre>
@@ -100,6 +144,7 @@ public final class Assert {
     /**
      * Assert that an object is not {@code null} .
      * <p>
+     * 
      * <pre class="code">
      * Assert.notNull(clazz);
      * </pre>
@@ -114,16 +159,17 @@ public final class Assert {
     /**
      * Assert that the given String is not empty; that is, it must not be {@code null} and not the empty String.
      * <p>
+     * 
      * <pre class="code">
      * Assert.hasLength(name, "Name must not be empty");
      * </pre>
      *
      * @param text the String to check
      * @param message the exception message to use if the assertion fails
-     * @see StrUtil#isNotEmpty
+     * @see StringCommand#isNotEmpty
      */
     public static void notEmpty(String text, String message) {
-        if (StrUtil.isEmpty(text)) {
+        if (StringCommand.isEmpty(text)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -131,51 +177,58 @@ public final class Assert {
     /**
      * Assert that the given String is not empty; that is, it must not be {@code null} and not the empty String.
      * <p>
+     * 
      * <pre class="code">
      * Assert.hasLength(name);
      * </pre>
      *
      * @param text the String to check
-     * @see StrUtil#isNotEmpty
+     * @see StringCommand#isNotEmpty
      */
     public static void notEmpty(String text) {
         notEmpty(text, "[Assertion failed] - this String argument must have length; it must not be null or empty");
     }
 
     /**
-     * Assert that the given String has valid text content; that is, it must not be {@code null} and must contain at least one non-whitespace character.
+     * Assert that the given String has valid text content; that is, it must not be {@code null} and must contain at
+     * least one non-whitespace character.
      * <p>
+     * 
      * <pre class="code">
      * Assert.hasText(name, "'name' must not be empty");
      * </pre>
      *
      * @param text the String to check
      * @param message the exception message to use if the assertion fails
-     * @see StrUtil#isNotBlank
+     * @see StringCommand#isNotBlank
      */
     public static void notBlank(String text, String message) {
-        if (StrUtil.isBlank(text)) {
+        if (StringCommand.isBlank(text)) {
             throw new IllegalArgumentException(message);
         }
     }
 
     /**
-     * Assert that the given String has valid text content; that is, it must not be {@code null} and must contain at least one non-whitespace character.
+     * Assert that the given String has valid text content; that is, it must not be {@code null} and must contain at
+     * least one non-whitespace character.
      * <p>
+     * 
      * <pre class="code">
      * Assert.hasText(name, "'name' must not be empty");
      * </pre>
      *
      * @param text the String to check
-     * @see StrUtil#isNotBlank
+     * @see StringCommand#isNotBlank
      */
     public static void notBlank(String text) {
-        notBlank(text, "[Assertion failed] - this String argument must have text; it must not be null, empty, or blank");
+        notBlank(text,
+                "[Assertion failed] - this String argument must have text; it must not be null, empty, or blank");
     }
 
     /**
      * Assert that the given text does not contain the given substring.
      * <p>
+     * 
      * <pre class="code">
      * Assert.doesNotContain(name, "rod", "Name must not contain 'rod'");
      * </pre>
@@ -185,7 +238,8 @@ public final class Assert {
      * @param message the exception message to use if the assertion fails
      */
     public static void notContain(String textToSearch, String substring, String message) {
-        if (StrUtil.isNotEmpty(textToSearch) && StrUtil.isNotEmpty(substring) && textToSearch.contains(substring)) {
+        if (StringCommand.isNotEmpty(textToSearch) && StringCommand.isNotEmpty(substring)
+                && textToSearch.contains(substring)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -193,6 +247,7 @@ public final class Assert {
     /**
      * Assert that the given text does not contain the given substring.
      * <p>
+     * 
      * <pre class="code">
      * Assert.doesNotContain(name, "rod");
      * </pre>
@@ -201,12 +256,14 @@ public final class Assert {
      * @param substring the substring to find within the text
      */
     public static void notContain(String textToSearch, String substring) {
-        notContain(textToSearch, substring, "[Assertion failed] - this String argument must not contain the substring [" + substring + "]");
+        notContain(textToSearch, substring,
+                "[Assertion failed] - this String argument must not contain the substring [" + substring + "]");
     }
 
     /**
      * Assert that an array has elements; that is, it must not be {@code null} and must have at least one element.
      * <p>
+     * 
      * <pre class="code">
      * Assert.notEmpty(array, "The array must have elements");
      * </pre>
@@ -216,7 +273,7 @@ public final class Assert {
      * @throws IllegalArgumentException if the object array is {@code null} or has no elements
      */
     public static void notEmpty(Object[] array, String message) {
-        if (ArrayUtil.isEmpty(array)) {
+        if (ArrayCommand.isEmpty(array)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -224,6 +281,7 @@ public final class Assert {
     /**
      * Assert that an array has elements; that is, it must not be {@code null} and must have at least one element.
      * <p>
+     * 
      * <pre class="code">
      * Assert.notEmpty(array);
      * </pre>
@@ -238,6 +296,7 @@ public final class Assert {
     /**
      * Assert that an array has no null elements. Note: Does not complain if the array is empty!
      * <p>
+     * 
      * <pre class="code">
      * Assert.noNullElements(array, "The array must have non-null elements");
      * </pre>
@@ -259,6 +318,7 @@ public final class Assert {
     /**
      * Assert that an array has no null elements. Note: Does not complain if the array is empty!
      * <p>
+     * 
      * <pre class="code">
      * Assert.noNullElements(array);
      * </pre>
@@ -273,6 +333,7 @@ public final class Assert {
     /**
      * Assert that a collection has elements; that is, it must not be {@code null} and must have at least one element.
      * <p>
+     * 
      * <pre class="code">
      * Assert.notEmpty(collection, "Collection must have elements");
      * </pre>
@@ -282,7 +343,7 @@ public final class Assert {
      * @throws IllegalArgumentException if the collection is {@code null} or has no elements
      */
     public static void notEmpty(Collection<?> collection, String message) {
-        if (CollectionUtil.isEmpty(collection)) {
+        if (CollectionCommand.isEmpty(collection)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -290,6 +351,7 @@ public final class Assert {
     /**
      * Assert that a collection has elements; that is, it must not be {@code null} and must have at least one element.
      * <p>
+     * 
      * <pre class="code">
      * Assert.notEmpty(collection, "Collection must have elements");
      * </pre>
@@ -298,12 +360,14 @@ public final class Assert {
      * @throws IllegalArgumentException if the collection is {@code null} or has no elements
      */
     public static void notEmpty(Collection<?> collection) {
-        notEmpty(collection, "[Assertion failed] - this collection must not be empty: it must contain at least 1 element");
+        notEmpty(collection,
+                "[Assertion failed] - this collection must not be empty: it must contain at least 1 element");
     }
 
     /**
      * Assert that a Map has entries; that is, it must not be {@code null} and must have at least one entry.
      * <p>
+     * 
      * <pre class="code">
      * Assert.notEmpty(beanMapWithHashSetValue, "Map must have entries");
      * </pre>
@@ -313,7 +377,7 @@ public final class Assert {
      * @throws IllegalArgumentException if the beanMapWithHashSetValue is {@code null} or has no entries
      */
     public static void notEmpty(Map<?, ?> map, String message) {
-        if (CollectionUtil.isEmpty(map)) {
+        if (CollectionCommand.isEmpty(map)) {
             throw new IllegalArgumentException(message);
         }
     }
@@ -321,6 +385,7 @@ public final class Assert {
     /**
      * Assert that a Map has entries; that is, it must not be {@code null} and must have at least one entry.
      * <p>
+     * 
      * <pre class="code">
      * Assert.notEmpty(beanMapWithHashSetValue);
      * </pre>
@@ -329,12 +394,14 @@ public final class Assert {
      * @throws IllegalArgumentException if the beanMapWithHashSetValue is {@code null} or has no entries
      */
     public static void notEmpty(Map<?, ?> map) {
-        notEmpty(map, "[Assertion failed] - this beanMapWithHashSetValue must not be empty; it must contain at least one entry");
+        notEmpty(map,
+                "[Assertion failed] - this beanMapWithHashSetValue must not be empty; it must contain at least one entry");
     }
 
     /**
      * Assert that the provided object is an instance of the provided class.
      * <p>
+     * 
      * <pre class="code">
      * Assert.instanceOf(Foo.class, foo);
      * </pre>
@@ -351,14 +418,16 @@ public final class Assert {
     /**
      * Assert that the provided object is an instance of the provided class.
      * <p>
+     * 
      * <pre class="code">
      * Assert.instanceOf(Foo.class, foo);
      * </pre>
      *
      * @param type the type to check against
      * @param obj the object to check
-     * @param message a message which will be prepended to the message produced by the function itself, and which may be used to provide context. It should normally end in a ": " or ". " so that the
-     * function generate message looks ok when prepended to it.
+     * @param message a message which will be prepended to the message produced by the function itself, and which may be
+     *            used to provide context. It should normally end in a ": " or ". " so that the function generate
+     *            message looks ok when prepended to it.
      * @throws IllegalArgumentException if the object is not an instance of clazz
      * @see Class#isInstance
      */
@@ -366,13 +435,15 @@ public final class Assert {
         notNull(type, "Type to check against must not be null");
         if (!type.isInstance(obj)) {
             throw new IllegalArgumentException(
-                    (StrUtil.isNotEmpty(message) ? message + " " : "") + "Object of class [" + (obj != null ? obj.getClass().getName() : "null") + "] must be an instance of " + type);
+                    (StringCommand.isNotEmpty(message) ? message + " " : "") + "Object of class ["
+                            + (obj != null ? obj.getClass().getName() : "null") + "] must be an instance of " + type);
         }
     }
 
     /**
      * Assert that {@code superType.isAssignableFrom(subType)} is {@code true}.
      * <p>
+     * 
      * <pre class="code">
      * Assert.isAssignable(Number.class, myClass);
      * </pre>
@@ -388,14 +459,16 @@ public final class Assert {
     /**
      * Assert that {@code superType.isAssignableFrom(subType)} is {@code true}.
      * <p>
+     * 
      * <pre class="code">
      * Assert.isAssignable(Number.class, myClass);
      * </pre>
      *
      * @param superType the super type to check against
      * @param subType the sub type to check
-     * @param message a message which will be prepended to the message produced by the function itself, and which may be used to provide context. It should normally end in a ": " or ". " so that the
-     * function generate message looks ok when prepended to it.
+     * @param message a message which will be prepended to the message produced by the function itself, and which may be
+     *            used to provide context. It should normally end in a ": " or ". " so that the function generate
+     *            message looks ok when prepended to it.
      * @throws IllegalArgumentException if the classes are not assignable
      */
     public static void isAssignable(Class<?> superType, Class<?> subType, String message) {
@@ -406,8 +479,10 @@ public final class Assert {
     }
 
     /**
-     * Assert a boolean expression, throwing {@code IllegalStateException} if the test result is {@code false}. Call isTrue if you wish to throw IllegalArgumentException on an assertion failure.
+     * Assert a boolean expression, throwing {@code IllegalStateException} if the test result is {@code false}. Call
+     * isTrue if you wish to throw IllegalArgumentException on an assertion failure.
      * <p>
+     * 
      * <pre class="code">
      * Assert.state(id == null, "The id property must not already be initialized");
      * </pre>
@@ -427,6 +502,7 @@ public final class Assert {
      * <p>
      * Call {@link #isTrue(boolean)} if you wish to throw {@link IllegalArgumentException} on an assertion failure.
      * <p>
+     * 
      * <pre class="code">
      * Assert.state(id == null);
      * </pre>

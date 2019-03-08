@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.cron.task;
 
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 /**
  * 反射执行任务<br>
@@ -33,6 +33,6 @@ public class InvokeTask implements Task {
 
     @Override
     public void execute() {
-        ClassUtil.invoke(this.className, this.methodName, new Object[] {});
+        ClassCommand.invoke(this.className, this.methodName, new Object[] {});
     }
 }

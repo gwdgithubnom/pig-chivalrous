@@ -1,5 +1,10 @@
 package org.gjgr.pig.chivalrous.excel.service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -7,21 +12,13 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 /**
- * Created by gwd on 2016/5/23.
- * through this service can get the sheet and workbook object.
- * 未实现多线程的模式
+ * Created by gwd on 2016/5/23. through this service can get the sheet and workbook object. 未实现多线程的模式
  */
 
 public class PoiService {
 
     private static Logger logger = LoggerFactory.getLogger(PoiService.class.getName());
-
 
     public static Workbook openWorkbook(FileInputStream fileInputStream) {
 
@@ -52,7 +49,6 @@ public class PoiService {
         workbook = openWorkbook(fileInputStream);
         return workbook;
     }
-
 
     public static Sheet openSheet(FileInputStream fileInputStream) {
 

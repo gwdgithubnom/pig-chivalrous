@@ -1,7 +1,5 @@
 package org.gjgr.pig.chivalrous.core.date.format;
 
-import org.gjgr.pig.chivalrous.core.date.DateException;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.DateFormatSymbols;
@@ -13,6 +11,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
+import org.gjgr.pig.chivalrous.core.date.DateException;
 
 /**
  * {@link java.text.SimpleDateFormat} 的线程安全版本，用于将 {@link Date} 格式化输出<br>
@@ -92,24 +92,33 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
 
             switch (nDigits) {
                 case 4:
+                    /* FALLTHROUGH */
                     buffer.append((char) (value / 1000 + '0'));
                     value %= 1000;
+                    // fallthrough
                 case 3:
+                    // fallthrough
                     if (value >= 100) {
                         buffer.append((char) (value / 100 + '0'));
                         value %= 100;
                     } else {
                         buffer.append('0');
                     }
+                    // fallthrough
                 case 2:
+                    /* FALLTHROUGH */
                     if (value >= 10) {
                         buffer.append((char) (value / 10 + '0'));
                         value %= 10;
                     } else {
                         buffer.append('0');
                     }
+                    // fallthrough
                 case 1:
                     buffer.append((char) (value + '0'));
+                    break;
+                default:
+                    break;
             }
         } else {
             // more memory allocation path works for any digits
@@ -171,7 +180,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
         rules = rulesList.toArray(new Rule[rulesList.size()]);
 
         int len = 0;
-        for (int i = rules.length; --i >= 0; ) {
+        for (int i = rules.length; --i >= 0;) {
             len += rules[i].estimateLength();
         }
 
@@ -285,7 +294,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
                     rule = selectNumberRule(Calendar.HOUR, tokenLen);
                     break;
                 case 'X': // ISO 8601
-                    rule = Iso8601_Rule.getRule(tokenLen);
+                    rule = Iso8601Rule.getRule(tokenLen);
                     break;
                 case 'z': // time zone (text)
                     if (tokenLen >= 4) {
@@ -298,7 +307,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
                     if (tokenLen == 1) {
                         rule = TimeZoneNumberRule.INSTANCE_NO_COLON;
                     } else if (tokenLen == 2) {
-                        rule = Iso8601_Rule.ISO8601_HOURS_COLON_MINUTES;
+                        rule = Iso8601Rule.ISO8601_HOURS_COLON_MINUTES;
                     } else {
                         rule = TimeZoneNumberRule.INSTANCE_COLON;
                     }
@@ -515,7 +524,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Create the object after serialization. This implementation reinitializes the transient properties.
      *
      * @param in ObjectInputStream from which the object is being deserialized.
-     * @throws IOException            if there is an IO issue.
+     * @throws IOException if there is an IO issue.
      * @throws ClassNotFoundException if a class cannot be found.
      */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -648,7 +657,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
         @Override
         public int estimateLength() {
             int max = 0;
-            for (int i = mValues.length; --i >= 0; ) {
+            for (int i = mValues.length; --i >= 0;) {
                 final int len = mValues[i].length();
                 if (len > max) {
                     max = len;
@@ -695,7 +704,9 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
             } else {
                 appendFullDigits(buffer, value, 1);
             }
-        }        /**
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -710,7 +721,6 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
         public void appendTo(final Appendable buffer, final Calendar calendar) throws IOException {
             appendTo(buffer, calendar.get(mField));
         }
-
 
     }
 
@@ -1195,22 +1205,22 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Inner class to output a time zone as a number {@code +/-HHMM} or {@code +/-HH:MM}.
      * </p>
      */
-    private static class Iso8601_Rule implements Rule {
+    private static class Iso8601Rule implements Rule {
 
         // Sign TwoDigitHours or Z
-        static final Iso8601_Rule ISO8601_HOURS = new Iso8601_Rule(3);
+        static final Iso8601Rule ISO8601_HOURS = new Iso8601Rule(3);
         // Sign TwoDigitHours Minutes or Z
-        static final Iso8601_Rule ISO8601_HOURS_MINUTES = new Iso8601_Rule(5);
+        static final Iso8601Rule ISO8601_HOURS_MINUTES = new Iso8601Rule(5);
         // Sign TwoDigitHours : Minutes or Z
-        static final Iso8601_Rule ISO8601_HOURS_COLON_MINUTES = new Iso8601_Rule(6);
+        static final Iso8601Rule ISO8601_HOURS_COLON_MINUTES = new Iso8601Rule(6);
         final int length;
 
         /**
-         * Constructs an instance of {@code Iso8601_Rule} with the specified properties.
+         * Constructs an instance of {@code Iso8601Rule} with the specified properties.
          *
          * @param length The number of characters in output (unless Z is output)
          */
-        Iso8601_Rule(final int length) {
+        Iso8601Rule(final int length) {
             this.length = length;
         }
 
@@ -1218,16 +1228,17 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
          * Factory method for Iso8601_Rules.
          *
          * @param tokenLen a token indicating the length of the TimeZone String to be formatted.
-         * @return a Iso8601_Rule that can format TimeZone String of length {@code tokenLen}. If no such rule exists, an IllegalArgumentException will be thrown.
+         * @return a Iso8601Rule that can format TimeZone String of length {@code tokenLen}. If no such rule exists, an
+         *         IllegalArgumentException will be thrown.
          */
-        static Iso8601_Rule getRule(final int tokenLen) {
+        static Iso8601Rule getRule(final int tokenLen) {
             switch (tokenLen) {
                 case 1:
-                    return Iso8601_Rule.ISO8601_HOURS;
+                    return Iso8601Rule.ISO8601_HOURS;
                 case 2:
-                    return Iso8601_Rule.ISO8601_HOURS_MINUTES;
+                    return Iso8601Rule.ISO8601_HOURS_MINUTES;
                 case 3:
-                    return Iso8601_Rule.ISO8601_HOURS_COLON_MINUTES;
+                    return Iso8601Rule.ISO8601_HOURS_COLON_MINUTES;
                 default:
                     throw new IllegalArgumentException("invalid number of X");
             }

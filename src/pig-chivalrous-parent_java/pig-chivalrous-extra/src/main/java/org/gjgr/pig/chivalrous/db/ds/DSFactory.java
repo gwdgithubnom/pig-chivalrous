@@ -1,16 +1,16 @@
 package org.gjgr.pig.chivalrous.db.ds;
 
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.LogFactory;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.ds.c3p0.C3p0DSFactory;
 import org.gjgr.pig.chivalrous.db.ds.druid.DruidDSFactory;
 import org.gjgr.pig.chivalrous.db.ds.hikari.HikariDSFactory;
 import org.gjgr.pig.chivalrous.db.ds.pooled.PooledDSFactory;
 import org.gjgr.pig.chivalrous.db.ds.tomcat.TomcatDSFactory;
-
-import javax.sql.DataSource;
 
 /**
  * 数据源工厂类
@@ -21,10 +21,10 @@ public abstract class DSFactory {
     protected static final String DEFAULT_DB_SETTING_PATH = "config/db.setting";
     private static final Log log = LogFactory.get();
     private static final Object lock = new Object();
-    private static DSFactory currentDSFactory;
+    private static volatile DSFactory currentDSFactory;
 
-    //------------------------------------------------------------------------- Static start
-    //JVM关闭是关闭所有连接池
+    // ------------------------------------------------------------------------- Static start
+    // JVM关闭是关闭所有连接池
     static {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -50,7 +50,7 @@ public abstract class DSFactory {
      * 构造
      *
      * @param dataSourceName 数据源名称
-     * @param setting        数据库连接配置
+     * @param setting 数据库连接配置
      */
     public DSFactory(String dataSourceName, Setting setting) {
         this.dataSourceName = dataSourceName;
@@ -84,7 +84,7 @@ public abstract class DSFactory {
      * 获得数据源
      *
      * @param dbSetting 数据库配置文件，如果为<code>null</code>，查找默认的配置文件
-     * @param group     配置文件中对应的分组
+     * @param group 配置文件中对应的分组
      * @return 数据源
      */
     public static DataSource get(Setting dbSetting, String group) {
@@ -110,12 +110,12 @@ public abstract class DSFactory {
      * @param dsFactory 数据源工厂
      * @return 自定义的数据源工厂
      */
-    synchronized public static DSFactory setCurrentDSFactory(DSFactory dsFactory) {
+    public static synchronized DSFactory setCurrentDSFactory(DSFactory dsFactory) {
         if (null != currentDSFactory) {
             if (currentDSFactory.equals(dsFactory)) {
-                return currentDSFactory;//数据源不变时返回原数据源
+                return currentDSFactory;// 数据源不变时返回原数据源
             }
-            //自定义数据源工厂前关闭之前的数据源
+            // 自定义数据源工厂前关闭之前的数据源
             currentDSFactory.destroy();
         }
 
@@ -144,7 +144,7 @@ public abstract class DSFactory {
                     try {
                         dsFactory = new C3p0DSFactory(setting);
                     } catch (NoClassDefFoundError e5) {
-                        //默认使用Hutool实现的简易连接池
+                        // 默认使用Hutool实现的简易连接池
                         dsFactory = new PooledDSFactory(setting);
                     }
                 }
@@ -160,7 +160,7 @@ public abstract class DSFactory {
      * @return 数据源
      */
     public DataSource getDataSource() {
-        return getDataSource(StrUtil.EMPTY);
+        return getDataSource(StringCommand.EMPTY);
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class DSFactory {
      * 关闭默认数据源（空组）
      */
     public void close() {
-        close(StrUtil.EMPTY);
+        close(StringCommand.EMPTY);
     }
 
     /**
@@ -198,7 +198,7 @@ public abstract class DSFactory {
      * @param dsClass DataSource子类
      */
     protected void checkCPExist(Class<? extends DataSource> dsClass) {
-        //Do nothing only use datasource class for check exist or not.
+        // Do nothing only use datasource class for check exist or not.
     }
 
     @Override
@@ -238,5 +238,5 @@ public abstract class DSFactory {
         }
         return true;
     }
-    //------------------------------------------------------------------------- Static end
+    // ------------------------------------------------------------------------- Static end
 }

@@ -50,6 +50,7 @@ public class CacheObj<K, V> {
 
     @Override
     public String toString() {
-        return "CacheObj [key=" + key + ", obj=" + obj + ", lastAccess=" + lastAccess + ", accessCount=" + accessCount + ", ttl=" + ttl + "]";
+        return "CacheObj [key=" + key + ", obj=" + obj + ", lastAccess=" + lastAccess + ", accessCount=" + accessCount
+                + ", ttl=" + ttl + "]";
     }
 }

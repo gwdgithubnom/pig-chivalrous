@@ -24,7 +24,7 @@ public interface WarnLog {
      * @param format 消息模板
      * @param arguments 参数
      */
-    void warn(String format, Object... arguments);
+    void warn(String format, Object...arguments);
 
     /**
      * 打印 WARN 等级的日志
@@ -33,5 +33,5 @@ public interface WarnLog {
      * @param format 消息模板
      * @param arguments 参数
      */
-    void warn(Throwable t, String format, Object... arguments);
+    void warn(Throwable t, String format, Object...arguments);
 }

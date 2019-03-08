@@ -1,14 +1,15 @@
 package org.gjgr.pig.chivalrous.core.crypto.asymmetric;
 
-import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
-import org.gjgr.pig.chivalrous.core.lang.BCD;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.security.Key;
 import java.security.interfaces.RSAKey;
+
 import javax.crypto.Cipher;
+
+import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.BCD;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * RSA加密算法
@@ -65,12 +66,12 @@ public class RSA extends AsymmetricCrypto {
         Key key = getKeyByType(keyType);
         // 模长
         int keyLength = ((RSAKey) key).getModulus().bitLength() / 8;
-        StringBuilder sb = StrUtil.builder();
+        StringBuilder sb = StringCommand.builder();
         lock.lock();
         try {
             clipher.init(Cipher.ENCRYPT_MODE, key);
             // 加密数据长度 <= 模长-11
-            String[] datas = StrUtil.split(data, keyLength - 11);
+            String[] datas = StringCommand.split(data, keyLength - 11);
             // 如果明文长度大于模长-11则要分组加密
             for (String s : datas) {
                 sb.append(BCD.bcdToStr(clipher.doFinal(s.getBytes())));
@@ -94,16 +95,16 @@ public class RSA extends AsymmetricCrypto {
         Key key = getKeyByType(keyType);
         // 模长
         int keyLength = ((RSAKey) key).getModulus().bitLength() / 8;
-        StringBuilder sb = StrUtil.builder();
+        StringBuilder sb = StringCommand.builder();
         lock.lock();
         try {
             clipher.init(Cipher.DECRYPT_MODE, key);
             // 加密数据长度 <= 模长-11
-            byte[] bcd = BCD.ascToBcd(StrUtil.utf8Bytes(data));
+            byte[] bcd = BCD.ascToBcd(StringCommand.utf8Bytes(data));
             // 如果密文长度大于模长则要分组解密
-            byte[][] arrays = ArrayUtil.split(bcd, keyLength);
+            byte[][] arrays = ArrayCommand.split(bcd, keyLength);
             for (byte[] arr : arrays) {
-                sb.append(StrUtil.str(clipher.doFinal(arr), CharsetUtil.CHARSET_UTF_8));
+                sb.append(StringCommand.str(clipher.doFinal(arr), CharsetCommand.CHARSET_UTF_8));
             }
         } catch (Exception e) {
             throw new CryptoException(e);

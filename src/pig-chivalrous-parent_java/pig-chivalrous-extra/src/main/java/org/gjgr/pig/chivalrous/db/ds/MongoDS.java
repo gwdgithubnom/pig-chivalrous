@@ -1,22 +1,5 @@
 package org.gjgr.pig.chivalrous.db.ds;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientOptions.Builder;
-import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-import org.gjgr.pig.chivalrous.core.exceptions.NotInitedException;
-import org.gjgr.pig.chivalrous.core.log.Log;
-import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.net.NetworkCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.db.DbRuntimeException;
-
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +7,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.Document;
+import org.gjgr.pig.chivalrous.core.exceptions.NotInitedException;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.Log;
+import org.gjgr.pig.chivalrous.core.log.StaticLog;
+import org.gjgr.pig.chivalrous.core.net.NetworkCommand;
+import org.gjgr.pig.chivalrous.core.setting.Setting;
+import org.gjgr.pig.chivalrous.db.DbRuntimeException;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientOptions.Builder;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 /**
  * MongoDB工具类
@@ -34,19 +34,19 @@ public class MongoDS implements Closeable {
     /**
      * 默认配置文件
      */
-    public final static String MONGO_CONFIG_PATH = "config/mongo.setting";
-    private final static Log log = StaticLog.get();
+    public static final String MONGO_CONFIG_PATH = "config/mongo.setting";
+    private static final Log log = StaticLog.get();
     /**
      * 各分组做组合key的时候分隔符
      */
-    private final static String GROUP_SEPRATER = ",";
+    private static final String GROUP_SEPRATER = ",";
 
     /**
      * 数据源池
      */
     private static Map<String, MongoDS> dsMap = new HashMap<String, MongoDS>();
 
-    //JVM关闭前关闭MongoDB连接
+    // JVM关闭前关闭MongoDB连接
     static {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -56,16 +56,16 @@ public class MongoDS implements Closeable {
         });
     }
 
-    //MongoDB配置文件
+    // MongoDB配置文件
     private Setting setting;
-    //MongoDB实例连接列表
+    // MongoDB实例连接列表
     private String[] groups;
-    //MongoDB单点连接信息
+    // MongoDB单点连接信息
     private ServerAddress serverAddress;
-    //MongoDB客户端对象
+    // MongoDB客户端对象
     private MongoClient mongo;
 
-    //------------------------------------------------------------------------ Get DS start
+    // ------------------------------------------------------------------------ Get DS start
 
     /**
      * 构造MongoDB数据源<br>
@@ -84,8 +84,8 @@ public class MongoDS implements Closeable {
      * 调用者必须持有MongoDS实例，否则会被垃圾回收导致写入失败！
      *
      * @param mongoSetting MongoDB的配置文件，如果是null则读取默认配置文件或者使用MongoDB默认客户端配置
-     * @param host         主机（域名或者IP）
-     * @param port         端口
+     * @param host 主机（域名或者IP）
+     * @param port 端口
      */
     public MongoDS(Setting mongoSetting, String host, int port) {
         this.setting = mongoSetting;
@@ -96,12 +96,11 @@ public class MongoDS implements Closeable {
     /**
      * 构造MongoDB数据源<br>
      * 当提供多个数据源时，这些数据源将为一个副本集或者多个mongos<br>
-     * 调用者必须持有MongoDS实例，否则会被垃圾回收导致写入失败！
-     * 官方文档： http://docs.mongodb.org/manual/administration/replica-sets/
+     * 调用者必须持有MongoDS实例，否则会被垃圾回收导致写入失败！ 官方文档： http://docs.mongodb.org/manual/administration/replica-sets/
      *
      * @param groups 分组列表，当为null或空时使用无分组配置，一个分组使用单一模式，否则使用副本集模式
      */
-    public MongoDS(String... groups) {
+    public MongoDS(String...groups) {
         this.groups = groups;
         init();
     }
@@ -113,9 +112,9 @@ public class MongoDS implements Closeable {
      * 官方文档： http://docs.mongodb.org/manual/administration/replica-sets/
      *
      * @param mongoSetting MongoDB的配置文件，必须有
-     * @param groups       分组列表，当为null或空时使用无分组配置，一个分组使用单一模式，否则使用副本集模式
+     * @param groups 分组列表，当为null或空时使用无分组配置，一个分组使用单一模式，否则使用副本集模式
      */
-    public MongoDS(Setting mongoSetting, String... groups) {
+    public MongoDS(Setting mongoSetting, String...groups) {
         if (mongoSetting == null) {
             throw new DbRuntimeException("Mongo setting is null!");
         }
@@ -135,14 +134,14 @@ public class MongoDS implements Closeable {
         final String key = host + ":" + port;
         MongoDS ds = dsMap.get(key);
         if (null == ds) {
-            //没有在池中加入之
+            // 没有在池中加入之
             ds = new MongoDS(host, port);
             dsMap.put(key, ds);
         }
 
         return ds;
     }
-    //------------------------------------------------------------------------ Get DS end
+    // ------------------------------------------------------------------------ Get DS end
 
     /**
      * 获取MongoDB数据源<br>
@@ -150,11 +149,11 @@ public class MongoDS implements Closeable {
      * @param groups 分组列表
      * @return MongoDB连接
      */
-    public static MongoDS getDS(String... groups) {
-        final String key = ArrayUtil.join(groups, GROUP_SEPRATER);
+    public static MongoDS getDS(String...groups) {
+        final String key = ArrayCommand.join(groups, GROUP_SEPRATER);
         MongoDS ds = dsMap.get(key);
         if (null == ds) {
-            //没有在池中加入之
+            // 没有在池中加入之
             ds = new MongoDS(groups);
             dsMap.put(key, ds);
         }
@@ -162,7 +161,7 @@ public class MongoDS implements Closeable {
         return ds;
     }
 
-    //--------------------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------------------- Constructor start
 
     /**
      * 获取MongoDB数据源<br>
@@ -178,14 +177,14 @@ public class MongoDS implements Closeable {
      * 获取MongoDB数据源<br>
      *
      * @param setting 设定文件
-     * @param groups  分组列表
+     * @param groups 分组列表
      * @return MongoDB连接
      */
-    public static MongoDS getDS(Setting setting, String... groups) {
-        final String key = setting.getSettingPath() + GROUP_SEPRATER + ArrayUtil.join(groups, GROUP_SEPRATER);
+    public static MongoDS getDS(Setting setting, String...groups) {
+        final String key = setting.getSettingPath() + GROUP_SEPRATER + ArrayCommand.join(groups, GROUP_SEPRATER);
         MongoDS ds = dsMap.get(key);
         if (null == ds) {
-            //没有在池中加入之
+            // 没有在池中加入之
             ds = new MongoDS(setting, groups);
             dsMap.put(key, ds);
         }
@@ -207,14 +206,14 @@ public class MongoDS implements Closeable {
      * 关闭全部连接
      */
     public static void closeAll() {
-        if (CollectionUtil.isNotEmpty(dsMap)) {
+        if (CollectionCommand.isNotEmpty(dsMap)) {
             for (MongoDS ds : dsMap.values()) {
                 ds.close();
             }
             dsMap.clear();
         }
     }
-    //--------------------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------------------- Constructor end
 
     /**
      * 初始化，当给定分组数大于一个时使用
@@ -229,27 +228,19 @@ public class MongoDS implements Closeable {
 
     /**
      * 初始化<br>
-     * 设定文件中的host和端口有三种形式：
-     * ---------------------
-     * host = host:port
-     * ---------------------
-     * host = host
-     * port = port
-     * ---------------------
-     * #此种形式使用MongoDB默认端口
-     * host = host
-     * ---------------------
+     * 设定文件中的host和端口有三种形式： --------------------- host = host:port --------------------- host = host port = port
+     * --------------------- #此种形式使用MongoDB默认端口 host = host ---------------------
      */
-    synchronized public void initSingle() {
+    public synchronized void initSingle() {
         if (setting == null) {
             try {
                 setting = new Setting(MONGO_CONFIG_PATH, true);
             } catch (Exception e) {
-                //在single模式下，可以没有配置文件。
+                // 在single模式下，可以没有配置文件。
             }
         }
 
-        String group = StrUtil.EMPTY;
+        String group = StringCommand.EMPTY;
         if (serverAddress == null) {
             if (groups != null && groups.length == 1) {
                 group = groups[0];
@@ -259,7 +250,8 @@ public class MongoDS implements Closeable {
         try {
             mongo = new MongoClient(serverAddress, buildMongoClientOptions(group));
         } catch (Exception e) {
-            throw new DbRuntimeException(StrUtil.format("Init MongoDB pool with connection to [{}] error!", serverAddress), e);
+            throw new DbRuntimeException(
+                    StringCommand.format("Init MongoDB pool with connection to [{}] error!", serverAddress), e);
         }
 
         log.info("Init MongoDB pool with connection to [{}]", serverAddress);
@@ -269,20 +261,15 @@ public class MongoDS implements Closeable {
      * 初始化集群<br>
      * 集群的其它客户端设定参数使用全局设定<br>
      * 集群中每一个实例成员用一个group表示，例如：<br>
-     * [db0]
-     * host = 10.11.49.157:27117
-     * [db1]
-     * host = 10.11.49.157:27118
-     * [db2]
-     * host = 10.11.49.157:27119
+     * [db0] host = 10.11.49.157:27117 [db1] host = 10.11.49.157:27118 [db2] host = 10.11.49.157:27119
      */
-    synchronized public void initCloud() {
+    public synchronized void initCloud() {
         if (groups == null || groups.length == 0) {
             throw new DbRuntimeException("Please give replication set groups!");
         }
 
         if (setting == null) {
-            //若未指定配置文件，则使用默认配置文件
+            // 若未指定配置文件，则使用默认配置文件
             setting = new Setting(MONGO_CONFIG_PATH, true);
         }
 
@@ -292,7 +279,7 @@ public class MongoDS implements Closeable {
         }
 
         try {
-            mongo = new MongoClient(addrList, buildMongoClientOptions(StrUtil.EMPTY));
+            mongo = new MongoClient(addrList, buildMongoClientOptions(StringCommand.EMPTY));
         } catch (Exception e) {
             log.error(e, "Init MongoDB connection error!");
             return;
@@ -328,7 +315,7 @@ public class MongoDS implements Closeable {
     /**
      * 获得MongoDB中指定集合对象
      *
-     * @param dbName         库名
+     * @param dbName 库名
      * @param collectionName 集合名
      * @return DBCollection
      */
@@ -341,7 +328,7 @@ public class MongoDS implements Closeable {
         mongo.close();
     }
 
-    //--------------------------------------------------------------------------- Private method start
+    // --------------------------------------------------------------------------- Private method start
 
     /**
      * 创建ServerAddress对象，会读取配置文件中的相关信息
@@ -351,15 +338,17 @@ public class MongoDS implements Closeable {
      */
     private ServerAddress createServerAddress(String group) {
         if (setting == null) {
-            throw new DbRuntimeException(StrUtil.format("Please indicate setting file or create default [{}], and define group [{}]", MONGO_CONFIG_PATH, group));
+            throw new DbRuntimeException(
+                    StringCommand.format("Please indicate setting file or create default [{}], and define group [{}]",
+                            MONGO_CONFIG_PATH, group));
         }
 
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         String tmpHost = setting.getByGroup("host", group);
-        if (StrUtil.isBlank(tmpHost)) {
+        if (StringCommand.isBlank(tmpHost)) {
             throw new NotInitedException("Host name is empy of group: " + group);
         }
 
@@ -400,14 +389,14 @@ public class MongoDS implements Closeable {
         }
 
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         } else {
-            group = group + StrUtil.DOT;
+            group = group + StringCommand.DOT;
         }
 
-        //每个主机答应的连接数（每个主机的连接池大小），当连接池被用光时，会被阻塞住
+        // 每个主机答应的连接数（每个主机的连接池大小），当连接池被用光时，会被阻塞住
         Integer connectionsPerHost = setting.getInt(group + "connectionsPerHost");
-        if (StrUtil.isBlank(group) == false && connectionsPerHost == null) {
+        if (StringCommand.isBlank(group) == false && connectionsPerHost == null) {
             connectionsPerHost = setting.getInt("connectionsPerHost");
         }
         if (connectionsPerHost != null) {
@@ -415,19 +404,24 @@ public class MongoDS implements Closeable {
             log.debug("MongoDB connectionsPerHost: {}", connectionsPerHost);
         }
 
-        //multiplier for connectionsPerHost for # of threads that can block if connectionsPerHost is 10, and threadsAllowedToBlockForConnectionMultiplier is 5, then 50 threads can block more than that and an exception will be throw --int
-        Integer threadsAllowedToBlockForConnectionMultiplier = setting.getInt(group + "threadsAllowedToBlockForConnectionMultiplier");
-        if (StrUtil.isBlank(group) == false && threadsAllowedToBlockForConnectionMultiplier == null) {
-            threadsAllowedToBlockForConnectionMultiplier = setting.getInt("threadsAllowedToBlockForConnectionMultiplier");
+        // multiplier for connectionsPerHost for # of threads that can block if connectionsPerHost is 10, and
+        // threadsAllowedToBlockForConnectionMultiplier is 5, then 50 threads can block more than that and an exception
+        // will be throw --int
+        Integer threadsAllowedToBlockForConnectionMultiplier =
+                setting.getInt(group + "threadsAllowedToBlockForConnectionMultiplier");
+        if (StringCommand.isBlank(group) == false && threadsAllowedToBlockForConnectionMultiplier == null) {
+            threadsAllowedToBlockForConnectionMultiplier =
+                    setting.getInt("threadsAllowedToBlockForConnectionMultiplier");
         }
         if (threadsAllowedToBlockForConnectionMultiplier != null) {
             builder.threadsAllowedToBlockForConnectionMultiplier(threadsAllowedToBlockForConnectionMultiplier);
-            log.debug("MongoDB threadsAllowedToBlockForConnectionMultiplier: {}", threadsAllowedToBlockForConnectionMultiplier);
+            log.debug("MongoDB threadsAllowedToBlockForConnectionMultiplier: {}",
+                    threadsAllowedToBlockForConnectionMultiplier);
         }
 
-        //被阻塞线程从连接池获取连接的最长等待时间（ms） --int
+        // 被阻塞线程从连接池获取连接的最长等待时间（ms） --int
         Integer connectTimeout = setting.getInt(group + "connectTimeout");
-        if (StrUtil.isBlank(group) == false && connectTimeout == null) {
+        if (StringCommand.isBlank(group) == false && connectTimeout == null) {
             setting.getInt("connectTimeout");
         }
         if (connectTimeout != null) {
@@ -435,9 +429,9 @@ public class MongoDS implements Closeable {
             log.debug("MongoDB connectTimeout: {}", connectTimeout);
         }
 
-        //套接字超时时间;该值会被传递给Socket.setSoTimeout(int)。默以为0（无穷） --int
+        // 套接字超时时间;该值会被传递给Socket.setSoTimeout(int)。默以为0（无穷） --int
         Integer socketTimeout = setting.getInt(group + "socketTimeout");
-        if (StrUtil.isBlank(group) == false && socketTimeout == null) {
+        if (StringCommand.isBlank(group) == false && socketTimeout == null) {
             setting.getInt("socketTimeout");
         }
         if (socketTimeout != null) {
@@ -445,9 +439,9 @@ public class MongoDS implements Closeable {
             log.debug("MongoDB socketTimeout: {}", socketTimeout);
         }
 
-        //This controls whether or not to have socket keep alive turned on (SO_KEEPALIVE). defaults to false --boolean
+        // This controls whether or not to have socket keep alive turned on (SO_KEEPALIVE). defaults to false --boolean
         Boolean socketKeepAlive = setting.getBool(group + "socketKeepAlive");
-        if (StrUtil.isBlank(group) == false && socketKeepAlive == null) {
+        if (StringCommand.isBlank(group) == false && socketKeepAlive == null) {
             socketKeepAlive = setting.getBool("socketKeepAlive");
         }
         if (socketKeepAlive != null) {
@@ -458,5 +452,5 @@ public class MongoDS implements Closeable {
         return builder;
     }
 
-    //--------------------------------------------------------------------------- Private method end
+    // --------------------------------------------------------------------------- Private method end
 }

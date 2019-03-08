@@ -1,12 +1,12 @@
 package org.gjgr.pig.chivalrous.core.dfa;
 
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
 
 /**
  * 敏感词工具类
@@ -14,9 +14,9 @@ import java.util.concurrent.Callable;
  * @author Looly
  */
 public final class SensitiveUtil {
-//	private static final Log log = LogFactory.get();
+    // private static final Log log = LogFactory.get();
 
-    public static final char DEFAULT_SEPARATOR = StrUtil.C_COMMA;
+    public static final char DEFAULT_SEPARATOR = StringCommand.C_COMMA;
     private static WordTree sensitiveTree = new WordTree();
 
     private SensitiveUtil() {
@@ -58,7 +58,7 @@ public final class SensitiveUtil {
     public static void init(Collection<String> sensitiveWords) {
         sensitiveTree.clear();
         sensitiveTree.addWords(sensitiveWords);
-//		log.debug("Sensitive init finished, sensitives: {}", sensitiveWords);
+        // log.debug("Sensitive init finished, sensitives: {}", sensitiveWords);
     }
 
     /**
@@ -69,8 +69,8 @@ public final class SensitiveUtil {
      * @param separator 分隔符
      */
     public static void init(String sensitiveWords, char separator, boolean isAsync) {
-        if (StrUtil.isNotBlank(sensitiveWords)) {
-            init(StrUtil.split(sensitiveWords, separator), isAsync);
+        if (StringCommand.isNotBlank(sensitiveWords)) {
+            init(StringCommand.split(sensitiveWords, separator), isAsync);
         }
     }
 

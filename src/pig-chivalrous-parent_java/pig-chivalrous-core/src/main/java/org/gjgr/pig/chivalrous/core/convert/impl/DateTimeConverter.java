@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
+import java.util.Calendar;
+
 import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
 import org.gjgr.pig.chivalrous.core.date.DateTime;
 import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
-import java.util.Calendar;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 日期时间转换器
@@ -46,13 +46,14 @@ public class DateTimeConverter extends AbstractConverter<DateTime> {
 
         // Handle Long
         if (value instanceof Long) {
-            //此处使用自动拆装箱
+            // 此处使用自动拆装箱
             return new DateTime((Long) value);
         }
 
         final String valueStr = convertToStr(value);
         try {
-            final long date = StrUtil.isBlank(format) ? DateTimeCommand.parse(valueStr).getTime() : DateTimeCommand.parse(valueStr, format).getTime();
+            final long date = StringCommand.isBlank(format) ? DateTimeCommand.parse(valueStr).getTime()
+                    : DateTimeCommand.parse(valueStr, format).getTime();
             return new DateTime(date);
         } catch (Exception e) {
             // Ignore Exception

@@ -13,7 +13,7 @@ public class DayOfWeekValueParser extends SimpleValueParser {
     /**
      * Weeks aliases.
      */
-    private static final String[] ALIASES = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
+    private static final String[] ALIASES = { "sun", "mon", "tue", "wed", "thu", "fri", "sat" };
 
     public DayOfWeekValueParser() {
         super(0, 7);
@@ -41,7 +41,7 @@ public class DayOfWeekValueParser extends SimpleValueParser {
      */
     private int parseAlias(String value) throws CronException {
         if ("L".equalsIgnoreCase(value)) {
-            //最后一天为星期六
+            // 最后一天为星期六
             return ALIASES.length - 1;
         }
 

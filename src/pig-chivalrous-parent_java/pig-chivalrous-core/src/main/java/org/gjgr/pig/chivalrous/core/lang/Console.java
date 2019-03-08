@@ -2,7 +2,6 @@ package org.gjgr.pig.chivalrous.core.lang;
 
 import static java.lang.System.err;
 import static java.lang.System.out;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 /**
  * 命令行（控制台）工具方法类<br>
@@ -15,7 +14,7 @@ public final class Console {
     private Console() {
     }
 
-    //--------------------------------------------------------------------------------- Log
+    // --------------------------------------------------------------------------------- Log
 
     /**
      * 同 System.out.println()方法，打印控制台日志
@@ -44,7 +43,7 @@ public final class Console {
      * @param template 文本模板，被替换的部分用 {} 表示
      * @param values 值
      */
-    public static void log(String template, Object... values) {
+    public static void log(String template, Object...values) {
         log(null, template, values);
     }
 
@@ -55,15 +54,15 @@ public final class Console {
      * @param template 文本模板，被替换的部分用 {} 表示
      * @param values 值
      */
-    public static void log(Throwable t, String template, Object... values) {
-        out.println(StrUtil.format(template, values));
+    public static void log(Throwable t, String template, Object...values) {
+        out.println(StringCommand.format(template, values));
         if (null != t) {
             t.printStackTrace();
             out.flush();
         }
     }
 
-    //--------------------------------------------------------------------------------- Error
+    // --------------------------------------------------------------------------------- Error
 
     /**
      * 同 System.err.println()方法，打印控制台日志
@@ -92,7 +91,7 @@ public final class Console {
      * @param template 文本模板，被替换的部分用 {} 表示
      * @param values 值
      */
-    public static void error(String template, Object... values) {
+    public static void error(String template, Object...values) {
         error(null, template, values);
     }
 
@@ -103,8 +102,8 @@ public final class Console {
      * @param template 文本模板，被替换的部分用 {} 表示
      * @param values 值
      */
-    public static void error(Throwable t, String template, Object... values) {
-        err.println(StrUtil.format(template, values));
+    public static void error(Throwable t, String template, Object...values) {
+        err.println(StringCommand.format(template, values));
         if (null != t) {
             t.printStackTrace(err);
             err.flush();

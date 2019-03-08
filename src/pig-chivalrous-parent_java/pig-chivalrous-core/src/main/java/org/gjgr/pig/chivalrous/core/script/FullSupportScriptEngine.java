@@ -1,8 +1,7 @@
 package org.gjgr.pig.chivalrous.core.script;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.Reader;
+
 import javax.script.Bindings;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
@@ -12,6 +11,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 全功能引擎类，支持Compilable和Invocable
@@ -36,18 +37,18 @@ public class FullSupportScriptEngine implements ScriptEngine, Compilable, Invoca
             manager.getEngineByMimeType(nameOrExtOrMime);
         }
         if (null == this.engine) {
-            throw new NullPointerException(StrUtil.format("Script for [{}] not support !", nameOrExtOrMime));
+            throw new NullPointerException(StringCommand.format("Script for [{}] not support !", nameOrExtOrMime));
         }
     }
 
-    //----------------------------------------------------------------------------------------------- Invocable
+    // ----------------------------------------------------------------------------------------------- Invocable
     @Override
-    public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
+    public Object invokeMethod(Object thiz, String name, Object...args) throws ScriptException, NoSuchMethodException {
         return ((Invocable) engine).invokeMethod(thiz, name, args);
     }
 
     @Override
-    public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
+    public Object invokeFunction(String name, Object...args) throws ScriptException, NoSuchMethodException {
         return ((Invocable) engine).invokeFunction(name, args);
     }
 
@@ -61,7 +62,7 @@ public class FullSupportScriptEngine implements ScriptEngine, Compilable, Invoca
         return ((Invocable) engine).getInterface(thiz, clasz);
     }
 
-    //----------------------------------------------------------------------------------------------- Compilable
+    // ----------------------------------------------------------------------------------------------- Compilable
     @Override
     public CompiledScript compile(String script) throws ScriptException {
         return ((Compilable) engine).compile(script);
@@ -72,7 +73,7 @@ public class FullSupportScriptEngine implements ScriptEngine, Compilable, Invoca
         return ((Compilable) engine).compile(script);
     }
 
-    //----------------------------------------------------------------------------------------------- ScriptEngine
+    // ----------------------------------------------------------------------------------------------- ScriptEngine
     @Override
     public Object eval(String script, ScriptContext context) throws ScriptException {
         return engine.eval(script, context);

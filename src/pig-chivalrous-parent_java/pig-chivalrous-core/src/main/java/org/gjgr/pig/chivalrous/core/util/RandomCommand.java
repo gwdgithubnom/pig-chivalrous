@@ -65,6 +65,40 @@ public final class RandomCommand {
     }
 
     /**
+     * return a random value in [0,1)
+     * 
+     * @return
+     */
+    public static double randomDouble() {
+        Random random = new Random();
+        return random.nextDouble();
+    }
+
+    /**
+     * 获得指定范围内的随机数
+     *
+     * @param min 最小数
+     * @param max 最大数
+     * @return 随机数
+     */
+    public static double randomDouble(int min, int max) {
+        return randomDouble(max - min) + min;
+    }
+
+    /**
+     * return a random double value in [0,limit)
+     * 
+     * @param limit
+     * @return
+     */
+    public static double randomDouble(int limit) {
+        Random random = new Random();
+        double d = random.nextDouble();
+        d = d + random.nextInt(limit);
+        return d;
+    }
+
+    /**
      * 随机bytes
      *
      * @param length 长度

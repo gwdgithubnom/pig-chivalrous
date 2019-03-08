@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.aop.aspects;
 
-import org.gjgr.pig.chivalrous.core.aop.Aspect;
-
 import java.lang.reflect.Method;
+
+import org.gjgr.pig.chivalrous.core.aop.Aspect;
 
 /**
  * 简单切面类，不做任何操作<br>
@@ -18,19 +18,19 @@ public class SimpleAspect extends Aspect {
 
     @Override
     public boolean before(Object target, Method method, Object[] args) {
-        //继承此类后实现此方法
+        // 继承此类后实现此方法
         return true;
     }
 
     @Override
     public boolean after(Object target, Method method, Object[] args) {
-        //继承此类后实现此方法
+        // 继承此类后实现此方法
         return true;
     }
 
     @Override
     public boolean afterException(Object target, Method method, Object[] args, Throwable e) {
-        //继承此类后实现此方法
+        // 继承此类后实现此方法
         return true;
     }
 

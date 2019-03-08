@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
+import java.util.Arrays;
+
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.util.PageUtil;
 import org.gjgr.pig.chivalrous.db.sql.Order;
-
-import java.util.Arrays;
 
 /**
  * 分页对象
@@ -44,11 +44,11 @@ public class Page {
      *
      * @param pageNumber 页码
      * @param numPerPage 每页结果数
-     * @param order      排序对象
+     * @param order 排序对象
      */
     public Page(int pageNumber, int numPerPage, Order order) {
         this(pageNumber, numPerPage);
-        this.orders = new Order[]{order};
+        this.orders = new Order[] { order };
     }
     // ---------------------------------------------------------- Constructor start
 
@@ -98,7 +98,7 @@ public class Page {
      *
      * @param orders 排序
      */
-    public void setOrder(Order... orders) {
+    public void setOrder(Order...orders) {
         this.orders = orders;
     }
 
@@ -107,9 +107,9 @@ public class Page {
      *
      * @param orders 排序
      */
-    public void addOrder(Order... orders) {
+    public void addOrder(Order...orders) {
         if (null != this.orders) {
-            ArrayUtil.append(this.orders, orders);
+            ArrayCommand.append(this.orders, orders);
         }
         this.orders = orders;
     }

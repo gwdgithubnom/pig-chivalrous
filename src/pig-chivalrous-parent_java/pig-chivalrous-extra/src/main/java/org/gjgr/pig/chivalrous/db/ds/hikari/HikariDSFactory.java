@@ -1,19 +1,21 @@
 package org.gjgr.pig.chivalrous.db.ds.hikari;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.db.DbRuntimeException;
-import org.gjgr.pig.chivalrous.db.ds.DSFactory;
-
-import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.setting.Setting;
+import org.gjgr.pig.chivalrous.db.DbRuntimeException;
+import org.gjgr.pig.chivalrous.db.ds.DSFactory;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * HikariCP数据源工厂类
@@ -40,9 +42,9 @@ public class HikariDSFactory extends DSFactory {
     }
 
     @Override
-    synchronized public DataSource getDataSource(String group) {
+    public synchronized DataSource getDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         // 如果已经存在已有数据源（连接池）直接返回
@@ -60,7 +62,7 @@ public class HikariDSFactory extends DSFactory {
     @Override
     public void close(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         HikariDataSource ds = dsMap.get(group);
@@ -72,7 +74,7 @@ public class HikariDSFactory extends DSFactory {
 
     @Override
     public void destroy() {
-        if (CollectionUtil.isNotEmpty(dsMap)) {
+        if (CollectionCommand.isNotEmpty(dsMap)) {
             Collection<HikariDataSource> values = dsMap.values();
             for (HikariDataSource ds : values) {
                 IoCommand.close(ds);
@@ -89,15 +91,15 @@ public class HikariDSFactory extends DSFactory {
      */
     private HikariDataSource createDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         final Properties config = setting.getProperties(group);
-        if (CollectionUtil.isEmpty(config)) {
+        if (CollectionCommand.isEmpty(config)) {
             throw new DbRuntimeException("No HikariCP config for group: [{}]", group);
         }
 
-        //规范化属性名
+        // 规范化属性名
         if (false == config.containsKey("jdbcUrl") && config.containsKey("url")) {
             config.put("jdbcUrl", config.remove("url"));
         }

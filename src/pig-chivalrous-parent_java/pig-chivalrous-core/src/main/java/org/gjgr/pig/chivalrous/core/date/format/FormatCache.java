@@ -20,7 +20,7 @@ abstract class FormatCache<F extends Format> {
     /**
      * No dateTime or no time. Used in same parameters as DateFormat.SHORT or DateFormat.LONG
      */
-    static final int NONE = -1;
+    protected static final int NONE = -1;
     private static final ConcurrentMap<MultipartKey, String> cDateTimeInstanceCache = new ConcurrentHashMap<>(7);
     private final ConcurrentMap<MultipartKey, F> cInstanceCache = new ConcurrentHashMap<>(7);
 
@@ -116,7 +116,7 @@ abstract class FormatCache<F extends Format> {
      * @return 格式化器
      * @throws IllegalArgumentException pattern 无效或<code>null</code>
      */
-    abstract protected F createInstance(String pattern, TimeZone timeZone, Locale locale);
+    protected abstract F createInstance(String pattern, TimeZone timeZone, Locale locale);
 
     /**
      * <p>
@@ -131,7 +131,8 @@ abstract class FormatCache<F extends Format> {
      * @throws IllegalArgumentException if the Locale has no dateTime/time pattern defined
      */
     // This must remain private, see LANG-884
-    private F getDateTimeInstance(final Integer dateStyle, final Integer timeStyle, final TimeZone timeZone, Locale locale) {
+    private F getDateTimeInstance(final Integer dateStyle, final Integer timeStyle, final TimeZone timeZone,
+            Locale locale) {
         if (locale == null) {
             locale = Locale.getDefault();
         }
@@ -204,7 +205,7 @@ abstract class FormatCache<F extends Format> {
          *
          * @param keys the set of objects that make up the key. Each key may be null.
          */
-        public MultipartKey(final Object... keys) {
+        public MultipartKey(final Object...keys) {
             this.keys = keys;
         }
 

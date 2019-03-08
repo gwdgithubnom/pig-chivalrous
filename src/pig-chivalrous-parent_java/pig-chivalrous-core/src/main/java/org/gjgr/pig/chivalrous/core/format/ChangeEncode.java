@@ -12,8 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
- * @author Petercao
- * Version 1.0.0
+ * @author Petercao Version 1.0.0
  */
 public class ChangeEncode {
     String datasorce = "G:\\main\\more";
@@ -100,4 +99,4 @@ public class ChangeEncode {
     public static void main(String[] args) {
         ChangeEncode changeEncode = new ChangeEncode();
     }
-} 
+}

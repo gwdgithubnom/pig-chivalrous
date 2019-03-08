@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.convert;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-
 import java.text.MessageFormat;
+
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 /**
  * 抽象转换器，提供通用的转换逻辑，同时通过
@@ -17,14 +17,15 @@ public abstract class AbstractConverter<T> implements Converter<T> {
     public T convert(Object value, T defaultValue) {
         Class<T> targetType = getTargetType();
         if (null == targetType && null == defaultValue) {
-            throw new NullPointerException("[type] and [defaultValue] are both null for Converter [" + this.getClass() + "], we can not know what type to convert !");
+            throw new NullPointerException("[type] and [defaultValue] are both null for Converter [" + this.getClass()
+                    + "], we can not know what type to convert !");
         }
         if (null == targetType) {
             targetType = (Class<T>) defaultValue.getClass();
         }
 
         if (targetType.isPrimitive()) {
-            //原始类型直接调用内部转换，内部转换永远不会返回null
+            // 原始类型直接调用内部转换，内部转换永远不会返回null
             return convertInternal(value);
         }
 
@@ -33,13 +34,14 @@ public abstract class AbstractConverter<T> implements Converter<T> {
         }
         if (null == defaultValue || targetType.isInstance(defaultValue)) {
             if (targetType.isInstance(value)) {
-                //已经是目标类型，不需要转换
+                // 已经是目标类型，不需要转换
                 return (T) targetType.cast(value);
             }
             final T convertInternal = convertInternal(value);
             return ((null == convertInternal) ? defaultValue : convertInternal);
         } else {
-            throw new IllegalArgumentException(MessageFormat.format("Default value [{0}] is not the instance of [{1}]]", defaultValue, targetType));
+            throw new IllegalArgumentException(MessageFormat.format("Default value [{0}] is not the instance of [{1}]]",
+                    defaultValue, targetType));
         }
     }
 
@@ -63,8 +65,8 @@ public abstract class AbstractConverter<T> implements Converter<T> {
         }
         if (value instanceof String) {
             return (String) value;
-        } else if (ArrayUtil.isArray(value)) {
-            return ArrayUtil.toString(value);
+        } else if (ArrayCommand.isArray(value)) {
+            return ArrayCommand.toString(value);
         }
         return value.toString();
     }
@@ -76,6 +78,6 @@ public abstract class AbstractConverter<T> implements Converter<T> {
      */
     @SuppressWarnings("unchecked")
     public Class<T> getTargetType() {
-        return (Class<T>) ClassUtil.getTypeArgument(getClass());
+        return (Class<T>) ClassCommand.getTypeArgument(getClass());
     }
 }

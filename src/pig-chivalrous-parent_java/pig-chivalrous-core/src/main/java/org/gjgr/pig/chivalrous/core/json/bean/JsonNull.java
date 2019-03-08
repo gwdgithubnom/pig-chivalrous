@@ -16,8 +16,7 @@ public class JsonNull {
     public static final JsonNull NULL = new JsonNull();
 
     /**
-     * A Null object is equal to the null value and to itself.
-     * 对象与其本身和<code>null</code>值相等
+     * A Null object is equal to the null value and to itself. 对象与其本身和<code>null</code>值相等
      *
      * @param object An object to test for nullness.
      * @return true if the object parameter is the JsonObject.NULL object or null.
@@ -39,8 +38,7 @@ public class JsonNull {
     }
 
     /**
-     * Get the "null" string value.
-     * 获得“null”字符串
+     * Get the "null" string value. 获得“null”字符串
      *
      * @return The string "null".
      */

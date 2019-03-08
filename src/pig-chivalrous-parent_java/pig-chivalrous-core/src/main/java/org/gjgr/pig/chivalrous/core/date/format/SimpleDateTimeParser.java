@@ -109,7 +109,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
      * Constructs a new SimpleDateTimeParser.
      * </p>
      * <p>
-     * Use {@link DateTimeFormatter#getInstance(String, TimeZone, Locale)} or another variation of the factory methods of {@link DateTimeFormatter} to get a cached SimpleDateTimeParser instance.
+     * Use {@link DateTimeFormatter#getInstance(String, TimeZone, Locale)} or another variation of the factory methods
+     * of {@link DateTimeFormatter} to get a cached SimpleDateTimeParser instance.
      *
      * @param pattern non-null {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone non-null time zone to use
@@ -129,7 +130,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
      * @param locale non-null locale
      * @param centuryStart The start of the century for 2 digit year parsing
      */
-    protected SimpleDateTimeParser(final String pattern, final TimeZone timeZone, final Locale locale, final Date centuryStart) {
+    protected SimpleDateTimeParser(final String pattern, final TimeZone timeZone, final Locale locale,
+            final Date centuryStart) {
         super(pattern, timeZone, locale);
         final Calendar definingCalendar = Calendar.getInstance(timeZone, locale);
 
@@ -171,6 +173,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
                 case '[':
                 case '{':
                     sb.append('\\');
+                    // fallthrough
                 default:
                     sb.append(c);
             }
@@ -187,7 +190,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
      * @param regex The regular expression to build
      * @return The beanMapWithHashSetValue of string display names to field values
      */
-    private static Map<String, Integer> appendDisplayNames(final Calendar cal, final Locale locale, final int field, final StringBuilder regex) {
+    private static Map<String, Integer> appendDisplayNames(final Calendar cal, final Locale locale, final int field,
+            final StringBuilder regex) {
         final Map<String, Integer> values = new HashMap<>();
 
         final Map<String, Integer> displayNames = cal.getDisplayNames(field, Calendar.ALL_STYLES, locale);
@@ -220,7 +224,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
     }
 
     /**
-     * Initialize derived fields from defining fields. This is called from constructor and from readObject (de-serialization)
+     * Initialize derived fields from defining fields. This is called from constructor and from readObject
+     * (de-serialization)
      *
      * @param definingCalendar the {@link Calendar} instance used to initialize this SimpleDateTimeParser
      */
@@ -228,7 +233,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
         patterns = new ArrayList<>();
 
         final StrategyParser fm = new StrategyParser(definingCalendar);
-        for (; ; ) {
+        for (;;) {
             final StrategyAndWidth field = fm.getNextStrategy();
             if (field == null) {
                 break;
@@ -241,7 +246,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
      * Create the object after serialization. This implementation reinitializes the transient properties.
      *
      * @param in ObjectInputStream from which the object is being deserialized.
-     * @throws IOException            if there is an IO issue.
+     * @throws IOException if there is an IO issue.
      * @throws ClassNotFoundException if a class cannot be found.
      */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -258,7 +263,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
         if (date == null) {
             // Add a note re supported dateTime range
             if (locale.equals(JAPANESE_IMPERIAL)) {
-                throw new ParseException("(The " + locale + " locale does not support dates before 1868 AD)\n" + "Unparseable dateTime: \"" + source, pp.getErrorIndex());
+                throw new ParseException("(The " + locale + " locale does not support dates before 1868 AD)\n"
+                        + "Unparseable dateTime: \"" + source, pp.getErrorIndex());
             }
             throw new ParseException("Unparseable dateTime: " + source, pp.getErrorIndex());
         }
@@ -311,15 +317,13 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
     /**
      * Obtain a Strategy given a field from a SimpleDateFormat pattern
      * <p>
-     * formatField      A sub-sequence of the SimpleDateFormat pattern
+     * formatField A sub-sequence of the SimpleDateFormat pattern
      *
      * @param definingCalendar The calendar to obtain the short and long values
      * @return The Strategy that will handle parsing for the field
      */
     private Strategy getStrategy(final char f, final int width, final Calendar definingCalendar) {
         switch (f) {
-            default:
-                throw new IllegalArgumentException("Format '" + f + "' not supported");
             case 'D':
                 return DAY_OF_YEAR_STRATEGY;
             case 'E':
@@ -364,8 +368,12 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
                     return ISO8601TimeZoneStrategy.ISO_8601_3_STRATEGY;
                 }
                 //$FALL-THROUGH$
+                // fallthrough
             case 'z':
+                // fallthrough
                 return getLocaleSpecificStrategy(Calendar.ZONE_OFFSET, definingCalendar);
+            default:
+                throw new IllegalArgumentException("Format '" + f + "' not supported");
         }
     }
 
@@ -380,7 +388,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
         final ConcurrentMap<Locale, Strategy> cache = getCache(field);
         Strategy strategy = cache.get(locale);
         if (strategy == null) {
-            strategy = field == Calendar.ZONE_OFFSET ? new TimeZoneStrategy(locale) : new CaseInsensitiveTextStrategy(field, definingCalendar, locale);
+            strategy = field == Calendar.ZONE_OFFSET ? new TimeZoneStrategy(locale)
+                    : new CaseInsensitiveTextStrategy(field, definingCalendar, locale);
             final Strategy inCache = cache.putIfAbsent(locale, strategy);
             if (inCache != null) {
                 return inCache;
@@ -414,7 +423,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
     /**
      * 单个日期字段的分析策略
      */
-    private static abstract class Strategy {
+    private abstract static class Strategy {
         /**
          * Is this field a number? The default implementation returns false.
          *
@@ -424,13 +433,14 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
             return false;
         }
 
-        abstract boolean parse(SimpleDateTimeParser parser, Calendar calendar, String source, ParsePosition pos, int maxWidth);
+        abstract boolean parse(SimpleDateTimeParser parser, Calendar calendar, String source, ParsePosition pos,
+                int maxWidth);
     }
 
     /**
      * A strategy to newJson a single field from the parsing pattern
      */
-    private static abstract class PatternStrategy extends Strategy {
+    private abstract static class PatternStrategy extends Strategy {
 
         private Pattern pattern;
 
@@ -452,8 +462,9 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
             return false;
         }
 
-        abstract void setCalendar(SimpleDateTimeParser parser, Calendar cal, String value);        @Override
-        boolean parse(final SimpleDateTimeParser parser, final Calendar calendar, final String source, final ParsePosition pos, final int maxWidth) {
+        @Override
+        boolean parse(final SimpleDateTimeParser parser, final Calendar calendar, final String source,
+                final ParsePosition pos, final int maxWidth) {
             final Matcher matcher = pattern.matcher(source.substring(pos.getIndex()));
             if (!matcher.lookingAt()) {
                 pos.setErrorIndex(pos.getIndex());
@@ -464,6 +475,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
             return true;
         }
 
+        abstract void setCalendar(SimpleDateTimeParser parser, Calendar cal, String value);
 
     }
 
@@ -472,7 +484,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
      */
     private static class CopyQuotedStrategy extends Strategy {
 
-        final private String formatField;
+        private final String formatField;
 
         /**
          * Construct a Strategy that ensures the formatField has literal text
@@ -492,7 +504,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
         }
 
         @Override
-        boolean parse(final SimpleDateTimeParser parser, final Calendar calendar, final String source, final ParsePosition pos, final int maxWidth) {
+        boolean parse(final SimpleDateTimeParser parser, final Calendar calendar, final String source,
+                final ParsePosition pos, final int maxWidth) {
             for (int idx = 0; idx < formatField.length(); ++idx) {
                 final int sIdx = idx + pos.getIndex();
                 if (sIdx == source.length()) {
@@ -570,7 +583,9 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
          */
         int modify(final SimpleDateTimeParser parser, final int iValue) {
             return iValue;
-        }        /**
+        }
+
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -579,7 +594,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
         }
 
         @Override
-        boolean parse(final SimpleDateTimeParser parser, final Calendar calendar, final String source, final ParsePosition pos, final int maxWidth) {
+        boolean parse(final SimpleDateTimeParser parser, final Calendar calendar, final String source,
+                final ParsePosition pos, final int maxWidth) {
             int idx = pos.getIndex();
             int last = source.length();
 
@@ -617,8 +633,6 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
             calendar.set(field, modify(parser, value));
             return true;
         }
-
-
 
     }
 
@@ -669,6 +683,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
                         case 5: // offset 5 starts additional names, probably standard time
                             tzInfo = standard;
                             break;
+                        default:
+                            break;
                     }
                     if (zoneNames[i] != null) {
                         final String key = zoneNames[i].toLowerCase(locale);
@@ -689,15 +705,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
             createPattern(sb);
         }
 
-        private static class TzInfo {
-            TimeZone zone;
-            int dstOffset;
-
-            TzInfo(final TimeZone tz, final boolean useDst) {
-                zone = tz;
-                dstOffset = useDst ? tz.getDSTSavings() : 0;
-            }
-        }        /**
+        /**
          * {@inheritDoc}
          */
         @Override
@@ -715,6 +723,15 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
             }
         }
 
+        private static class TzInfo {
+            TimeZone zone;
+            int dstOffset;
+
+            TzInfo(final TimeZone tz, final boolean useDst) {
+                zone = tz;
+                dstOffset = useDst ? tz.getDSTSavings() : 0;
+            }
+        }
 
     }
 
@@ -723,7 +740,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
 
         private static final Strategy ISO_8601_1_STRATEGY = new ISO8601TimeZoneStrategy("(Z|(?:[+-]\\d{2}))");
         private static final Strategy ISO_8601_2_STRATEGY = new ISO8601TimeZoneStrategy("(Z|(?:[+-]\\d{2}\\d{2}))");
-        private static final Strategy ISO_8601_3_STRATEGY = new ISO8601TimeZoneStrategy("(Z|(?:[+-]\\d{2}(?::)\\d{2}))");
+        private static final Strategy ISO_8601_3_STRATEGY =
+                new ISO8601TimeZoneStrategy("(Z|(?:[+-]\\d{2}(?::)\\d{2}))");
 
         /**
          * Construct a Strategy that parses a TimeZone
@@ -738,7 +756,8 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
          * Factory method for ISO8601TimeZoneStrategies.
          *
          * @param tokenLen a token indicating the length of the TimeZone String to be formatted.
-         * @return a ISO8601TimeZoneStrategy that can format TimeZone String of length {@code tokenLen}. If no such strategy exists, an IllegalArgumentException will be thrown.
+         * @return a ISO8601TimeZoneStrategy that can format TimeZone String of length {@code tokenLen}. If no such
+         *         strategy exists, an IllegalArgumentException will be thrown.
          */
         static Strategy getStrategy(final int tokenLen) {
             switch (tokenLen) {
@@ -770,7 +789,7 @@ class SimpleDateTimeParser extends AbstractDateTime implements DateTimeParser {
      * Parse format into Strategies
      */
     private class StrategyParser {
-        final private Calendar definingCalendar;
+        private final Calendar definingCalendar;
         private int currentIdx;
 
         StrategyParser(final Calendar definingCalendar) {

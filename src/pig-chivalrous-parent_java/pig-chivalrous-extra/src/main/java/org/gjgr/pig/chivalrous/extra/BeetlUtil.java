@@ -1,5 +1,8 @@
 package org.gjgr.pig.chivalrous.extra;
 
+import java.io.Writer;
+import java.util.Map;
+
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.ResourceLoader;
@@ -7,13 +10,9 @@ import org.beetl.core.Template;
 import org.beetl.core.resource.CompositeResourceLoader;
 import org.beetl.core.resource.Matcher;
 
-import java.io.Writer;
-import java.util.Map;
-
 /**
  * Beetl模板引擎工具类<br>
- * http://git.oschina.net/xiandafu/beetl2.0
- * 文档：http://ibeetl.com/guide/beetl.html
+ * http://git.oschina.net/xiandafu/beetl2.0 文档：http://ibeetl.com/guide/beetl.html
  *
  * @author Looly
  */
@@ -35,7 +34,7 @@ public final class BeetlUtil {
      * 创建自定义的 {@link GroupTemplate}
      *
      * @param loader {@link ResourceLoader}，资源加载器
-     * @param conf   {@link Configuration} 配置文件
+     * @param conf {@link Configuration} 配置文件
      * @return {@link GroupTemplate}
      */
     public static GroupTemplate createGroupTemplate(ResourceLoader loader, Configuration conf) {
@@ -46,7 +45,7 @@ public final class BeetlUtil {
      * 获得模板
      *
      * @param groupTemplate {@link GroupTemplate}
-     * @param source        模板资源，根据不同的 {@link ResourceLoader} 加载不同的模板资源
+     * @param source 模板资源，根据不同的 {@link ResourceLoader} 加载不同的模板资源
      * @return {@link Template}
      */
     public static Template getTemplate(GroupTemplate groupTemplate, String source) {
@@ -56,7 +55,7 @@ public final class BeetlUtil {
     /**
      * 渲染模板
      *
-     * @param template   {@link Template}
+     * @param template {@link Template}
      * @param bindingMap 绑定参数
      * @return 渲染后的内容
      */
@@ -68,9 +67,9 @@ public final class BeetlUtil {
     /**
      * 渲染模板
      *
-     * @param template   {@link Template}
+     * @param template {@link Template}
      * @param bindingMap 绑定参数
-     * @param writer     {@link Writer} 渲染后写入的目标Writer
+     * @param writer {@link Writer} 渲染后写入的目标Writer
      * @return {@link Writer}
      */
     public static Writer render(Template template, Map<String, Object> bindingMap, Writer writer) {
@@ -108,7 +107,7 @@ public final class BeetlUtil {
         /**
          * 添加一个资源加载器
          *
-         * @param matcher        {@link Matcher} 匹配器
+         * @param matcher {@link Matcher} 匹配器
          * @param resourceLoader {@link ResourceLoader} 匹配时对应的资源加载器
          * @return {@link ResourceLoaderBuilder}
          */

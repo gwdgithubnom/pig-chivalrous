@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.thread;
 
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
 
 /**
  * 全局公共线程池
@@ -25,7 +25,7 @@ public class GlobalThreadPool {
     /**
      * 初始化全局线程池
      */
-    synchronized public static void init() {
+    public static synchronized void init() {
         if (null != executor) {
             executor.shutdownNow();
         }
@@ -37,7 +37,7 @@ public class GlobalThreadPool {
      *
      * @param isNow 是否立即关闭而不等待正在执行的线程
      */
-    synchronized public static void shutdown(boolean isNow) {
+    public static synchronized void shutdown(boolean isNow) {
         if (null != executor) {
             if (isNow) {
                 executor.shutdownNow();

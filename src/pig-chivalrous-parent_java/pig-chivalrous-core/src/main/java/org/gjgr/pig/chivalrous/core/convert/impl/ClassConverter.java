@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
 import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 /**
  * 类转换器<br>
@@ -15,7 +15,7 @@ public class ClassConverter extends AbstractConverter<Class<?>> {
     protected Class<?> convertInternal(Object value) {
         String valueStr = convertToStr(value);
         try {
-            return ClassUtil.getClassLoader().loadClass(valueStr);
+            return ClassCommand.getClassLoader().loadClass(valueStr);
         } catch (Exception e) {
             // Ignore Exception
         }

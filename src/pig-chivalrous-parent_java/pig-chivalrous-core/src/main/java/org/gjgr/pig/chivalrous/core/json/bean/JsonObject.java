@@ -1,16 +1,5 @@
 package org.gjgr.pig.chivalrous.core.json.bean;
 
-import com.google.gson.JsonParser;
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-import org.gjgr.pig.chivalrous.core.json.JsonException;
-import org.gjgr.pig.chivalrous.core.json.JsonGetter;
-import org.gjgr.pig.chivalrous.core.json.JsonTokener;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -24,9 +13,22 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+import org.gjgr.pig.chivalrous.core.json.JsonException;
+import org.gjgr.pig.chivalrous.core.json.JsonGetter;
+import org.gjgr.pig.chivalrous.core.json.JsonTokener;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
+import com.google.gson.JsonParser;
+
 /**
  * JSON对象<br>
  * 例：<br>
+ * 
  * <pre>
  * newJson = new JsonObject().put(&quot;Json&quot;, &quot;Hello, World!&quot;).toString();
  * </pre>
@@ -53,7 +55,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @param jsonObject A JsonObject.
      * @param names 需要的name列表
      */
-    public JsonObject(JsonObject jsonObject, String... names) {
+    public JsonObject(JsonObject jsonObject, String...names) {
         for (String name : names) {
             try {
                 this.putOnce(name, jsonObject.getObj(name));
@@ -72,7 +74,8 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
         init(x);
     }
 
-    // -------------------------------------------------------------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------------------------------------------------------------
+    // Constructor start
 
     /**
      * 构建JSONObject，如果给定值为Map，将键值对加入JSON对象;<br>
@@ -130,10 +133,11 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
     }
 
     public com.google.gson.JsonObject getGsonJsonObject() {
-        //TODO
+        // TODO
         return null;
     }
-    // -------------------------------------------------------------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------------------------------------------------------------
+    // Constructor end
 
     /**
      * key对应值是否为<code>null</code>或无此key
@@ -153,7 +157,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @throws JsonException If any of the values are non-finite numbers.
      */
     public JsonArray toJSONArray(Collection<String> names) throws JsonException {
-        if (CollectionUtil.isEmpty(names)) {
+        if (CollectionCommand.isEmpty(names)) {
             return null;
         }
         final JsonArray ja = new JsonArray();
@@ -185,7 +189,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @return 实体类对象
      */
     public <T> T toBean(Class<T> clazz, boolean ignoreError) {
-        return toBean(ClassUtil.newInstance(clazz), ignoreError);
+        return toBean(ClassCommand.newInstance(clazz), ignoreError);
     }
 
     /**
@@ -294,8 +298,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
 
     /**
      * Put a key/value pair in the JsonObject, but only if the key and the value are both non-null, <br>
-     * and only if there is not already a member with that name.
-     * 一次性Put 键值对，如果key已经存在抛出异常，如果键值中有null值，忽略
+     * and only if there is not already a member with that name. 一次性Put 键值对，如果key已经存在抛出异常，如果键值中有null值，忽略
      *
      * @param key 键
      * @param value 值对象，可以是以下类型: Boolean, Double, Integer, JsonArray, JsonObject, Long, String, or the JsonNull.NULL.
@@ -305,7 +308,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
     public JsonObject putOnce(String key, Object value) throws JsonException {
         if (key != null && value != null) {
             if (rawHashMap.containsKey(key)) {
-                throw new JsonException(StrUtil.format("Duplicate key \"{}\"", key));
+                throw new JsonException(StringCommand.format("Duplicate key \"{}\"", key));
             }
             this.put(key, value);
         }
@@ -375,7 +378,8 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      *
      * @param key A key string.
      * @return this.
-     * @throws JsonException If there is already a property with this name that is not an Integer, Long, Double, or Float.
+     * @throws JsonException If there is already a property with this name that is not an Integer, Long, Double, or
+     *             Float.
      */
     public JsonObject increment(String key) throws JsonException {
         Object value = this.getObj(key);
@@ -520,7 +524,8 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
         }
     }
 
-    // ------------------------------------------------------------------------------------------------- Private method start
+    // ------------------------------------------------------------------------------------------------- Private method
+    // start
 
     /**
      * Bean对象转Map
@@ -550,7 +555,8 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
                     } else if (name.startsWith("is")) {
                         key = name.substring(2);
                     }
-                    if (key.length() > 0 && Character.isUpperCase(key.charAt(0)) && method.getParameterTypes().length == 0) {
+                    if (key.length() > 0 && Character.isUpperCase(key.charAt(0))
+                            && method.getParameterTypes().length == 0) {
                         if (key.length() == 1) {
                             key = key.toLowerCase();
                         } else if (!Character.isUpperCase(key.charAt(1))) {
@@ -589,7 +595,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
         if (x.nextClean() != '{') {
             throw x.syntaxError("A JsonObject text must begin with '{'");
         }
-        for (; ; ) {
+        for (;;) {
             c = x.nextClean();
             switch (c) {
                 case 0:
@@ -628,16 +634,17 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
     }
 
     private String csv(Writer writer) {
-        //TODO
+        // TODO
         return null;
     }
 
-    // ------------------------------------------------------------------------------------------------- Private method end
+    // ------------------------------------------------------------------------------------------------- Private method
+    // end
     public String toTypeString(String type) {
         if ("csv".equalsIgnoreCase(type)) {
             String r;
             r = csv(new StringWriter());
-            //TODO
+            // TODO
             return r;
         } else {
             return toString();

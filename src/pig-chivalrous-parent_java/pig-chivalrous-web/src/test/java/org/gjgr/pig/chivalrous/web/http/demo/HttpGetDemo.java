@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.web.http.demo;
 
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.gjgr.pig.chivalrous.web.http.HttpRequest;
 import org.gjgr.pig.chivalrous.web.http.HttpUtil;
 import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
@@ -19,7 +19,7 @@ public class HttpGetDemo {
         System.out.println(content);
 
         // 方法2：从远程直接读取字符串，需要自定义编码，直接调用JDK方法
-        String content2 = HttpUtil.downloadString(url, CharsetUtil.UTF_8);
+        String content2 = HttpUtil.downloadString(url, CharsetCommand.UTF_8);
         System.out.println(content2);
 
         // 方法3：自定义构建HTTP GET请求，发送Http GET请求，针对HTTPS安全加密，可以自定义SSL

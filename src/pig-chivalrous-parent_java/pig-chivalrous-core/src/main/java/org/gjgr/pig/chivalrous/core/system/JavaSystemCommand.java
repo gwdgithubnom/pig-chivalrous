@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.core.system;
 
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.lang.Console;
-import org.gjgr.pig.chivalrous.core.lang.Singleton;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.PrintWriter;
 import java.lang.management.ManagementFactory;
 import java.util.Properties;
+
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.lang.Console;
+import org.gjgr.pig.chivalrous.core.lang.Singleton;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * Java的System类封装工具类。
@@ -18,74 +18,74 @@ public final class JavaSystemCommand {
 
     /***** Java运行时环境信息 *****/
     // Java 运行时环境规范名称
-    public final static String SPECIFICATION_NAME = "java.specification.name";
+    public static final String SPECIFICATION_NAME = "java.specification.name";
     // Java 运行时环境版本
-    public final static String VERSION = "java.version";
+    public static final String VERSION = "java.version";
     // Java 运行时环境规范版本
-    public final static String SPECIFICATION_VERSION = "java.specification.version";
+    public static final String SPECIFICATION_VERSION = "java.specification.version";
     // Java 运行时环境供应商
-    public final static String VENDOR = "java.vendor";
+    public static final String VENDOR = "java.vendor";
     // Java 运行时环境规范供应商
-    public final static String SPECIFICATION_VENDOR = "java.specification.vendor";
+    public static final String SPECIFICATION_VENDOR = "java.specification.vendor";
     // Java 供应商的 URL
-    public final static String VENDOR_URL = "java.vendor.url";
+    public static final String VENDOR_URL = "java.vendor.url";
     // Java 安装目录
-    public final static String HOME = "java.home";
+    public static final String HOME = "java.home";
     // 加载库时搜索的路径列表
-    public final static String LIBRARY_PATH = "java.library.path";
+    public static final String LIBRARY_PATH = "java.library.path";
     // 默认的临时文件路径
-    public final static String TMPDIR = "java.io.tmpdir";
+    public static final String TMPDIR = "java.io.tmpdir";
     // 要使用的 JIT 编译器的名称
-    public final static String COMPILER = "java.compiler";
+    public static final String COMPILER = "java.compiler";
     // 一个或多个扩展目录的路径
-    public final static String EXT_DIRS = "java.ext.dirs";
+    public static final String EXT_DIRS = "java.ext.dirs";
 
     /***** Java虚拟机信息 *****/
     // Java 虚拟机实现名称
-    public final static String VM_NAME = "java.vm.name";
+    public static final String VM_NAME = "java.vm.name";
     // Java 虚拟机规范名称
-    public final static String VM_SPECIFICATION_NAME = "java.vm.specification.name";
+    public static final String VM_SPECIFICATION_NAME = "java.vm.specification.name";
     // Java 虚拟机实现版本
-    public final static String VM_VERSION = "java.vm.version";
+    public static final String VM_VERSION = "java.vm.version";
     // Java 虚拟机规范版本
-    public final static String VM_SPECIFICATION_VERSION = "java.vm.specification.version";
+    public static final String VM_SPECIFICATION_VERSION = "java.vm.specification.version";
     // Java 虚拟机实现供应商
-    public final static String VM_VENDEOR = "java.vm.vendor";
+    public static final String VM_VENDEOR = "java.vm.vendor";
     // Java 虚拟机规范供应商
-    public final static String VM_SPECIFICATION_VENDOR = "java.vm.specification.vendor";
+    public static final String VM_SPECIFICATION_VENDOR = "java.vm.specification.vendor";
 
     /***** Java类信息 *****/
     // Java 类格式版本号
-    public final static String CLASS_VERSION = "java.class.version";
+    public static final String CLASS_VERSION = "java.class.version";
     // Java 类路径
-    public final static String CLASS_PATH = "java.class.path";
+    public static final String CLASS_PATH = "java.class.path";
 
     /***** OS信息 *****/
     // 操作系统的名称
-    public final static String OS_NAME = "os.name";
+    public static final String OS_NAME = "os.name";
     // 操作系统的架构
-    public final static String OS_ARCH = "os.arch";
+    public static final String OS_ARCH = "os.arch";
     // 操作系统的版本
-    public final static String OS_VERSION = "os.version";
+    public static final String OS_VERSION = "os.version";
     // 文件分隔符（在 UNIX 系统中是“/”）
-    public final static String FILE_SEPRATOR = "file.separator";
+    public static final String FILE_SEPRATOR = "file.separator";
     // 路径分隔符（在 UNIX 系统中是“:”）
-    public final static String PATH_SEPRATOR = "path.separator";
+    public static final String PATH_SEPRATOR = "path.separator";
     // 行分隔符（在 UNIX 系统中是“\n”）
-    public final static String LINE_SEPRATOR = "line.separator";
+    public static final String LINE_SEPRATOR = "line.separator";
 
     /***** 用户信息 *****/
     // 用户的账户名称
-    public final static String USER_NAME = "user.name";
+    public static final String USER_NAME = "user.name";
     // 用户的主目录
-    public final static String USER_HOME = "user.home";
+    public static final String USER_HOME = "user.home";
     // 用户的当前工作目录
-    public final static String USER_DIR = "user.dir";
+    public static final String USER_DIR = "user.dir";
 
     private JavaSystemCommand() {
     }
 
-    //----------------------------------------------------------------------- Basic start
+    // ----------------------------------------------------------------------- Basic start
 
     /**
      * 取得系统属性，如果因为Java安全的限制而失败，则将错误打在Log中，然后返回 <code>null</code>。
@@ -95,7 +95,7 @@ public final class JavaSystemCommand {
      * @return 属性值或<code>null</code>
      */
     public static String get(String name, String defaultValue) {
-        return StrUtil.nullToDefault(get(name, false), defaultValue);
+        return StringCommand.nullToDefault(get(name, false), defaultValue);
     }
 
     /**
@@ -110,7 +110,9 @@ public final class JavaSystemCommand {
             return System.getProperty(name);
         } catch (SecurityException e) {
             if (!quiet) {
-                Console.error("Caught a SecurityException reading the system property '{}'; the JavaSystemCommand property value will default to null.", name);
+                Console.error(
+                        "Caught a SecurityException reading the system property '{}'; the JavaSystemCommand property value will default to null.",
+                        name);
             }
             return null;
         }
@@ -192,7 +194,7 @@ public final class JavaSystemCommand {
     public static long getCurrentPID() {
         return Long.parseLong(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
     }
-    //----------------------------------------------------------------------- Basic end
+    // ----------------------------------------------------------------------- Basic end
 
     /**
      * 取得Java Virtual Machine Specification的信息。
@@ -275,7 +277,7 @@ public final class JavaSystemCommand {
         return Singleton.get(RuntimeInfo.class);
     }
 
-    //------------------------------------------------------------------ Dump
+    // ------------------------------------------------------------------ Dump
 
     /**
      * 将系统信息输出到<code>System.out</code>中。
@@ -320,6 +322,6 @@ public final class JavaSystemCommand {
      * @param value 值
      */
     protected static void append(StringBuilder builder, String caption, Object value) {
-        builder.append(caption).append(StrUtil.nullToDefault(Convert.toStr(value), "[n/a]")).append("\n");
+        builder.append(caption).append(StringCommand.nullToDefault(Convert.toStr(value), "[n/a]")).append("\n");
     }
 }

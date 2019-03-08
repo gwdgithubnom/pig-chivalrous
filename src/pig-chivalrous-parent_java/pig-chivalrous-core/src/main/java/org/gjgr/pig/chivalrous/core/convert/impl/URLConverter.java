@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
-import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
-
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+
+import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
 
 /**
  * 字符串转换器

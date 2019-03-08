@@ -1,16 +1,16 @@
 package org.gjgr.pig.chivalrous.core.io.resource;
 
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.URLUtil;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
 
 /**
  * URL资源访问类
@@ -20,7 +20,7 @@ import java.nio.charset.Charset;
 public class UrlResource {
     protected URL url;
 
-    //-------------------------------------------------------------------------------------- Constructor start
+    // -------------------------------------------------------------------------------------- Constructor start
 
     /**
      * 构造
@@ -37,9 +37,9 @@ public class UrlResource {
      * @param file 文件路径
      */
     public UrlResource(File file) {
-        this.url = URLUtil.getURL(file);
+        this.url = UriCommand.getURL(file);
     }
-    //-------------------------------------------------------------------------------------- Constructor end
+    // -------------------------------------------------------------------------------------- Constructor end
 
     /**
      * 获得解析后的{@link URL}

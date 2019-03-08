@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.io.resource;
 
-import org.gjgr.pig.chivalrous.core.io.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-
 import java.net.URL;
+
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 /**
  * ClassPath资源访问类
@@ -17,7 +17,7 @@ public class ClassPathResource extends UrlResource {
     private ClassLoader classLoader;
     private Class<?> clazz;
 
-    //-------------------------------------------------------------------------------------- Constructor start
+    // -------------------------------------------------------------------------------------- Constructor start
 
     /**
      * 构造
@@ -59,11 +59,11 @@ public class ClassPathResource extends UrlResource {
         super((URL) null);
         Assert.notNull(path, "Path must not be null");
         this.path = path;
-        this.classLoader = (classLoader != null ? classLoader : ClassUtil.getClassLoader());
+        this.classLoader = (classLoader != null ? classLoader : ClassCommand.getClassLoader());
         this.clazz = clazz;
         initUrl();
     }
-    //-------------------------------------------------------------------------------------- Constructor end
+    // -------------------------------------------------------------------------------------- Constructor end
 
     /**
      * 获得Path

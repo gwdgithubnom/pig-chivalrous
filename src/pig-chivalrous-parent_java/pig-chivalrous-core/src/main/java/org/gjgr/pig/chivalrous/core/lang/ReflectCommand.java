@@ -1,8 +1,5 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -14,10 +11,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @Author gwd
- * @Time 10-29-2018  Monday
- * @Description: developer.tools:
+ * @Time 10-29-2018 Monday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
@@ -36,7 +36,8 @@ public class ReflectCommand {
      * @return
      * @throws Exception
      */
-    public static Object callMethod(Class<?> clazz, String methodName, Class<?>[] methodParams, Object... args) throws Exception {
+    public static Object callMethod(Class<?> clazz, String methodName, Class<?>[] methodParams, Object...args)
+            throws Exception {
         return callMethod(clazz, null, methodName, methodParams, args);
     }
 
@@ -51,14 +52,16 @@ public class ReflectCommand {
      * @return
      * @throws Exception
      */
-    public static Object callMethod(Class<?> clazz, Object instance, String methodName, Class<?>[] methodParams, Object... args)
+    public static Object callMethod(Class<?> clazz, Object instance, String methodName, Class<?>[] methodParams,
+            Object...args)
             throws Exception {
         Method method = clazz.getMethod(methodName, methodParams);
         return method.invoke(instance, args);
     }
 
     /**
-     * Gets the {@link Constructor} having the given number of arguments, or <code>null</code> if cannot find a appropriate one.
+     * Gets the {@link Constructor} having the given number of arguments, or <code>null</code> if cannot find a
+     * appropriate one.
      *
      * @param clazz
      * @param argsCount

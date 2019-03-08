@@ -1,13 +1,5 @@
 package org.gjgr.pig.chivalrous.core.net;
 
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.lang.Validator;
-import org.gjgr.pig.chivalrous.core.system.HostInfo;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -23,13 +15,21 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.lang.Validator;
+import org.gjgr.pig.chivalrous.core.system.HostInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 网络相关工具
  *
  * @author xiaoleilu
  */
 public final class NetworkCommand {
-    public final static String LOCAL_IP = "127.0.0.1";
+    public static final String LOCAL_IP = "127.0.0.1";
     private static final Logger LOGGER = LoggerFactory.getLogger(org.gjgr.pig.chivalrous.core.net.NetworkCommand.class);
 
     private static final String DockerIP = "172.17.42.1";
@@ -161,7 +161,8 @@ public final class NetworkCommand {
         long cBegin = NetworkCommand.ipv4ToLong("192.168.0.0");
         long cEnd = NetworkCommand.ipv4ToLong("192.168.255.255");
 
-        isInnerIp = isInner(ipNum, aBegin, aEnd) || isInner(ipNum, bBegin, bEnd) || isInner(ipNum, cBegin, cEnd) || ipAddress.equals(LOCAL_IP);
+        isInnerIp = isInner(ipNum, aBegin, aEnd) || isInner(ipNum, bBegin, bEnd) || isInner(ipNum, cBegin, cEnd)
+                || ipAddress.equals(LOCAL_IP);
         return isInnerIp;
     }
 
@@ -211,7 +212,8 @@ public final class NetworkCommand {
             URL absoluteUrl = new URL(absoluteBasePath);
             return new URL(absoluteUrl, relativePath).toString();
         } catch (Exception e) {
-            throw new UtilException(StrUtil.format("To absolute url [{}] base [{}] error!", relativePath, absoluteBasePath), e);
+            throw new UtilException(
+                    StringCommand.format("To absolute url [{}] base [{}] error!", relativePath, absoluteBasePath), e);
         }
     }
 
@@ -245,7 +247,7 @@ public final class NetworkCommand {
      * @return InetSocketAddress
      */
     public static InetSocketAddress buildInetSocketAddress(String host, int defaultPort) {
-        if (StrUtil.isBlank(host)) {
+        if (StringCommand.isBlank(host)) {
             host = LOCAL_IP;
         }
 
@@ -292,7 +294,7 @@ public final class NetworkCommand {
             return null;
         }
 
-        return CollectionUtil.addAll(new ArrayList<NetworkInterface>(), networkInterfaces);
+        return CollectionCommand.addAll(new ArrayList<NetworkInterface>(), networkInterfaces);
     }
 
     /**
@@ -310,29 +312,30 @@ public final class NetworkCommand {
         NetworkInterface iface;
         InetAddress inetAddr;
         try {
-            for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements(); ) {
+            for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces
+                    .hasMoreElements();) {
                 iface = ifaces.nextElement();
-                for (Enumeration<InetAddress> inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); ) {
+                for (Enumeration<InetAddress> inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements();) {
                     inetAddr = inetAddrs.nextElement();
                     if (false == inetAddr.isLoopbackAddress()) {
                         if (inetAddr.isSiteLocalAddress()) {
                             return inetAddr;
                         } else if (null == candidateAddress) {
-                            //非site-local地址做为候选地址返回
+                            // 非site-local地址做为候选地址返回
                             candidateAddress = inetAddr;
                         }
                     }
                 }
             }
         } catch (SocketException e) {
-            //ignore socket exception, and return null;
+            // ignore socket exception, and return null;
         }
 
         if (null == candidateAddress) {
             try {
                 candidateAddress = InetAddress.getLocalHost();
             } catch (UnknownHostException e) {
-                //ignore
+                // ignore
             }
         }
 

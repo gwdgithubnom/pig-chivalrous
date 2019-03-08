@@ -3,9 +3,9 @@ package org.gjgr.pig.chivalrous.core.log.dialect.console;
 import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.gjgr.pig.chivalrous.core.lang.Dict;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.AbstractLog;
 import org.gjgr.pig.chivalrous.core.log.level.Level;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 /**
  * 利用System.out.println()打印日志
@@ -20,7 +20,7 @@ public class ConsoleLog extends AbstractLog {
 
     private String name;
 
-    //------------------------------------------------------------------------- Constructor
+    // ------------------------------------------------------------------------- Constructor
     public ConsoleLog(Class<?> clazz) {
         this.name = clazz.getName();
     }
@@ -34,14 +34,14 @@ public class ConsoleLog extends AbstractLog {
         return this.name;
     }
 
-    //------------------------------------------------------------------------- Log
+    // ------------------------------------------------------------------------- Log
     @Override
-    public void log(Level level, String format, Object... arguments) {
+    public void log(Level level, String format, Object...arguments) {
         this.log(level, null, format, arguments);
     }
 
     @Override
-    public void log(Level level, Throwable t, String format, Object... arguments) {
+    public void log(Level level, Throwable t, String format, Object...arguments) {
         if (false == isEnabled(level)) {
             return;
         }
@@ -50,11 +50,11 @@ public class ConsoleLog extends AbstractLog {
                 .set("date", DateTimeCommand.now())
                 .set("level", level.toString())
                 .set("name", this.name)
-                .set("msg", StrUtil.format(format, arguments));
+                .set("msg", StringCommand.format(format, arguments));
 
-        String logMsg = StrUtil.format(logFormat, dict);
+        String logMsg = StringCommand.format(logFormat, dict);
 
-        //WARN以上级别打印至System.err
+        // WARN以上级别打印至System.err
         if (level.ordinal() >= Level.WARN.ordinal()) {
             Console.error(t, logMsg);
         } else {
@@ -63,83 +63,83 @@ public class ConsoleLog extends AbstractLog {
 
     }
 
-    //------------------------------------------------------------------------- Trace
+    // ------------------------------------------------------------------------- Trace
     @Override
     public boolean isTraceEnabled() {
         return level.compareTo(Level.TRACE) <= 0;
     }
 
     @Override
-    public void trace(String format, Object... arguments) {
+    public void trace(String format, Object...arguments) {
         log(Level.TRACE, format, arguments);
     }
 
     @Override
-    public void trace(Throwable t, String format, Object... arguments) {
+    public void trace(Throwable t, String format, Object...arguments) {
         log(Level.TRACE, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Debug
+    // ------------------------------------------------------------------------- Debug
     @Override
     public boolean isDebugEnabled() {
         return level.compareTo(Level.DEBUG) <= 0;
     }
 
     @Override
-    public void debug(String format, Object... arguments) {
+    public void debug(String format, Object...arguments) {
         log(Level.DEBUG, format, arguments);
     }
 
     @Override
-    public void debug(Throwable t, String format, Object... arguments) {
+    public void debug(Throwable t, String format, Object...arguments) {
         log(Level.DEBUG, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Info
+    // ------------------------------------------------------------------------- Info
     @Override
     public boolean isInfoEnabled() {
         return level.compareTo(Level.INFO) <= 0;
     }
 
     @Override
-    public void info(String format, Object... arguments) {
+    public void info(String format, Object...arguments) {
         log(Level.INFO, format, arguments);
     }
 
     @Override
-    public void info(Throwable t, String format, Object... arguments) {
+    public void info(Throwable t, String format, Object...arguments) {
         log(Level.INFO, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Warn
+    // ------------------------------------------------------------------------- Warn
     @Override
     public boolean isWarnEnabled() {
         return level.compareTo(Level.WARN) <= 0;
     }
 
     @Override
-    public void warn(String format, Object... arguments) {
+    public void warn(String format, Object...arguments) {
         log(Level.WARN, format, arguments);
     }
 
     @Override
-    public void warn(Throwable t, String format, Object... arguments) {
+    public void warn(Throwable t, String format, Object...arguments) {
         log(Level.WARN, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Error
+    // ------------------------------------------------------------------------- Error
     @Override
     public boolean isErrorEnabled() {
         return level.compareTo(Level.ERROR) <= 0;
     }
 
     @Override
-    public void error(String format, Object... arguments) {
+    public void error(String format, Object...arguments) {
         log(Level.ERROR, format, arguments);
     }
 
     @Override
-    public void error(Throwable t, String format, Object... arguments) {
+    public void error(Throwable t, String format, Object...arguments) {
         log(Level.ERROR, t, format, arguments);
     }
 }

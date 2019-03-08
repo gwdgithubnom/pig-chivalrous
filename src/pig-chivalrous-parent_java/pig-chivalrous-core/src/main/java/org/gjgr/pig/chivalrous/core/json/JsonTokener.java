@@ -1,15 +1,15 @@
 package org.gjgr.pig.chivalrous.core.json;
 
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+
+import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
 
 /**
  * JSON解析器，用于将JSON字符串解析为JSONObject或者JSONArray
@@ -44,7 +44,7 @@ public class JsonTokener {
      */
     private Reader reader;
 
-    //------------------------------------------------------------------------------------ Constructor start
+    // ------------------------------------------------------------------------------------ Constructor start
 
     /**
      * 从Reader中构建
@@ -78,7 +78,7 @@ public class JsonTokener {
     public JsonTokener(String s) {
         this(new StringReader(s));
     }
-    //------------------------------------------------------------------------------------ Constructor end
+    // ------------------------------------------------------------------------------------ Constructor end
 
     /**
      * Get the hex value of a character (base16).
@@ -228,21 +228,21 @@ public class JsonTokener {
      * 返回当前位置到指定引号前的所有字符，反斜杠的转义符也会被处理。<br>
      * 标准的JSON是不允许使用单引号包含字符串的，但是此实现允许。
      *
-     * @param quote 字符引号, 包括  <code>"</code>（双引号） 或 <code>'</code>（单引号）。
+     * @param quote 字符引号, 包括 <code>"</code>（双引号） 或 <code>'</code>（单引号）。
      * @return 截止到引号前的字符串
      * @throws JsonException 出现无结束的字符串时抛出此异常
      */
     public String nextString(char quote) throws JsonException {
         char c;
         StringBuilder sb = new StringBuilder();
-        for (; ; ) {
+        for (;;) {
             c = this.next();
             switch (c) {
                 case 0:
                 case '\n':
                 case '\r':
                     throw this.syntaxError("Unterminated string");
-                case '\\'://转义符
+                case '\\':// 转义符
                     c = this.next();
                     switch (c) {
                         case 'b':
@@ -260,7 +260,7 @@ public class JsonTokener {
                         case 'r':
                             sb.append('\r');
                             break;
-                        case 'u'://Unicode符
+                        case 'u':// Unicode符
                             sb.append((char) Integer.parseInt(this.next(4), 16));
                             break;
                         case '"':
@@ -291,7 +291,7 @@ public class JsonTokener {
      */
     public String nextTo(char delimiter) throws JsonException {
         StringBuilder sb = new StringBuilder();
-        for (; ; ) {
+        for (;;) {
             char c = this.next();
             if (c == delimiter || c == 0 || c == '\n' || c == '\r') {
                 if (c != 0) {
@@ -304,7 +304,8 @@ public class JsonTokener {
     }
 
     /**
-     * Get the text up but not including one of the specified delimiter characters or the end of line, whichever comes first.
+     * Get the text up but not including one of the specified delimiter characters or the end of line, whichever comes
+     * first.
      *
      * @param delimiters A set of delimiter characters.
      * @return A string, trimmed.
@@ -312,7 +313,7 @@ public class JsonTokener {
     public String nextTo(String delimiters) throws JsonException {
         char c;
         StringBuilder sb = new StringBuilder();
-        for (; ; ) {
+        for (;;) {
             c = this.next();
             if (delimiters.indexOf(c) >= 0 || c == 0 || c == '\n' || c == '\r') {
                 if (c != 0) {
@@ -344,11 +345,14 @@ public class JsonTokener {
             case '[':
                 this.back();
                 return new JsonArray(this);
+            default:
+                break;
         }
 
         /*
-         * Handle unquoted text. This could be the values true, false, or null, or it can be a number. An implementation (such as this one) is allowed to also accept non-standard forms. Accumulate
-         * characters until we reach the end of the text or a formatting character.
+         * Handle unquoted text. This could be the values true, false, or null, or it can be a number. An implementation
+         * (such as this one) is allowed to also accept non-standard forms. Accumulate characters until we reach the end
+         * of the text or a formatting character.
          */
 
         StringBuilder sb = new StringBuilder();
@@ -366,7 +370,8 @@ public class JsonTokener {
     }
 
     /**
-     * Skip characters until the next character is the requested character. If the requested character is not found, no characters are skipped.
+     * Skip characters until the next character is the requested character. If the requested character is not found, no
+     * characters are skipped.
      *
      * @param to A character to skip to.
      * @return The requested character, or zero if the requested character is not found.
@@ -396,8 +401,7 @@ public class JsonTokener {
     }
 
     /**
-     * Make a JsonException to signal a syntax error.
-     * 构建 JsonException 用于表示语法错误
+     * Make a JsonException to signal a syntax error. 构建 JsonException 用于表示语法错误
      *
      * @param message 错误消息
      * @return A JsonException object, suitable for throwing

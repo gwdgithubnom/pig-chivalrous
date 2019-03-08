@@ -1,10 +1,5 @@
 package org.gjgr.pig.chivalrous.web.http;
 
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.io.FastByteArrayOutputStream;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.FileNotFoundException;
@@ -14,6 +9,10 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * Http响应类
@@ -57,7 +56,7 @@ public class HttpResponse extends HttpBase<HttpResponse> {
             httpResponse.readBody(in);
         } catch (IOException e) {
             if (e instanceof FileNotFoundException) {
-                //服务器无返回内容，忽略之
+                // 服务器无返回内容，忽略之
             } else {
                 throw new HttpException(e.getMessage(), e);
             }
@@ -134,14 +133,14 @@ public class HttpResponse extends HttpBase<HttpResponse> {
 
     @Override
     public String toString() {
-        StringBuilder sb = StrUtil.builder();
-        sb.append("Request Headers: ").append(StrUtil.CRLF);
+        StringBuilder sb = StringCommand.builder();
+        sb.append("Request Headers: ").append(StringCommand.CRLF);
         for (Entry<String, List<String>> entry : this.headers.entrySet()) {
-            sb.append("    ").append(entry).append(StrUtil.CRLF);
+            sb.append("    ").append(entry).append(StringCommand.CRLF);
         }
 
-        sb.append("Request Body: ").append(StrUtil.CRLF);
-        sb.append("    ").append(this.body()).append(StrUtil.CRLF);
+        sb.append("Request Body: ").append(StringCommand.CRLF);
+        sb.append("    ").append(this.body()).append(StringCommand.CRLF);
 
         return sb.toString();
     }
@@ -165,7 +164,7 @@ public class HttpResponse extends HttpBase<HttpResponse> {
         try {
             IoCommand.copy(in, this.out);
         } catch (EOFException e) {
-            //忽略读取HTTP流中的EOF错误
+            // 忽略读取HTTP流中的EOF错误
         }
     }
     // ---------------------------------------------------------------- Private method end

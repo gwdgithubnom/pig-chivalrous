@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.io;
 
-import org.junit.Assert;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.gjgr.pig.chivalrous.core.io.file.FileTypeUtil;
+import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
+import org.junit.Assert;
 
 /**
  * 文件类型判断单元测试

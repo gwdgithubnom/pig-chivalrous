@@ -16,11 +16,11 @@
 
 package org.gjgr.pig.chivalrous.core.kit;
 
-import org.gjgr.pig.chivalrous.core.lang.ConstValueCommand;
-
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.gjgr.pig.chivalrous.core.lang.ConstEnumStringValue;
 
 /**
  * PropKit. PropKit can load properties file from CLASSPATH or File object.
@@ -39,7 +39,7 @@ public class PropKit {
      * @see #use(String, String)
      */
     public static Prop use(String fileName) {
-        return use(fileName, ConstValueCommand.DEFAULT_ENCODING);
+        return use(fileName, ConstEnumStringValue.DEFAULT_ENCODING.value());
     }
 
     /**
@@ -47,12 +47,15 @@ public class PropKit {
      * <p>
      * Example:<br>
      * PropKit.use("config.txt", "UTF-8");<br>
-     * PropKit.use("other_config.txt", "UTF-8");<br><br>
+     * PropKit.use("other_config.txt", "UTF-8");<br>
+     * <br>
      * String userName = PropKit.get("userName");<br>
-     * String password = PropKit.get("password");<br><br>
+     * String password = PropKit.get("password");<br>
+     * <br>
      * <p>
      * userName = PropKit.use("other_config.txt").get("userName");<br>
-     * password = PropKit.use("other_config.txt").get("password");<br><br>
+     * password = PropKit.use("other_config.txt").get("password");<br>
+     * <br>
      * <p>
      * PropKit.use("com/jfinal/config_in_sub_directory_of_classpath.txt");
      *
@@ -77,7 +80,7 @@ public class PropKit {
      * @see #use(File, String)
      */
     public static Prop use(File file) {
-        return use(file, ConstValueCommand.DEFAULT_ENCODING);
+        return use(file, ConstEnumStringValue.DEFAULT_ENCODING.getValue());
     }
 
     /**
@@ -117,7 +120,8 @@ public class PropKit {
 
     public static Prop getProp() {
         if (prop == null) {
-            throw new IllegalStateException("Load propties file by invoking PropKit.use(String fileName) method first.");
+            throw new IllegalStateException(
+                    "Load propties file by invoking PropKit.use(String fileName) method first.");
         }
         return prop;
     }
@@ -162,5 +166,3 @@ public class PropKit {
         return getProp().containsKey(key);
     }
 }
-
-

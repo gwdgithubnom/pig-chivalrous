@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.log.dialect.jdk;
 
-import org.gjgr.pig.chivalrous.core.log.AbstractLocationAwareLog;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.AbstractLocationAwareLog;
 
 /**
  * <a href="http://java.sun.com/javase/6/docs/technotes/guides/logging/index.html">java.util.logging</a> log.
@@ -68,12 +68,13 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, String format, Object... arguments) {
+    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, String format, Object...arguments) {
 
     }
 
     @Override
-    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
+    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+            Object...arguments) {
 
     }
 
@@ -84,12 +85,12 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void trace(String format, Object... arguments) {
+    public void trace(String format, Object...arguments) {
         logIfEnabled(Level.FINEST, null, format, arguments);
     }
 
     @Override
-    public void trace(Throwable t, String format, Object... arguments) {
+    public void trace(Throwable t, String format, Object...arguments) {
         logIfEnabled(Level.FINEST, t, format, arguments);
     }
 
@@ -100,12 +101,12 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void debug(String format, Object... arguments) {
+    public void debug(String format, Object...arguments) {
         logIfEnabled(Level.FINE, null, format, arguments);
     }
 
     @Override
-    public void debug(Throwable t, String format, Object... arguments) {
+    public void debug(Throwable t, String format, Object...arguments) {
         logIfEnabled(Level.FINE, t, format, arguments);
     }
 
@@ -116,12 +117,12 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void info(String format, Object... arguments) {
+    public void info(String format, Object...arguments) {
         logIfEnabled(Level.INFO, null, format, arguments);
     }
 
     @Override
-    public void info(Throwable t, String format, Object... arguments) {
+    public void info(Throwable t, String format, Object...arguments) {
         logIfEnabled(Level.INFO, t, format, arguments);
     }
 
@@ -132,12 +133,12 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void warn(String format, Object... arguments) {
+    public void warn(String format, Object...arguments) {
         logIfEnabled(Level.WARNING, null, format, arguments);
     }
 
     @Override
-    public void warn(Throwable t, String format, Object... arguments) {
+    public void warn(Throwable t, String format, Object...arguments) {
         logIfEnabled(Level.WARNING, t, format, arguments);
     }
 
@@ -148,49 +149,35 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void error(String format, Object... arguments) {
+    public void error(String format, Object...arguments) {
         logIfEnabled(Level.SEVERE, null, format, arguments);
     }
 
     // ------------------------------------------------------------------------- Log
 
     @Override
-    public void error(Throwable t, String format, Object... arguments) {
+    public void error(Throwable t, String format, Object...arguments) {
         logIfEnabled(Level.SEVERE, t, format, arguments);
     }
 
-    public void log(Level level, String format, Object... arguments) {
+    public void log(Level level, String format, Object...arguments) {
         this.log(level, null, format, arguments);
     }
 
-    public void log(Level level, Throwable t, String format, Object... arguments) {
+    public void log(Level level, Throwable t, String format, Object...arguments) {
         this.log(FQCN_SELF, level, t, format, arguments);
     }
 
     // ------------------------------------------------------------------------- Private method
 
-    public void log(String fqcn, Level level, Throwable t, String format, Object... arguments) {
-        /*Level jdkLevel;
-        switch (level) {
-			case TRACE:
-				jdkLevel = Level.FINEST;
-				break;
-			case DEBUG:
-				jdkLevel = Level.FINE;
-				break;
-			case INFO:
-				jdkLevel = Level.INFO;
-				break;
-			case WARN:
-				jdkLevel = Level.WARNING;
-				break;
-			case ERROR:
-				jdkLevel = Level.SEVERE;
-				break;
-			default:
-				throw new Error(StrUtil.format("Can not identify level: {}", level));
-		}
-		logIfEnabled(fqcn, jdkLevel, t, format, arguments);*/
+    public void log(String fqcn, Level level, Throwable t, String format, Object...arguments) {
+        /*
+         * Level jdkLevel; switch (level) { case TRACE: jdkLevel = Level.FINEST; break; case DEBUG: jdkLevel =
+         * Level.FINE; break; case INFO: jdkLevel = Level.INFO; break; case WARN: jdkLevel = Level.WARNING; break; case
+         * ERROR: jdkLevel = Level.SEVERE; break; default: throw new
+         * Error(StringCommand.format("Can not identify level: {}", level)); } logIfEnabled(fqcn, jdkLevel, t, format,
+         * arguments);
+         */
     }
 
     /**
@@ -216,7 +203,7 @@ public class JdkLog extends AbstractLocationAwareLog {
      */
     private void logIfEnabled(String callerFQCN, Level level, Throwable throwable, String format, Object[] arguments) {
         if (logger.isLoggable(level)) {
-            LogRecord record = new LogRecord(level, StrUtil.format(format, arguments));
+            LogRecord record = new LogRecord(level, StringCommand.format(format, arguments));
             record.setLoggerName(getName());
             record.setThrown(throwable);
             fillCallerData(callerFQCN, record);
@@ -225,7 +212,8 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
-        //TODO
+    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+            Object...arguments) {
+        // TODO
     }
 }

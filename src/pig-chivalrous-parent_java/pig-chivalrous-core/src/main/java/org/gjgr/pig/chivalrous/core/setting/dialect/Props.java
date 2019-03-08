@@ -1,21 +1,5 @@
 package org.gjgr.pig.chivalrous.core.setting.dialect;
 
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.getter.BasicTypeGetter;
-import org.gjgr.pig.chivalrous.core.getter.OptBasicTypeGetter;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
-import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
-import org.gjgr.pig.chivalrous.core.io.watch.SimpleWatcher;
-import org.gjgr.pig.chivalrous.core.io.watch.WatchMonitor;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
-import org.gjgr.pig.chivalrous.core.log.Log;
-import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.setting.SettingRuntimeException;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,6 +11,22 @@ import java.nio.file.Paths;
 import java.nio.file.WatchEvent;
 import java.util.Properties;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.getter.BasicTypeGetter;
+import org.gjgr.pig.chivalrous.core.getter.OptBasicTypeGetter;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
+import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
+import org.gjgr.pig.chivalrous.core.io.watch.SimpleWatcher;
+import org.gjgr.pig.chivalrous.core.io.watch.WatchMonitor;
+import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.Log;
+import org.gjgr.pig.chivalrous.core.log.StaticLog;
+import org.gjgr.pig.chivalrous.core.setting.SettingRuntimeException;
+
 /**
  * Properties文件读取封装类
  *
@@ -34,15 +34,15 @@ import java.util.Properties;
  */
 public final class Props extends Properties implements BasicTypeGetter<String>, OptBasicTypeGetter<String> {
     private static final long serialVersionUID = 1935981579709590740L;
-    private final static Log log = StaticLog.get();
+    private static final Log log = StaticLog.get();
 
-    //----------------------------------------------------------------------- 私有属性 start
+    // ----------------------------------------------------------------------- 私有属性 start
     /**
      * 属性文件的URL
      */
     private URL propertiesFileUrl;
     private WatchMonitor watchMonitor;
-    //----------------------------------------------------------------------- 私有属性 end
+    // ----------------------------------------------------------------------- 私有属性 end
 
     /**
      * 构造
@@ -51,7 +51,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         super();
     }
 
-    //----------------------------------------------------------------------- 构造方法 start
+    // ----------------------------------------------------------------------- 构造方法 start
 
     /**
      * 构造，使用相对于Class文件根目录的相对路径
@@ -100,7 +100,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param properties 属性文件路径
      */
     public Props(Properties properties) {
-        if (CollectionUtil.isNotEmpty(properties)) {
+        if (CollectionCommand.isNotEmpty(properties)) {
             this.putAll(properties);
         }
     }
@@ -115,7 +115,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         return new Props(resource);
     }
 
-    //----------------------------------------------------------------------- 构造方法 end
+    // ----------------------------------------------------------------------- 构造方法 end
 
     /**
      * 初始化配置文件
@@ -164,7 +164,8 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
                         }
                     }).start();
                 } catch (Exception e) {
-                    throw new SettingRuntimeException(e, "Setting auto load not support url: [{}]", this.propertiesFileUrl);
+                    throw new SettingRuntimeException(e, "Setting auto load not support url: [{}]",
+                            this.propertiesFileUrl);
                 }
             }
         } else {
@@ -173,7 +174,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         }
     }
 
-    //----------------------------------------------------------------------- Get start
+    // ----------------------------------------------------------------------- Get start
     @Override
     public Object getObj(String key, Object defaultValue) {
         return getStr(key, null == defaultValue ? null : defaultValue.toString());
@@ -207,7 +208,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     @Override
     public Character getChar(String key, Character defaultValue) {
         final String value = getStr(key);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             return defaultValue;
         }
         return value.charAt(0);
@@ -231,7 +232,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     @Override
     public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
         final String valueStr = getStr(key);
-        if (StrUtil.isBlank(valueStr)) {
+        if (StringCommand.isBlank(valueStr)) {
             return defaultValue;
         }
 
@@ -245,7 +246,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     @Override
     public BigInteger getBigInteger(String key, BigInteger defaultValue) {
         final String valueStr = getStr(key);
-        if (StrUtil.isBlank(valueStr)) {
+        if (StringCommand.isBlank(valueStr)) {
             return defaultValue;
         }
 
@@ -326,9 +327,9 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         return getEnum(clazz, key, null);
     }
 
-    //----------------------------------------------------------------------- Get end
+    // ----------------------------------------------------------------------- Get end
 
-    //----------------------------------------------------------------------- Set start
+    // ----------------------------------------------------------------------- Set start
 
     /**
      * 设置值，无给定键创建之。设置后未持久化
@@ -348,9 +349,9 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     public void store(String absolutePath) {
         try {
             FileCommand.touch(absolutePath);
-            super.store(FileCommand.getOutputStream(absolutePath), null);
+            super.store(FileCommand.bufferedOutputStream(absolutePath), null);
         } catch (FileNotFoundException e) {
-            //不会出现这个异常
+            // 不会出现这个异常
         } catch (IOException e) {
             log.error(e, "Store properties to [{}] error!", absolutePath);
         }
@@ -365,5 +366,5 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     public void store(String path, Class<?> clazz) {
         this.store(FileCommand.getAbsolutePath(path, clazz));
     }
-    //----------------------------------------------------------------------- Set end
+    // ----------------------------------------------------------------------- Set end
 }

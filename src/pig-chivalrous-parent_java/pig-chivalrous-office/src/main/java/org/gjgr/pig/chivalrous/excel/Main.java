@@ -9,7 +9,6 @@ import org.gjgr.pig.chivalrous.excel.util.VirtualEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Created by gwd on 2016/5/23.
  */
@@ -21,9 +20,7 @@ public class Main {
 
     private static String path = VirtualEnvironment.System_Path;
 
-
     public static void main(String[] args) {
-
 
     }
 
@@ -46,6 +43,5 @@ public class Main {
         PoiService.saveSheet(sheet1.getWorkbook(), path + "/alibaba.xlsx");
 
     }
-
 
 }

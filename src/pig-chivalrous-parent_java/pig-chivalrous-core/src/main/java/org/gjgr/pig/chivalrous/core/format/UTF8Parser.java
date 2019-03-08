@@ -10,8 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 /**
- * 将批量的gbk的乱码文件转换到utf8
- * 将gbk的代码放到srcDir之下，转码置destDir之下，暂不支持srcDir之下有目录，有需要再添加
+ * 将批量的gbk的乱码文件转换到utf8 将gbk的代码放到srcDir之下，转码置destDir之下，暂不支持srcDir之下有目录，有需要再添加
  */
 public class UTF8Parser {
 
@@ -19,18 +18,18 @@ public class UTF8Parser {
      * @author niewj
      * @since 2012-6-1
      */
-    static File srcDir = new File("D:/prj/java/cmm/eclipse_swt_src/src/swt/");  // 待转码的GBK格式文件夹
-    static File destDir = new File("D:/prj/java/cmm/eclipse_swt_src/src/swt_cp/");  // 转码成UTF8的目标文件夹
+    static File srcDir = new File("D:/prj/java/cmm/eclipse_swt_src/src/swt/"); // 待转码的GBK格式文件夹
+    static File destDir = new File("D:/prj/java/cmm/eclipse_swt_src/src/swt_cp/"); // 转码成UTF8的目标文件夹
 
     public static void main(String[] args) {
-        //1.判断是目录  
+        // 1.判断是目录
         if (!srcDir.isDirectory()) {
             return;
         }
-        //2.遍历所有目录  
+        // 2.遍历所有目录
         File[] fs = srcDir.listFiles();
 
-        //创建目标目录  
+        // 创建目标目录
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -60,11 +59,11 @@ public class UTF8Parser {
      */
     private void parse2UTF_8(File file, File destFile) throws IOException {
         StringBuffer msg = new StringBuffer();
-        //读写对象  
+        // 读写对象
         PrintWriter ps = new PrintWriter(new OutputStreamWriter(new FileOutputStream(destFile, false), "utf8"));
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "gbk"));
 
-        //读写动作  
+        // 读写动作
         String line = br.readLine();
         while (line != null) {
             msg.append(line).append("\r\n");
@@ -76,4 +75,4 @@ public class UTF8Parser {
         ps.close();
     }
 
-}  
+}

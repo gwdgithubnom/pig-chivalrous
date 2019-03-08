@@ -1,8 +1,7 @@
 package org.gjgr.pig.chivalrous.db;
 
-
 import org.gjgr.pig.chivalrous.core.exceptions.ExceptionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 数据库异常
@@ -20,15 +19,15 @@ public class DbRuntimeException extends RuntimeException {
         super(message);
     }
 
-    public DbRuntimeException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public DbRuntimeException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public DbRuntimeException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public DbRuntimeException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public DbRuntimeException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

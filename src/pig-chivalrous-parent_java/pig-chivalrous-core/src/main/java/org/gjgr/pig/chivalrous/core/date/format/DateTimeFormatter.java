@@ -75,10 +75,12 @@ public class DateTimeFormatter extends Format implements DateTimeParser, DateTim
      * @param pattern 使用{@link java.text.SimpleDateFormat} 相同的日期格式
      * @param timeZone 非空时区 {@link TimeZone}
      * @param locale {@link Locale} 日期地理位置
-     * @param centuryStart The start of the 100 year period to use as the "default century" for 2 digit year parsing. If centuryStart is null, defaults to now - 80 years
+     * @param centuryStart The start of the 100 year period to use as the "default century" for 2 digit year parsing. If
+     *            centuryStart is null, defaults to now - 80 years
      * @throws NullPointerException if pattern, timeZone, or locale is null.
      */
-    protected DateTimeFormatter(final String pattern, final TimeZone timeZone, final Locale locale, final Date centuryStart) {
+    protected DateTimeFormatter(final String pattern, final TimeZone timeZone, final Locale locale,
+            final Date centuryStart) {
         printer = new SimpleDateTimePrinter(pattern, timeZone, locale);
         parser = new SimpleDateTimeParser(pattern, timeZone, locale, centuryStart);
     }
@@ -281,7 +283,8 @@ public class DateTimeFormatter extends Format implements DateTimeParser, DateTim
      * @throws IllegalArgumentException
      * @since 2.1
      */
-    public static DateTimeFormatter getDateTimeInstance(final int dateStyle, final int timeStyle, final TimeZone timeZone) {
+    public static DateTimeFormatter getDateTimeInstance(final int dateStyle, final int timeStyle,
+            final TimeZone timeZone) {
         return getDateTimeInstance(dateStyle, timeStyle, timeZone, null);
     }
 
@@ -295,7 +298,8 @@ public class DateTimeFormatter extends Format implements DateTimeParser, DateTim
      * @return 本地化 {@link DateTimeFormatter}
      * @throws IllegalArgumentException
      */
-    public static DateTimeFormatter getDateTimeInstance(final int dateStyle, final int timeStyle, final TimeZone timeZone, final Locale locale) {
+    public static DateTimeFormatter getDateTimeInstance(final int dateStyle, final int timeStyle,
+            final TimeZone timeZone, final Locale locale) {
         return cache.getDateTimeInstance(dateStyle, timeStyle, timeZone, locale);
     }
     // ----------------------------------------------------------------------- Constructor end
@@ -402,6 +406,7 @@ public class DateTimeFormatter extends Format implements DateTimeParser, DateTim
 
     @Override
     public String toString() {
-        return "DateTimeFormatter[" + printer.getPattern() + "," + printer.getLocale() + "," + printer.getTimeZone().getID() + "]";
+        return "DateTimeFormatter[" + printer.getPattern() + "," + printer.getLocale() + ","
+                + printer.getTimeZone().getID() + "]";
     }
 }

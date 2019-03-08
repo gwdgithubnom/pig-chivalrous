@@ -1,17 +1,17 @@
 package org.gjgr.pig.chivalrous.core.crypto.digest;
 
-import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.HexUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 摘要算法<br>
@@ -53,7 +53,7 @@ public class Digester {
      * @return 摘要
      */
     public byte[] digest(String data, String charset) {
-        return digest(StrUtil.bytes(data, charset));
+        return digest(StringCommand.bytes(data, charset));
     }
 
     /**
@@ -63,7 +63,7 @@ public class Digester {
      * @return 摘要
      */
     public byte[] digest(String data) {
-        return digest(data, CharsetUtil.UTF_8);
+        return digest(data, CharsetCommand.UTF_8);
     }
 
     /**
@@ -74,7 +74,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(String data, String charset) {
-        return HexUtil.encodeHexStr(digest(data, charset));
+        return HexCommand.encodeHexStr(digest(data, charset));
     }
 
     /**
@@ -84,7 +84,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(String data) {
-        return digestHex(data, CharsetUtil.UTF_8);
+        return digestHex(data, CharsetCommand.UTF_8);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Digester {
     public byte[] digest(File file) {
         InputStream in = null;
         try {
-            in = FileCommand.getInputStream(file);
+            in = FileCommand.bufferedInputStream(file);
             return digest(in);
         } catch (IOException e) {
             throw new CryptoException(e);
@@ -115,7 +115,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(File file) {
-        return HexUtil.encodeHexStr(digest(file));
+        return HexCommand.encodeHexStr(digest(file));
     }
 
     /**
@@ -141,7 +141,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(byte[] data) {
-        return HexUtil.encodeHexStr(digest(data));
+        return HexCommand.encodeHexStr(digest(data));
     }
 
     /**
@@ -162,7 +162,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(InputStream data) {
-        return HexUtil.encodeHexStr(digest(data));
+        return HexCommand.encodeHexStr(digest(data));
     }
 
     /**
@@ -204,7 +204,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(InputStream data, int bufferLength) {
-        return HexUtil.encodeHexStr(digest(data, bufferLength));
+        return HexCommand.encodeHexStr(digest(data, bufferLength));
     }
 
     /**

@@ -34,7 +34,7 @@ public interface Log extends TraceLog, DebugLog, InfoLog, WarnLog, ErrorLog {
      * @param format 消息模板
      * @param arguments 参数
      */
-    void log(Level level, String format, Object... arguments);
+    void log(Level level, String format, Object...arguments);
 
     /**
      * 打印 指定级别的日志
@@ -44,5 +44,5 @@ public interface Log extends TraceLog, DebugLog, InfoLog, WarnLog, ErrorLog {
      * @param format 消息模板
      * @param arguments 参数
      */
-    void log(Level level, Throwable t, String format, Object... arguments);
+    void log(Level level, Throwable t, String format, Object...arguments);
 }

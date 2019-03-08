@@ -1,7 +1,6 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * SQL排序对象
@@ -18,7 +17,7 @@ public class Order {
      */
     private Direction direction;
 
-    //---------------------------------------------------------- Constructor start
+    // ---------------------------------------------------------- Constructor start
     public Order() {
     }
 
@@ -34,7 +33,7 @@ public class Order {
     /**
      * 构造
      *
-     * @param field     排序字段
+     * @param field 排序字段
      * @param direction 排序方式
      */
     public Order(String field, Direction direction) {
@@ -42,9 +41,9 @@ public class Order {
         this.direction = direction;
     }
 
-    //---------------------------------------------------------- Constructor end
+    // ---------------------------------------------------------- Constructor end
 
-    //---------------------------------------------------------- Getters and Setters start
+    // ---------------------------------------------------------- Getters and Setters start
 
     /**
      * @return 排序字段
@@ -77,10 +76,11 @@ public class Order {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }
-    //---------------------------------------------------------- Getters and Setters end
+    // ---------------------------------------------------------- Getters and Setters end
 
     @Override
     public String toString() {
-        return StrUtil.builder().append(this.field).append(StrUtil.SPACE).append(null == direction ? StrUtil.EMPTY : direction).toString();
+        return StringCommand.builder().append(this.field).append(StringCommand.SPACE)
+                .append(null == direction ? StringCommand.EMPTY : direction).toString();
     }
 }

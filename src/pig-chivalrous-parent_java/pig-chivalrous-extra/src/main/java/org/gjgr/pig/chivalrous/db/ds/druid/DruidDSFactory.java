@@ -1,20 +1,22 @@
 package org.gjgr.pig.chivalrous.db.ds.druid;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.db.DbRuntimeException;
-import org.gjgr.pig.chivalrous.db.ds.DSFactory;
-
-import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.setting.Setting;
+import org.gjgr.pig.chivalrous.db.DbRuntimeException;
+import org.gjgr.pig.chivalrous.db.ds.DSFactory;
+
+import com.alibaba.druid.pool.DruidDataSource;
 
 /**
  * Druid数据源工厂类
@@ -41,9 +43,9 @@ public class DruidDSFactory extends DSFactory {
     }
 
     @Override
-    synchronized public DataSource getDataSource(String group) {
+    public synchronized DataSource getDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         // 如果已经存在已有数据源（连接池）直接返回
@@ -61,7 +63,7 @@ public class DruidDSFactory extends DSFactory {
     @Override
     public void close(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         DruidDataSource dds = dsMap.get(group);
@@ -73,7 +75,7 @@ public class DruidDSFactory extends DSFactory {
 
     @Override
     public void destroy() {
-        if (CollectionUtil.isNotEmpty(dsMap)) {
+        if (CollectionCommand.isNotEmpty(dsMap)) {
             Collection<DruidDataSource> values = dsMap.values();
             for (DruidDataSource dds : values) {
                 IoCommand.close(dds);
@@ -90,34 +92,34 @@ public class DruidDSFactory extends DSFactory {
      */
     private DruidDataSource createDataSource(String group) {
         final Properties config = setting.getProperties(group);
-        if (CollectionUtil.isEmpty(config)) {
+        if (CollectionCommand.isEmpty(config)) {
             throw new DbRuntimeException("No Druid config for group: [{}]", group);
         }
 
         final DruidDataSource ds = new DruidDataSource();
-        //基本信息
+        // 基本信息
         ds.setUrl(getAndRemoveProperty(config, "url", "jdbcUrl"));
         ds.setUsername(getAndRemoveProperty(config, "username", "user"));
         ds.setPassword(getAndRemoveProperty(config, "password", "pass"));
         final String driver = getAndRemoveProperty(config, "driver", "driverClassName");
-        if (StrUtil.isNotBlank(driver)) {
+        if (StringCommand.isNotBlank(driver)) {
             ds.setDriverClassName(driver);
         }
 
-        //规范化属性名
+        // 规范化属性名
         Properties config2 = new Properties();
         String keyStr;
         for (Entry<Object, Object> entry : config.entrySet()) {
-            keyStr = StrUtil.addPrefixIfNot(Convert.toStr(entry.getKey()), "druid.");
+            keyStr = StringCommand.addPrefixIfNot(Convert.toStr(entry.getKey()), "druid.");
             config2.put(keyStr, entry.getValue());
         }
 
-        //连接池信息
+        // 连接池信息
         ds.configFromPropety(config2);
 
-        //检查关联配置，在用户未设置某项配置时，
+        // 检查关联配置，在用户未设置某项配置时，
         if (null == ds.getValidationQuery()) {
-            //在validationQuery未设置的情况下，以下三项设置都将无效
+            // 在validationQuery未设置的情况下，以下三项设置都将无效
             ds.setTestOnBorrow(false);
             ds.setTestOnReturn(false);
             ds.setTestWhileIdle(false);
@@ -130,13 +132,13 @@ public class DruidDSFactory extends DSFactory {
      * 获得指定KEY对应的值，key1和key2为属性的两个名字，可以互作别名
      *
      * @param properties 属性
-     * @param key1       属性名
-     * @param key2       备用属性名
+     * @param key1 属性名
+     * @param key2 备用属性名
      * @return 值
      */
     private String getAndRemoveProperty(Properties properties, String key1, String key2) {
         String value = (String) properties.remove(key1);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             value = (String) properties.remove(key2);
         }
         return value;

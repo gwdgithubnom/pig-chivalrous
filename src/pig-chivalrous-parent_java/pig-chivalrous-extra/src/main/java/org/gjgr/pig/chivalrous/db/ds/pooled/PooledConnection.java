@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db.ds.pooled;
 
-import org.gjgr.pig.chivalrous.db.DbUtil;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.gjgr.pig.chivalrous.db.DbUtil;
 
 /**
  * 池化
@@ -38,8 +38,7 @@ public class PooledConnection extends ConnectionWraper {
 
     /**
      * 连接是否关闭，关闭条件：<br>
-     * 1、被归还到池中
-     * 2、实际连接已关闭
+     * 1、被归还到池中 2、实际连接已关闭
      */
     @Override
     public boolean isClosed() throws SQLException {

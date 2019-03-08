@@ -68,7 +68,8 @@ public interface DateTimePrinter extends DateTimeBasic {
      * <p>
      * Formats a {@code Calendar} object into the supplied {@code Appendable}.
      * </p>
-     * The TimeZone set on the Calendar is only used to adjust the time offset. The TimeZone specified during the construction of the Parser will determine the TimeZone used in the formatted string.
+     * The TimeZone set on the Calendar is only used to adjust the time offset. The TimeZone specified during the
+     * construction of the Parser will determine the TimeZone used in the formatted string.
      *
      * @param calendar the calendar to format
      * @param buf the buffer to format into

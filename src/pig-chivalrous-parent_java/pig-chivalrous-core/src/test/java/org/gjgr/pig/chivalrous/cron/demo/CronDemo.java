@@ -11,18 +11,18 @@ public class CronDemo {
     public static void main(String[] args) {
         LogFactory.setCurrentLogFactory(ConsoleLogFactory.class);
 
-//		CronUtil.schedule("*/2 * * * * *", new Task(){
-//			
-//			@Override
-//			public void execute() {
-//				Console.log("Task excuted.");
-//			}
-//		});
+        // CronUtil.schedule("*/2 * * * * *", new Task(){
+        //
+        // @Override
+        // public void execute() {
+        // Console.log("Task excuted.");
+        // }
+        // });
 
-        //支持秒级别定时任务
+        // 支持秒级别定时任务
         CronUtil.setMatchSecond(true);
 
         CronUtil.start();
-//		CronUtil.stop();
+        // CronUtil.stop();
     }
 }

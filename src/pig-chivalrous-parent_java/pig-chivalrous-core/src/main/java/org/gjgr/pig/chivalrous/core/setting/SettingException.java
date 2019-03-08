@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.setting;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 设置异常
@@ -18,15 +18,15 @@ public class SettingException extends Exception {
         super(message);
     }
 
-    public SettingException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public SettingException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public SettingException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public SettingException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public SettingException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

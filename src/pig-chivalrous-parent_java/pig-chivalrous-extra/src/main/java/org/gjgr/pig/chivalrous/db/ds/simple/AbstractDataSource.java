@@ -1,12 +1,13 @@
 package org.gjgr.pig.chivalrous.db.ds.simple;
 
-import javax.sql.DataSource;
 import java.io.Closeable;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
+
+import javax.sql.DataSource;
 
 /**
  * 数据源抽象实现
@@ -25,16 +26,6 @@ public abstract class AbstractDataSource implements DataSource, Cloneable, Close
     }
 
     @Override
-    public int getLoginTimeout() throws SQLException {
-        return DriverManager.getLoginTimeout();
-    }
-
-    @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        DriverManager.setLoginTimeout(seconds);
-    }
-
-    @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         throw new SQLException("Can't support unwrap method!");
     }
@@ -42,6 +33,16 @@ public abstract class AbstractDataSource implements DataSource, Cloneable, Close
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         throw new SQLException("Can't support isWrapperFor method!");
+    }
+
+    @Override
+    public int getLoginTimeout() throws SQLException {
+        return DriverManager.getLoginTimeout();
+    }
+
+    @Override
+    public void setLoginTimeout(int seconds) throws SQLException {
+        DriverManager.setLoginTimeout(seconds);
     }
 
     /**

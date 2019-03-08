@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.io.watch;
 
 import org.gjgr.pig.chivalrous.core.exceptions.ExceptionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 监听异常
@@ -19,15 +19,15 @@ public class WatchException extends RuntimeException {
         super(message);
     }
 
-    public WatchException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public WatchException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public WatchException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public WatchException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public WatchException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

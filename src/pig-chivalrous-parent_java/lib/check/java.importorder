@@ -1,0 +1,9 @@
+#Organize Import Order
+#Wed Jul 18 13:24:35 CST 2018
+6=com.xiaomi
+5=com
+4=org
+3=sun
+2=javax
+1=java
+0=\#

@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.clone;
 
 import org.gjgr.pig.chivalrous.core.exceptions.ExceptionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 克隆异常
@@ -19,15 +19,15 @@ public class CloneRuntimeException extends RuntimeException {
         super(message);
     }
 
-    public CloneRuntimeException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public CloneRuntimeException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public CloneRuntimeException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public CloneRuntimeException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public CloneRuntimeException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

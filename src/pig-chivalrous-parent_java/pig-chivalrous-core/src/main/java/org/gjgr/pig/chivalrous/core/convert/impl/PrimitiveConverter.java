@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
 import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 原始类型转换器<br>
@@ -45,7 +45,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
      * @return boolean值
      */
     static boolean parseBoolean(String valueStr) {
-        if (StrUtil.isNotBlank(valueStr)) {
+        if (StringCommand.isNotBlank(valueStr)) {
             valueStr = valueStr.trim().toLowerCase();
             switch (valueStr) {
                 case "true":
@@ -66,6 +66,8 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return true;
                 case "0":
                     return false;
+                default:
+                    return false;
             }
         }
         return false;
@@ -79,7 +81,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return ((Number) value).byteValue();
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return 0;
                 }
                 return Byte.parseByte(valueStr);
@@ -89,7 +91,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return ((Number) value).shortValue();
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return 0;
                 }
                 return Short.parseShort(valueStr);
@@ -99,7 +101,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return ((Number) value).intValue();
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return 0;
                 }
                 return Integer.parseInt(valueStr);
@@ -109,7 +111,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return ((Number) value).longValue();
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return 0;
                 }
                 return Long.parseLong(valueStr);
@@ -119,7 +121,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return ((Number) value).floatValue();
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return 0;
                 }
                 return Float.parseFloat(valueStr);
@@ -129,7 +131,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return ((Number) value).doubleValue();
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return 0;
                 }
                 return Double.parseDouble(valueStr);
@@ -139,7 +141,7 @@ public class PrimitiveConverter extends AbstractConverter<Object> {
                     return ((Character) value).charValue();
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return 0;
                 }
                 return valueStr.charAt(0);

@@ -12,14 +12,14 @@ import org.gjgr.pig.chivalrous.core.setting.SettingRuntimeException;
  * @author xiaoleilu
  */
 public final class CronUtil {
-//	private final static Log log = StaticLog.get();
+    // private final static Log log = StaticLog.get();
 
     /**
      * Crontab配置文件
      */
-    public final static String CRONTAB_CONFIG_PATH = "config/cron.setting";
+    public static final String CRONTAB_CONFIG_PATH = "config/cron.setting";
 
-    private final static Scheduler scheduler = new Scheduler();
+    private static final Scheduler scheduler = new Scheduler();
     private static Setting crontabSetting;
 
     private CronUtil() {
@@ -43,7 +43,7 @@ public final class CronUtil {
         try {
             crontabSetting = new Setting(cronSettingPath, Setting.DEFAULT_CHARSET, false);
         } catch (SettingRuntimeException e) {
-            //ignore setting file newJson error
+            // ignore setting file newJson error
         }
     }
 
@@ -99,14 +99,13 @@ public final class CronUtil {
     /**
      * 开始
      */
-    synchronized public static void start() {
+    public static synchronized void start() {
         if (null == crontabSetting) {
             setCronSetting(CRONTAB_CONFIG_PATH);
         }
         if (scheduler.isStarted()) {
             throw new UtilException("Scheduler has been started, please stop it first!");
         }
-
         schedule(crontabSetting);
         scheduler.start();
     }
@@ -115,14 +114,13 @@ public final class CronUtil {
      * 重新启动定时任务<br>
      * 重新启动定时任务会清除动态加载的任务
      */
-    synchronized public static void restart() {
+    public static synchronized void restart() {
         if (null != crontabSetting) {
             crontabSetting.load();
         }
         if (scheduler.isStarted()) {
             scheduler.stop();
         }
-
         schedule(crontabSetting);
         scheduler.start();
     }
@@ -130,7 +128,7 @@ public final class CronUtil {
     /**
      * 停止
      */
-    synchronized public static void stop() {
+    public static synchronized void stop() {
         scheduler.stop();
     }
 
@@ -151,4 +149,3 @@ public final class CronUtil {
     }
 
 }
-

@@ -16,17 +16,6 @@
 
 package org.gjgr.pig.chivalrous.web.http;
 
-
-import org.gjgr.pig.chivalrous.core.kit.StrKit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,6 +33,17 @@ import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.servlet.http.HttpServletRequest;
+
+import org.gjgr.pig.chivalrous.core.kit.StrKit;
+
 /**
  * HttpKit
  */
@@ -53,14 +53,15 @@ public class HttpKit {
     private static final String POST = "POST";
     private static final String CHARSET = "UTF-8";
     private static final SSLSocketFactory sslSocketFactory = initSSLSocketFactory();
-    private static final TrustAnyHostnameVerifier trustAnyHostnameVerifier = new HttpKit().new TrustAnyHostnameVerifier();
+    private static final TrustAnyHostnameVerifier trustAnyHostnameVerifier =
+            new HttpKit().new TrustAnyHostnameVerifier();
 
     private HttpKit() {
     }
 
     private static SSLSocketFactory initSSLSocketFactory() {
         try {
-            TrustManager[] tm = {new HttpKit().new TrustAnyTrustManager()};
+            TrustManager[] tm = { new HttpKit().new TrustAnyTrustManager() };
             SSLContext sslContext = SSLContext.getInstance("TLS", "SunJSSE");
             sslContext.init(null, tm, new java.security.SecureRandom());
             return sslContext.getSocketFactory();
@@ -69,7 +70,8 @@ public class HttpKit {
         }
     }
 
-    private static HttpURLConnection getHttpConnection(String url, String method, Map<String, String> headers) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
+    private static HttpURLConnection getHttpConnection(String url, String method, Map<String, String> headers)
+            throws IOException, NoSuchAlgorithmException, NoSuchProviderException, KeyManagementException {
         URL _url = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) _url.openConnection();
         if (conn instanceof HttpsURLConnection) {
@@ -85,7 +87,8 @@ public class HttpKit {
         conn.setReadTimeout(19000);
 
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36");
+        conn.setRequestProperty("User-Agent",
+                "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36");
 
         if (headers != null && !headers.isEmpty()) {
             for (Entry<String, String> entry : headers.entrySet()) {
@@ -225,7 +228,7 @@ public class HttpKit {
         try {
             StringBuilder result = new StringBuilder();
             br = request.getReader();
-            for (String line = null; (line = br.readLine()) != null; ) {
+            for (String line = null; (line = br.readLine()) != null;) {
                 result.append(line).append("\n");
             }
 
@@ -258,22 +261,16 @@ public class HttpKit {
      */
     private class TrustAnyTrustManager implements X509TrustManager {
         @Override
-        public X509Certificate[] getAcceptedIssuers() {
-            return null;
-        }
-
-        @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
 
         @Override
         public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
+
+        @Override
+        public X509Certificate[] getAcceptedIssuers() {
+            return null;
+        }
     }
 }
-
-
-
-
-
-

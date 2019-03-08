@@ -1,11 +1,5 @@
 package org.gjgr.pig.chivalrous.core.io;
 
-import org.apache.commons.lang3.StringUtils;
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.HexUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -38,6 +32,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
+
+import org.apache.commons.lang3.StringUtils;
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.io.stream.StreamProgress;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * IO工具类
@@ -195,7 +198,8 @@ public final class IoCommand {
      * @param encoding
      * @throws IOException
      */
-    public static void writeAllLines(File file, Collection<String> lines, boolean append, String encoding) throws IOException {
+    public static void writeAllLines(File file, Collection<String> lines, boolean append, String encoding)
+            throws IOException {
         writeAllLines(new FileOutputStream(file, append), lines, encoding);
     }
 
@@ -259,7 +263,8 @@ public final class IoCommand {
      * @return 传输的byte数
      * @throws IOException
      */
-    public static long copy(Reader reader, Writer writer, int bufferSize, StreamProgress streamProgress) throws IOException {
+    public static long copy(Reader reader, Writer writer, int bufferSize, StreamProgress streamProgress)
+            throws IOException {
         char[] buffer = new char[bufferSize];
         long size = 0;
         int readSize;
@@ -315,7 +320,8 @@ public final class IoCommand {
      * @return 传输的byte数
      * @throws IOException
      */
-    public static long copy(InputStream in, OutputStream out, int bufferSize, StreamProgress streamProgress) throws IOException {
+    public static long copy(InputStream in, OutputStream out, int bufferSize, StreamProgress streamProgress)
+            throws IOException {
         if (null == in) {
             throw new NullPointerException("InputStream is null!");
         }
@@ -331,7 +337,7 @@ public final class IoCommand {
         if (null != streamProgress) {
             streamProgress.start();
         }
-        for (int readSize = -1; (readSize = in.read(buffer)) != EOF; ) {
+        for (int readSize = -1; (readSize = in.read(buffer)) != EOF;) {
             out.write(buffer, 0, readSize);
             size += readSize;
             out.flush();
@@ -346,8 +352,8 @@ public final class IoCommand {
     }
 
     /**
-     * 拷贝流
-     * thanks to: https://github.com/venusdrogon/feilong-io/blob/master/src/main/java/com/feilong/io/IOWriteUtil.java
+     * 拷贝流 thanks to:
+     * https://github.com/venusdrogon/feilong-io/blob/master/src/main/java/com/feilong/io/IOWriteUtil.java
      *
      * @param in 输入流
      * @param out 输出流
@@ -356,7 +362,8 @@ public final class IoCommand {
      * @return 传输的byte数
      * @throws IOException
      */
-    public static long copyByNIO(InputStream in, OutputStream out, int bufferSize, StreamProgress streamProgress) throws IOException {
+    public static long copyByNIO(InputStream in, OutputStream out, int bufferSize, StreamProgress streamProgress)
+            throws IOException {
         return copy(Channels.newChannel(in), Channels.newChannel(out), bufferSize, streamProgress);
     }
 
@@ -390,7 +397,8 @@ public final class IoCommand {
      * @return 拷贝的字节数
      * @throws IOException
      */
-    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize, StreamProgress streamProgress)
+    public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize,
+            StreamProgress streamProgress)
             throws IOException {
         if (null == in) {
             throw new NullPointerException("In is null!");
@@ -405,7 +413,7 @@ public final class IoCommand {
             streamProgress.start();
         }
         while (in.read(byteBuffer) != EOF) {
-            byteBuffer.flip();//写转读
+            byteBuffer.flip();// 写转读
             size += out.write(byteBuffer);
             byteBuffer.clear();
             if (null != streamProgress) {
@@ -420,7 +428,8 @@ public final class IoCommand {
     }
     // -------------------------------------------------------------------------------------- Copy end
 
-    // -------------------------------------------------------------------------------------- getReader and getWriter start
+    // -------------------------------------------------------------------------------------- getReader and getWriter
+    // start
 
     /**
      * 获得一个文件读取器
@@ -486,7 +495,8 @@ public final class IoCommand {
             return new OutputStreamWriter(out, charset);
         }
     }
-    // -------------------------------------------------------------------------------------- getReader and getWriter end
+    // -------------------------------------------------------------------------------------- getReader and getWriter
+    // end
 
     // -------------------------------------------------------------------------------------- read start
 
@@ -500,7 +510,7 @@ public final class IoCommand {
      */
     public static String read(InputStream in, String charsetName) throws IOException {
         FastByteArrayOutputStream out = read(in);
-        return StrUtil.isBlank(charsetName) ? out.toString() : out.toString(charsetName);
+        return StringCommand.isBlank(charsetName) ? out.toString() : out.toString(charsetName);
     }
 
     /**
@@ -537,7 +547,7 @@ public final class IoCommand {
      * @throws IOException
      */
     public static String read(Reader reader) throws IOException {
-        final StringBuilder builder = StrUtil.builder();
+        final StringBuilder builder = StringCommand.builder();
         final CharBuffer buffer = CharBuffer.allocate(DEFAULT_BUFFER_SIZE);
         while (-1 != reader.read(buffer)) {
             builder.append(buffer.flip().toString());
@@ -554,7 +564,7 @@ public final class IoCommand {
      * @throws IOException
      */
     public static String read(FileChannel fileChannel, String charsetName) throws IOException {
-        return read(fileChannel, CharsetUtil.charset(charsetName));
+        return read(fileChannel, CharsetCommand.charset(charsetName));
     }
 
     /**
@@ -567,7 +577,7 @@ public final class IoCommand {
      */
     public static String read(FileChannel fileChannel, Charset charset) throws IOException {
         final MappedByteBuffer buffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, 0, fileChannel.size()).load();
-        return StrUtil.str(buffer, charset);
+        return StringCommand.str(buffer, charset);
     }
 
     /**
@@ -607,7 +617,7 @@ public final class IoCommand {
      * @throws IOException
      */
     public static String readHex(InputStream in, int length, boolean toLowerCase) throws IOException {
-        return HexUtil.encodeHexStr(readBytes(in, length), toLowerCase);
+        return HexCommand.encodeHexStr(readBytes(in, length), toLowerCase);
     }
 
     /**
@@ -663,8 +673,9 @@ public final class IoCommand {
      * @return 内容
      * @throws IOException
      */
-    public static <T extends Collection<String>> T readLines(InputStream in, String charsetName, T collection) throws IOException {
-        return readLines(in, CharsetUtil.charset(charsetName), collection);
+    public static <T extends Collection<String>> T readLines(InputStream in, String charsetName, T collection)
+            throws IOException {
+        return readLines(in, CharsetCommand.charset(charsetName), collection);
     }
 
     /**
@@ -676,7 +687,8 @@ public final class IoCommand {
      * @return 内容
      * @throws IOException
      */
-    public static <T extends Collection<String>> T readLines(InputStream in, Charset charset, T collection) throws IOException {
+    public static <T extends Collection<String>> T readLines(InputStream in, Charset charset, T collection)
+            throws IOException {
         // 从返回的内容中读取所需内容
         BufferedReader reader = getReader(in, charset);
         String line = null;
@@ -696,7 +708,7 @@ public final class IoCommand {
      * @return 字节流
      */
     public static ByteArrayInputStream toStream(String content, String charsetName) {
-        return toStream(content, CharsetUtil.charset(charsetName));
+        return toStream(content, CharsetCommand.charset(charsetName));
     }
 
     /**
@@ -710,7 +722,7 @@ public final class IoCommand {
         if (content == null) {
             return null;
         }
-        return new ByteArrayInputStream(StrUtil.bytes(content, charset));
+        return new ByteArrayInputStream(StringCommand.bytes(content, charset));
     }
 
     /**
@@ -754,13 +766,14 @@ public final class IoCommand {
      * @param contents 写入的内容，调用toString()方法，不包括不会自动换行
      * @throws IOException
      */
-    public static void write(OutputStream out, String charset, boolean isCloseOut, Object... contents) throws IOException {
+    public static void write(OutputStream out, String charset, boolean isCloseOut, Object...contents)
+            throws IOException {
         OutputStreamWriter osw = null;
         try {
             osw = getWriter(out, charset);
             for (Object content : contents) {
                 if (content != null) {
-                    osw.write(Convert.toStr(content, StrUtil.EMPTY));
+                    osw.write(Convert.toStr(content, StringCommand.EMPTY));
                     osw.flush();
                 }
             }
@@ -782,7 +795,8 @@ public final class IoCommand {
      * @param contents 写入的内容
      * @throws IOException
      */
-    public static void writeObjects(OutputStream out, String charset, boolean isCloseOut, Serializable... contents) throws IOException {
+    public static void writeObjects(OutputStream out, String charset, boolean isCloseOut, Serializable...contents)
+            throws IOException {
         ObjectOutputStream osw = null;
         try {
             osw = out instanceof ObjectOutputStream ? (ObjectOutputStream) out : new ObjectOutputStream(out);
@@ -831,5 +845,26 @@ public final class IoCommand {
             closeable.close();
         } catch (Exception e) {
         }
+    }
+
+    /**
+     * This implementation opens an InputStream for the given class path resource.
+     * 
+     * @see java.lang.ClassLoader#getResourceAsStream(String)
+     * @see java.lang.Class#getResourceAsStream(String)
+     */
+    public InputStream getInputStream(Class clazz, String path, ClassLoader classLoader) throws IOException {
+        InputStream is;
+        if (clazz != null) {
+            is = clazz.getResourceAsStream(path);
+        } else if (classLoader != null) {
+            is = classLoader.getResourceAsStream(path);
+        } else {
+            is = ClassLoader.getSystemResourceAsStream(path);
+        }
+        if (is == null) {
+            throw new FileNotFoundException(path + " cannot be opened because it does not exist");
+        }
+        return is;
     }
 }

@@ -1,21 +1,5 @@
 package org.gjgr.pig.chivalrous.db;
 
-import org.gjgr.pig.chivalrous.core.log.Log;
-import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.db.dialect.Dialect;
-import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
-import org.gjgr.pig.chivalrous.db.ds.DSFactory;
-import org.gjgr.pig.chivalrous.db.meta.Column;
-import org.gjgr.pig.chivalrous.db.meta.Table;
-import org.gjgr.pig.chivalrous.db.sql.Condition;
-import org.gjgr.pig.chivalrous.db.sql.SqlFormatter;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ParameterMetaData;
@@ -31,13 +15,30 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.Log;
+import org.gjgr.pig.chivalrous.core.log.StaticLog;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.gjgr.pig.chivalrous.db.dialect.Dialect;
+import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
+import org.gjgr.pig.chivalrous.db.ds.DSFactory;
+import org.gjgr.pig.chivalrous.db.meta.Column;
+import org.gjgr.pig.chivalrous.db.meta.Table;
+import org.gjgr.pig.chivalrous.db.sql.Condition;
+import org.gjgr.pig.chivalrous.db.sql.SqlFormatter;
+
 /**
  * 数据库操作工具类
  *
  * @author Luxiaolei
  */
 public final class DbUtil {
-    private final static Log log = StaticLog.get();
+    private static final Log log = StaticLog.get();
 
     private DbUtil() {
     }
@@ -94,7 +95,7 @@ public final class DbUtil {
     /**
      * 实例化一个新的SQL运行对象
      *
-     * @param ds      数据源
+     * @param ds 数据源
      * @param dialect SQL方言
      * @return SQL执行类
      */
@@ -137,7 +138,7 @@ public final class DbUtil {
      *
      * @param objsToClose 需要关闭的对象
      */
-    public static void close(Object... objsToClose) {
+    public static void close(Object...objsToClose) {
         for (Object obj : objsToClose) {
             try {
                 if (obj != null) {
@@ -150,7 +151,8 @@ public final class DbUtil {
                     } else if (obj instanceof Connection) {
                         ((Connection) obj).close();
                     } else {
-                        log.warn("Object " + obj.getClass().getName() + " not a ResultSet or Statement or PreparedStatement or Connection!");
+                        log.warn("Object " + obj.getClass().getName()
+                                + " not a ResultSet or Statement or PreparedStatement or Connection!");
                     }
                 }
             } catch (SQLException e) {
@@ -216,13 +218,13 @@ public final class DbUtil {
         try {
             conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
-            rs = metaData.getTables(conn.getCatalog(), null, null, new String[]{"TABLES"});
+            rs = metaData.getTables(conn.getCatalog(), null, null, new String[] { "TABLES" });
             if (rs == null) {
                 return null;
             }
             while (rs.next()) {
                 final String table = rs.getString("TABLE_NAME");
-                if (StrUtil.isBlank(table) == false) {
+                if (StringCommand.isBlank(table) == false) {
                     tables.add(table);
                 }
             }
@@ -257,7 +259,7 @@ public final class DbUtil {
     /**
      * 获得表的所有列名
      *
-     * @param ds        数据源
+     * @param ds 数据源
      * @param tableName 表名
      * @return 列数组
      * @throws SQLException
@@ -285,7 +287,7 @@ public final class DbUtil {
      * 创建带有字段限制的Entity对象<br>
      * 此方法读取数据库中对应表的字段列表，加入到Entity中，当Entity被设置内容时，会忽略对应表字段外的所有KEY
      *
-     * @param ds        数据源
+     * @param ds 数据源
      * @param tableName 表名
      * @return Entity对象
      */
@@ -297,7 +299,7 @@ public final class DbUtil {
     /**
      * 获得表的元信息
      *
-     * @param ds        数据源
+     * @param ds 数据源
      * @param tableName 表名
      * @return Table对象
      */
@@ -309,13 +311,13 @@ public final class DbUtil {
         try {
             conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
-            //获得主键
+            // 获得主键
             rs = metaData.getPrimaryKeys(conn.getCatalog(), null, tableName);
             while (rs.next()) {
                 table.addPk("COLUMN_NAME");
             }
 
-            //获得列
+            // 获得列
             rs = metaData.getColumns(conn.getCatalog(), null, tableName, null);
             while (rs.next()) {
                 table.setColumn(Column.create(tableName, rs));
@@ -332,7 +334,7 @@ public final class DbUtil {
     /**
      * 填充SQL的参数。
      *
-     * @param ps     PreparedStatement
+     * @param ps PreparedStatement
      * @param params SQL参数
      * @throws SQLException
      */
@@ -343,13 +345,13 @@ public final class DbUtil {
     /**
      * 填充SQL的参数。
      *
-     * @param ps     PreparedStatement
+     * @param ps PreparedStatement
      * @param params SQL参数
      * @throws SQLException
      */
-    public static void fillParams(PreparedStatement ps, Object... params) throws SQLException {
-        if (ArrayUtil.isEmpty(params)) {
-            return;//无参数
+    public static void fillParams(PreparedStatement ps, Object...params) throws SQLException {
+        if (ArrayCommand.isEmpty(params)) {
+            return;// 无参数
         }
         ParameterMetaData pmd = ps.getParameterMetaData();
         for (int i = 0; i < params.length; i++) {
@@ -385,7 +387,7 @@ public final class DbUtil {
                 try {
                     generatedKey = rs.getLong(1);
                 } catch (SQLException e) {
-                    //自增主键不为数字或者为Oracle的rowid，跳过
+                    // 自增主键不为数字或者为Oracle的rowid，跳过
                 }
             }
             return generatedKey;
@@ -424,13 +426,13 @@ public final class DbUtil {
      * 构件相等条件的where语句<br>
      * 如果没有条件语句，泽返回空串，表示没有条件
      *
-     * @param entity      条件实体
+     * @param entity 条件实体
      * @param paramValues 条件值得存放List
      * @return 带where关键字的SQL部分
      */
     public static String buildEqualsWhere(Entity entity, List<Object> paramValues) {
         if (null == entity || entity.isEmpty()) {
-            return StrUtil.EMPTY;
+            return StringCommand.EMPTY;
         }
 
         final StringBuilder sb = new StringBuilder(" WHERE ");
@@ -471,12 +473,12 @@ public final class DbUtil {
     /**
      * 创建LIKE语句中的值
      *
-     * @param value    被查找值
+     * @param value 被查找值
      * @param likeType LIKE值类型 {@link Condition.LikeType}
      * @return 拼接后的like值
      */
     public static String buildLikeValue(String value, Condition.LikeType likeType) {
-        StringBuilder likeValue = StrUtil.builder("LIKE ");
+        StringBuilder likeValue = StringCommand.builder("LIKE ");
         switch (likeType) {
             case StartWith:
                 likeValue.append('%').append(value);
@@ -501,7 +503,7 @@ public final class DbUtil {
      * @return 驱动
      */
     public static String identifyDriver(String nameContainsProductInfo) {
-        if (StrUtil.isBlank(nameContainsProductInfo)) {
+        if (StringCommand.isBlank(nameContainsProductInfo)) {
             return null;
         }
         nameContainsProductInfo = nameContainsProductInfo.toLowerCase();
@@ -552,7 +554,7 @@ public final class DbUtil {
         try {
             DatabaseMetaData meta = conn.getMetaData();
             driver = identifyDriver(meta.getDatabaseProductName());
-            if (StrUtil.isBlank(driver)) {
+            if (StringCommand.isBlank(driver)) {
                 driver = identifyDriver(meta.getDriverName());
             }
         } catch (SQLException e) {
@@ -571,7 +573,7 @@ public final class DbUtil {
         if (null == entity) {
             throw new DbRuntimeException("Entity is null !");
         }
-        if (StrUtil.isBlank(entity.getTableName())) {
+        if (StringCommand.isBlank(entity.getTableName())) {
             throw new DbRuntimeException("Entity`s table name is null !");
         }
         if (entity.isEmpty()) {
@@ -586,7 +588,7 @@ public final class DbUtil {
      * @return RowId字符串
      */
     public static String rowIdToString(RowId rowId) {
-        return StrUtil.str(rowId.getBytes(), CharsetUtil.CHARSET_ISO_8859_1);
+        return StringCommand.str(rowId.getBytes(), CharsetCommand.CHARSET_ISO_8859_1);
     }
 
     /**
@@ -598,6 +600,6 @@ public final class DbUtil {
     public static String formatSql(String sql) {
         return SqlFormatter.format(sql);
     }
-    //---------------------------------------------------------------------------- Private method start
-    //---------------------------------------------------------------------------- Private method end
+    // ---------------------------------------------------------------------------- Private method start
+    // ---------------------------------------------------------------------------- Private method end
 }

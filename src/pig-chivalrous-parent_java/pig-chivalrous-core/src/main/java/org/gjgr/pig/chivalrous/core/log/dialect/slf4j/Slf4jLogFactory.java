@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.core.log.dialect.slf4j;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.LogFactory;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLoggerFactory;
-
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 
 /**
  * <a href="http://www.slf4j.org/">SLF4J</a> log.<br>

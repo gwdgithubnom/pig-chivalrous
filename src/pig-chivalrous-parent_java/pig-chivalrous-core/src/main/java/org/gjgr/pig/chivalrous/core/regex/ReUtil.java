@@ -3,22 +3,22 @@ package org.gjgr.pig.chivalrous.core.regex;
 /**
  * @Author gwd
  * @Time 07-25-2018  Wednesday
- * @Description: developer.tools:
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
-
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.lang.Holder;
-import org.gjgr.pig.chivalrous.core.lang.Validator;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.Holder;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.lang.Validator;
 
 /**
  * 正则相关工具类
@@ -30,17 +30,18 @@ public final class ReUtil {
     /**
      * 正则表达式匹配中文
      */
-    public final static String RE_CHINESE = "[\u4E00-\u9FFF]";
+    public static final String RE_CHINESE = "[\u4E00-\u9FFF]";
 
     /**
      * 分组
      */
-    public final static Pattern GROUP_VAR = Pattern.compile("\\$(\\d+)");
+    public static final Pattern GROUP_VAR = Pattern.compile("\\$(\\d+)");
 
     /**
      * 正则中需要被转义的关键字
      */
-    public final static Set<Character> RE_KEYS = CollectionUtil.newHashSet(new Character[] {'$', '(', ')', '*', '+', '.', '[', ']', '?', '\\', '^', '{', '}', '|'});
+    public static final Set<Character> RE_KEYS = CollectionCommand
+            .newHashSet(new Character[] { '$', '(', ')', '*', '+', '.', '[', ']', '?', '\\', '^', '{', '}', '|' });
 
     private ReUtil() {
     }
@@ -85,10 +86,7 @@ public final class ReUtil {
     /**
      * 从content中匹配出多个值并根据template生成新的字符串<br>
      * 例如：<br>
-     * content		2013年5月
-     * pattern			(.*?)年(.*?)月
-     * template：	$1-$2
-     * return 			2013-5
+     * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
      * @param pattern 匹配正则
      * @param content 被匹配的内容
@@ -117,10 +115,7 @@ public final class ReUtil {
      * 从content中匹配出多个值并根据template生成新的字符串<br>
      * 匹配结束后会删除匹配内容之前的内容（包括匹配内容）<br>
      * 例如：<br>
-     * content		2013年5月
-     * pattern			(.*?)年(.*?)月
-     * template：	$1-$2
-     * return 			2013-5
+     * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
      * @param regex 匹配正则字符串
      * @param content 被匹配的内容
@@ -140,10 +135,7 @@ public final class ReUtil {
      * 从content中匹配出多个值并根据template生成新的字符串<br>
      * 匹配结束后会删除匹配内容之前的内容（包括匹配内容）<br>
      * 例如：<br>
-     * content		2013年5月
-     * pattern			(.*?)年(.*?)月
-     * template：	$1-$2
-     * return 			2013-5
+     * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
      * @param pattern 匹配正则
      * @param contentHolder 被匹配的内容的Holder，value为内容正文，经过这个方法的原文将被去掉匹配之前的内容
@@ -164,7 +156,7 @@ public final class ReUtil {
                 int group = Integer.parseInt(var);
                 template = template.replace("$" + var, matcher.group(group));
             }
-            contentHolder.set(StrUtil.sub(content, matcher.end(), content.length()));
+            contentHolder.set(StringCommand.sub(content, matcher.end(), content.length()));
             return template;
         }
         return null;
@@ -173,10 +165,7 @@ public final class ReUtil {
     /**
      * 从content中匹配出多个值并根据template生成新的字符串<br>
      * 例如：<br>
-     * content		2013年5月
-     * pattern			(.*?)年(.*?)月
-     * template：	$1-$2
-     * return 			2013-5
+     * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
      * @param regex 匹配正则字符串
      * @param contentHolder 被匹配的内容的Holder，value为内容正文，经过这个方法的原文将被去掉匹配之前的内容
@@ -221,7 +210,7 @@ public final class ReUtil {
 
         Matcher matcher = Pattern.compile(regex, Pattern.DOTALL).matcher(content);
         if (matcher.find()) {
-            return StrUtil.sub(content, matcher.end(), content.length());
+            return StringCommand.sub(content, matcher.end(), content.length());
         }
         return content;
     }
@@ -259,7 +248,7 @@ public final class ReUtil {
         }
 
         if (null == collection) {
-            throw new NullPointerException("Null collection param provided!");
+            throw new NullPointerException("Null collection paramMap provided!");
         }
 
         Matcher matcher = pattern.matcher(content);
@@ -325,12 +314,12 @@ public final class ReUtil {
      */
     public static boolean isMatch(String regex, String content) {
         if (content == null) {
-            //提供null的字符串为不匹配
+            // 提供null的字符串为不匹配
             return false;
         }
 
-        if (StrUtil.isEmpty(regex)) {
-            //正则不存在则为全匹配
+        if (StringCommand.isEmpty(regex)) {
+            // 正则不存在则为全匹配
             return true;
         }
 
@@ -346,7 +335,7 @@ public final class ReUtil {
      */
     public static boolean isMatch(Pattern pattern, String content) {
         if (content == null || pattern == null) {
-            //提供null的字符串为不匹配
+            // 提供null的字符串为不匹配
             return false;
         }
         return pattern.matcher(content).matches();
@@ -377,7 +366,7 @@ public final class ReUtil {
      * @since 3.0.4
      */
     public static String replaceAll(String content, Pattern pattern, String replacementTemplate) {
-        if (StrUtil.isEmpty(content)) {
+        if (StringCommand.isEmpty(content)) {
             return content;
         }
 
@@ -408,7 +397,7 @@ public final class ReUtil {
      * @return 转义后的文本
      */
     public static String escape(String content) {
-        if (StrUtil.isBlank(content)) {
+        if (StringCommand.isBlank(content)) {
             return content;
         }
 

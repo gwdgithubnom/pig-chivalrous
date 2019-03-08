@@ -1,15 +1,15 @@
 package org.gjgr.pig.chivalrous.core.convert;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.HexUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 类型转换器
@@ -390,7 +390,7 @@ public final class Convert {
             return myE;
         }
         final String valueStr = toStr(value, null);
-        if (StrUtil.isBlank(valueStr)) {
+        if (StringCommand.isBlank(valueStr)) {
             return defaultValue;
         }
         try {
@@ -456,7 +456,7 @@ public final class Convert {
      * @return 全角字符串.
      */
     public static String toSBC(String input, Set<Character> notConvertSet) {
-        char c[] = input.toCharArray();
+        char[] c = input.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (null != notConvertSet && notConvertSet.contains(c[i])) {
                 // 跳过不替换的字符
@@ -491,7 +491,7 @@ public final class Convert {
      * @return 替换后的字符
      */
     public static String toDBC(String text, Set<Character> notConvertSet) {
-        char c[] = text.toCharArray();
+        char[] c = text.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (null != notConvertSet && notConvertSet.contains(c[i])) {
                 // 跳过不替换的字符
@@ -519,7 +519,7 @@ public final class Convert {
      * @return 16进制字符串
      */
     public static String toHex(String str, Charset charset) {
-        return HexUtil.encodeHexStr(str.getBytes(charset));
+        return HexCommand.encodeHexStr(str.getBytes(charset));
     }
 
     /**
@@ -529,7 +529,7 @@ public final class Convert {
      * @return 转换后的值
      */
     public static String toHex(byte[] bytes) {
-        return HexUtil.encodeHexStr(bytes);
+        return HexCommand.encodeHexStr(bytes);
     }
 
     /**
@@ -539,7 +539,7 @@ public final class Convert {
      * @return byte[]
      */
     public static byte[] hexToBytes(String src) {
-        return HexUtil.decodeHex(src.toCharArray());
+        return HexCommand.decodeHex(src.toCharArray());
     }
 
     /**
@@ -550,7 +550,7 @@ public final class Convert {
      * @return 对应的字符串
      */
     public static String hexStrToStr(String hexStr, Charset charset) {
-        return HexUtil.decodeHexStr(hexStr, charset);
+        return HexCommand.decodeHexStr(hexStr, charset);
     }
 
     /**
@@ -570,8 +570,8 @@ public final class Convert {
             strHex = Integer.toHexString(intAsc);
             if (intAsc > 128) {
                 str.append("\\u" + strHex);
-            } else // 低位在前面补00
-            {
+            } else {
+                // 低位在前面补00
                 str.append("\\u00" + strHex);
             }
         }
@@ -612,11 +612,11 @@ public final class Convert {
      * @return 转换后的字符串
      */
     public static String convertCharset(String str, String sourceCharset, String destCharset) {
-        if (StrUtil.hasBlank(str, sourceCharset, destCharset)) {
+        if (StringCommand.hasBlank(str, sourceCharset, destCharset)) {
             return str;
         }
 
-        return CharsetUtil.convert(str, sourceCharset, destCharset);
+        return CharsetCommand.convert(str, sourceCharset, destCharset);
     }
 
     /**
@@ -640,9 +640,9 @@ public final class Convert {
      * @return 中文大写数字
      */
     public static String digitUppercase(double n) {
-        String fraction[] = {"角", "分"};
-        String digit[] = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
-        String unit[][] = {{"元", "万", "亿"}, {"", "拾", "佰", "仟"}};
+        String[] fraction = { "角", "分" };
+        String[] digit = { "零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖" };
+        String[][] unit = { { "元", "万", "亿" }, { "", "拾", "佰", "仟" } };
 
         String head = n < 0 ? "负" : "";
         n = Math.abs(n);
@@ -664,10 +664,11 @@ public final class Convert {
             }
             s = p.replaceAll("(零.)*零$", "").replaceAll("^$", "零") + unit[0][i] + s;
         }
-        return head + s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", "").replaceAll("(零.)+", "零").replaceAll("^整$", "零元整");
+        return head + s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", "").replaceAll("(零.)+", "零").replaceAll("^整$",
+                "零元整");
     }
 
-    //--------------------------------------------------------------- 原始包装类型转换
+    // --------------------------------------------------------------- 原始包装类型转换
 
     /**
      * 原始类转为包装类，非原始类返回原类

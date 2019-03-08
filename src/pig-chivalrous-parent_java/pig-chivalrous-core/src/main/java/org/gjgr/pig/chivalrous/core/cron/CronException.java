@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.cron;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 定时任务异常
@@ -18,11 +18,11 @@ public class CronException extends RuntimeException {
         super(message);
     }
 
-    public CronException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public CronException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
-    public CronException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public CronException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

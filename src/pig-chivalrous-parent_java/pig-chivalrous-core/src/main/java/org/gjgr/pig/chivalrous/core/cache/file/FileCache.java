@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.cache.file;
 
-import org.gjgr.pig.chivalrous.core.cache.Cache;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.gjgr.pig.chivalrous.core.cache.Cache;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 
 /**
  * 文件缓存，以解决频繁读取文件引起的性能问题
@@ -122,13 +122,13 @@ public abstract class FileCache {
         bytes = FileCommand.readBytes(file);
 
         if ((maxFileSize != 0) && (file.length() > maxFileSize)) {
-            //大于缓存空间，不缓存，直接返回
+            // 大于缓存空间，不缓存，直接返回
             return bytes;
         }
 
         usedSize += bytes.length;
 
-        //文件放入缓存，如果usedSize > capacity，purge()方法将被调用
+        // 文件放入缓存，如果usedSize > capacity，purge()方法将被调用
         cache.put(file, bytes);
 
         return bytes;

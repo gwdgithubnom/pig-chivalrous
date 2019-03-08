@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.date;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.gjgr.pig.chivalrous.core.date.BetweenFormater.Level;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class DateUtilTest {
 
@@ -71,10 +71,10 @@ public class DateUtilTest {
         Date newDate = DateTimeCommand.offset(date, DateField.DAY_OF_MONTH, 2);
         Assert.assertEquals("2017-03-03 22:33:23", newDate.toString());
 
-        //常用偏移
+        // 常用偏移
         DateTime newDate2 = DateTimeCommand.offsetDay(date, 3);
         Assert.assertEquals("2017-03-04 22:33:23", newDate2.toString());
-        //常用偏移
+        // 常用偏移
         DateTime newDate3 = DateTimeCommand.offsetHour(date, -3);
         Assert.assertEquals("2017-03-01 19:33:23", newDate3.toString());
     }
@@ -88,7 +88,7 @@ public class DateUtilTest {
         Date date2 = DateTimeCommand.parse(dateStr2);
 
         long betweenDay = DateTimeCommand.between(date1, date2, DateUnit.DAY);
-        Assert.assertEquals(31, betweenDay);//相差一个月，31天
+        Assert.assertEquals(31, betweenDay);// 相差一个月，31天
 
         long between = DateTimeCommand.between(date1, date2, DateUnit.MS);
         String formatBetween = DateTimeCommand.formatBetween(between, Level.MINUTE);
@@ -99,12 +99,12 @@ public class DateUtilTest {
     public void timerTest() {
         TimeInterval timer = DateTimeCommand.timer();
 
-        //---------------------------------
-        //-------这是执行过程
-        //---------------------------------
+        // ---------------------------------
+        // -------这是执行过程
+        // ---------------------------------
 
-        timer.interval();//花费毫秒数
-        timer.intervalRestart();//返回花费时间，并重置开始时间
-        timer.intervalMinute();//花费分钟数
+        timer.interval();// 花费毫秒数
+        timer.intervalRestart();// 返回花费时间，并重置开始时间
+        timer.intervalMinute();// 花费分钟数
     }
 }

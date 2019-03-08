@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.db.handler;
 
-import org.gjgr.pig.chivalrous.db.Entity;
-
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Collection;
+
+import org.gjgr.pig.chivalrous.db.Entity;
 
 /**
  * 数据结果集处理辅助类
@@ -17,8 +17,8 @@ public class HandleHelper {
      * 处理单条数据
      *
      * @param columnCount 列数
-     * @param meta        ResultSetMetaData
-     * @param rs          数据集
+     * @param meta ResultSetMetaData
+     * @param rs 数据集
      * @return 每一行的Entity
      * @throws SQLException
      */
@@ -31,7 +31,6 @@ public class HandleHelper {
         }
         return row;
     }
-
 
     /**
      * 处理单条数据
@@ -50,7 +49,7 @@ public class HandleHelper {
      * 处理多条数据
      *
      * @param <T>
-     * @param rs         数据集
+     * @param rs 数据集
      * @param collection 数据集
      * @return Entity列表
      * @throws SQLException

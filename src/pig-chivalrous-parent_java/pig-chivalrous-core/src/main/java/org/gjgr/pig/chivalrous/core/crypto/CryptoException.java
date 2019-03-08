@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.crypto;
 
 import org.gjgr.pig.chivalrous.core.exceptions.ExceptionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 加密异常
@@ -19,15 +19,15 @@ public class CryptoException extends RuntimeException {
         super(message);
     }
 
-    public CryptoException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public CryptoException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public CryptoException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public CryptoException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public CryptoException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

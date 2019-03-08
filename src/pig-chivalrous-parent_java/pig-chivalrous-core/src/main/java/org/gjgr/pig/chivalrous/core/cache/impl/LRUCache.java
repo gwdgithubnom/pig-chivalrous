@@ -38,7 +38,7 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
         this.capacity = capacity;
         this.timeout = timeout;
 
-        //链表key按照访问顺序排序，调用get方法后，会将这次访问的元素移至头部
+        // 链表key按照访问顺序排序，调用get方法后，会将这次访问的元素移至头部
         cacheMap = new LinkedHashMap<K, CacheObj<K, V>>(capacity + 1, 1.0f, true) {
             private static final long serialVersionUID = -1806954614512571136L;
 
@@ -47,7 +47,7 @@ public class LRUCache<K, V> extends AbstractCache<K, V> {
                 if (LRUCache.this.capacity == 0) {
                     return false;
                 }
-                //当链表元素大于容量时，移除最老（最久未被使用）的元素
+                // 当链表元素大于容量时，移除最老（最久未被使用）的元素
                 return size() > LRUCache.this.capacity;
             }
         };

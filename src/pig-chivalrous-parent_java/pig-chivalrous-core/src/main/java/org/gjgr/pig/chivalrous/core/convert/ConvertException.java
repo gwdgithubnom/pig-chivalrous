@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.convert;
 
 import org.gjgr.pig.chivalrous.core.exceptions.ExceptionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 转换异常
@@ -19,15 +19,15 @@ public class ConvertException extends RuntimeException {
         super(message);
     }
 
-    public ConvertException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public ConvertException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public ConvertException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public ConvertException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public ConvertException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

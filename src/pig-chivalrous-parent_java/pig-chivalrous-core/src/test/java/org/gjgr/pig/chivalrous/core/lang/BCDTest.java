@@ -9,10 +9,10 @@ public class BCDTest {
     public void bcdTest() {
         String strForTest = "123456ABCDEF";
 
-        //转BCD
+        // 转BCD
         byte[] bcd = BCD.strToBcd(strForTest);
         String str = BCD.bcdToStr(bcd);
-        //解码BCD
+        // 解码BCD
         Assert.assertEquals(strForTest, str);
     }
 }

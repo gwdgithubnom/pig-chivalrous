@@ -1,15 +1,5 @@
 package org.gjgr.pig.chivalrous.core.setting;
 
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
-import org.gjgr.pig.chivalrous.core.log.Log;
-import org.gjgr.pig.chivalrous.core.log.LogFactory;
-import org.gjgr.pig.chivalrous.core.setting.dialect.BasicSetting;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.RegexCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -20,6 +10,16 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.Log;
+import org.gjgr.pig.chivalrous.core.log.LogFactory;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.gjgr.pig.chivalrous.core.setting.dialect.BasicSetting;
+import org.gjgr.pig.chivalrous.core.util.RegexCommand;
+
 /**
  * Setting文件加载器
  *
@@ -29,15 +29,15 @@ public class SettingLoader {
     /**
      * 注释符号（当有此符号在行首，表示此行为注释）
      */
-    private final static String COMMENT_FLAG_PRE = "#";
+    private static final String COMMENT_FLAG_PRE = "#";
     /**
      * 赋值分隔符（用于分隔键值对）
      */
-    private final static String ASSIGN_FLAG = "=";
+    private static final String ASSIGN_FLAG = "=";
     /**
      * 分组行识别的环绕标记
      */
-    private final static char[] GROUP_SURROUND = {'[', ']'};
+    private static final char[] GROUP_SURROUND = { '[', ']' };
     private static Log log = LogFactory.get();
     /**
      * 变量名称的正则
@@ -58,7 +58,7 @@ public class SettingLoader {
     private BasicSetting setting;
 
     public SettingLoader(BasicSetting setting) {
-        this(setting, CharsetUtil.CHARSET_UTF_8, false);
+        this(setting, CharsetCommand.CHARSET_UTF_8, false);
     }
 
     public SettingLoader(BasicSetting setting, Charset charset, boolean isUseVariable) {
@@ -113,7 +113,7 @@ public class SettingLoader {
                 }
                 line = line.trim();
                 // 跳过注释行和空行
-                if (StrUtil.isBlank(line) || line.startsWith(COMMENT_FLAG_PRE)) {
+                if (StringCommand.isBlank(line) || line.startsWith(COMMENT_FLAG_PRE)) {
                     continue;
                 }
 
@@ -131,8 +131,8 @@ public class SettingLoader {
                 }
 
                 String key = keyValue[0].trim();
-                if (false == StrUtil.isBlank(group)) {
-                    key = group + StrUtil.DOT + key;
+                if (false == StringCommand.isBlank(group)) {
+                    key = group + StringCommand.DOT + key;
                 }
                 String value = keyValue[1].trim();
 
@@ -167,12 +167,12 @@ public class SettingLoader {
     public void store(String absolutePath) {
         Writer writer = null;
         try {
-            writer = FileCommand.getWriter(absolutePath, charset, false);
+            writer = FileCommand.bufferedWriter(absolutePath, charset, false);
             for (Entry<Object, Object> entry : this.setting.entrySet()) {
-                writer.write(StrUtil.format("{} {} {}", entry.getKey(), ASSIGN_FLAG, entry.getValue()));
+                writer.write(StringCommand.format("{} {} {}", entry.getKey(), ASSIGN_FLAG, entry.getValue()));
             }
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(StrUtil.format("Can not find file [{}]!", absolutePath), e);
+            throw new RuntimeException(StringCommand.format("Can not find file [{}]!", absolutePath), e);
         } catch (IOException e) {
             throw new RuntimeException("Store Setting error!", e);
         } finally {
@@ -183,7 +183,7 @@ public class SettingLoader {
     public void autoReload() {
     }
 
-    //----------------------------------------------------------------------------------- Private method start
+    // ----------------------------------------------------------------------------------- Private method start
 
     /**
      * 替换给定值中的变量标识
@@ -204,5 +204,5 @@ public class SettingLoader {
         }
         return value;
     }
-    //----------------------------------------------------------------------------------- Private method end
+    // ----------------------------------------------------------------------------------- Private method end
 }

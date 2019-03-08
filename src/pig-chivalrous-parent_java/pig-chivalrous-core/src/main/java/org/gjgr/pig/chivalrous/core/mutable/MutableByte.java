@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.mutable;
 
-import org.gjgr.pig.chivalrous.core.util.NumberUtil;
+import org.gjgr.pig.chivalrous.core.math.NumberCommand;
 
 /**
  * 可变 <code>byte</code> 类型
@@ -207,7 +207,7 @@ public class MutableByte extends Number implements Comparable<MutableByte>, Muta
      */
     @Override
     public int compareTo(final MutableByte other) {
-        return NumberUtil.compare(this.value, other.value);
+        return NumberCommand.compare(this.value, other.value);
     }
 
 }

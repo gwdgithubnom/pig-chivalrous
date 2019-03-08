@@ -24,7 +24,7 @@ public interface TraceLog {
      * @param format 消息模板
      * @param arguments 参数
      */
-    void trace(String format, Object... arguments);
+    void trace(String format, Object...arguments);
 
     /**
      * 打印 TRACE 等级的日志
@@ -33,5 +33,5 @@ public interface TraceLog {
      * @param format 消息模板
      * @param arguments 参数
      */
-    void trace(Throwable t, String format, Object... arguments);
+    void trace(Throwable t, String format, Object...arguments);
 }

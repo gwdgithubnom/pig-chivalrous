@@ -1,25 +1,44 @@
 package org.gjgr.pig.chivalrous.core.entity;
 
-import com.google.gson.JsonObject;
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-
 import java.io.Serializable;
 import java.util.HashMap;
+
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+
+import com.google.gson.JsonObject;
 
 /**
  * Created by gwd on 2016/4/28.
  */
-public class Message implements Serializable {
+public class Message implements Serializable, Cloneable {
 
-    private Integer code;
-    private String version;
-    private String type;
-    private String message;
-    private Object data;
-    private Object datum;
-    private HashMap<String, Object> info = new HashMap();
+    protected String version;
+    protected Integer code;
+    protected Integer status;
+    protected String type;
+    protected String message;
+    protected Object data;
+    protected Object datum;
+    protected Long timestamp;
+    /**
+     * description of message information user, owner, name, group and other information.
+     */
+    protected HashMap<String, Object> info = new HashMap();
 
-    public Message() {
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getVersion() {
@@ -85,7 +104,7 @@ public class Message implements Serializable {
         return this;
     }
 
-    public JsonObject getDataOrDefault() {
+    public JsonObject dataOrDefault() {
         if (this.data == null) {
             this.data = new JsonObject();
             return (JsonObject) this.data;
@@ -102,7 +121,6 @@ public class Message implements Serializable {
         } else if (this.data instanceof JsonObject) {
             return (JsonObject) this.data;
         }
-
         return null;
     }
 
@@ -115,7 +133,7 @@ public class Message implements Serializable {
         if (jsonObject.get("message").isJsonNull()) {
             jsonObject.remove("message");
         }
-        if (info.size()==0||jsonObject.get("info").isJsonNull()) {
+        if (info.size() == 0 || jsonObject.get("info").isJsonNull()) {
             jsonObject.remove("info");
         }
         if (jsonObject.get("datum").isJsonNull()) {
@@ -130,19 +148,31 @@ public class Message implements Serializable {
         if (jsonObject.get("type").isJsonNull()) {
             jsonObject.remove("type");
         }
+        if (jsonObject.get("timestamp").isJsonNull()) {
+            jsonObject.remove("timestamp");
+        }
+        if (jsonObject.get("status").isJsonNull()) {
+            jsonObject.remove("status");
+        }
         return jsonObject.toString();
     }
 
     @Override
     public String toString() {
-        String s = this.getData().toString();
+        String s = null;
+        if (this.data != null) {
+            s = this.data.toString();
+        }
         String ss;
         if (this.datum != null && this.data != null) {
-            ss = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"datum\":" + this.datum.toString() + ",\"data\":" + s + "}";
-        } else if (this.datum != null) {
-            ss = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"data\":" + this.data.toString() + "}";
+            ss = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message
+                    + ",\"datum\":" + this.datum.toString() + ",\"data\":" + s + "}";
         } else if (this.data != null) {
-            ss = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"datum\":" + this.datum.toString() + "}";
+            ss = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"data\":"
+                    + this.data.toString() + "}";
+        } else if (this.data != null && this.datum != null) {
+            ss = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message
+                    + ",\"datum\":" + this.datum.toString() + "}";
         } else {
             ss = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + "}";
         }
@@ -153,11 +183,14 @@ public class Message implements Serializable {
     public String toString(String data, String info) {
         String s;
         if (data != null && info != null) {
-            s = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"datum\":" + data + ",\"data\":" + info + "}";
+            s = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"datum\":"
+                    + data + ",\"data\":" + info + "}";
         } else if (info != null) {
-            s = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"data\":" + info + "}";
+            s = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"data\":"
+                    + info + "}";
         } else {
-            s = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"datum\":" + data + "}";
+            s = "{\"code\":" + this.code + "\",\"type\":" + this.type + "\",\"message\":" + this.message + ",\"datum\":"
+                    + data + "}";
         }
 
         return s;

@@ -1,22 +1,23 @@
 package org.gjgr.pig.chivalrous.core.crypto.symmetric;
 
-import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
-import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.HexUtil;
-import org.gjgr.pig.chivalrous.core.util.RandomCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.PBEParameterSpec;
+
+import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
+import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.gjgr.pig.chivalrous.core.util.RandomCommand;
 
 /**
  * 对称加密算法<br>
@@ -39,7 +40,7 @@ public class SymmetricCrypto {
     private AlgorithmParameterSpec params;
     private Lock lock = new ReentrantLock();
 
-    //------------------------------------------------------------------ Constructor start
+    // ------------------------------------------------------------------ Constructor start
 
     /**
      * 构造，使用随机密钥
@@ -78,7 +79,7 @@ public class SymmetricCrypto {
     public SymmetricCrypto(String algorithm, byte[] key) {
         init(algorithm, key);
     }
-    //------------------------------------------------------------------ Constructor end
+    // ------------------------------------------------------------------ Constructor end
 
     /**
      * 初始化
@@ -101,7 +102,7 @@ public class SymmetricCrypto {
     public SymmetricCrypto init(String algorithm, SecretKey key) {
         this.secretKey = key;
         if (algorithm.startsWith("PBE")) {
-            //对于PBE算法使用随机数加盐
+            // 对于PBE算法使用随机数加盐
             this.params = new PBEParameterSpec(RandomCommand.randomBytes(8), 100);
         }
         try {
@@ -112,7 +113,7 @@ public class SymmetricCrypto {
         return this;
     }
 
-    //--------------------------------------------------------------------------------- Encrypt
+    // --------------------------------------------------------------------------------- Encrypt
 
     /**
      * 加密
@@ -143,7 +144,7 @@ public class SymmetricCrypto {
      * @return 加密后的Hex
      */
     public String encryptHex(byte[] data) {
-        return HexUtil.encodeHexStr(encrypt(data));
+        return HexCommand.encodeHexStr(encrypt(data));
     }
 
     /**
@@ -154,7 +155,7 @@ public class SymmetricCrypto {
      * @return 加密后的bytes
      */
     public byte[] encrypt(String data, String charset) {
-        return encrypt(StrUtil.bytes(data, charset));
+        return encrypt(StringCommand.bytes(data, charset));
     }
 
     /**
@@ -165,7 +166,7 @@ public class SymmetricCrypto {
      * @return 加密后的Hex
      */
     public String encryptHex(String data, String charset) {
-        return HexUtil.encodeHexStr(encrypt(data, charset));
+        return HexCommand.encodeHexStr(encrypt(data, charset));
     }
 
     /**
@@ -175,7 +176,7 @@ public class SymmetricCrypto {
      * @return 加密后的bytes
      */
     public byte[] encrypt(String data) {
-        return encrypt(StrUtil.bytes(data, CharsetUtil.CHARSET_UTF_8));
+        return encrypt(StringCommand.bytes(data, CharsetCommand.CHARSET_UTF_8));
     }
 
     /**
@@ -185,7 +186,7 @@ public class SymmetricCrypto {
      * @return 加密后的Hex
      */
     public String encryptHex(String data) {
-        return HexUtil.encodeHexStr(encrypt(data));
+        return HexCommand.encodeHexStr(encrypt(data));
     }
 
     /**
@@ -209,9 +210,9 @@ public class SymmetricCrypto {
      * @return 加密后的Hex
      */
     public String encryptHex(InputStream data) {
-        return HexUtil.encodeHexStr(encrypt(data));
+        return HexCommand.encodeHexStr(encrypt(data));
     }
-    //--------------------------------------------------------------------------------- Decrypt
+    // --------------------------------------------------------------------------------- Decrypt
 
     /**
      * 解密
@@ -243,7 +244,7 @@ public class SymmetricCrypto {
      * @return 解密后的String
      */
     public String decryptStr(byte[] bytes, Charset charset) {
-        return StrUtil.str(decrypt(bytes), charset);
+        return StringCommand.str(decrypt(bytes), charset);
     }
 
     /**
@@ -253,7 +254,7 @@ public class SymmetricCrypto {
      * @return 解密后的String
      */
     public String decryptStr(byte[] bytes) {
-        return decryptStr(bytes, CharsetUtil.CHARSET_UTF_8);
+        return decryptStr(bytes, CharsetCommand.CHARSET_UTF_8);
     }
 
     /**
@@ -263,7 +264,7 @@ public class SymmetricCrypto {
      * @return 解密后的bytes
      */
     public byte[] decrypt(String data) {
-        return decrypt(HexUtil.decodeHex(data));
+        return decrypt(HexCommand.decodeHex(data));
     }
 
     /**
@@ -274,7 +275,7 @@ public class SymmetricCrypto {
      * @return 解密后的String
      */
     public String decryptStr(String data, Charset charset) {
-        return StrUtil.str(decrypt(data), charset);
+        return StringCommand.str(decrypt(data), charset);
     }
 
     /**
@@ -284,7 +285,7 @@ public class SymmetricCrypto {
      * @return 解密后的String
      */
     public String decryptStr(String data) {
-        return decryptStr(data, CharsetUtil.CHARSET_UTF_8);
+        return decryptStr(data, CharsetCommand.CHARSET_UTF_8);
     }
 
     /**
@@ -309,7 +310,7 @@ public class SymmetricCrypto {
      * @return 解密后的String
      */
     public String decryptStr(InputStream data, Charset charset) {
-        return StrUtil.str(decrypt(data), charset);
+        return StringCommand.str(decrypt(data), charset);
     }
 
     /**
@@ -319,10 +320,10 @@ public class SymmetricCrypto {
      * @return 解密后的String
      */
     public String decryptStr(InputStream data) {
-        return decryptStr(data, CharsetUtil.CHARSET_UTF_8);
+        return decryptStr(data, CharsetCommand.CHARSET_UTF_8);
     }
 
-    //--------------------------------------------------------------------------------- Getters
+    // --------------------------------------------------------------------------------- Getters
 
     /**
      * 获得对称密钥

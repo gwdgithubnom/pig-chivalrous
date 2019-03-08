@@ -62,7 +62,7 @@ public class LFUCache<K, V> extends AbstractCache<K, V> {
                 continue;
             }
 
-            //找出访问最少的对象
+            // 找出访问最少的对象
             if (comin == null || co.accessCount < comin.accessCount) {
                 comin = co;
             }

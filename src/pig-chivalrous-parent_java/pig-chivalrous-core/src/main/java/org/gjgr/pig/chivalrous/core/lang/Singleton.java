@@ -1,7 +1,5 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,14 +23,14 @@ public final class Singleton {
      * @return 单例对象
      */
     @SuppressWarnings("unchecked")
-    public static <T> T get(Class<T> clazz, Object... params) {
+    public static <T> T get(Class<T> clazz, Object...params) {
         T obj = (T) pool.get(clazz);
 
         if (null == obj) {
             synchronized (Singleton.class) {
                 obj = (T) pool.get(clazz);
                 if (null == obj) {
-                    obj = ClassUtil.newInstance(clazz, params);
+                    obj = ClassCommand.newInstance(clazz, params);
                     pool.put(clazz, obj);
                 }
             }
@@ -49,8 +47,8 @@ public final class Singleton {
      * @param params 构造参数
      * @return 单例对象
      */
-    public static <T> T get(String className, Object... params) {
-        final Class<T> clazz = ClassUtil.loadClass(className);
+    public static <T> T get(String className, Object...params) {
+        final Class<T> clazz = ClassCommand.loadClass(className);
         return get(clazz, params);
     }
 

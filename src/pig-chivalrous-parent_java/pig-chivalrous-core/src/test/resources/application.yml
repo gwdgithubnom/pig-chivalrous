@@ -9,6 +9,3 @@ push:
     category: S:category
     description: E:description
   type: push
-agentSource:
-  push:
-  - http: abc

@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.exceptions;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 未初始化异常
@@ -18,15 +18,15 @@ public class NotInitedException extends RuntimeException {
         super(message);
     }
 
-    public NotInitedException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+    public NotInitedException(String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public NotInitedException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public NotInitedException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+    public NotInitedException(Throwable throwable, String messageTemplate, Object...params) {
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

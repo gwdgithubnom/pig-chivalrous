@@ -1,11 +1,5 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.core.util.URLUtil;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.lang.annotation.Annotation;
@@ -15,13 +9,17 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 /**
  * 类扫描器
  *
  * @author Looly
  */
 public final class ClassScaner {
-//	private static Log log = LogFactory.get();
+    // private static Log log = LogFactory.get();
 
     /**
      * 文件过滤器，过滤掉不需要的文件<br>
@@ -44,7 +42,8 @@ public final class ClassScaner {
      * @param annotationClass 注解类
      * @return 类集合
      */
-    public static Set<Class<?>> scanPackageByAnnotation(String packageName, final Class<? extends Annotation> annotationClass) {
+    public static Set<Class<?>> scanPackageByAnnotation(String packageName,
+            final Class<? extends Annotation> annotationClass) {
         return scanPackage(packageName, new Filter<Class<?>>() {
             @Override
             public boolean accept(Class<?> clazz) {
@@ -75,7 +74,7 @@ public final class ClassScaner {
      * @return 类集合
      */
     public static Set<Class<?>> scanPackage() {
-        return scanPackage(StrUtil.EMPTY, null);
+        return scanPackage(StringCommand.EMPTY, null);
     }
 
     /**
@@ -88,7 +87,8 @@ public final class ClassScaner {
         return scanPackage(packageName, null);
     }
 
-    // --------------------------------------------------------------------------------------------------- Private method start
+    // --------------------------------------------------------------------------------------------------- Private
+    // method start
 
     /**
      * 扫面包路径下满足class过滤器条件的所有class文件，</br>
@@ -100,31 +100,31 @@ public final class ClassScaner {
      * @return 类集合
      */
     public static Set<Class<?>> scanPackage(String packageName, Filter<Class<?>> classFilter) {
-        if (StrUtil.isBlank(packageName)) {
-            packageName = StrUtil.EMPTY;
+        if (StringCommand.isBlank(packageName)) {
+            packageName = StringCommand.EMPTY;
         }
-//		log.debug("Scan classes from package [{}]...", packageName);
+        // log.debug("Scan classes from package [{}]...", packageName);
         packageName = getWellFormedPackageName(packageName);
 
         final Set<Class<?>> classes = new HashSet<Class<?>>();
-        final Set<String> classPaths = ClassUtil.getClassPaths(packageName);
+        final Set<String> classPaths = ClassCommand.getClassPaths(packageName);
         for (String classPath : classPaths) {
             // bug修复，由于路径中空格和中文导致的Jar找不到
-            classPath = URLUtil.decode(classPath, CharsetUtil.systemCharset());
+            classPath = UriCommand.decode(classPath, CharsetCommand.systemCharset());
 
-//			log.debug("Scan classpath: [{}]", classPath);
+            // log.debug("Scan classpath: [{}]", classPath);
             // 填充 classes
             fillClasses(classPath, packageName, classFilter, classes);
         }
 
         // 如果在项目的ClassPath中未找到，去系统定义的ClassPath里找
         if (classes.isEmpty()) {
-            final String[] javaClassPaths = ClassUtil.getJavaClassPaths();
+            final String[] javaClassPaths = ClassCommand.getJavaClassPaths();
             for (String classPath : javaClassPaths) {
                 // bug修复，由于路径中空格和中文导致的Jar找不到
-                classPath = URLUtil.decode(classPath, CharsetUtil.systemCharset());
+                classPath = UriCommand.decode(classPath, CharsetCommand.systemCharset());
 
-//				log.debug("Scan java classpath: [{}]", classPath);
+                // log.debug("Scan java classpath: [{}]", classPath);
                 // 填充 classes
                 fillClasses(classPath, new File(classPath), packageName, classFilter, classes);
             }
@@ -140,7 +140,8 @@ public final class ClassScaner {
      * @return 格式化后的包名
      */
     private static String getWellFormedPackageName(String packageName) {
-        return packageName.lastIndexOf(StrUtil.DOT) != packageName.length() - 1 ? packageName + StrUtil.DOT : packageName;
+        return packageName.lastIndexOf(StringCommand.DOT) != packageName.length() - 1 ? packageName + StringCommand.DOT
+                : packageName;
     }
 
     /**
@@ -152,13 +153,14 @@ public final class ClassScaner {
      * @param classFilter class过滤器
      * @param classes List 集合
      */
-    private static void fillClasses(String path, String packageName, Filter<Class<?>> classFilter, Set<Class<?>> classes) {
+    private static void fillClasses(String path, String packageName, Filter<Class<?>> classFilter,
+            Set<Class<?>> classes) {
         // 判定给定的路径是否为Jar
         int index = path.lastIndexOf(FileCommand.JAR_PATH_EXT);
         if (index != -1) {
             // Jar文件
             path = path.substring(0, index + FileCommand.JAR_FILE_EXT.length()); // 截取jar路径
-            path = StrUtil.removePrefix(path, FileCommand.PATH_FILE_PRE); // 去掉文件前缀
+            path = StringCommand.removePrefix(path, FileCommand.PATH_FILE_PRE); // 去掉文件前缀
             processJarFile(new File(path), packageName, classFilter, classes);
         } else {
             fillClasses(path, new File(path), packageName, classFilter, classes);
@@ -174,7 +176,8 @@ public final class ClassScaner {
      * @param classFilter class过滤器
      * @param classes List 集合
      */
-    private static void fillClasses(String classPath, File file, String packageName, Filter<Class<?>> classFilter, Set<Class<?>> classes) {
+    private static void fillClasses(String classPath, File file, String packageName, Filter<Class<?>> classFilter,
+            Set<Class<?>> classes) {
         if (file.isDirectory()) {
             processDirectory(classPath, file, packageName, classFilter, classes);
         } else if (isClassFile(file)) {
@@ -192,7 +195,8 @@ public final class ClassScaner {
      * @param classFilter 类过滤器
      * @param classes 类集合
      */
-    private static void processDirectory(String classPath, File directory, String packageName, Filter<Class<?>> classFilter, Set<Class<?>> classes) {
+    private static void processDirectory(String classPath, File directory, String packageName,
+            Filter<Class<?>> classFilter, Set<Class<?>> classes) {
         for (File file : directory.listFiles(fileFilter)) {
             fillClasses(classPath, file, packageName, classFilter, classes);
         }
@@ -207,15 +211,16 @@ public final class ClassScaner {
      * @param classFilter 类过滤器
      * @param classes 类集合
      */
-    private static void processClassFile(String classPath, File file, String packageName, Filter<Class<?>> classFilter, Set<Class<?>> classes) {
+    private static void processClassFile(String classPath, File file, String packageName, Filter<Class<?>> classFilter,
+            Set<Class<?>> classes) {
         if (false == classPath.endsWith(File.separator)) {
             classPath += File.separator;
         }
         String path = file.getAbsolutePath();
-        if (StrUtil.isEmpty(packageName)) {
-            path = StrUtil.removePrefix(path, classPath);
+        if (StringCommand.isEmpty(packageName)) {
+            path = StringCommand.removePrefix(path, classPath);
         }
-        final String filePathWithDot = path.replace(File.separator, StrUtil.DOT);
+        final String filePathWithDot = path.replace(File.separator, StringCommand.DOT);
 
         int subIndex = -1;
         if ((subIndex = filePathWithDot.indexOf(packageName)) != -1) {
@@ -234,17 +239,19 @@ public final class ClassScaner {
      * @param classFilter 类过滤器
      * @param classes 类集合
      */
-    private static void processJarFile(File file, String packageName, Filter<Class<?>> classFilter, Set<Class<?>> classes) {
+    private static void processJarFile(File file, String packageName, Filter<Class<?>> classFilter,
+            Set<Class<?>> classes) {
         try {
             for (JarEntry entry : Collections.list(new JarFile(file).entries())) {
                 if (isClass(entry.getName())) {
-                    final String className = entry.getName().replace(StrUtil.SLASH, StrUtil.DOT).replace(FileCommand.CLASS_EXT, StrUtil.EMPTY);
+                    final String className = entry.getName().replace(StringCommand.SLASH, StringCommand.DOT)
+                            .replace(FileCommand.CLASS_EXT, StringCommand.EMPTY);
                     fillClass(className, packageName, classes, classFilter);
                 }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-//			log.error(ex);
+            // log.error(ex);
         }
     }
 
@@ -256,10 +263,11 @@ public final class ClassScaner {
      * @param classes 类集合
      * @param classFilter 类过滤器
      */
-    private static void fillClass(String className, String packageName, Set<Class<?>> classes, Filter<Class<?>> classFilter) {
+    private static void fillClass(String className, String packageName, Set<Class<?>> classes,
+            Filter<Class<?>> classFilter) {
         if (className.startsWith(packageName)) {
             try {
-                final Class<?> clazz = Class.forName(className, false, ClassUtil.getClassLoader());
+                final Class<?> clazz = Class.forName(className, false, ClassCommand.getClassLoader());
                 if (classFilter == null || classFilter.accept(clazz)) {
                     classes.add(clazz);
                 }
@@ -292,5 +300,6 @@ public final class ClassScaner {
     private static boolean isJarFile(File file) {
         return file.getName().endsWith(FileCommand.JAR_FILE_EXT);
     }
-    // --------------------------------------------------------------------------------------------------- Private method end
+    // --------------------------------------------------------------------------------------------------- Private
+    // method end
 }

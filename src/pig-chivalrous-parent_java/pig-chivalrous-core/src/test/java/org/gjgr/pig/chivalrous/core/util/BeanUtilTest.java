@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.util;
 
+import java.util.HashMap;
+
+import org.gjgr.pig.chivalrous.core.lang.BeanUtil;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.HashMap;
 
 /**
  * Bean工具单元测试
@@ -15,7 +17,7 @@ public class BeanUtilTest {
     @Test
     public void isBeanTest() {
 
-        //HashMap不包含setXXX方法，不是bean
+        // HashMap不包含setXXX方法，不是bean
         boolean isBean = BeanUtil.isBean(HashMap.class);
         Assert.assertFalse(isBean);
     }
@@ -37,7 +39,7 @@ public class BeanUtilTest {
 
             @Override
             public boolean containsKey(String key) {
-                //总是存在key
+                // 总是存在key
                 return true;
             }
 
@@ -49,7 +51,7 @@ public class BeanUtilTest {
 
     @Test
     public void fillBeanWithMapIgnoreCaseTest() {
-        HashMap<String, Object> map = CollectionUtil.newHashMap();
+        HashMap<String, Object> map = CollectionCommand.newHashMap();
         map.put("Name", "Joe");
         map.put("aGe", 12);
         map.put("openId", "DFDFSDFWERWER");
@@ -61,7 +63,7 @@ public class BeanUtilTest {
 
     @Test
     public void mapToBeanIgnoreCaseTest() {
-        HashMap<String, Object> map = CollectionUtil.newHashMap();
+        HashMap<String, Object> map = CollectionCommand.newHashMap();
         map.put("Name", "Joe");
         map.put("aGe", 12);
         Person person = BeanUtil.mapToBeanIgnoreCase(map, Person.class, false);
@@ -69,7 +71,7 @@ public class BeanUtilTest {
         Assert.assertEquals(person.getAge(), 12);
     }
 
-    //-----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     public static class SubPerson extends Person {
 
     }

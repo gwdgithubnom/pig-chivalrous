@@ -1,15 +1,14 @@
 package org.gjgr.pig.chivalrous.core.log.dialect.jdk;
 
+import java.io.InputStream;
+import java.util.logging.LogManager;
+
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.LogFactory;
 
-import java.io.InputStream;
-import java.util.logging.LogManager;
-
 /**
- * JDK日志工厂类
- * <a href="http://java.sun.com/javase/6/docs/technotes/guides/logging/index.html">java.util.logging</a> log.
+ * JDK日志工厂类 <a href="http://java.sun.com/javase/6/docs/technotes/guides/logging/index.html">java.util.logging</a> log.
  *
  * @author Looly
  */
@@ -34,10 +33,11 @@ public class JdkLogFactory extends LogFactory {
      * 读取ClassPath下的logging.properties配置文件
      */
     private void readConfig() {
-        //避免循环引用，Log初始化的时候不使用相关工具类
+        // 避免循环引用，Log初始化的时候不使用相关工具类
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("logging.properties");
         if (null == in) {
-            System.err.println("[WARN] Can not find [logging.properties], use [%JRE_HOME%/lib/logging.properties] as default!");
+            System.err.println(
+                    "[WARN] Can not find [logging.properties], use [%JRE_HOME%/lib/logging.properties] as default!");
             return;
         }
 

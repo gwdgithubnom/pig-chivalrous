@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
-import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
+
+import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 数字转换器<br>
@@ -48,7 +48,7 @@ public class NumberConverter extends AbstractConverter<Number> {
                     return Byte.valueOf(((Number) value).byteValue());
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return null;
                 }
                 return Byte.valueOf(valueStr);
@@ -58,7 +58,7 @@ public class NumberConverter extends AbstractConverter<Number> {
                     return Short.valueOf(((Number) value).shortValue());
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return null;
                 }
                 return Short.valueOf(valueStr);
@@ -68,7 +68,7 @@ public class NumberConverter extends AbstractConverter<Number> {
                     return Integer.valueOf(((Number) value).intValue());
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return null;
                 }
                 return Integer.valueOf(valueStr);
@@ -78,7 +78,7 @@ public class NumberConverter extends AbstractConverter<Number> {
                     return Long.valueOf(((Number) value).longValue());
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return null;
                 }
                 return Long.valueOf(valueStr);
@@ -88,7 +88,7 @@ public class NumberConverter extends AbstractConverter<Number> {
                     return Float.valueOf(((Number) value).floatValue());
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return null;
                 }
                 return Float.valueOf(valueStr);
@@ -98,7 +98,7 @@ public class NumberConverter extends AbstractConverter<Number> {
                     return Double.valueOf(((Number) value).doubleValue());
                 }
                 final String valueStr = convertToStr(value);
-                if (StrUtil.isBlank(valueStr)) {
+                if (StringCommand.isBlank(valueStr)) {
                     return null;
                 }
                 return Double.valueOf(valueStr);
@@ -111,7 +111,7 @@ public class NumberConverter extends AbstractConverter<Number> {
             }
 
             final String valueStr = convertToStr(value);
-            if (StrUtil.isBlank(valueStr)) {
+            if (StringCommand.isBlank(valueStr)) {
                 return null;
             }
             return NumberFormat.getInstance().parse(valueStr);
@@ -153,7 +153,7 @@ public class NumberConverter extends AbstractConverter<Number> {
         }
 
         final String valueStr = convertToStr(value);
-        if (StrUtil.isBlank(valueStr)) {
+        if (StringCommand.isBlank(valueStr)) {
             return null;
         }
         return new BigDecimal(valueStr);
@@ -172,7 +172,7 @@ public class NumberConverter extends AbstractConverter<Number> {
             return BigInteger.valueOf((Long) value);
         }
         final String valueStr = convertToStr(value);
-        if (StrUtil.isBlank(valueStr)) {
+        if (StringCommand.isBlank(valueStr)) {
             return null;
         }
         return new BigInteger(valueStr);

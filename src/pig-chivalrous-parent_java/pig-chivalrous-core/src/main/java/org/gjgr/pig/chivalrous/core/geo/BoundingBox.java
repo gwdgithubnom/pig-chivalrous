@@ -89,7 +89,8 @@ public class BoundingBox implements Serializable {
      * @return 是否有交集
      */
     public boolean intersects(BoundingBox other) {
-        return false == (other.minLon > maxLon || other.maxLon < minLon || other.minLat > maxLat || other.maxLat < minLat);
+        return false == (other.minLon > maxLon || other.maxLon < minLon || other.minLat > maxLat
+                || other.maxLat < minLat);
     }
 
     /**

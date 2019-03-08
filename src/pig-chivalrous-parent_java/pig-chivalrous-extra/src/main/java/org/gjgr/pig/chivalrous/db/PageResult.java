@@ -1,9 +1,8 @@
 package org.gjgr.pig.chivalrous.db;
 
+import java.util.ArrayList;
 
 import org.gjgr.pig.chivalrous.core.util.PageUtil;
-
-import java.util.ArrayList;
 
 /**
  * 分页数据结果集
@@ -31,12 +30,12 @@ public class PageResult<T> extends ArrayList<T> {
      */
     private int total;
 
-    //---------------------------------------------------------- Constructor start
+    // ---------------------------------------------------------- Constructor start
 
     /**
      * 构造
      *
-     * @param page       页码
+     * @param page 页码
      * @param numPerPage 每页结果数
      */
     public PageResult(int page, int numPerPage) {
@@ -49,9 +48,9 @@ public class PageResult<T> extends ArrayList<T> {
     /**
      * 构造
      *
-     * @param page       页码
+     * @param page 页码
      * @param numPerPage 每页结果数
-     * @param total      结果总数
+     * @param total 结果总数
      */
     public PageResult(int page, int numPerPage, int total) {
         this(page, numPerPage);
@@ -59,9 +58,9 @@ public class PageResult<T> extends ArrayList<T> {
         this.total = total;
         this.totalPage = PageUtil.totalPage(total, numPerPage);
     }
-    //---------------------------------------------------------- Constructor end
+    // ---------------------------------------------------------- Constructor end
 
-    //---------------------------------------------------------- Getters and Setters start
+    // ---------------------------------------------------------- Getters and Setters start
 
     /**
      * @return 页码
@@ -126,7 +125,7 @@ public class PageResult<T> extends ArrayList<T> {
     public void setTotal(int total) {
         this.total = total;
     }
-    //---------------------------------------------------------- Getters and Setters end
+    // ---------------------------------------------------------- Getters and Setters end
 
     /**
      * @return 是否第一页

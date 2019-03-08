@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.db.DbUtil;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.db.DbUtil;
 
 /**
  * 条件对象<br>
@@ -53,7 +53,7 @@ public class Condition implements Cloneable {
         this.isPlaceHolder = isPlaceHolder;
     }
 
-    //--------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------- Constructor start
 
     /**
      * 构造，使用等于表达式（运算符是=）
@@ -69,9 +69,9 @@ public class Condition implements Cloneable {
     /**
      * 构造
      *
-     * @param field    字段
+     * @param field 字段
      * @param operator 运算符（大于号，小于号，等于号 like 等）
-     * @param value    值
+     * @param value 值
      */
     public Condition(String field, String operator, Object value) {
         this.field = field;
@@ -82,8 +82,8 @@ public class Condition implements Cloneable {
     /**
      * 构造
      *
-     * @param field    字段
-     * @param value    值
+     * @param field 字段
+     * @param value 值
      * @param likeType {@link LikeType}
      */
     public Condition(String field, String value, LikeType likeType) {
@@ -95,7 +95,7 @@ public class Condition implements Cloneable {
     /**
      * 解析为Condition
      *
-     * @param field      字段名
+     * @param field 字段名
      * @param expression 表达式或普通值
      * @return Condition
      */
@@ -109,9 +109,9 @@ public class Condition implements Cloneable {
     public String getField() {
         return field;
     }
-    //--------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------- Constructor start
 
-    //--------------------------------------------------------------- Getters and Setters start
+    // --------------------------------------------------------------- Getters and Setters start
 
     /**
      * 设置字段名
@@ -163,7 +163,7 @@ public class Condition implements Cloneable {
     /**
      * 设置值
      *
-     * @param value   值
+     * @param value 值
      * @param isParse 是否解析值表达式
      */
     public void setValue(Object value, boolean isParse) {
@@ -196,15 +196,15 @@ public class Condition implements Cloneable {
         try {
             return (Condition) super.clone();
         } catch (CloneNotSupportedException e) {
-            //不会发生
+            // 不会发生
             return null;
         }
     }
-    //--------------------------------------------------------------- Getters and Setters end
+    // --------------------------------------------------------------- Getters and Setters end
 
     @Override
     public String toString() {
-        return StrUtil.format("`{}` {} {}", this.field, this.operator, this.value);
+        return StringCommand.format("`{}` {} {}", this.field, this.operator, this.value);
     }
 
     /**
@@ -214,42 +214,42 @@ public class Condition implements Cloneable {
      * 例如字段为name，那value可以为："> 1"或者 "LIKE %Tom"此类
      */
     private void parseValue() {
-        //当值无时，视为空判定
+        // 当值无时，视为空判定
         if (null == this.value) {
             this.operator = OPERATOR_IS;
             this.value = VALUE_NULL;
             return;
         }
 
-        //对数组和集合值按照 IN 处理
+        // 对数组和集合值按照 IN 处理
         if (this.value instanceof Collection) {
             this.operator = OPERATOR_IN;
-            this.value = CollectionUtil.join((Collection<?>) this.value, StrUtil.COMMA);
+            this.value = CollectionCommand.join((Collection<?>) this.value, StringCommand.COMMA);
             return;
-        } else if (ArrayUtil.isArray(this.value)) {
+        } else if (ArrayCommand.isArray(this.value)) {
             this.operator = OPERATOR_IN;
-            this.value = ArrayUtil.join(this.value, StrUtil.COMMA);
+            this.value = ArrayCommand.join(this.value, StringCommand.COMMA);
             return;
         }
 
-        //其他类型值，跳过
+        // 其他类型值，跳过
         if (false == (this.value instanceof String)) {
             return;
         }
 
         String valueStr = ((String) value);
-        if (StrUtil.isBlank(valueStr)) {
-            //空字段不做处理
+        if (StringCommand.isBlank(valueStr)) {
+            // 空字段不做处理
             return;
         }
 
         valueStr = valueStr.trim();
-        List<String> strs = StrUtil.split(valueStr, StrUtil.C_SPACE, 2);
+        List<String> strs = StringCommand.split(valueStr, StringCommand.C_SPACE, 2);
         if (strs.size() < 2) {
             return;
         }
 
-        //处理常用符号和IN
+        // 处理常用符号和IN
         final String firstPart = strs.get(0).trim().toUpperCase();
         if (OPERATORS.contains(firstPart)) {
             this.operator = firstPart;
@@ -257,10 +257,10 @@ public class Condition implements Cloneable {
             return;
         }
 
-        //处理LIKE
+        // 处理LIKE
         if (valueStr.toUpperCase().startsWith(OPERATOR_LIKE)) {
             this.operator = OPERATOR_LIKE;
-            this.value = StrUtil.removePrefix(valueStr, OPERATOR_LIKE).trim();
+            this.value = StringCommand.removePrefix(valueStr, OPERATOR_LIKE).trim();
         }
     }
 

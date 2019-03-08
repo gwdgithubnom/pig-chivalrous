@@ -1,18 +1,15 @@
 package org.gjgr.pig.chivalrous.core.setting;
 
-import org.gjgr.pig.chivalrous.core.setting.dialect.BasicSetting;
-
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import org.gjgr.pig.chivalrous.core.setting.dialect.BasicSetting;
+
 /**
  * 设置工具类。 用于支持设置文件<br>
- * 1、支持变量，默认变量命名为 ${变量名}，变量只能识别读入行的变量，例如第6行的变量在第三行无法读取
- * 2、支持分组，分组为中括号括起来的内容，中括号以下的行都为此分组的内容，无分组相当于空字符分组<br>
- * 若某个key是name，加上分组后的键相当于group.name
- * 3、注释以#开头，但是空行和不带“=”的行也会被跳过，但是建议加#
- * 4、store方法不会保存注释内容，慎重使用
+ * 1、支持变量，默认变量命名为 ${变量名}，变量只能识别读入行的变量，例如第6行的变量在第三行无法读取 2、支持分组，分组为中括号括起来的内容，中括号以下的行都为此分组的内容，无分组相当于空字符分组<br>
+ * 若某个key是name，加上分组后的键相当于group.name 3、注释以#开头，但是空行和不带“=”的行也会被跳过，但是建议加# 4、store方法不会保存注释内容，慎重使用
  *
  * @author xiaoleilu
  */

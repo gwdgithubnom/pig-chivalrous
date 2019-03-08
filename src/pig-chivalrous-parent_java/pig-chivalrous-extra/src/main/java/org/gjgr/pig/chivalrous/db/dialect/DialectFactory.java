@@ -1,15 +1,16 @@
 package org.gjgr.pig.chivalrous.db.dialect;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import java.sql.Connection;
+
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.dialect.impl.AnsiSqlDialect;
 import org.gjgr.pig.chivalrous.db.dialect.impl.MysqlDialect;
 import org.gjgr.pig.chivalrous.db.dialect.impl.OracleDialect;
 import org.gjgr.pig.chivalrous.db.dialect.impl.PostgresqlDialect;
 import org.gjgr.pig.chivalrous.db.dialect.impl.Sqlite3Dialect;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
 
 /**
  * 方言工厂类
@@ -21,19 +22,19 @@ public class DialectFactory {
     /**
      * JDBC 驱动 MySQL
      */
-    public final static String DRIVER_MYSQL = "com.mysql.jdbc.Driver";
+    public static final String DRIVER_MYSQL = "com.mysql.jdbc.Driver";
     /**
      * JDBC 驱动 Oracle
      */
-    public final static String DRIVER_ORACLE = "oracle.jdbc.driver.OracleDriver";
+    public static final String DRIVER_ORACLE = "oracle.jdbc.driver.OracleDriver";
     /**
      * JDBC 驱动 PostgreSQL
      */
-    public final static String DRIVER_POSTGRESQL = "org.postgresql.Driver";
+    public static final String DRIVER_POSTGRESQL = "org.postgresql.Driver";
     /**
      * JDBC 驱动 SQLLite3
      */
-    public final static String DRIVER_SQLLITE3 = "org.sqlite.JDBC";
+    public static final String DRIVER_SQLLITE3 = "org.sqlite.JDBC";
 
     private DialectFactory() {
     }
@@ -45,7 +46,7 @@ public class DialectFactory {
      * @return 方言
      */
     public static Dialect newDialect(String driverName) {
-        if (StrUtil.isNotBlank(driverName)) {
+        if (StringCommand.isNotBlank(driverName)) {
             if (DRIVER_MYSQL.equalsIgnoreCase(driverName)) {
                 return new MysqlDialect();
             } else if (DRIVER_ORACLE.equalsIgnoreCase(driverName)) {

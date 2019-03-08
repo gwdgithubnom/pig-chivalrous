@@ -1,14 +1,14 @@
 package org.gjgr.pig.chivalrous.core.exceptions;
 
-import org.gjgr.pig.chivalrous.core.io.FastByteArrayOutputStream;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 异常工具类
@@ -29,7 +29,7 @@ public final class ExceptionUtil {
      * @return 完整消息
      */
     public static String getMessage(Throwable e) {
-        return StrUtil.format("{}: {}", e.getClass().getSimpleName(), e.getMessage());
+        return StringCommand.format("{}: {}", e.getClass().getSimpleName(), e.getMessage());
     }
 
     /**
@@ -93,9 +93,9 @@ public final class ExceptionUtil {
      */
     public static String stacktraceToOneLineString(Throwable throwable, int limit) {
         Map<Character, String> replaceCharToStrMap = new HashMap<>();
-        replaceCharToStrMap.put(StrUtil.C_CR, StrUtil.SPACE);
-        replaceCharToStrMap.put(StrUtil.C_LF, StrUtil.SPACE);
-        replaceCharToStrMap.put(StrUtil.C_TAB, StrUtil.SPACE);
+        replaceCharToStrMap.put(StringCommand.C_CR, StringCommand.SPACE);
+        replaceCharToStrMap.put(StringCommand.C_LF, StringCommand.SPACE);
+        replaceCharToStrMap.put(StringCommand.C_TAB, StringCommand.SPACE);
 
         return stacktraceToString(throwable, limit, replaceCharToStrMap);
     }
@@ -129,7 +129,8 @@ public final class ExceptionUtil {
      * @param replaceCharToStrMap 替换字符为指定字符串
      * @return 堆栈转为的字符串
      */
-    public static String stacktraceToString(Throwable throwable, int limit, Map<Character, String> replaceCharToStrMap) {
+    public static String stacktraceToString(Throwable throwable, int limit,
+            Map<Character, String> replaceCharToStrMap) {
         final FastByteArrayOutputStream baos = new FastByteArrayOutputStream();
         throwable.printStackTrace(new PrintStream(baos));
         String exceptionStr = baos.toString();
@@ -138,8 +139,8 @@ public final class ExceptionUtil {
             length = limit;
         }
 
-        if (CollectionUtil.isNotEmpty(replaceCharToStrMap)) {
-            final StringBuilder sb = StrUtil.builder();
+        if (CollectionCommand.isNotEmpty(replaceCharToStrMap)) {
+            final StringBuilder sb = StringCommand.builder();
             char c;
             String value;
             for (int i = 0; i < length; i++) {

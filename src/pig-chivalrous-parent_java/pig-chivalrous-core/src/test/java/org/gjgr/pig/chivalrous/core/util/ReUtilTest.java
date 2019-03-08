@@ -1,11 +1,12 @@
 package org.gjgr.pig.chivalrous.core.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.regex.ReUtil;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReUtilTest {
     final String content = "ZZZaaabbbccc中文1234";
@@ -34,7 +35,7 @@ public class ReUtilTest {
     public void findAllTest() {
         // 查找所有匹配文本
         List<String> resultFindAll = ReUtil.findAll("\\w{2}", content, 0, new ArrayList<String>());
-        ArrayList<String> expected = CollectionUtil.newArrayList("ZZ", "Za", "aa", "bb", "bc", "cc", "12", "34");
+        ArrayList<String> expected = CollectionCommand.newArrayList("ZZ", "Za", "aa", "bb", "bc", "cc", "12", "34");
         Assert.assertEquals(expected, resultFindAll);
     }
 
@@ -54,15 +55,15 @@ public class ReUtilTest {
 
     @Test
     public void replaceAllTest() {
-        //通过正则查找到字符串，然后把匹配到的字符串加入到replacementTemplate中，$1表示分组1的字符串
-        //此处把1234替换为 ->1234<-
+        // 通过正则查找到字符串，然后把匹配到的字符串加入到replacementTemplate中，$1表示分组1的字符串
+        // 此处把1234替换为 ->1234<-
         String replaceAll = ReUtil.replaceAll(content, "(\\d+)", "->$1<-");
         Assert.assertEquals("ZZZaaabbbccc中文->1234<-", replaceAll);
     }
 
     @Test
     public void escapeTest() {
-        //转义给定字符串，为正则相关的特殊符号转义
+        // 转义给定字符串，为正则相关的特殊符号转义
         String escape = ReUtil.escape("我有个$符号{}");
         Assert.assertEquals("我有个\\$符号\\{\\}", escape);
     }

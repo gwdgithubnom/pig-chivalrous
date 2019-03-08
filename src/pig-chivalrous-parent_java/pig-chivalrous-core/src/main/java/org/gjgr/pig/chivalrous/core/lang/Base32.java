@@ -1,21 +1,20 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.nio.charset.Charset;
+
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * Base32 - encodes and decodes RFC3548 Base32 (see http://www.faqs.org/rfcs/rfc3548.html )<br>
- * base32就是用32（2的5次方）个特定ASCII码来表示256个ASCII码。所以，5个ASCII字符经过base32编码后会变为8个字符（公约数为40），长度增加3/5.不足8n用“=”补足。
- * see http://blog.csdn.net/earbao/article/details/44453937
+ * base32就是用32（2的5次方）个特定ASCII码来表示256个ASCII码。所以，5个ASCII字符经过base32编码后会变为8个字符（公约数为40），长度增加3/5.不足8n用“=”补足。 see
+ * http://blog.csdn.net/earbao/article/details/44453937
  *
  * @author Looly
  */
 public final class Base32 {
 
     private static final String base32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-    private static final int[] base32Lookup = {//
+    private static final int[] base32Lookup = { //
             0xFF, 0xFF, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, // '0', '1', '2', '3', '4', '5', '6', '7'
             0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, // '8', '9', ':', ';', '<', '=', '>', '?'
             0xFF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, // '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G'
@@ -31,7 +30,7 @@ public final class Base32 {
     private Base32() {
     }
 
-    //----------------------------------------------------------------------------------------- encode
+    // ----------------------------------------------------------------------------------------- encode
 
     /**
      * 编码
@@ -40,8 +39,11 @@ public final class Base32 {
      * @return base32
      */
     public static String encode(final byte[] bytes) {
-        int i = 0, index = 0, digit = 0;
-        int currByte, nextByte;
+        int i = 0;
+        int index = 0;
+        int digit = 0;
+        int currByte;
+        int nextByte;
         StringBuilder base32 = new StringBuilder((bytes.length + 7) * 8 / 5);
 
         while (i < bytes.length) {
@@ -80,7 +82,7 @@ public final class Base32 {
      * @return 被加密后的字符串
      */
     public static String encode(String source) {
-        return encode(source, CharsetUtil.CHARSET_UTF_8);
+        return encode(source, CharsetCommand.CHARSET_UTF_8);
     }
 
     /**
@@ -91,7 +93,7 @@ public final class Base32 {
      * @return 被加密后的字符串
      */
     public static String encode(String source, String charset) {
-        return encode(StrUtil.bytes(source, charset));
+        return encode(StringCommand.bytes(source, charset));
     }
 
     /**
@@ -102,10 +104,10 @@ public final class Base32 {
      * @return 被加密后的字符串
      */
     public static String encode(String source, Charset charset) {
-        return encode(StrUtil.bytes(source, charset));
+        return encode(StringCommand.bytes(source, charset));
     }
 
-    //----------------------------------------------------------------------------------------- decode
+    // ----------------------------------------------------------------------------------------- decode
 
     /**
      * 解码
@@ -114,7 +116,11 @@ public final class Base32 {
      * @return 数据
      */
     public static byte[] decode(final String base32) {
-        int i, index, lookup, offset, digit;
+        int i;
+        int index;
+        int lookup;
+        int offset;
+        int digit;
         byte[] bytes = new byte[base32.length() * 5 / 8];
 
         for (i = 0, index = 0, offset = 0; i < base32.length(); i++) {
@@ -164,7 +170,7 @@ public final class Base32 {
      * @return 被加密后的字符串
      */
     public static String decodeStr(String source) {
-        return decodeStr(source, CharsetUtil.CHARSET_UTF_8);
+        return decodeStr(source, CharsetCommand.CHARSET_UTF_8);
     }
 
     /**
@@ -175,7 +181,7 @@ public final class Base32 {
      * @return 被加密后的字符串
      */
     public static String decodeStr(String source, String charset) {
-        return StrUtil.str(decode(source), charset);
+        return StringCommand.str(decode(source), charset);
     }
 
     /**
@@ -186,6 +192,6 @@ public final class Base32 {
      * @return 被加密后的字符串
      */
     public static String decodeStr(String source, Charset charset) {
-        return StrUtil.str(decode(source), charset);
+        return StringCommand.str(decode(source), charset);
     }
 }

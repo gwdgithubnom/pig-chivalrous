@@ -1,21 +1,5 @@
 package org.gjgr.pig.chivalrous.web.http;
 
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.io.FileUtil;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.json.bean.Json;
-import org.gjgr.pig.chivalrous.core.lang.Base64;
-import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.ObjectUtil;
-import org.gjgr.pig.chivalrous.core.util.RandomCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
-import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,6 +12,22 @@ import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSocketFactory;
+
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
+import org.gjgr.pig.chivalrous.core.json.bean.Json;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.Base64;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.StaticLog;
+import org.gjgr.pig.chivalrous.core.util.RandomCommand;
+import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
+import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
 
 /**
  * http请求类
@@ -36,11 +36,13 @@ import java.util.concurrent.Future;
  */
 public class HttpRequest extends HttpBase<HttpRequest> {
     private static final String BOUNDARY = "--------------------Hutool_" + RandomCommand.randomString(16);
-    private static final byte[] BOUNDARY_END = StrUtil.format("--{}--\r\n", BOUNDARY).getBytes();
+    private static final byte[] BOUNDARY_END = StringCommand.format("--{}--\r\n", BOUNDARY).getBytes();
     private static final String CONTENT_DISPOSITION_TEMPLATE = "Content-Disposition: form-data; name=\"{}\"\r\n\r\n";
-    private static final String CONTENT_DISPOSITION_FILE_TEMPLATE = "Content-Disposition: form-data; name=\"{}\"; filename=\"{}\"\r\n";
+    private static final String CONTENT_DISPOSITION_FILE_TEMPLATE =
+            "Content-Disposition: form-data; name=\"{}\"; filename=\"{}\"\r\n";
 
-    private static final String CONTENT_TYPE_X_WWW_FORM_URLENCODED_PREFIX = "application/x-www-form-urlencoded;charset=";
+    private static final String CONTENT_TYPE_X_WWW_FORM_URLENCODED_PREFIX =
+            "application/x-www-form-urlencoded;charset=";
     private static final String CONTENT_TYPE_MULTIPART_PREFIX = "multipart/form-data; boundary=";
     private static final String CONTENT_TYPE_FILE_TEMPLATE = "Content-Type: {}\r\n\r\n";
     /**
@@ -242,12 +244,12 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 设置表单数据<br>
      *
-     * @param name  名
+     * @param name 名
      * @param value 值
      */
     public HttpRequest form(String name, Object value) {
-        if (StrUtil.isBlank(name) || ObjectUtil.isNull(value)) {
-            return this;    //忽略非法的form表单项内容;
+        if (StringCommand.isBlank(name) || ObjectCommand.isNull(value)) {
+            return this; // 忽略非法的form表单项内容;
         }
 
         // 停用body
@@ -262,10 +264,10 @@ public class HttpRequest extends HttpBase<HttpRequest> {
         String strValue;
         if (value instanceof List) {
             // 列表对象
-            strValue = CollectionUtil.join((List<?>) value, ",");
-        } else if (ArrayUtil.isArray(value)) {
+            strValue = CollectionCommand.join((List<?>) value, ",");
+        } else if (ArrayCommand.isArray(value)) {
             // 数组对象
-            strValue = ArrayUtil.join((Object[]) value, ",");
+            strValue = ArrayCommand.join((Object[]) value, ",");
         } else {
             // 其他对象一律转换为字符串
             strValue = Convert.toStr(value, null);
@@ -278,11 +280,11 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 设置表单数据
      *
-     * @param name       名
-     * @param value      值
+     * @param name 名
+     * @param value 值
      * @param parameters 参数对，奇数为名，偶数为值
      */
-    public HttpRequest form(String name, Object value, Object... parameters) {
+    public HttpRequest form(String name, Object value, Object...parameters) {
         form(name, value);
 
         for (int i = 0; i < parameters.length; i += 2) {
@@ -332,7 +334,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 获取表单数据
      *
-     * @return Map<String   ,       Object>
+     * @return Map<String , Object>
      */
     public Map<String, Object> form() {
         return form;
@@ -356,7 +358,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 设置内容主体
      *
-     * @param body        请求体
+     * @param body 请求体
      * @param contentType 请求体类型
      */
     public HttpRequest body(String body, String contentType) {
@@ -367,8 +369,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
 
     /**
      * 设置JSON内容主体<br>
-     * 设置默认的Content-Type为 application/newJson
-     * 需在此方法调用前使用charset方法设置编码，否则使用默认编码UTF-8
+     * 设置默认的Content-Type为 application/newJson 需在此方法调用前使用charset方法设置编码，否则使用默认编码UTF-8
      *
      * @param json JSON请求体
      */
@@ -376,8 +377,8 @@ public class HttpRequest extends HttpBase<HttpRequest> {
         this.body(json.toString());
 
         String contentTypeJson = "application/newJson";
-        if (StrUtil.isNotBlank(this.charset)) {
-            contentTypeJson = StrUtil.format("{};charset={}", contentTypeJson, this.charset);
+        if (StringCommand.isNotBlank(this.charset)) {
+            contentTypeJson = StringCommand.format("{};charset={}", contentTypeJson, this.charset);
         }
         this.contentType(contentTypeJson);
 
@@ -391,7 +392,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
      * @param bodyBytes 主体
      */
     public HttpRequest body(byte[] bodyBytes) {
-        return body(StrUtil.str(bodyBytes, this.charset));
+        return body(StringCommand.str(bodyBytes, this.charset));
     }
     // ---------------------------------------------------------------- Body end
 
@@ -481,7 +482,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
      * @return HttpResponse
      */
     public HttpResponse execute() {
-        //初始化URL
+        // 初始化URL
         urlWithParamIfGet();
         // 初始化 connection
         initConnecton();
@@ -489,7 +490,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
         // 发送请求
         send();
 
-        //手动实现重定向
+        // 手动实现重定向
         HttpResponse httpResponse = sendRedirectIfPosible();
 
         // 获取响应
@@ -541,13 +542,13 @@ public class HttpRequest extends HttpBase<HttpRequest> {
         this.httpConnection = HttpConnection
                 .create(this.url, this.method, this.hostnameVerifier, this.ssf, this.timeout, this.proxy)
                 .header(this.headers, true); // 覆盖默认Header
-        //是否禁用缓存
+        // 是否禁用缓存
         if (this.isDisableCache) {
             this.httpConnection.disableCache();
         }
 
         if (null != isFollowRedirects) {
-            //如果自定义了转发，则设置，否则使用默认
+            // 如果自定义了转发，则设置，否则使用默认
             this.httpConnection.setInstanceFollowRedirects(isFollowRedirects);
         }
     }
@@ -558,7 +559,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     private void urlWithParamIfGet() {
         if (Method.GET.equals(method)) {
             // 优先使用body形式的参数，不存在使用form
-            if (StrUtil.isNotBlank(this.body)) {
+            if (StringCommand.isNotBlank(this.body)) {
                 this.url = HttpUtil.urlWithForm(this.url, this.body);
             } else {
                 this.url = HttpUtil.urlWithForm(this.url, this.form);
@@ -572,7 +573,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
      * @return {@link HttpResponse}，无转发返回 <code>null</code>
      */
     private HttpResponse sendRedirectIfPosible() {
-        //手动实现重定向
+        // 手动实现重定向
         if (this.httpConnection.getHttpURLConnection().getInstanceFollowRedirects()) {
             int responseCode;
             try {
@@ -581,7 +582,9 @@ public class HttpRequest extends HttpBase<HttpRequest> {
                 throw new HttpException(e);
             }
             if (responseCode != HttpURLConnection.HTTP_OK) {
-                if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP || responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
+                if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+                        || responseCode == HttpURLConnection.HTTP_MOVED_PERM
+                        || responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
                     this.url = httpConnection.header(Header.LOCATION);
                     if (redirectCount < 2) {
                         redirectCount++;
@@ -603,10 +606,10 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     private void send() throws HttpException {
         try {
             if (Method.POST.equals(method) || Method.PUT.equals(method)) {
-                if (CollectionUtil.isEmpty(fileForm)) {
-                    sendFormUrlEncoded();//普通表单
+                if (CollectionCommand.isEmpty(fileForm)) {
+                    sendFormUrlEncoded();// 普通表单
                 } else {
-                    sendMltipart();    //文件上传表单
+                    sendMltipart(); // 文件上传表单
                 }
             } else {
                 this.httpConnection.connect();
@@ -622,14 +625,15 @@ public class HttpRequest extends HttpBase<HttpRequest> {
      * @throws IOException
      */
     private void sendFormUrlEncoded() throws IOException {
-        if (StrUtil.isBlank(this.header(Header.CONTENT_TYPE))) {
-            //如果未自定义Content-Type，使用默认的application/x-www-form-urlencoded
-            this.httpConnection.header(Header.CONTENT_TYPE, CONTENT_TYPE_X_WWW_FORM_URLENCODED_PREFIX + this.charset, true);
+        if (StringCommand.isBlank(this.header(Header.CONTENT_TYPE))) {
+            // 如果未自定义Content-Type，使用默认的application/x-www-form-urlencoded
+            this.httpConnection.header(Header.CONTENT_TYPE, CONTENT_TYPE_X_WWW_FORM_URLENCODED_PREFIX + this.charset,
+                    true);
         }
 
         // Write的时候会优先使用body中的内容，write时自动关闭OutputStream
         String content;
-        if (StrUtil.isNotBlank(this.body)) {
+        if (StringCommand.isNotBlank(this.body)) {
             content = this.body;
         } else {
             content = HttpUtil.toParams(this.form, this.charset);
@@ -643,7 +647,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
      * @throws IOException
      */
     private void sendMltipart() throws IOException {
-        setMultipart();//设置表单类型为Multipart
+        setMultipart();// 设置表单类型为Multipart
 
         final OutputStream out = this.httpConnection.getOutputStream();
         try {
@@ -666,12 +670,12 @@ public class HttpRequest extends HttpBase<HttpRequest> {
      * @throws IOException
      */
     private void writeForm(OutputStream out) throws IOException {
-        if (CollectionUtil.isNotEmpty(this.form)) {
-            StringBuilder builder = StrUtil.builder();
+        if (CollectionCommand.isNotEmpty(this.form)) {
+            StringBuilder builder = StringCommand.builder();
             for (Entry<String, Object> entry : this.form.entrySet()) {
-                builder.append("--").append(BOUNDARY).append(StrUtil.CRLF);
-                builder.append(StrUtil.format(CONTENT_DISPOSITION_TEMPLATE, entry.getKey()));
-                builder.append(entry.getValue()).append(StrUtil.CRLF);
+                builder.append("--").append(BOUNDARY).append(StringCommand.CRLF);
+                builder.append(StringCommand.format(CONTENT_DISPOSITION_TEMPLATE, entry.getKey()));
+                builder.append(entry.getValue()).append(StringCommand.CRLF);
             }
             IoCommand.write(out, this.charset, false, builder);
         }
@@ -687,12 +691,12 @@ public class HttpRequest extends HttpBase<HttpRequest> {
         File file;
         for (Entry<String, File> entry : this.fileForm.entrySet()) {
             file = entry.getValue();
-            StringBuilder builder = StrUtil.builder().append("--").append(BOUNDARY).append(StrUtil.CRLF);
-            builder.append(StrUtil.format(CONTENT_DISPOSITION_FILE_TEMPLATE, entry.getKey(), file.getName()));
-            builder.append(StrUtil.format(CONTENT_TYPE_FILE_TEMPLATE, HttpUtil.getMimeType(file.getName())));
+            StringBuilder builder = StringCommand.builder().append("--").append(BOUNDARY).append(StringCommand.CRLF);
+            builder.append(StringCommand.format(CONTENT_DISPOSITION_FILE_TEMPLATE, entry.getKey(), file.getName()));
+            builder.append(StringCommand.format(CONTENT_TYPE_FILE_TEMPLATE, HttpUtil.getMimeType(file.getName())));
             IoCommand.write(out, this.charset, false, builder);
             FileUtil.writeToStream(file, out);
-            IoCommand.write(out, this.charset, false, StrUtil.CRLF);
+            IoCommand.write(out, this.charset, false, StringCommand.CRLF);
         }
     }
 

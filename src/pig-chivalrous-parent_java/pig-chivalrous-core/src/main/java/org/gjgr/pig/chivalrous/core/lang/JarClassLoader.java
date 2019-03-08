@@ -1,10 +1,5 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -13,6 +8,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
+
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 
 /**
  * 外部Jar的类加载器
@@ -34,7 +33,7 @@ public class JarClassLoader extends URLClassLoader {
      * @param urls 被加载的URL
      */
     public JarClassLoader(URL[] urls) {
-        super(urls, ClassUtil.getClassLoader());
+        super(urls, ClassCommand.getClassLoader());
     }
 
     /**
@@ -63,12 +62,12 @@ public class JarClassLoader extends URLClassLoader {
      */
     public static void loadJar(URLClassLoader loader, File jarFile) {
         try {
-            final Method method = ClassUtil.getDeclaredMethod(URLClassLoader.class, "addURL", URL.class);
+            final Method method = ClassCommand.getDeclaredMethod(URLClassLoader.class, "addURL", URL.class);
             if (null != method) {
                 method.setAccessible(true);
                 final List<File> jars = loopJar(jarFile);
                 for (File jar : jars) {
-                    ClassUtil.invoke(loader, method, new Object[] {jar.toURI().toURL()});
+                    ClassCommand.invoke(loader, method, new Object[] { jar.toURI().toURL() });
                 }
             }
         } catch (IOException | ReflectiveOperationException e) {

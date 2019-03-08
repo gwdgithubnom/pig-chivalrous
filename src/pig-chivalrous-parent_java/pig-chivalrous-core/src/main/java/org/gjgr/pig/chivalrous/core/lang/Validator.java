@@ -1,15 +1,13 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
-import org.gjgr.pig.chivalrous.core.exceptions.ValidateException;
-import org.gjgr.pig.chivalrous.core.util.ObjectUtil;
-import org.gjgr.pig.chivalrous.core.util.RegexCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.net.MalformedURLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
+import org.gjgr.pig.chivalrous.core.exceptions.ValidateException;
+import org.gjgr.pig.chivalrous.core.util.RegexCommand;
 
 /**
  * 字段验证器
@@ -21,59 +19,63 @@ public final class Validator {
     /**
      * 英文字母 、数字和下划线
      */
-    public final static Pattern GENERAL = Pattern.compile("^\\w+$");
+    public static final Pattern GENERAL = Pattern.compile("^\\w+$");
     /**
      * 数字
      */
-    public final static Pattern NUMBERS = Pattern.compile("\\d+");
+    public static final Pattern NUMBERS = Pattern.compile("\\d+");
     /**
      * 分组
      */
-    public final static Pattern GROUP_VAR = Pattern.compile("\\$(\\d+)");
+    public static final Pattern GROUP_VAR = Pattern.compile("\\$(\\d+)");
     /**
      * IP v4
      */
-    public final static Pattern IPV4 = Pattern.compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
+    public static final Pattern IPV4 = Pattern.compile(
+            "\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
     /**
      * 货币
      */
-    public final static Pattern MONEY = Pattern.compile("^(\\d+(?:\\.\\d+)?)$");
+    public static final Pattern MONEY = Pattern.compile("^(\\d+(?:\\.\\d+)?)$");
     /**
      * 邮件
      */
-    public final static Pattern EMAIL = Pattern.compile("(\\w|.)+@\\w+(\\.\\w+){1,2}");
+    public static final Pattern EMAIL = Pattern.compile("(\\w|.)+@\\w+(\\.\\w+){1,2}");
     /**
      * 移动电话
      */
-    public final static Pattern MOBILE = Pattern.compile("1\\d{10}");
+    public static final Pattern MOBILE = Pattern.compile("1\\d{10}");
     /**
      * 身份证号码
      */
-    public final static Pattern CITIZEN_ID = Pattern.compile("[1-9]\\d{5}[1-2]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}(\\d|X|x)");
+    public static final Pattern CITIZEN_ID =
+            Pattern.compile("[1-9]\\d{5}[1-2]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}(\\d|X|x)");
     /**
      * 邮编
      */
-    public final static Pattern ZIP_CODE = Pattern.compile("\\d{6}");
+    public static final Pattern ZIP_CODE = Pattern.compile("\\d{6}");
     /**
      * 生日
      */
-    public final static Pattern BIRTHDAY = Pattern.compile("^(\\d{2,4})([/\\-\\.年]?)(\\d{1,2})([/\\-\\.月]?)(\\d{1,2})日?$");
+    public static final Pattern BIRTHDAY =
+            Pattern.compile("^(\\d{2,4})([/\\-\\.年]?)(\\d{1,2})([/\\-\\.月]?)(\\d{1,2})日?$");
     /**
      * URL
      */
-    public final static Pattern URL = Pattern.compile("(https://|http://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?");
+    public static final Pattern URL = Pattern.compile("(https://|http://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?");
     /**
      * 中文字、英文字母、数字和下划线
      */
-    public final static Pattern GENERAL_WITH_CHINESE = Pattern.compile("^[\\u0391-\\uFFE5\\w]+$");
+    public static final Pattern GENERAL_WITH_CHINESE = Pattern.compile("^[\\u0391-\\uFFE5\\w]+$");
     /**
      * UUID
      */
-    public final static Pattern UUID = Pattern.compile("^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$");
+    public static final Pattern UUID =
+            Pattern.compile("^[0-9a-z]{8}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{12}$");
     /**
      * 不带横线的UUID
      */
-    public final static Pattern UUID_SIMPLE = Pattern.compile("^[0-9a-z]{32}$");
+    public static final Pattern UUID_SIMPLE = Pattern.compile("^[0-9a-z]{32}$");
 
     private Validator() {
     }
@@ -86,7 +88,7 @@ public final class Validator {
      * @return 是否为空
      */
     public static <T> boolean isEmpty(T value) {
-        return (null == value || (value instanceof String && StrUtil.isEmpty((String) value)));
+        return (null == value || (value instanceof String && StringCommand.isEmpty((String) value)));
     }
 
     /**
@@ -123,7 +125,7 @@ public final class Validator {
      * @return 当两值都为null或相等返回true
      */
     public static boolean equal(Object t1, Object t2) {
-        return ObjectUtil.equal(t1, t2);
+        return ObjectCommand.equal(t1, t2);
     }
 
     /**
@@ -308,7 +310,7 @@ public final class Validator {
      * @return 是否是数字
      */
     public static boolean isNumber(String value) {
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             return false;
         }
         return isMactchRegex(NUMBERS, value);
@@ -453,18 +455,18 @@ public final class Validator {
      * @return 是否为生日
      */
     public static boolean isBirthday(int year, int month, int day) {
-        //验证年
+        // 验证年
         int thisYear = DateTimeCommand.thisYear();
         if (year < 1930 || year > thisYear) {
             return false;
         }
 
-        //验证月
+        // 验证月
         if (month < 1 || month > 12) {
             return false;
         }
 
-        //验证日
+        // 验证日
         if (day < 1 || day > 31) {
             return false;
         }

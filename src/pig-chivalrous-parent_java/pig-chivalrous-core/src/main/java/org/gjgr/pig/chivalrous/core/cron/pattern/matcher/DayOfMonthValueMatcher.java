@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class DayOfMonthValueMatcher extends BoolArrayValueMatcher {
 
-    private static final int[] LAST_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private static final int[] LAST_DAYS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
     public DayOfMonthValueMatcher(List<Integer> intValueList) {
         super(intValueList);

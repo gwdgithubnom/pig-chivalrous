@@ -1,6 +1,7 @@
 package org.gjgr.pig.chivalrous.core.script;
 
 import java.io.Reader;
+
 import javax.script.Bindings;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
@@ -33,14 +34,14 @@ public class JavaScriptEngine extends FullSupportScriptEngine {
         return new JavaScriptEngine();
     }
 
-    //----------------------------------------------------------------------------------------------- Invocable
+    // ----------------------------------------------------------------------------------------------- Invocable
     @Override
-    public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
+    public Object invokeMethod(Object thiz, String name, Object...args) throws ScriptException, NoSuchMethodException {
         return ((Invocable) engine).invokeMethod(thiz, name, args);
     }
 
     @Override
-    public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
+    public Object invokeFunction(String name, Object...args) throws ScriptException, NoSuchMethodException {
         return ((Invocable) engine).invokeFunction(name, args);
     }
 
@@ -54,7 +55,7 @@ public class JavaScriptEngine extends FullSupportScriptEngine {
         return ((Invocable) engine).getInterface(thiz, clasz);
     }
 
-    //----------------------------------------------------------------------------------------------- Compilable
+    // ----------------------------------------------------------------------------------------------- Compilable
     @Override
     public CompiledScript compile(String script) throws ScriptException {
         return ((Compilable) engine).compile(script);
@@ -65,7 +66,7 @@ public class JavaScriptEngine extends FullSupportScriptEngine {
         return ((Compilable) engine).compile(script);
     }
 
-    //----------------------------------------------------------------------------------------------- ScriptEngine
+    // ----------------------------------------------------------------------------------------------- ScriptEngine
     @Override
     public Object eval(String script, ScriptContext context) throws ScriptException {
         return engine.eval(script, context);

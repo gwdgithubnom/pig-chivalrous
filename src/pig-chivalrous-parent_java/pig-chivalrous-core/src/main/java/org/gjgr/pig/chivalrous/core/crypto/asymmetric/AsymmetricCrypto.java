@@ -1,13 +1,5 @@
 package org.gjgr.pig.chivalrous.core.crypto.asymmetric;
 
-import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
-import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
-import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricAlgorithm;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.lang.Base64;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Key;
@@ -17,7 +9,16 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 import javax.crypto.Cipher;
+
+import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
+import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
+import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricAlgorithm;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.Base64;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 非对称加密算法<br>
@@ -72,8 +73,7 @@ public class AsymmetricCrypto {
     }
 
     /**
-     * 构造
-     * 私钥和公钥同时为空时生成一对新的私钥和公钥<br>
+     * 构造 私钥和公钥同时为空时生成一对新的私钥和公钥<br>
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param algorithm {@link SymmetricAlgorithm}
@@ -85,8 +85,7 @@ public class AsymmetricCrypto {
     }
 
     /**
-     * 构造
-     * 私钥和公钥同时为空时生成一对新的私钥和公钥<br>
+     * 构造 私钥和公钥同时为空时生成一对新的私钥和公钥<br>
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param algorithm {@link SymmetricAlgorithm}
@@ -98,8 +97,7 @@ public class AsymmetricCrypto {
     }
 
     /**
-     * 构造
-     * 私钥和公钥同时为空时生成一对新的私钥和公钥<br>
+     * 构造 私钥和公钥同时为空时生成一对新的私钥和公钥<br>
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param algorithm 非对称加密算法
@@ -140,7 +138,7 @@ public class AsymmetricCrypto {
         this.algorithm = algorithm;
         try {
             this.clipher = Cipher.getInstance(algorithm);
-            this.signature = Signature.getInstance("MD5with" + algorithm);//默认签名算法
+            this.signature = Signature.getInstance("MD5with" + algorithm);// 默认签名算法
         } catch (Exception e) {
             throw new CryptoException(e);
         }
@@ -234,7 +232,7 @@ public class AsymmetricCrypto {
      * @return 加密后的bytes
      */
     public byte[] encrypt(String data, String charset, KeyType keyType) {
-        return encrypt(StrUtil.bytes(data, charset), keyType);
+        return encrypt(StringCommand.bytes(data, charset), keyType);
     }
 
     /**
@@ -245,7 +243,7 @@ public class AsymmetricCrypto {
      * @return 加密后的bytes
      */
     public byte[] encrypt(String data, KeyType keyType) {
-        return encrypt(StrUtil.bytes(data, CharsetUtil.CHARSET_UTF_8), keyType);
+        return encrypt(StringCommand.bytes(data, CharsetCommand.CHARSET_UTF_8), keyType);
     }
 
     /**
@@ -406,6 +404,8 @@ public class AsymmetricCrypto {
                     throw new NullPointerException("Public key must not null when use it !");
                 }
                 return this.publicKey;
+            default:
+                break;
         }
         throw new CryptoException("Uknown key type: " + type);
     }

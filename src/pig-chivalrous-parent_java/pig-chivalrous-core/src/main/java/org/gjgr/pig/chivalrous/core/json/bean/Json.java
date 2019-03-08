@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.json.bean;
 
-import org.gjgr.pig.chivalrous.core.json.JsonException;
-
 import java.io.Writer;
+
+import org.gjgr.pig.chivalrous.core.json.JsonException;
 
 /**
  * JSON接口

@@ -1,5 +1,11 @@
 package org.gjgr.pig.chivalrous.core.cron.pattern;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
+
 import org.gjgr.pig.chivalrous.core.cron.CronException;
 import org.gjgr.pig.chivalrous.core.cron.pattern.matcher.AlwaysTrueValueMatcher;
 import org.gjgr.pig.chivalrous.core.cron.pattern.matcher.DayOfMonthValueMatcher;
@@ -14,13 +20,7 @@ import org.gjgr.pig.chivalrous.core.cron.pattern.parser.SecondValueParser;
 import org.gjgr.pig.chivalrous.core.cron.pattern.parser.ValueParser;
 import org.gjgr.pig.chivalrous.core.cron.pattern.parser.YearValueParser;
 import org.gjgr.pig.chivalrous.core.lang.Console;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.TimeZone;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 定时任务表达式<br>
@@ -29,12 +29,15 @@ import java.util.TimeZone;
  * <li><strong>分</strong>：范围：0~59</li>
  * <li><strong>时</strong>：范围：0~23</li>
  * <li><strong>日</strong>：范围：1~31，<strong>"L"</strong>表示月的最后一天</li>
- * <li><strong>月</strong>：范围：1~12，同时支持别名："jan","feb", "mar", "apr", "may","jun", "jul", "aug", "sep","oct", "nov", "dec"</li>
- * <li><strong>周</strong>：范围：0 (Sunday)~6(Saturday)，7也可以表示周日，同时支持别名："sun","mon", "tue", "wed", "thu","fri", "sat"，<strong>"L"</strong>表示周六</li>
+ * <li><strong>月</strong>：范围：1~12，同时支持别名："jan","feb", "mar", "apr", "may","jun", "jul", "aug", "sep","oct", "nov",
+ * "dec"</li>
+ * <li><strong>周</strong>：范围：0 (Sunday)~6(Saturday)，7也可以表示周日，同时支持别名："sun","mon", "tue", "wed", "thu","fri",
+ * "sat"，<strong>"L"</strong>表示周六</li>
  * </ol>
  * <p>
  * 为了兼容Quartz表达式，同时支持6位和7位表达式，其中：<br>
  * <p>
+ * 
  * <pre>
  * 当为6位时，第一位表示<strong>秒</strong>，范围0~59，但是第一位不做匹配
  * 当为7位时，最后一位表示<strong>年</strong>，范围1970~2099，但是第7位不做解析，也不做匹配
@@ -42,6 +45,7 @@ import java.util.TimeZone;
  * <p>
  * 当定时任务运行到的时间匹配这些表达式后，任务被启动。<br>
  * 注意：
+ * 
  * <pre>
  * 当isMatchSecond为<code>true</code>时才会匹配秒部分
  * 当isMatchYear为<code>true</code>时才会匹配年部分
@@ -57,8 +61,13 @@ import java.util.TimeZone;
  * <li><strong>cronA | cronB</strong>：表示多个定时表达式</li>
  * </ul>
  * 注意：在每一个子表达式中优先级：
- * <pre>间隔（/） &gt; 区间（-） &gt; 列表（,） </pre>
- * 例如 2,3,6/3中，由于“/”优先级高，因此相当于2,3,(6/3)，结果与 2,3,6等价<br><br>
+ * 
+ * <pre>
+ * 间隔（/） &gt; 区间（-） &gt; 列表（,）
+ * </pre>
+ * 
+ * 例如 2,3,6/3中，由于“/”优先级高，因此相当于2,3,(6/3)，结果与 2,3,6等价<br>
+ * <br>
  * <p>
  * 一些例子：
  * <ul>
@@ -128,7 +137,7 @@ public class CronPattern {
         parseGroupPattern(pattern);
     }
 
-    //--------------------------------------------------------------------------------------- match start
+    // --------------------------------------------------------------------------------------- match start
 
     /**
      * 是否匹配日（指定月份的第几天）
@@ -171,7 +180,7 @@ public class CronPattern {
     public boolean match(long millis, boolean isMatchSecond, boolean isMatchYear) {
         return match(TimeZone.getDefault(), millis, isMatchSecond, isMatchYear);
     }
-    //--------------------------------------------------------------------------------------- match end
+    // --------------------------------------------------------------------------------------- match end
 
     /**
      * 给定时间是否匹配定时任务表达式
@@ -234,7 +243,7 @@ public class CronPattern {
      * @param groupPattern 复合表达式
      */
     private void parseGroupPattern(String groupPattern) {
-        List<String> patternList = StrUtil.split(groupPattern, '|');
+        List<String> patternList = StringCommand.split(groupPattern, '|');
         for (String pattern : patternList) {
             parseSinglePattern(pattern);
         }
@@ -249,7 +258,7 @@ public class CronPattern {
     private void parseSinglePattern(String pattern) {
         final String[] parts = pattern.split("\\s");
 
-        int offset = 0;// 偏移量用于兼容Quartz表达式，当表达式有6或7项时，第一项为秒
+        int offset = 0; // 偏移量用于兼容Quartz表达式，当表达式有6或7项时，第一项为秒
         if (parts.length == 6 || parts.length == 7) {
             offset = 1;
         } else if (parts.length != 5) {
@@ -257,13 +266,15 @@ public class CronPattern {
         }
 
         // 秒
-        if (1 == offset) {// 支持秒的表达式
+        if (1 == offset) {
+            // 支持秒的表达式
             try {
                 this.secondMatchers.add(ValueMatcherBuilder.build(parts[0], SECOND_VALUE_PARSER));
             } catch (Exception e) {
                 throw new CronException(e, "Invalid pattern [{}], parsing 'second' field error!", pattern);
             }
-        } else {// 不支持秒的表达式，全部匹配
+        } else {
+            // 不支持秒的表达式，全部匹配
             this.secondMatchers.add(new AlwaysTrueValueMatcher());
         }
         // 分
@@ -297,13 +308,15 @@ public class CronPattern {
             throw new CronException(e, "Invalid pattern [{}], parsing 'day of week' field error!", pattern);
         }
         // 年
-        if (parts.length == 7) {// 支持年的表达式
+        if (parts.length == 7) {
+            // 支持年的表达式
             try {
                 this.yearMatchers.add(ValueMatcherBuilder.build(parts[0], YEAR_VALUE_PARSER));
             } catch (Exception e) {
                 throw new CronException(e, "Invalid pattern [{}], parsing 'year' field error!", pattern);
             }
-        } else {// 不支持年的表达式，全部匹配
+        } else {
+            // 不支持年的表达式，全部匹配
             this.secondMatchers.add(new AlwaysTrueValueMatcher());
         }
         matcherSize++;

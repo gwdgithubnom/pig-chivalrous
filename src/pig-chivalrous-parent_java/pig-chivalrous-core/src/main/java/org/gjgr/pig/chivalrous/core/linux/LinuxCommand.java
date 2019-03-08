@@ -1,15 +1,15 @@
 package org.gjgr.pig.chivalrous.core.linux;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @Author gwd
- * @Time 11-29-2018  Thursday
- * @Description: developer.tools:
+ * @Time 11-29-2018 Thursday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */

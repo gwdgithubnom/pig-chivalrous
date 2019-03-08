@@ -1,18 +1,5 @@
 package org.gjgr.pig.chivalrous.web.http;
 
-import org.gjgr.pig.chivalrous.core.lang.Validator;
-import org.gjgr.pig.chivalrous.core.log.Log;
-import org.gjgr.pig.chivalrous.core.log.LogFactory;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.ObjectUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.core.util.URLUtil;
-import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
-import org.gjgr.pig.chivalrous.web.http.ssl.TrustAnyHostnameVerifier;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -27,6 +14,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
+
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.lang.Validator;
+import org.gjgr.pig.chivalrous.core.log.Log;
+import org.gjgr.pig.chivalrous.core.log.LogFactory;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
+import org.gjgr.pig.chivalrous.web.http.ssl.TrustAnyHostnameVerifier;
 
 /**
  * http连接对象，对HttpURLConnection的包装
@@ -34,7 +34,7 @@ import java.util.Map.Entry;
  * @author Looly
  */
 public class HttpConnection {
-    private final static Log log = LogFactory.get();
+    private static final Log log = LogFactory.get();
 
     private URL url;
     /**
@@ -57,8 +57,8 @@ public class HttpConnection {
     /**
      * 构造HttpConnection
      *
-     * @param urlStr  URL
-     * @param method  HTTP方法
+     * @param urlStr URL
+     * @param method HTTP方法
      * @param timeout 超时时长
      */
     public HttpConnection(String urlStr, Method method, int timeout) {
@@ -68,23 +68,24 @@ public class HttpConnection {
     /**
      * 构造HttpConnection
      *
-     * @param urlStr           URL
-     * @param method           HTTP方法
+     * @param urlStr URL
+     * @param method HTTP方法
      * @param hostnameVerifier 域名验证器
-     * @param ssf              SSLSocketFactory
-     * @param timeout          超时时长
-     * @param proxy            代理
+     * @param ssf SSLSocketFactory
+     * @param timeout 超时时长
+     * @param proxy 代理
      */
-    public HttpConnection(String urlStr, Method method, HostnameVerifier hostnameVerifier, SSLSocketFactory ssf, int timeout, Proxy proxy) {
-        if (StrUtil.isBlank(urlStr)) {
+    public HttpConnection(String urlStr, Method method, HostnameVerifier hostnameVerifier, SSLSocketFactory ssf,
+            int timeout, Proxy proxy) {
+        if (StringCommand.isBlank(urlStr)) {
             throw new HttpException("Url is blank !");
         }
         if (Validator.isUrl(urlStr) == false) {
             throw new HttpException("{} is not a url !", urlStr);
         }
 
-        this.url = URLUtil.url(urlStr);
-        this.method = ObjectUtil.isNull(method) ? Method.GET : method;
+        this.url = UriCommand.url(urlStr);
+        this.method = ObjectCommand.isNull(method) ? Method.GET : method;
         this.proxy = proxy;
 
         try {
@@ -115,8 +116,8 @@ public class HttpConnection {
     /**
      * 创建HttpConnection
      *
-     * @param urlStr  URL
-     * @param method  HTTP方法
+     * @param urlStr URL
+     * @param method HTTP方法
      * @param timeout 超时时长
      * @return HttpConnection
      */
@@ -131,7 +132,8 @@ public class HttpConnection {
      * @param method HTTP方法
      * @return HttpConnection
      */
-    public static HttpConnection create(String urlStr, Method method, HostnameVerifier hostnameVerifier, SSLSocketFactory ssf) {
+    public static HttpConnection create(String urlStr, Method method, HostnameVerifier hostnameVerifier,
+            SSLSocketFactory ssf) {
         return new HttpConnection(urlStr, method, hostnameVerifier, ssf, 0, null);
     }
 
@@ -140,10 +142,11 @@ public class HttpConnection {
      *
      * @param urlStr URL
      * @param method HTTP方法
-     * @param proxy  代理
+     * @param proxy 代理
      * @return HttpConnection
      */
-    public static HttpConnection create(String urlStr, Method method, HostnameVerifier hostnameVerifier, SSLSocketFactory ssf, int timeout, Proxy proxy) {
+    public static HttpConnection create(String urlStr, Method method, HostnameVerifier hostnameVerifier,
+            SSLSocketFactory ssf, int timeout, Proxy proxy) {
         return new HttpConnection(urlStr, method, hostnameVerifier, ssf, timeout, proxy);
     }
 
@@ -162,14 +165,15 @@ public class HttpConnection {
             throw new HttpException(e.getMessage(), e);
         }
 
-//		//对于非GET请求，默认不支持30X跳转
-//		if(false == Method.GET.equals(this.method)){
-//			this.conn.setInstanceFollowRedirects(false);
-//		}
+        // //对于非GET请求，默认不支持30X跳转
+        // if(false == Method.GET.equals(this.method)){
+        // this.conn.setInstanceFollowRedirects(false);
+        // }
 
         // do input and output
         this.conn.setDoInput(true);
-        if (Method.POST.equals(this.method) || Method.PUT.equals(this.method) || Method.PATCH.equals(this.method) || Method.DELETE.equals(this.method)) {
+        if (Method.POST.equals(this.method) || Method.PUT.equals(this.method) || Method.PATCH.equals(this.method)
+                || Method.DELETE.equals(this.method)) {
             this.conn.setDoOutput(true);
             this.conn.setUseCaches(false);
         }
@@ -178,7 +182,8 @@ public class HttpConnection {
         header(Header.ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", true);
         header(Header.ACCEPT_ENCODING, "gzip", true);
         header(Header.CONTENT_TYPE, "application/x-www-form-urlencoded", true);
-        header(Header.USER_AGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0 Hutool", true);
+        header(Header.USER_AGENT, "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0 Hutool",
+                true);
         // Cookie
         setCookie(CookiePool.get(this.url.getHost()));
 
@@ -242,8 +247,8 @@ public class HttpConnection {
      * 设置请求头<br>
      * 当请求头存在时，覆盖之
      *
-     * @param header     头名
-     * @param value      头值
+     * @param header 头名
+     * @param value 头值
      * @param isOverride 是否覆盖旧值
      * @return HttpConnection
      */
@@ -263,8 +268,8 @@ public class HttpConnection {
      * 设置请求头<br>
      * 当请求头存在时，覆盖之
      *
-     * @param header     头名
-     * @param value      头值
+     * @param header 头名
+     * @param value 头值
      * @param isOverride 是否覆盖旧值
      * @return HttpConnection
      */
@@ -279,12 +284,12 @@ public class HttpConnection {
      * @param headers 请求头
      */
     public HttpConnection header(Map<String, List<String>> headers, boolean isOverride) {
-        if (CollectionUtil.isNotEmpty(headers)) {
+        if (CollectionCommand.isNotEmpty(headers)) {
             String name;
             for (Entry<String, List<String>> entry : headers.entrySet()) {
                 name = entry.getKey();
                 for (String value : entry.getValue()) {
-                    this.header(name, StrUtil.nullToEmpty(value), isOverride);
+                    this.header(name, StringCommand.nullToEmpty(value), isOverride);
                 }
             }
         }
@@ -438,7 +443,7 @@ public class HttpConnection {
     public InputStream getInputStream() throws IOException {
         // Get Cookies
         final String setCookie = header(Header.SET_COOKIE);
-        if (StrUtil.isBlank(setCookie) == false) {
+        if (StringCommand.isBlank(setCookie) == false) {
             log.debug("Set cookie: [{}]", setCookie);
             CookiePool.put(url.getHost(), setCookie);
         }
@@ -499,12 +504,12 @@ public class HttpConnection {
 
     @Override
     public String toString() {
-        StringBuilder sb = StrUtil.builder();
-        sb.append("Request URL: ").append(this.url).append(StrUtil.CRLF);
-        sb.append("Request Method: ").append(this.method).append(StrUtil.CRLF);
-        // sb.append("Request Headers: ").append(StrUtil.CRLF);
+        StringBuilder sb = StringCommand.builder();
+        sb.append("Request URL: ").append(this.url).append(StringCommand.CRLF);
+        sb.append("Request Method: ").append(this.method).append(StringCommand.CRLF);
+        // sb.append("Request Headers: ").append(StringCommand.CRLF);
         // for (Entry<String, List<String>> entry : this.conn.getHeaderFields().entrySet()) {
-        // sb.append(" ").append(entry).append(StrUtil.CRLF);
+        // sb.append(" ").append(entry).append(StringCommand.CRLF);
         // }
 
         return sb.toString();
@@ -523,13 +528,15 @@ public class HttpConnection {
      * 初始化https请求参数
      *
      * @param hostnameVerifier 域名验证器
-     * @param ssf              SSLSocketFactory
+     * @param ssf SSLSocketFactory
      */
-    private HttpsURLConnection openHttps(HostnameVerifier hostnameVerifier, SSLSocketFactory ssf) throws IOException, NoSuchAlgorithmException, KeyManagementException {
+    private HttpsURLConnection openHttps(HostnameVerifier hostnameVerifier, SSLSocketFactory ssf)
+            throws IOException, NoSuchAlgorithmException, KeyManagementException {
         final HttpsURLConnection httpsURLConnection = (HttpsURLConnection) openConnection();
 
         // 验证域
-        httpsURLConnection.setHostnameVerifier(null != hostnameVerifier ? hostnameVerifier : new TrustAnyHostnameVerifier());
+        httpsURLConnection
+                .setHostnameVerifier(null != hostnameVerifier ? hostnameVerifier : new TrustAnyHostnameVerifier());
         httpsURLConnection.setSSLSocketFactory(null != ssf ? ssf : SSLSocketFactoryBuilder.create().build());
 
         return httpsURLConnection;

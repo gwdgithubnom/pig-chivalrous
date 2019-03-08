@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.system;
 
-import org.gjgr.pig.chivalrous.core.file.LocationCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SystemCommand {
 

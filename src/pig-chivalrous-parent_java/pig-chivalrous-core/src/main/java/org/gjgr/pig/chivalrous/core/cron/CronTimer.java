@@ -42,15 +42,15 @@ public class CronTimer extends Thread {
         long nextTime;
         long sleep;
         while (true) {
-            //下一时间计算是按照上一个执行点开始时间计算的
+            // 下一时间计算是按照上一个执行点开始时间计算的
             nextTime = ((thisTime / timerUnit) + 1) * timerUnit;
             sleep = nextTime - System.currentTimeMillis();
             if (sleep > 0 && false == ThreadUtil.safeSleep(sleep)) {
-                //等待直到下一个时间点，如果被中断直接退出Timer
+                // 等待直到下一个时间点，如果被中断直接退出Timer
                 break;
             }
 
-            //执行点，时间记录为执行开始的时间，而非结束时间
+            // 执行点，时间记录为执行开始的时间，而非结束时间
             thisTime = System.currentTimeMillis();
             spawnLauncher(thisTime);
         }

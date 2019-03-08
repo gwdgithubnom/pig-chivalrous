@@ -1,14 +1,13 @@
 package org.gjgr.pig.chivalrous.core.getter;
 
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+
 /**
  * 基本类型的getter接口抽象实现，所有类型的值获取都是通过将String转换而来<br>
- * 用户只需实现getStr方法即可，其他类型将会从String结果中转换
- * 在不提供默认值的情况下， 如果值不存在或获取错误，返回null<br>
+ * 用户只需实现getStr方法即可，其他类型将会从String结果中转换 在不提供默认值的情况下， 如果值不存在或获取错误，返回null<br>
  *
  * @author Looly
  */

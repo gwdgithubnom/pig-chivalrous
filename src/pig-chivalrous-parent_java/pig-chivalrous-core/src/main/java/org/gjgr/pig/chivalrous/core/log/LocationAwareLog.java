@@ -19,5 +19,5 @@ public interface LocationAwareLog extends Log {
      * @param format 消息模板
      * @param arguments 参数
      */
-    void log(String fqcn, Level level, Throwable t, String format, Object... arguments);
+    void log(String fqcn, Level level, Throwable t, String format, Object...arguments);
 }

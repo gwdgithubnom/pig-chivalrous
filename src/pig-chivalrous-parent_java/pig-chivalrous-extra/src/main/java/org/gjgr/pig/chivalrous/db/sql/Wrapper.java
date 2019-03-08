@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.db.Entity;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map.Entry;
+
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.db.Entity;
 
 /**
  * 包装器<br>
@@ -50,7 +50,7 @@ public class Wrapper {
         this.sufWrapQuote = sufWrapQuote;
     }
 
-    //--------------------------------------------------------------- Getters and Setters start
+    // --------------------------------------------------------------- Getters and Setters start
 
     /**
      * @return 前置包装符号
@@ -83,7 +83,7 @@ public class Wrapper {
     public void setSufWrapQuote(Character sufWrapQuote) {
         this.sufWrapQuote = sufWrapQuote;
     }
-    //--------------------------------------------------------------- Getters and Setters end
+    // --------------------------------------------------------------- Getters and Setters end
 
     /**
      * 包装字段名<br>
@@ -93,21 +93,21 @@ public class Wrapper {
      * @return 包装后的字段名
      */
     public String wrap(String field) {
-        if (preWrapQuote == null || sufWrapQuote == null || StrUtil.isBlank(field)) {
+        if (preWrapQuote == null || sufWrapQuote == null || StringCommand.isBlank(field)) {
             return field;
         }
 
-        //如果已经包含包装的引号，返回原字符
-        if (StrUtil.isSurround(field, preWrapQuote, sufWrapQuote)) {
+        // 如果已经包含包装的引号，返回原字符
+        if (StringCommand.isSurround(field, preWrapQuote, sufWrapQuote)) {
             return field;
         }
 
-        //如果字段中包含通配符或者括号（字段通配符或者函数），不做包装
+        // 如果字段中包含通配符或者括号（字段通配符或者函数），不做包装
         if (field.contains("*") || field.contains("(")) {
             return field;
         }
 
-        return StrUtil.format("{}{}{}", preWrapQuote, field, sufWrapQuote);
+        return StringCommand.format("{}{}{}", preWrapQuote, field, sufWrapQuote);
     }
 
     /**
@@ -117,8 +117,8 @@ public class Wrapper {
      * @param fields 字段名
      * @return 包装后的字段名
      */
-    public String[] wrap(String... fields) {
-        if (ArrayUtil.isEmpty(fields)) {
+    public String[] wrap(String...fields) {
+        if (ArrayCommand.isEmpty(fields)) {
             return fields;
         }
 
@@ -138,7 +138,7 @@ public class Wrapper {
      * @return 包装后的字段名
      */
     public Collection<String> wrap(Collection<String> fields) {
-        if (CollectionUtil.isEmpty(fields)) {
+        if (CollectionCommand.isEmpty(fields)) {
             return fields;
         }
 
@@ -159,10 +159,10 @@ public class Wrapper {
 
         final Entity wrapedEntity = new Entity();
 
-        //wrap table name
+        // wrap table name
         wrapedEntity.setTableName(wrap(entity.getTableName()));
 
-        //wrap fields
+        // wrap fields
         for (Entry<String, Object> entry : entity.entrySet()) {
             wrapedEntity.set(wrap(entry.getKey()), entry.getValue());
         }
@@ -177,9 +177,9 @@ public class Wrapper {
      * @param conditions 被包装的实体
      * @return 包装后的字段名
      */
-    public Condition[] wrap(Condition... conditions) {
+    public Condition[] wrap(Condition...conditions) {
         final Condition[] clonedConditions = new Condition[conditions.length];
-        if (ArrayUtil.isNotEmpty(conditions)) {
+        if (ArrayCommand.isNotEmpty(conditions)) {
             Condition clonedCondition;
             for (int i = 0; i < conditions.length; i++) {
                 clonedCondition = conditions[i].clone();

@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db.handler;
 
-import org.gjgr.pig.chivalrous.db.Entity;
-import org.gjgr.pig.chivalrous.db.PageResult;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.gjgr.pig.chivalrous.db.Entity;
+import org.gjgr.pig.chivalrous.db.PageResult;
 
 /**
  * 分页结果集处理类 ，处理出的结果为PageResult

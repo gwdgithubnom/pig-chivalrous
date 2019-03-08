@@ -2,8 +2,8 @@ package org.gjgr.pig.chivalrous.core.linux;
 
 /**
  * @Author gwd
- * @Time 11-29-2018  Thursday
- * @Description: developer.tools:
+ * @Time 11-29-2018 Thursday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
@@ -22,7 +22,7 @@ public class WgetCommand extends LinuxShellCommand {
         this.targetFile = targetFile;
     }
 
-    public WgetCommand(String command, String... params) {
+    public WgetCommand(String command, String...params) {
         super("wget ", params);
     }
 

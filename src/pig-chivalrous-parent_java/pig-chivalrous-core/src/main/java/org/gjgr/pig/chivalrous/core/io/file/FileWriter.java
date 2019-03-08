@@ -1,11 +1,5 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,7 +9,14 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 文件写入器
@@ -27,7 +28,7 @@ public class FileWriter extends FileWrapper {
      * 构造
      *
      * @param file 文件
-     * @param charset 编码，使用 {@link CharsetUtil}
+     * @param charset 编码，使用 {@link CharsetCommand}
      */
     public FileWriter(File file, Charset charset) {
         super(file, charset);
@@ -38,10 +39,10 @@ public class FileWriter extends FileWrapper {
      * 构造
      *
      * @param file 文件
-     * @param charset 编码，使用 {@link CharsetUtil#charset(String)}
+     * @param charset 编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileWriter(File file, String charset) {
-        this(file, CharsetUtil.charset(charset));
+        this(file, CharsetCommand.charset(charset));
     }
 
     // ------------------------------------------------------- Constructor start
@@ -50,7 +51,7 @@ public class FileWriter extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetUtil}
+     * @param charset 编码，使用 {@link CharsetCommand}
      */
     public FileWriter(String filePath, Charset charset) {
         this(FileCommand.file(filePath), charset);
@@ -60,10 +61,10 @@ public class FileWriter extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetUtil#charset(String)}
+     * @param charset 编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileWriter(String filePath, String charset) {
-        this(FileCommand.file(filePath), CharsetUtil.charset(charset));
+        this(FileCommand.file(filePath), CharsetCommand.charset(charset));
     }
 
     /**
@@ -90,7 +91,7 @@ public class FileWriter extends FileWrapper {
      * 创建 FileWriter
      *
      * @param file 文件
-     * @param charset 编码，使用 {@link CharsetUtil}
+     * @param charset 编码，使用 {@link CharsetCommand}
      * @return {@link FileWriter}
      */
     public static FileWriter create(File file, Charset charset) {
@@ -162,6 +163,12 @@ public class FileWriter extends FileWrapper {
         return writeLines(list, false);
     }
 
+    public <T> File appendLine(String data) throws IORuntimeException {
+        List list = new ArrayList<>();
+        list.add(data);
+        return appendLines(list);
+    }
+
     /**
      * 将列表写入文件，追加模式
      *
@@ -171,6 +178,12 @@ public class FileWriter extends FileWrapper {
      */
     public <T> File appendLines(Collection<T> list) throws IORuntimeException {
         return writeLines(list, true);
+    }
+
+    public <T> File writeLine(String data) throws IORuntimeException {
+        List list = new ArrayList<>();
+        list.add(data);
+        return writeLines(list);
     }
 
     /**
@@ -293,7 +306,8 @@ public class FileWriter extends FileWrapper {
      */
     public BufferedWriter getWriter(boolean isAppend) throws IORuntimeException {
         try {
-            return new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FileCommand.touch(file), isAppend), charset));
+            return new BufferedWriter(
+                    new OutputStreamWriter(new FileOutputStream(FileCommand.touch(file), isAppend), charset));
         } catch (Exception e) {
             throw new IORuntimeException(e);
         }

@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.aop.aspects;
 
+import java.lang.reflect.Method;
+
 import org.gjgr.pig.chivalrous.core.date.TimeInterval;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.LogFactory;
-
-import java.lang.reflect.Method;
 
 /**
  * 通过日志打印方法的执行时间的切面
@@ -27,7 +27,8 @@ public class TimeIntervalAspect extends SimpleAspect {
 
     @Override
     public boolean after(Object target, Method method, Object[] args) {
-        log.info("Method [{}.{}] execute spend [{}]ms", target.getClass().getName(), method.getName(), interval.intervalMs());
+        log.info("Method [{}.{}] execute spend [{}]ms", target.getClass().getName(), method.getName(),
+                interval.intervalMs());
         return true;
     }
 }

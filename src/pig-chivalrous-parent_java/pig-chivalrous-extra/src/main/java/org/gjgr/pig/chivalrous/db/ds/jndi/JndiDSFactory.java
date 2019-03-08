@@ -1,14 +1,15 @@
 package org.gjgr.pig.chivalrous.db.ds.jndi;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
-
-import javax.sql.DataSource;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JNDI数据源工厂类<br>
@@ -40,9 +41,9 @@ public class JndiDSFactory extends DSFactory {
     }
 
     @Override
-    synchronized public DataSource getDataSource(String group) {
+    public synchronized DataSource getDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         // 如果已经存在已有数据源（连接池）直接返回
@@ -59,12 +60,12 @@ public class JndiDSFactory extends DSFactory {
 
     @Override
     public void close(String group) {
-        //JNDI Datasource not support close method
+        // JNDI Datasource not support close method
     }
 
     @Override
     public void destroy() {
-        //JNDI Datasource not support destroy method
+        // JNDI Datasource not support destroy method
     }
 
     /**
@@ -75,11 +76,11 @@ public class JndiDSFactory extends DSFactory {
      */
     private DataSource createDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         String jndiName = setting.getByGroup("jndi", group);
-        if (StrUtil.isEmpty(jndiName)) {
+        if (StringCommand.isEmpty(jndiName)) {
             throw new DbRuntimeException("No setting name [jndi] for group [{}]", group);
         }
         DataSource ds = DbUtil.getJndiDs(jndiName);

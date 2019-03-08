@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.aop;
 
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 /**
  * 代理工具类
@@ -25,7 +25,7 @@ public final class ProxyCommand {
      */
     @SuppressWarnings("unchecked")
     public static <T> T proxy(T target, Class<? extends Aspect> aspectClass) {
-        final Aspect aspect = ClassUtil.newInstance(aspectClass, target);
+        final Aspect aspect = ClassCommand.newInstance(aspectClass, target);
         return (T) newProxyInstance(target.getClass().getClassLoader(), aspect, target.getClass().getInterfaces());
     }
 
@@ -57,7 +57,8 @@ public final class ProxyCommand {
      * @return 代理类
      */
     @SuppressWarnings("unchecked")
-    public static <T> T newProxyInstance(ClassLoader classloader, InvocationHandler invocationHandler, Class<?>... interfaces) {
+    public static <T> T newProxyInstance(ClassLoader classloader, InvocationHandler invocationHandler,
+            Class<?>...interfaces) {
         return (T) Proxy.newProxyInstance(classloader, interfaces, invocationHandler);
     }
 
@@ -68,7 +69,7 @@ public final class ProxyCommand {
      * @param interfaces 代理类中需要实现的被代理类的接口方法
      * @return 代理类
      */
-    public static <T> T newProxyInstance(InvocationHandler invocationHandler, Class<?>... interfaces) {
-        return newProxyInstance(ClassUtil.getClassLoader(), invocationHandler, interfaces);
+    public static <T> T newProxyInstance(InvocationHandler invocationHandler, Class<?>...interfaces) {
+        return newProxyInstance(ClassCommand.getClassLoader(), invocationHandler, interfaces);
     }
 }

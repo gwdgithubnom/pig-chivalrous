@@ -1,11 +1,12 @@
 package org.gjgr.pig.chivalrous.db;
 
-import org.gjgr.pig.chivalrous.db.dialect.Dialect;
-import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.db.dialect.Dialect;
+import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
 
 /**
  * SQL执行类<br>
@@ -29,7 +30,7 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 构造
      *
-     * @param ds      数据源
+     * @param ds 数据源
      * @param dialect 方言
      */
     public SqlRunner(DataSource ds, Dialect dialect) {
@@ -40,7 +41,7 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 构造
      *
-     * @param ds              数据源
+     * @param ds 数据源
      * @param driverClassName 数据库连接驱动类名，用于识别方言
      */
     public SqlRunner(DataSource ds, String driverClassName) {
@@ -48,7 +49,7 @@ public class SqlRunner extends AbstractSqlRunner {
         this.ds = ds;
     }
 
-    //------------------------------------------------------- Constructor start
+    // ------------------------------------------------------- Constructor start
 
     /**
      * 创建SqlRunner<br>
@@ -64,7 +65,7 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 创建SqlRunner
      *
-     * @param ds      数据源
+     * @param ds 数据源
      * @param dialect 方言
      * @return SqlRunner
      */
@@ -75,26 +76,14 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 创建SqlRunner
      *
-     * @param ds              数据源
+     * @param ds 数据源
      * @param driverClassName 数据库连接驱动类名
      * @return SqlRunner
      */
     public static SqlRunner create(DataSource ds, String driverClassName) {
         return new SqlRunner(ds, DialectFactory.newDialect(driverClassName));
     }
-    //------------------------------------------------------- Constructor end
-
-    //---------------------------------------------------------------------------- Getters and Setters start
-    @Override
-    public SqlConnRunner getRunner() {
-        return this.runner;
-    }
-
-    @Override
-    public void setRunner(SqlConnRunner runner) {
-        this.runner = runner;
-    }
-    //---------------------------------------------------------------------------- Getters and Setters end
+    // ------------------------------------------------------- Constructor end
 
     @Override
     public Connection getConnection() throws SQLException {
@@ -105,7 +94,19 @@ public class SqlRunner extends AbstractSqlRunner {
     public void closeConnection(Connection conn) {
         DbUtil.close(conn);
     }
+    // ---------------------------------------------------------------------------- Getters and Setters end
 
-    //---------------------------------------------------------------------------- Private method start
-    //---------------------------------------------------------------------------- Private method end
+    // ---------------------------------------------------------------------------- Getters and Setters start
+    @Override
+    public SqlConnRunner getRunner() {
+        return this.runner;
+    }
+
+    @Override
+    public void setRunner(SqlConnRunner runner) {
+        this.runner = runner;
+    }
+
+    // ---------------------------------------------------------------------------- Private method start
+    // ---------------------------------------------------------------------------- Private method end
 }

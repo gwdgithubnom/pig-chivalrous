@@ -1,16 +1,16 @@
 package org.gjgr.pig.chivalrous.web.http.ssl;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * SSLSocketFactory构建器
@@ -51,9 +51,8 @@ public class SSLSocketFactoryBuilder {
 
     private String protocol = TLS;
     private KeyManager[] keyManagers;
-    private TrustManager[] trustManagers = {new DefaultTrustManager()};
+    private TrustManager[] trustManagers = { new DefaultTrustManager() };
     private SecureRandom secureRandom = new SecureRandom();
-
 
     /**
      * 创建 SSLSocketFactoryBuilder
@@ -71,7 +70,7 @@ public class SSLSocketFactoryBuilder {
      * @return 自身
      */
     public SSLSocketFactoryBuilder setProtocol(String protocol) {
-        if (StrUtil.isNotBlank(protocol)) {
+        if (StringCommand.isNotBlank(protocol)) {
             this.protocol = protocol;
         }
         return this;
@@ -83,8 +82,8 @@ public class SSLSocketFactoryBuilder {
      * @param trustManagers TrustManager列表
      * @return 自身
      */
-    public SSLSocketFactoryBuilder setTrustManagers(TrustManager... trustManagers) {
-        if (ArrayUtil.isNotEmpty(trustManagers)) {
+    public SSLSocketFactoryBuilder setTrustManagers(TrustManager...trustManagers) {
+        if (ArrayCommand.isNotEmpty(trustManagers)) {
             this.trustManagers = trustManagers;
         }
         return this;
@@ -96,8 +95,8 @@ public class SSLSocketFactoryBuilder {
      * @param keyManagers JSSE key managers
      * @return 自身
      */
-    public SSLSocketFactoryBuilder setKeyManagers(KeyManager... keyManagers) {
-        if (ArrayUtil.isNotEmpty(keyManagers)) {
+    public SSLSocketFactoryBuilder setKeyManagers(KeyManager...keyManagers) {
+        if (ArrayCommand.isNotEmpty(keyManagers)) {
             this.keyManagers = keyManagers;
         }
         return this;

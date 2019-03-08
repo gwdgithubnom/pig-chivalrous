@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.cron.pattern.matcher;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 值匹配，始终返回<code>true</code>
@@ -16,6 +16,6 @@ public class AlwaysTrueValueMatcher implements ValueMatcher {
 
     @Override
     public String toString() {
-        return StrUtil.format("[Matcher]: always true.");
+        return StringCommand.format("[Matcher]: always true.");
     }
 }

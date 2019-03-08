@@ -1,11 +1,5 @@
 package org.gjgr.pig.chivalrous.core.json.bean;
 
-import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-import org.gjgr.pig.chivalrous.core.json.JsonException;
-import org.gjgr.pig.chivalrous.core.json.JsonGetter;
-import org.gjgr.pig.chivalrous.core.json.JsonTokener;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -15,6 +9,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+import org.gjgr.pig.chivalrous.core.json.JsonException;
+import org.gjgr.pig.chivalrous.core.json.JsonGetter;
+import org.gjgr.pig.chivalrous.core.json.JsonTokener;
 
 /**
  * JSON数组
@@ -28,7 +28,8 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      */
     private final ArrayList<Object> rawArrayList;
 
-    //-------------------------------------------------------------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------------------------------------------------------------
+    // Constructor start
 
     /**
      * 构造
@@ -50,7 +51,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
         }
         if (x.nextClean() != ']') {
             x.back();
-            for (; ; ) {
+            for (;;) {
                 if (x.nextClean() == ',') {
                     x.back();
                     this.rawArrayList.add(JsonNull.NULL);
@@ -91,12 +92,14 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      */
     public JsonArray(Object arrayOrCollection) throws JsonException {
         this();
-        if (arrayOrCollection.getClass().isArray()) {//数组
+        if (arrayOrCollection.getClass().isArray()) {
+            // 数组
             int length = Array.getLength(arrayOrCollection);
             for (int i = 0; i < length; i += 1) {
                 this.put(JsonCommand.wrap(Array.get(arrayOrCollection, i)));
             }
-        } else if (arrayOrCollection instanceof Iterable<?>) {//Iterable
+        } else if (arrayOrCollection instanceof Iterable<?>) {
+            // Iterable
             for (Object o : (Collection<?>) arrayOrCollection) {
                 this.add(o);
             }
@@ -104,7 +107,8 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
             throw new JsonException("JsonArray initial value should be a string or collection or array.");
         }
     }
-    //-------------------------------------------------------------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------------------------------------------------------------
+    // Constructor start
 
     /**
      * 值是否为<code>null</code>
@@ -142,8 +146,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
     }
 
     /**
-     * Append an object value. This increases the array's length by one.
-     * 加入元素，数组长度+1，等同于 {@link JsonArray#add(Object)}
+     * Append an object value. This increases the array's length by one. 加入元素，数组长度+1，等同于 {@link JsonArray#add(Object)}
      *
      * @param value 值，可以是： Boolean, Double, Integer, JsonArray, JsonObject, Long, or String, or the JsonNull.NULL。
      * @return this.

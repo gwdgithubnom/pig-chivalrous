@@ -13,11 +13,6 @@
 
 package org.gjgr.pig.chivalrous.core.date;
 
-import org.gjgr.pig.chivalrous.core.date.format.DateTimeFormatter;
-import org.gjgr.pig.chivalrous.core.date.format.DateTimeParser;
-import org.gjgr.pig.chivalrous.core.date.format.DateTimePrinter;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParsePosition;
@@ -35,9 +30,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.gjgr.pig.chivalrous.core.date.format.DateTimeFormatter;
+import org.gjgr.pig.chivalrous.core.date.format.DateTimeParser;
+import org.gjgr.pig.chivalrous.core.date.format.DateTimePrinter;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
 /**
- * This class is used for ...
- * ClassName: DateTimeCommand
+ * This class is used for ... ClassName: DateTimeCommand
  *
  * @author 龚文东 root
  * @version Nov 22, 2015 11:57:29 AM
@@ -54,7 +53,9 @@ public class DateTimeCommand {
      * @param ： 模式名
      * @param ： 名称
      * @param ： 数据源类型
-     * <p>Description: </p>
+     *            <p>
+     *            Description:
+     *            </p>
      */
     public DateTimeCommand() {
         // TODO Auto-generated constructor stub
@@ -87,7 +88,7 @@ public class DateTimeCommand {
         return new DateTime(calendar);
     }
 
-    //-------------------------------------------------------------- Part of Date start
+    // -------------------------------------------------------------- Part of Date start
 
     /**
      * 转换为Calendar对象
@@ -341,7 +342,7 @@ public class DateTimeCommand {
     public static int thisDayOfWeek() {
         return dayOfWeek(dateTime());
     }
-    //-------------------------------------------------------------- Part of Date end
+    // -------------------------------------------------------------- Part of Date end
 
     /**
      * @return 当前日期是星期几 {@link PigWeek}
@@ -616,11 +617,11 @@ public class DateTimeCommand {
                 return parse(dateStr, DateStyle.EN_YYYY_MM_DD_HH_MM_SS_SSS.getValue());
             }
         } catch (Exception e) {
-            throw new DateException(StrUtil.format("Parse [{}] with format normal error!", dateStr));
+            throw new DateException(StringCommand.format("Parse [{}] with format normal error!", dateStr));
         }
 
         // 没有更多匹配的时间格式
-        throw new DateException(StrUtil.format(" [{}] format is not fit for dateTime pattern!", dateStr));
+        throw new DateException(StringCommand.format(" [{}] format is not fit for dateTime pattern!", dateStr));
     }
 
     /**
@@ -744,7 +745,7 @@ public class DateTimeCommand {
         return beginOfDay(calendar);
     }
 
-    //--------------------------------------------------- Offset for now
+    // --------------------------------------------------- Offset for now
 
     /**
      * 获取某月的结束时间
@@ -988,6 +989,7 @@ public class DateTimeCommand {
 
     /**
      * 判断两个日期相差的天数<br>
+     * 
      * <pre>
      * 有时候我们计算相差天数的时候需要忽略时分秒。
      * 比如：2016-02-01 23:59:59和2016-02-02 00:00:00相差一秒
@@ -1159,7 +1161,8 @@ public class DateTimeCommand {
         cal.setTime(dateToCompare);
 
         if (cal.before(birthDay)) {
-            throw new IllegalArgumentException(StrUtil.format("Birthday is after dateTime {}!", formatDate(dateToCompare)));
+            throw new IllegalArgumentException(
+                    StringCommand.format("Birthday is after dateTime {}!", formatDate(dateToCompare)));
         }
 
         int year = cal.get(Calendar.YEAR);
@@ -1173,11 +1176,11 @@ public class DateTimeCommand {
         if (month == monthBirth) {
             int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
             if (dayOfMonth < dayOfMonthBirth) {
-                //如果生日在当月，但是未达到生日当天的日期，年龄减一
+                // 如果生日在当月，但是未达到生日当天的日期，年龄减一
                 age--;
             }
         } else if (month < monthBirth) {
-            //如果当前月份未达到生日的月份，年龄计算减一
+            // 如果当前月份未达到生日的月份，年龄计算减一
             age--;
         }
 
@@ -1299,7 +1302,7 @@ public class DateTimeCommand {
                     for (int j = i + 1; j < timestamps.size(); j++) {
                         long absoluteValue = Math.abs(timestamps.get(i) - timestamps.get(j));
                         absoluteValues.add(absoluteValue);
-                        long[] timestampTmp = {timestamps.get(i), timestamps.get(j)};
+                        long[] timestampTmp = { timestamps.get(i), timestamps.get(j) };
                         map.put(absoluteValue, timestampTmp);
                     }
                 }
@@ -1337,8 +1340,7 @@ public class DateTimeCommand {
     }
 
     /**
-     * get current dateTime string
-     * and default format is: yyyyMMddHHmmss
+     * get current dateTime string and default format is: yyyyMMddHHmmss
      */
     public static String getCurrentTimeString() {
         return DateTimeCommand.getDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -1913,6 +1915,8 @@ public class DateTimeCommand {
             case 6:
                 pigWeek = PigWeek.SATURDAY;
                 break;
+            default:
+                break;
         }
         return pigWeek;
     }
@@ -2006,59 +2010,50 @@ public class DateTimeCommand {
     }
     /*
      *//**
-     * 格式化
-     * @param dateTime
-     * @param pattern
-     * @return
-     *//*
-    public static String format(Date dateTime, String pattern) {
-        DateFormat format = new SimpleDateFormat(pattern);
-        return format.format(dateTime);
-    }
-
-    *//**
-     * 格式化
-     * @param dateTime
-     * @param parsePattern
-     * @param returnPattern
-     * @return
-     *//*
-    public static String format(String dateTime, String parsePattern, String returnPattern) {
-        return format(newJson(dateTime, parsePattern), returnPattern);
-    }*/
+         * 格式化
+         * 
+         * @param dateTime
+         * @param pattern
+         * @return
+         */
+    /*
+     * public static String format(Date dateTime, String pattern) { DateFormat format = new SimpleDateFormat(pattern);
+     * return format.format(dateTime); }
+     * 
+     *//**
+        * 格式化
+        * 
+        * @param dateTime
+        * @param parsePattern
+        * @param returnPattern
+        * @return
+        *//*
+           * public static String format(String dateTime, String parsePattern, String returnPattern) { return
+           * format(newJson(dateTime, parsePattern), returnPattern); }
+           */
 
     /* *//**
-     * 解析
-     * @param dateTime
-     * @param pattern
-     * @return
-     *//*
-    public static Date newJson(String dateTime, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        try {
-            return format.newJson(dateTime);
-        } catch (ParseException e) {
-            logger.error("ToolDateTime.parse异常：date值" + dateTime + "，pattern值" + pattern);
-            return null;
-        }
-    }
-
-    *//**
-     * 解析
-     * @param dateStr
-     * @return
-     *//*
-    public static Date newJson(String dateStr) {
-        Date dateTime = null;
-        try {
-            dateTime = DateFormat.getDateTimeInstance().newJson(dateStr);
-        } catch (ParseException e) {
-            logger.error("ToolDateTime.parse异常：date值" + dateTime);
-            return null;
-        }
-        return dateTime;
-    }
-*/
+          * 解析
+          * 
+          * @param dateTime
+          * @param pattern
+          * @return
+          */
+    /*
+     * public static Date newJson(String dateTime, String pattern) { SimpleDateFormat format = new
+     * SimpleDateFormat(pattern); try { return format.newJson(dateTime); } catch (ParseException e) {
+     * logger.error("ToolDateTime.parse异常：date值" + dateTime + "，pattern值" + pattern); return null; } }
+     * 
+     *//**
+        * 解析
+        * 
+        * @param dateStr
+        * @return
+        *//*
+           * public static Date newJson(String dateStr) { Date dateTime = null; try { dateTime =
+           * DateFormat.getDateTimeInstance().newJson(dateStr); } catch (ParseException e) {
+           * logger.error("ToolDateTime.parse异常：date值" + dateTime); return null; } return dateTime; }
+           */
 
     /**
      * 两个日期的时间差，返回"X天X小时X分X秒"
@@ -2119,7 +2114,7 @@ public class DateTimeCommand {
      */
     @SuppressWarnings("static-access")
     public static String getDateInWeek(Date date) {
-        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int dayIndex = calendar.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY;
@@ -2374,7 +2369,7 @@ public class DateTimeCommand {
     }
 
     public static java.time.format.DateTimeFormatter nativeDateTimeFormatter() {
-        //TODO
+        // TODO
         return null;
     }
 

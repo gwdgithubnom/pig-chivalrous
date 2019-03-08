@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.dfa;
 
+import java.util.List;
+
 import org.gjgr.pig.chivalrous.core.dfa.WordTree;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.List;
 
 /**
  * DFA单元测试
@@ -17,7 +17,7 @@ public class DfaTest {
     public void dfaTest() {
 
         // -----------------------------------------------------------------------------------------------------------------------------------
-        //构建查询树
+        // 构建查询树
         WordTree tree = new WordTree();
         tree.addWord("大");
         tree.addWord("大土豆");
@@ -25,7 +25,7 @@ public class DfaTest {
         tree.addWord("刚出锅");
         tree.addWord("出锅");
 
-        //构建被查询的文本
+        // 构建被查询的文本
         String text = "我有一颗大土豆，刚出锅的";
         // -----------------------------------------------------------------------------------------------------------------------------------
 

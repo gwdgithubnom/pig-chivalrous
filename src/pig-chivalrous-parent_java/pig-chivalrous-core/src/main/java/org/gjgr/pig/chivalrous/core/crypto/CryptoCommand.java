@@ -1,21 +1,5 @@
 package org.gjgr.pig.chivalrous.core.crypto;
 
-import org.apache.commons.codec.binary.Hex;
-import org.gjgr.pig.chivalrous.core.crypto.asymmetric.AsymmetricType;
-import org.gjgr.pig.chivalrous.core.crypto.asymmetric.DSA;
-import org.gjgr.pig.chivalrous.core.crypto.asymmetric.RSA;
-import org.gjgr.pig.chivalrous.core.crypto.digest.DigestType;
-import org.gjgr.pig.chivalrous.core.crypto.digest.Digester;
-import org.gjgr.pig.chivalrous.core.crypto.digest.HMac;
-import org.gjgr.pig.chivalrous.core.crypto.digest.HmacAlgorithm;
-import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricAlgorithm;
-import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricCrypto;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.RandomCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-
 import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -36,12 +20,30 @@ import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.UUID;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Hex;
+import org.gjgr.pig.chivalrous.core.crypto.asymmetric.AsymmetricType;
+import org.gjgr.pig.chivalrous.core.crypto.asymmetric.DSA;
+import org.gjgr.pig.chivalrous.core.crypto.asymmetric.RSA;
+import org.gjgr.pig.chivalrous.core.crypto.digest.DigestType;
+import org.gjgr.pig.chivalrous.core.crypto.digest.Digester;
+import org.gjgr.pig.chivalrous.core.crypto.digest.HMac;
+import org.gjgr.pig.chivalrous.core.crypto.digest.HmacAlgorithm;
+import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricAlgorithm;
+import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricCrypto;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.Base64;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.gjgr.pig.chivalrous.core.util.RandomCommand;
 
 /**
  * 安全相关工具类<br>
@@ -57,6 +59,7 @@ public final class CryptoCommand {
     /**
      * 默认密钥字节数
      * <p>
+     * 
      * <pre>
      * RSA/DSA
      * Default Keysize 1024
@@ -96,7 +99,8 @@ public final class CryptoCommand {
         SecretKey secretKey = null;
         if (algorithm.startsWith("PBE")) {
             // PBE密钥
-            secretKey = secretKeyUsingPBE(algorithm, (null == key) ? null : StrUtil.str(key, CharsetUtil.CHARSET_UTF_8).toCharArray());
+            secretKey = secretKeyUsingPBE(algorithm,
+                    (null == key) ? null : StringCommand.str(key, CharsetCommand.CHARSET_UTF_8).toCharArray());
         } else if (algorithm.startsWith("DES")) {
             // DES密钥
             secretKey = secretKeyUsingDES(algorithm, key);
@@ -115,7 +119,7 @@ public final class CryptoCommand {
      * @return {@link SecretKey}
      */
     public static SecretKey secretKeyUsingDES(String algorithm, byte[] key) {
-        if (StrUtil.isBlank(algorithm) || false == algorithm.startsWith("DES")) {
+        if (StringCommand.isBlank(algorithm) || false == algorithm.startsWith("DES")) {
             throw new CryptoException("Algorithm [{}] is not a DES algorithm!");
         }
 
@@ -142,7 +146,7 @@ public final class CryptoCommand {
      * @return {@link SecretKey}
      */
     public static SecretKey secretKeyUsingPBE(String algorithm, char[] key) {
-        if (StrUtil.isBlank(algorithm) || false == algorithm.startsWith("PBE")) {
+        if (StringCommand.isBlank(algorithm) || false == algorithm.startsWith("PBE")) {
             throw new CryptoException("Algorithm [{}] is not a PBE algorithm!");
         }
 
@@ -275,7 +279,7 @@ public final class CryptoCommand {
      */
     public static Signature signature(AsymmetricType asymmetricType, DigestType digestType) {
         String digestPart = (null == digestType) ? "NONE" : digestType.name();
-        String algorithm = StrUtil.format("{}with{}", digestPart, asymmetricType.getValue());
+        String algorithm = StringCommand.format("{}with{}", digestPart, asymmetricType.getValue());
         try {
             return Signature.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
@@ -288,7 +292,7 @@ public final class CryptoCommand {
      * KeyStore文件用于数字证书的密钥对保存<br>
      * see: http://snowolf.iteye.com/blog/391931
      *
-     * @param in {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#getInputStream(java.io.File)} 读取
+     * @param in {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -302,7 +306,7 @@ public final class CryptoCommand {
      * see: http://snowolf.iteye.com/blog/391931
      *
      * @param type 类型
-     * @param in {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#getInputStream(java.io.File)} 读取
+     * @param in {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -322,7 +326,7 @@ public final class CryptoCommand {
      * Certification为证书文件<br>
      * see: http://snowolf.iteye.com/blog/391931
      *
-     * @param in {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#getInputStream(java.io.File)} 读取
+     * @param in {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -336,7 +340,7 @@ public final class CryptoCommand {
      * see: http://snowolf.iteye.com/blog/391931
      *
      * @param type 类型
-     * @param in {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#getInputStream(java.io.File)} 读取
+     * @param in {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -456,6 +460,26 @@ public final class CryptoCommand {
      */
     public static String md5(File dataFile) {
         return new Digester(DigestType.MD5).digestHex(dataFile);
+    }
+
+    public static String md5(byte[] bytes) {
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+        byte[] md5Bytes = md5.digest(bytes);
+        StringBuffer hexValue = new StringBuffer();
+        for (int i = 0; i < md5Bytes.length; i++) {
+            int val = ((int) md5Bytes[i]) & 0xff;
+            if (val < 16) {
+                hexValue.append("0");
+            }
+            hexValue.append(Integer.toHexString(val));
+        }
+        return hexValue.toString();
     }
 
     public static String hexMD5(String value) {
@@ -681,4 +705,40 @@ public final class CryptoCommand {
     public static String randomUUID() {
         return UUID.randomUUID().toString();
     }
+
+    public static String base64Encode(byte[] input, int flags) {
+        return Base64.encodeToString(input, flags);
+    }
+
+    public static String base64EncodeString(String string) {
+        return Base64.encode(string);
+    }
+
+    public static String base64DecodeString(String string) {
+        return Base64.decodeStr(string);
+    }
+
+    /**
+     * MD5方式生成id
+     *
+     * @param prefix 前缀
+     * @param suffix 后缀
+     * @return id
+     */
+    public static String id(String prefix, String suffix) {
+        return md5(prefix + ":" + suffix);
+    }
+
+    /**
+     *
+     * 字符串连接方式生成id
+     *
+     * @param prefix 前缀
+     * @param suffix 后缀
+     * @return id
+     */
+    public static String jointId(String prefix, String suffix) {
+        return String.format("%s:%s", prefix, suffix);
+    }
+
 }

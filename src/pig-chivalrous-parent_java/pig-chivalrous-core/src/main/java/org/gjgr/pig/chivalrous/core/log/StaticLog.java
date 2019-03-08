@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.log;
 
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.level.Level;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 /**
  * 静态日志类，用于在不引入日志对象的情况下打印日志
@@ -24,7 +24,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void trace(String format, Object... arguments) {
+    public static void trace(String format, Object...arguments) {
         trace(LogFactory.indirectGet(), format, arguments);
     }
 
@@ -35,7 +35,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void trace(Log log, String format, Object... arguments) {
+    public static void trace(Log log, String format, Object...arguments) {
         if (false == log(log, Level.TRACE, null, format, arguments)) {
             log.trace(format, arguments);
         }
@@ -50,7 +50,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void debug(String format, Object... arguments) {
+    public static void debug(String format, Object...arguments) {
         debug(LogFactory.indirectGet(), format, arguments);
     }
 
@@ -61,7 +61,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void debug(Log log, String format, Object... arguments) {
+    public static void debug(Log log, String format, Object...arguments) {
         if (false == log(log, Level.DEBUG, null, format, arguments)) {
             log.debug(format, arguments);
         }
@@ -76,7 +76,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void info(String format, Object... arguments) {
+    public static void info(String format, Object...arguments) {
         info(LogFactory.indirectGet(), format, arguments);
     }
 
@@ -87,7 +87,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void info(Log log, String format, Object... arguments) {
+    public static void info(Log log, String format, Object...arguments) {
         if (false == log(log, Level.INFO, null, format, arguments)) {
             log.info(format, arguments);
         }
@@ -102,7 +102,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void warn(String format, Object... arguments) {
+    public static void warn(String format, Object...arguments) {
         warn(LogFactory.indirectGet(), format, arguments);
     }
 
@@ -113,7 +113,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void warn(Log log, String format, Object... arguments) {
+    public static void warn(Log log, String format, Object...arguments) {
         warn(log, null, format, arguments);
     }
 
@@ -125,8 +125,8 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void warn(Throwable e, String format, Object... arguments) {
-        warn(LogFactory.indirectGet(), e, StrUtil.format(format, arguments));
+    public static void warn(Throwable e, String format, Object...arguments) {
+        warn(LogFactory.indirectGet(), e, StringCommand.format(format, arguments));
     }
 
     /**
@@ -137,7 +137,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void warn(Log log, Throwable e, String format, Object... arguments) {
+    public static void warn(Log log, Throwable e, String format, Object...arguments) {
         if (false == log(log, Level.TRACE, e, format, arguments)) {
             log.warn(e, format, arguments);
         }
@@ -172,7 +172,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void error(String format, Object... arguments) {
+    public static void error(String format, Object...arguments) {
         error(LogFactory.indirectGet(), format, arguments);
     }
 
@@ -183,7 +183,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void error(Log log, String format, Object... arguments) {
+    public static void error(Log log, String format, Object...arguments) {
         error(log, null, format, arguments);
     }
 
@@ -195,7 +195,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void error(Throwable e, String format, Object... arguments) {
+    public static void error(Throwable e, String format, Object...arguments) {
         error(LogFactory.indirectGet(), e, format, arguments);
     }
 
@@ -207,7 +207,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static void error(Log log, Throwable e, String format, Object... arguments) {
+    public static void error(Log log, Throwable e, String format, Object...arguments) {
         if (false == log(log, Level.ERROR, e, format, arguments)) {
             log.error(e, format, arguments);
         }
@@ -223,7 +223,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static boolean log(Level level, Throwable t, String format, Object... arguments) {
+    public static boolean log(Level level, Throwable t, String format, Object...arguments) {
         return log(LogFactory.indirectGet(), level, t, format, arguments);
     }
 
@@ -236,7 +236,7 @@ public final class StaticLog {
      * @param format 格式文本，{} 代表变量
      * @param arguments 变量对应的参数
      */
-    public static boolean log(Log log, Level level, Throwable t, String format, Object... arguments) {
+    public static boolean log(Log log, Level level, Throwable t, String format, Object...arguments) {
         if (log instanceof LocationAwareLog) {
             ((LocationAwareLog) log).log(FQCN, level, t, format, arguments);
             return true;

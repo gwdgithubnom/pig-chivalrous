@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.log.dialect.slf4j;
 
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.AbstractLocationAwareLog;
 import org.gjgr.pig.chivalrous.core.log.level.Level;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.spi.LocationAwareLogger;
@@ -39,12 +39,12 @@ public class Slf4jLog extends AbstractLocationAwareLog {
 
     // ------------------------------------------------------------------------- Log
     @Override
-    public void log(Level level, String format, Object... arguments) {
+    public void log(Level level, String format, Object...arguments) {
         this.log(level, null, format, arguments);
     }
 
     @Override
-    public void log(Level level, Throwable t, String format, Object... arguments) {
+    public void log(Level level, Throwable t, String format, Object...arguments) {
         this.log(FQCN, level, t, format, arguments);
     }
 
@@ -55,16 +55,16 @@ public class Slf4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void trace(String format, Object... arguments) {
+    public void trace(String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.TRACE_INT, format, arguments)) {
             logger.trace(format, arguments);
         }
     }
 
     @Override
-    public void trace(Throwable t, String format, Object... arguments) {
+    public void trace(Throwable t, String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.TRACE_INT, t, format, arguments)) {
-            logger.trace(StrUtil.format(format, arguments), t);
+            logger.trace(StringCommand.format(format, arguments), t);
         }
     }
 
@@ -75,16 +75,16 @@ public class Slf4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void debug(String format, Object... arguments) {
+    public void debug(String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.DEBUG_INT, format, arguments)) {
             logger.debug(format, arguments);
         }
     }
 
     @Override
-    public void debug(Throwable t, String format, Object... arguments) {
+    public void debug(Throwable t, String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.DEBUG_INT, t, format, arguments)) {
-            logger.debug(StrUtil.format(format, arguments), t);
+            logger.debug(StringCommand.format(format, arguments), t);
         }
     }
 
@@ -95,16 +95,16 @@ public class Slf4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void info(String format, Object... arguments) {
+    public void info(String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.INFO_INT, format, arguments)) {
             logger.info(format, arguments);
         }
     }
 
     @Override
-    public void info(Throwable t, String format, Object... arguments) {
+    public void info(Throwable t, String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.INFO_INT, t, format, arguments)) {
-            logger.info(StrUtil.format(format, arguments), t);
+            logger.info(StringCommand.format(format, arguments), t);
         }
     }
 
@@ -115,16 +115,16 @@ public class Slf4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void warn(String format, Object... arguments) {
+    public void warn(String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.WARN_INT, format, arguments)) {
             logger.warn(format, arguments);
         }
     }
 
     @Override
-    public void warn(Throwable t, String format, Object... arguments) {
+    public void warn(Throwable t, String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.WARN_INT, t, format, arguments)) {
-            logger.warn(StrUtil.format(format, arguments), t);
+            logger.warn(StringCommand.format(format, arguments), t);
         }
     }
 
@@ -135,21 +135,21 @@ public class Slf4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void error(String format, Object... arguments) {
+    public void error(String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.ERROR_INT, format, arguments)) {
             logger.error(format, arguments);
         }
     }
 
     @Override
-    public void error(Throwable t, String format, Object... arguments) {
+    public void error(Throwable t, String format, Object...arguments) {
         if (false == locationAwareLog(LocationAwareLogger.ERROR_INT, t, format, arguments)) {
-            logger.error(StrUtil.format(format, arguments), t);
+            logger.error(StringCommand.format(format, arguments), t);
         }
     }
 
     @Override
-    public void log(String fqcn, Level level, Throwable t, String format, Object... arguments) {
+    public void log(String fqcn, Level level, Throwable t, String format, Object...arguments) {
         int level_int;
         switch (level) {
             case TRACE:
@@ -168,12 +168,12 @@ public class Slf4jLog extends AbstractLocationAwareLog {
                 level_int = LocationAwareLogger.ERROR_INT;
                 break;
             default:
-                throw new Error(StrUtil.format("Can not identify level: {}", level));
+                throw new Error(StringCommand.format("Can not identify level: {}", level));
         }
         this.locationAwareLog(fqcn, level_int, t, format, arguments);
     }
 
-    //-------------------------------------------------------------------------------------------------- Private method
+    // -------------------------------------------------------------------------------------------------- Private method
 
     /**
      * 打印日志<br>
@@ -215,9 +215,11 @@ public class Slf4jLog extends AbstractLocationAwareLog {
      */
     private boolean locationAwareLog(String fqcn, int level_int, Throwable t, String msgTemplate, Object[] arguments) {
         if (this.logger instanceof LocationAwareLogger) {
-//			((LocationAwareLogger)this.logger).log(null, fqcn, level_int, msgTemplate, arguments, t);
-            //由于slf4j-log4j12中此方法的实现存在bug，故在此拼接参数
-            ((LocationAwareLogger) this.logger).log(null, fqcn, level_int, StrUtil.format(msgTemplate, arguments), null, t);
+            // ((LocationAwareLogger)this.logger).log(null, fqcn, level_int, msgTemplate, arguments, t);
+            // 由于slf4j-log4j12中此方法的实现存在bug，故在此拼接参数
+            ((LocationAwareLogger) this.logger).log(null, fqcn, level_int, StringCommand.format(msgTemplate, arguments),
+                    null,
+                    t);
             return true;
         } else {
             return false;

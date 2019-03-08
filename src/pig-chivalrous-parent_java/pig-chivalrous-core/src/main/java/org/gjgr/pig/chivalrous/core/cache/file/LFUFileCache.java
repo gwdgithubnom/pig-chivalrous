@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.cache.file;
 
+import java.io.File;
+
 import org.gjgr.pig.chivalrous.core.cache.Cache;
 import org.gjgr.pig.chivalrous.core.cache.impl.LFUCache;
-
-import java.io.File;
 
 /**
  * 使用LFU缓存文件，以解决频繁读取文件引起的性能问题

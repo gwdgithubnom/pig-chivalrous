@@ -17,7 +17,7 @@ import java.util.PriorityQueue;
 public class BoundedPriorityQueue<E> extends PriorityQueue<E> {
     private static final long serialVersionUID = 3794348988671694820L;
 
-    //容量
+    // 容量
     private int capacity;
     private Comparator<? super E> comparator;
 
@@ -66,7 +66,7 @@ public class BoundedPriorityQueue<E> extends PriorityQueue<E> {
             if (this.comparator().compare(e, head) <= 0) {
                 return true;
             }
-            //当队列满时，就要淘汰顶端队列
+            // 当队列满时，就要淘汰顶端队列
             poll();
         }
         return super.offer(e);

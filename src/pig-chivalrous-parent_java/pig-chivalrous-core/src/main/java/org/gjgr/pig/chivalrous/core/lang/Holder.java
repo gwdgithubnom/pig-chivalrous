@@ -18,7 +18,7 @@ public final class Holder<T> extends MutableObj<T> {
         super();
     }
 
-    //--------------------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------------------- Constructor start
 
     /**
      * 构造
@@ -41,5 +41,5 @@ public final class Holder<T> extends MutableObj<T> {
         }
         return new Holder<>(value);
     }
-    //--------------------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------------------- Constructor end
 }

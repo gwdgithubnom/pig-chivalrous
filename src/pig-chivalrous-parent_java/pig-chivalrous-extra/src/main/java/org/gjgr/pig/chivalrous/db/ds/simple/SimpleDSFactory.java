@@ -1,15 +1,16 @@
 package org.gjgr.pig.chivalrous.db.ds.simple;
 
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
-import org.gjgr.pig.chivalrous.db.ds.DSFactory;
-
-import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.sql.DataSource;
+
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.setting.Setting;
+import org.gjgr.pig.chivalrous.db.ds.DSFactory;
 
 /**
  * 简单数据源工厂类
@@ -35,7 +36,7 @@ public class SimpleDSFactory extends DSFactory {
     }
 
     @Override
-    synchronized public DataSource getDataSource(String group) {
+    public synchronized DataSource getDataSource(String group) {
         // 如果已经存在已有数据源（连接池）直接返回
         final SimpleDataSource existedDataSource = dsMap.get(group);
         if (existedDataSource != null) {
@@ -51,7 +52,7 @@ public class SimpleDSFactory extends DSFactory {
     @Override
     public void close(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         SimpleDataSource ds = dsMap.get(group);
@@ -63,7 +64,7 @@ public class SimpleDSFactory extends DSFactory {
 
     @Override
     public void destroy() {
-        if (CollectionUtil.isNotEmpty(dsMap)) {
+        if (CollectionCommand.isNotEmpty(dsMap)) {
             Collection<SimpleDataSource> values = dsMap.values();
             for (SimpleDataSource ds : values) {
                 IoCommand.close(ds);

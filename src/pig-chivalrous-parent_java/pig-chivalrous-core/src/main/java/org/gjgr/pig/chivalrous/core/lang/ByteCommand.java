@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  * @Author gwd
- * @Time 10-29-2018  Monday
- * @Description: developer.tools:
+ * @Time 10-29-2018 Monday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
@@ -32,11 +32,13 @@ public final class ByteCommand {
     }
 
     public static int readInt(byte[] bytes, int offset) {
-        return (((bytes[offset + 0] & 0xff) << 24) | ((bytes[offset + 1] & 0xff) << 16) | ((bytes[offset + 2] & 0xff) << 8) | (bytes[offset + 3] & 0xff));
+        return (((bytes[offset + 0] & 0xff) << 24) | ((bytes[offset + 1] & 0xff) << 16)
+                | ((bytes[offset + 2] & 0xff) << 8) | (bytes[offset + 3] & 0xff));
     }
 
     public static long readUnsignedInt(byte[] bytes, int offset) {
-        return (((bytes[offset + 0] & 0xffL) << 24) | ((bytes[offset + 1] & 0xffL) << 16) | ((bytes[offset + 2] & 0xffL) << 8) | (bytes[offset + 3] & 0xffL));
+        return (((bytes[offset + 0] & 0xffL) << 24) | ((bytes[offset + 1] & 0xffL) << 16)
+                | ((bytes[offset + 2] & 0xffL) << 8) | (bytes[offset + 3] & 0xffL));
     }
 
     public static long readLong(byte[] bytes, int offset) {
@@ -87,7 +89,7 @@ public final class ByteCommand {
         }
     }
 
-    public static byte[] byteArrayConcat(byte[]... args) {
+    public static byte[] byteArrayConcat(byte[]...args) {
         int fulllength = 0;
         for (byte[] arrItem : args) {
             fulllength += arrItem.length;
@@ -130,15 +132,16 @@ public final class ByteCommand {
     }
 
     /**
-     * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice. Returns a new,
-     * empty array if {@code arrays} was empty and returns the first array if {@code arrays} contains only a single array.
+     * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice. Returns a
+     * new, empty array if {@code arrays} was empty and returns the first array if {@code arrays} contains only a single
+     * array.
      * <p />
      * The order of elements in the original arrays is preserved.
      *
      * @param arrays the arrays.
      * @return the new array.
      */
-    public static byte[] concatAll(byte[]... arrays) {
+    public static byte[] concatAll(byte[]...arrays) {
 
         if (arrays.length == 0) {
             return new byte[] {};
@@ -192,7 +195,7 @@ public final class ByteCommand {
      * @param additionalArrays must not be {@literal null}
      * @return
      */
-    public static byte[][] mergeArrays(byte[] firstArray, byte[]... additionalArrays) {
+    public static byte[][] mergeArrays(byte[] firstArray, byte[]...additionalArrays) {
 
         Assert.notNull(firstArray, "first array must not be null");
         Assert.notNull(additionalArrays, "additional arrays must not be null");
@@ -263,8 +266,8 @@ public final class ByteCommand {
     }
 
     /**
-     * Searches the specified array of bytes for the specified value. Returns the index of the first matching value in the
-     * {@code haystack}s natural order or {@code -1} of {@code needle} could not be found.
+     * Searches the specified array of bytes for the specified value. Returns the index of the first matching value in
+     * the {@code haystack}s natural order or {@code -1} of {@code needle} could not be found.
      *
      * @param haystack the source to scan.
      * @param needle the value to scan for.

@@ -2,10 +2,10 @@ package org.gjgr.pig.chivalrous.core.setting;
 
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.getter.OptNullBasicTypeFromObjectGetter;
+import org.gjgr.pig.chivalrous.core.lang.BeanUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.util.BeanUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 /**
  * Setting抽象类
@@ -16,8 +16,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 数组类型值默认分隔符
      */
-    public final static String DEFAULT_DELIMITER = ",";
-    private final static Log log = StaticLog.get();
+    public static final String DEFAULT_DELIMITER = ",";
+    private static final Log log = StaticLog.get();
 
     /**
      * 组合Key和Group，组合后为group.key
@@ -28,8 +28,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
      */
     private static String keyWithGroup(String key, String group) {
         String keyWithGroup = key;
-        if (!StrUtil.isBlank(group)) {
-            keyWithGroup = group.concat(StrUtil.DOT).concat(key);
+        if (!StringCommand.isBlank(group)) {
+            keyWithGroup = group.concat(StringCommand.DOT).concat(key);
         }
         return keyWithGroup;
     }
@@ -47,7 +47,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
      */
     public String getStr(String key, String group, String defaultValue) {
         final String value = getByGroup(key, group);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             return defaultValue;
         }
         return value;
@@ -145,10 +145,10 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
      */
     public String[] getStrings(String key, String group, String delimiter) {
         final String value = getByGroup(key, group);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             return null;
         }
-        return StrUtil.split(value, delimiter);
+        return StringCommand.split(value, delimiter);
     }
 
     /**
@@ -237,7 +237,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
      */
     public Character getChar(String key, String group) {
         final String value = getByGroup(key, group);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             return null;
         }
         return value.charAt(0);

@@ -6,8 +6,8 @@ import java.util.Set;
 
 /**
  * @Author gwd
- * @Time 11-29-2018  Thursday
- * @Description: developer.tools:
+ * @Time 11-29-2018 Thursday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
@@ -19,7 +19,7 @@ public class LinuxShellCommand extends LinuxCommand {
         this.command = command;
     }
 
-    public LinuxShellCommand(String command, String... params) {
+    public LinuxShellCommand(String command, String...params) {
         this.params = new HashSet<>(Arrays.asList(params));
         this.command = command;
     }

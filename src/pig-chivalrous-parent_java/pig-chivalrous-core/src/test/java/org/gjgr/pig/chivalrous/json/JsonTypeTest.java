@@ -1,13 +1,14 @@
 package org.gjgr.pig.chivalrous.json;
 
-import com.google.gson.JsonObject;
 import org.gjgr.pig.chivalrous.core.json.JsonCommand;
 import org.junit.Test;
 
+import com.google.gson.JsonObject;
+
 /**
  * @Author gwd
- * @Time 10-29-2018  Monday
- * @Description: developer.tools:
+ * @Time 10-29-2018 Monday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */

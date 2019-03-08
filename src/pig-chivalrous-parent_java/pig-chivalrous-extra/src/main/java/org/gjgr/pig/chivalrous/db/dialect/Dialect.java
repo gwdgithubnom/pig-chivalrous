@@ -1,12 +1,12 @@
 package org.gjgr.pig.chivalrous.db.dialect;
 
-import org.gjgr.pig.chivalrous.db.Entity;
-import org.gjgr.pig.chivalrous.db.sql.Query;
-import org.gjgr.pig.chivalrous.db.sql.Wrapper;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import org.gjgr.pig.chivalrous.db.Entity;
+import org.gjgr.pig.chivalrous.db.sql.Query;
+import org.gjgr.pig.chivalrous.db.sql.Wrapper;
 
 /**
  * SQL方言，不同的数据库由于在某些SQL上有所区别，故为每种数据库配置不同的方言。<br>
@@ -29,12 +29,12 @@ public interface Dialect {
      */
     public void setWrapper(Wrapper wrapper);
 
-    //-------------------------------------------- Execute
+    // -------------------------------------------- Execute
 
     /**
      * 构建用于插入的PreparedStatement
      *
-     * @param conn   数据库连接对象
+     * @param conn 数据库连接对象
      * @param entity 数据实体类（包含表名）
      * @return PreparedStatement
      * @throws SQLException
@@ -44,7 +44,7 @@ public interface Dialect {
     /**
      * 构建用于删除的PreparedStatement
      *
-     * @param conn  数据库连接对象
+     * @param conn 数据库连接对象
      * @param query 查找条件（包含表名）
      * @return PreparedStatement
      * @throws SQLException
@@ -54,20 +54,20 @@ public interface Dialect {
     /**
      * 构建用于更新的PreparedStatement
      *
-     * @param conn   数据库连接对象
+     * @param conn 数据库连接对象
      * @param entity 数据实体类（包含表名）
-     * @param query  查找条件（包含表名）
+     * @param query 查找条件（包含表名）
      * @return PreparedStatement
      * @throws SQLException
      */
     public PreparedStatement psForUpdate(Connection conn, Entity entity, Query query) throws SQLException;
 
-    //-------------------------------------------- Query
+    // -------------------------------------------- Query
 
     /**
      * 构建用于获取多条记录的PreparedStatement
      *
-     * @param conn  数据库连接对象
+     * @param conn 数据库连接对象
      * @param query 查询条件（包含表名）
      * @return PreparedStatement
      * @throws SQLException
@@ -77,7 +77,7 @@ public interface Dialect {
     /**
      * 构建用于分页查询的PreparedStatement
      *
-     * @param conn  数据库连接对象
+     * @param conn 数据库连接对象
      * @param query 查询条件（包含表名）
      * @return PreparedStatement
      * @throws SQLException
@@ -87,7 +87,7 @@ public interface Dialect {
     /**
      * 构建用于查询行数的PreparedStatement
      *
-     * @param conn  数据库连接对象
+     * @param conn 数据库连接对象
      * @param query 查询条件（包含表名）
      * @return PreparedStatement
      * @throws SQLException

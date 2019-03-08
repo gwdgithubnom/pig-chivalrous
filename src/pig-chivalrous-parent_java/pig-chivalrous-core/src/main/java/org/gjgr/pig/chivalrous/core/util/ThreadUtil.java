@@ -1,7 +1,5 @@
 package org.gjgr.pig.chivalrous.core.util;
 
-import org.gjgr.pig.chivalrous.core.thread.GlobalThreadPool;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CountDownLatch;
@@ -12,6 +10,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import org.gjgr.pig.chivalrous.core.thread.GlobalThreadPool;
 
 /**
  * 线程池工具
@@ -263,7 +263,7 @@ public final class ThreadUtil {
                 thread.join();
                 dead = true;
             } catch (InterruptedException e) {
-                //ignore
+                // ignore
             }
         } while (!dead);
     }

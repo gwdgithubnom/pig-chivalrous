@@ -25,13 +25,14 @@ public final class BCD {
             asc = "0" + asc;
             len = asc.length();
         }
-        byte abt[] = new byte[len];
+        byte[] abt = new byte[len];
         if (len >= 2) {
             len >>= 1;
         }
-        byte bbt[] = new byte[len];
+        byte[] bbt = new byte[len];
         abt = asc.getBytes();
-        int j, k;
+        int j;
+        int k;
         for (int p = 0; p < asc.length() / 2; p++) {
             if ((abt[2 * p] >= '0') && (abt[2 * p] <= '9')) {
                 j = abt[2 * p] - '0';
@@ -88,7 +89,8 @@ public final class BCD {
      * @return ASCII字符串
      */
     public static String bcdToStr(byte[] bytes) {
-        char temp[] = new char[bytes.length * 2], val;
+        char[] temp = new char[bytes.length * 2];
+        char val;
 
         for (int i = 0; i < bytes.length; i++) {
             val = (char) (((bytes[i] & 0xf0) >> 4) & 0x0f);
@@ -100,7 +102,7 @@ public final class BCD {
         return new String(temp);
     }
 
-    //----------------------------------------------------------------- Private method start
+    // ----------------------------------------------------------------- Private method start
 
     /**
      * 转换单个byte为BCD
@@ -122,5 +124,5 @@ public final class BCD {
         }
         return bcd;
     }
-    //----------------------------------------------------------------- Private method end
+    // ----------------------------------------------------------------- Private method end
 }

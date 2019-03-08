@@ -34,7 +34,7 @@ public final class PageUtil {
         int start = (pageNo - 1) * countPerPage;
         int end = start + countPerPage;
 
-        return new int[] {start, end};
+        return new int[] { start, end };
     }
 
     /**

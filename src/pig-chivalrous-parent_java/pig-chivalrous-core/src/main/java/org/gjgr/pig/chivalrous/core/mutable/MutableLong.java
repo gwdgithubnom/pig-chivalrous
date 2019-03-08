@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.mutable;
 
-import org.gjgr.pig.chivalrous.core.util.NumberUtil;
+import org.gjgr.pig.chivalrous.core.math.NumberCommand;
 
 /**
  * 可变 <code>long</code> 类型
@@ -202,7 +202,7 @@ public class MutableLong extends Number implements Comparable<MutableLong>, Muta
      */
     @Override
     public int compareTo(final MutableLong other) {
-        return NumberUtil.compare(this.value, other.value);
+        return NumberCommand.compare(this.value, other.value);
     }
 
 }
