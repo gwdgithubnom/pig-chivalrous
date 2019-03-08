@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2018 Xiaomi, Inc. All Rights Reserved.
- */
-
 package org.gjgr.pig.chivalrous.core.entity;
 
 import java.util.HashMap;
