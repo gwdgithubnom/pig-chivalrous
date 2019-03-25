@@ -197,8 +197,8 @@ public final class ByteCommand {
      */
     public static byte[][] mergeArrays(byte[] firstArray, byte[]...additionalArrays) {
 
-        Assert.notNull(firstArray, "first array must not be null");
-        Assert.notNull(additionalArrays, "additional arrays must not be null");
+        AssertCommand.notNull(firstArray, "first array must not be null");
+        AssertCommand.notNull(additionalArrays, "additional arrays must not be null");
 
         byte[][] result = new byte[additionalArrays.length + 1][];
         result[0] = firstArray;
@@ -216,7 +216,7 @@ public final class ByteCommand {
      */
     public static byte[] getBytes(ByteBuffer byteBuffer) {
 
-        Assert.notNull(byteBuffer, "ByteBuffer must not be null!");
+        AssertCommand.notNull(byteBuffer, "ByteBuffer must not be null!");
 
         ByteBuffer duplicate = byteBuffer.duplicate();
         byte[] bytes = new byte[duplicate.remaining()];
@@ -306,8 +306,8 @@ public final class ByteCommand {
      */
     public static ByteBuffer getByteBuffer(String theString, Charset charset) {
 
-        Assert.notNull(theString, "The String must not be null!");
-        Assert.notNull(charset, "The String must not be null!");
+        AssertCommand.notNull(theString, "The String must not be null!");
+        AssertCommand.notNull(charset, "The String must not be null!");
 
         return charset.encode(theString);
     }

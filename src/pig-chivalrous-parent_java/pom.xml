@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -1185,21 +1185,6 @@
                 <plugin.deploy.skip>true</plugin.deploy.skip>
                 <profile.maven.release.plugin.arguments />
             </properties>
-            <repositories>
-                <repository>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                    <id>0</id>
-                    <name>test center</name>
-                    <url>
-                        http://nexus.d.xiaomi.net/nexus/content/groups/public/
-                    </url>
-                </repository>
-            </repositories>
         </profile>
         <profile>
             <id>huge</id>

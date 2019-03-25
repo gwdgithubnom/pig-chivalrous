@@ -630,8 +630,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfDay(Date date) {
-        return new DateTime(beginOfDay(calendar(date)));
+    public static DateTime beginOfDateTime(Date date) {
+        return new DateTime(beginOfDayCalendar(calendar(date)));
     }
 
     /**
@@ -640,8 +640,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfDay(Date date) {
-        return new DateTime(endOfDay(calendar(date)));
+    public static DateTime endOfDateTime(Date date) {
+        return new DateTime(endOfDayCalendar(calendar(date)));
     }
 
     /**
@@ -650,12 +650,30 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfDay(Calendar calendar) {
+    public static Calendar beginOfDayCalendar(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar;
+    }
+
+    public static Date beginOfDay(Date date) {
+        return beginOfDay(date.getTime());
+    }
+
+    public static Date endOfDay(Date date) {
+        return endOfDay(date.getTime());
+    }
+
+    public static Date endOfDay(long l) {
+        Calendar calendar = DateTimeCommand.calendar(l);
+        return endOfDayCalendar(calendar).getTime();
+    }
+
+    public static Date beginOfDay(long l) {
+        Calendar calendar = DateTimeCommand.calendar(l);
+        return beginOfDayCalendar(calendar).getTime();
     }
 
     /**
@@ -664,7 +682,7 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfDay(Calendar calendar) {
+    public static Calendar endOfDayCalendar(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
@@ -678,8 +696,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfWeek(Date date) {
-        return new DateTime(beginOfWeek(calendar(date)));
+    public static DateTime beginOfWeekDateTime(Date date) {
+        return new DateTime(beginOfWeekCalendar(calendar(date)));
     }
 
     /**
@@ -688,8 +706,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfWeek(Date date) {
-        return new DateTime(endOfWeek(calendar(date)));
+    public static DateTime endOfWeekDateTime(Date date) {
+        return new DateTime(endOfWeekCalendar(calendar(date)));
     }
 
     /**
@@ -698,9 +716,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfWeek(Calendar calendar) {
+    public static Calendar beginOfWeekCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        return beginOfDay(calendar);
+        return beginOfDayCalendar(calendar);
     }
 
     /**
@@ -709,9 +727,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfWeek(Calendar calendar) {
+    public static Calendar endOfWeekCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        return endOfDay(calendar);
+        return endOfDayCalendar(calendar);
     }
 
     /**
@@ -720,8 +738,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfMonth(Date date) {
-        return new DateTime(beginOfMonth(calendar(date)));
+    public static DateTime beginOfMonthDateTime(Date date) {
+        return new DateTime(beginOfMonthCalendar(calendar(date)));
     }
 
     /**
@@ -730,8 +748,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfMonth(Date date) {
-        return new DateTime(endOfMonth(calendar(date)));
+    public static DateTime endOfMonthDateTime(Date date) {
+        return new DateTime(endOfMonthCalendar(calendar(date)));
     }
 
     /**
@@ -740,9 +758,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfMonth(Calendar calendar) {
+    public static Calendar beginOfMonthCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        return beginOfDay(calendar);
+        return beginOfDayCalendar(calendar);
     }
 
     // --------------------------------------------------- Offset for now
@@ -753,9 +771,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfMonth(Calendar calendar) {
+    public static Calendar endOfMonthCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return endOfDay(calendar);
+        return endOfDayCalendar(calendar);
     }
 
     /**
@@ -764,8 +782,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfYear(Date date) {
-        return new DateTime(beginOfYear(calendar(date)));
+    public static DateTime beginOfYearDateTime(Date date) {
+        return new DateTime(beginOfYearCalendar(calendar(date)));
     }
 
     /**
@@ -774,8 +792,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfYear(Date date) {
-        return new DateTime(endOfYear(calendar(date)));
+    public static DateTime endOfYearDateTime(Date date) {
+        return new DateTime(endOfYearCalendar(calendar(date)));
     }
 
     /**
@@ -784,9 +802,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfYear(Calendar calendar) {
+    public static Calendar beginOfYearCalendar(Calendar calendar) {
         calendar.set(Calendar.MONTH, 1);
-        return beginOfMonth(calendar);
+        return beginOfMonthCalendar(calendar);
     }
 
     /**
@@ -795,9 +813,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfYear(Calendar calendar) {
+    public static Calendar endOfYearCalendar(Calendar calendar) {
         calendar.set(Calendar.MONTH, Calendar.DECEMBER);
-        return endOfMonth(calendar);
+        return endOfMonthCalendar(calendar);
     }
 
     /**
@@ -805,8 +823,8 @@ public class DateTimeCommand {
      *
      * @return 昨天
      */
-    public static DateTime yesterday() {
-        return offsetDay(new DateTime(), -1);
+    public static DateTime yesterdayOfDateTime() {
+        return offsetDayOfDateTime(new DateTime(), -1);
     }
 
     /**
@@ -815,8 +833,8 @@ public class DateTimeCommand {
      * @return 明天
      * @since 3.0.1
      */
-    public static DateTime tomorrow() {
-        return offsetDay(new DateTime(), 1);
+    public static DateTime tomorrowOfDateTime() {
+        return offsetDayOfDateTime(new DateTime(), 1);
     }
 
     /**
@@ -824,8 +842,8 @@ public class DateTimeCommand {
      *
      * @return 上周
      */
-    public static DateTime lastWeek() {
-        return offsetWeek(new DateTime(), -1);
+    public static DateTime lastWeekOfDateTime() {
+        return offsetWeekOfDateTime(new DateTime(), -1);
     }
 
     /**
@@ -834,8 +852,8 @@ public class DateTimeCommand {
      * @return 下周
      * @since 3.0.1
      */
-    public static DateTime nextWeek() {
-        return offsetWeek(new DateTime(), 1);
+    public static DateTime nextWeekOfDateTime() {
+        return offsetWeekOfDateTime(new DateTime(), 1);
     }
 
     /**
@@ -843,8 +861,8 @@ public class DateTimeCommand {
      *
      * @return 上个月
      */
-    public static DateTime lastMonth() {
-        return offsetMonth(new DateTime(), -1);
+    public static DateTime lastMonthOfDateTime() {
+        return offsetMonthOfDateTime(new DateTime(), -1);
     }
 
     /**
@@ -853,8 +871,8 @@ public class DateTimeCommand {
      * @return 下个月
      * @since 3.0.1
      */
-    public static DateTime nextMonth() {
-        return offsetMonth(new DateTime(), 1);
+    public static DateTime nextMonthOfDateTime() {
+        return offsetMonthOfDateTime(new DateTime(), 1);
     }
 
     /**
@@ -864,8 +882,8 @@ public class DateTimeCommand {
      * @param offset 偏移毫秒数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMillisecond(Date date, int offset) {
-        return offset(date, DateField.MILLISECOND, offset);
+    public static DateTime offsetMillisecondOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.MILLISECOND, offset);
     }
 
     /**
@@ -875,8 +893,8 @@ public class DateTimeCommand {
      * @param offset 偏移秒数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetSecond(Date date, int offset) {
-        return offset(date, DateField.SECOND, offset);
+    public static DateTime offsetSecondOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.SECOND, offset);
     }
 
     /**
@@ -886,8 +904,8 @@ public class DateTimeCommand {
      * @param offset 偏移分钟数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMinute(Date date, int offset) {
-        return offset(date, DateField.MINUTE, offset);
+    public static DateTime offsetMinuteOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.MINUTE, offset);
     }
 
     /**
@@ -897,8 +915,8 @@ public class DateTimeCommand {
      * @param offset 偏移小时数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetHour(Date date, int offset) {
-        return offset(date, DateField.HOUR_OF_DAY, offset);
+    public static DateTime offsetHourOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.HOUR_OF_DAY, offset);
     }
     // ------------------------------------ Offset end ----------------------------------------------
 
@@ -909,8 +927,8 @@ public class DateTimeCommand {
      * @param offset 偏移天数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetDay(Date date, int offset) {
-        return offset(date, DateField.DAY_OF_YEAR, offset);
+    public static DateTime offsetDayOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.DAY_OF_YEAR, offset);
     }
 
     /**
@@ -920,8 +938,8 @@ public class DateTimeCommand {
      * @param offset 偏移周数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetWeek(Date date, int offset) {
-        return offset(date, DateField.WEEK_OF_YEAR, offset);
+    public static DateTime offsetWeekOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.WEEK_OF_YEAR, offset);
     }
 
     /**
@@ -931,8 +949,8 @@ public class DateTimeCommand {
      * @param offset 偏移月数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMonth(Date date, int offset) {
-        return offset(date, DateField.MONTH, offset);
+    public static DateTime offsetMonthOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.MONTH, offset);
     }
 
     /**
@@ -943,7 +961,7 @@ public class DateTimeCommand {
      * @param offset 偏移量，正数为向后偏移，负数为向前偏移
      * @return 偏移后的日期
      */
-    public static DateTime offset(Date date, DateField dateField, int offset) {
+    public static DateTime offsetOfDateTime(Date date, DateField dateField, int offset) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(dateField.getValue(), offset);
@@ -957,10 +975,10 @@ public class DateTimeCommand {
      * @param dateField 偏移的粒度大小（小时、天、月等）{@link DateField}
      * @param offset 偏移量，正数为向后偏移，负数为向前偏移
      * @return 偏移后的日期
-     * @deprecated please use {@link DateTimeCommand#offset(Date, DateField, int)}
+     * @deprecated please use {@link DateTimeCommand#offsetOfDateTime(Date, DateField, int)}
      */
-    public static DateTime offsetDate(Date date, DateField dateField, int offset) {
-        return offset(date, dateField, offset);
+    public static DateTime offsetDateTime(Date date, DateField dateField, int offset) {
+        return offsetOfDateTime(date, dateField, offset);
     }
 
     /**
@@ -2179,32 +2197,20 @@ public class DateTimeCommand {
     public static List<String> getDaySpaceDate(Date start, Date end) {
         Calendar fromCalendar = Calendar.getInstance();
         fromCalendar.setTime(start);
-        fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        fromCalendar.set(Calendar.MINUTE, 0);
-        fromCalendar.set(Calendar.SECOND, 0);
-        fromCalendar.set(Calendar.MILLISECOND, 0);
-
+        beginOfDayCalendar(fromCalendar);
         Calendar toCalendar = Calendar.getInstance();
         toCalendar.setTime(end);
-        toCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        toCalendar.set(Calendar.MINUTE, 0);
-        toCalendar.set(Calendar.SECOND, 0);
-        toCalendar.set(Calendar.MILLISECOND, 0);
-
+        beginOfDayCalendar(toCalendar);
         List<String> dateList = new LinkedList<String>();
-
         long dayCount = (toCalendar.getTime().getTime() - fromCalendar.getTime().getTime()) / (1000 * 60 * 60 * 24);
         if (dayCount < 0) {
             return dateList;
         }
-
         dateList.add(format(fromCalendar.getTime(), DateStyle.YYYY_MM_DD.getValue()));
-
         for (int i = 0; i < dayCount; i++) {
             fromCalendar.add(Calendar.DATE, 1);// 增加一天
             dateList.add(format(fromCalendar.getTime(), DateStyle.YYYY_MM_DD.getValue()));
         }
-
         return dateList;
     }
 

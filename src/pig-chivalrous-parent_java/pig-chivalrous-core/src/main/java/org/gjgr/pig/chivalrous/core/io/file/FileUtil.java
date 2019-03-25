@@ -36,7 +36,7 @@ import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
 import org.gjgr.pig.chivalrous.core.io.stream.BOMInputStream;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
@@ -388,7 +388,7 @@ public class FileUtil {
      * @return 总大小
      */
     public static long size(File file) {
-        Assert.notNull(file, "file argument is null !");
+        AssertCommand.notNull(file, "file argument is null !");
         if (false == file.exists()) {
             throw new IllegalArgumentException(StringCommand.format("File [{}] not exist !", file.getAbsolutePath()));
         }
@@ -663,8 +663,8 @@ public class FileUtil {
      * @throws IOException
      */
     public static File copyFile(String src, String dest, StandardCopyOption...options) throws IOException {
-        Assert.notBlank(src, "Source File path is blank !");
-        Assert.notNull(src, "Destination File path is null !");
+        AssertCommand.notBlank(src, "Source File path is blank !");
+        AssertCommand.notNull(src, "Destination File path is null !");
         return copyFile(Paths.get(src), Paths.get(dest), options).toFile();
     }
 
@@ -679,11 +679,11 @@ public class FileUtil {
      */
     public static File copyFile(File src, File dest, StandardCopyOption...options) throws IOException {
         // check
-        Assert.notNull(src, "Source File is null !");
+        AssertCommand.notNull(src, "Source File is null !");
         if (false == src.exists()) {
             throw new FileNotFoundException("File not exist: " + src);
         }
-        Assert.notNull(dest, "Destination File or directiory is null !");
+        AssertCommand.notNull(dest, "Destination File or directiory is null !");
         if (equals(src, dest)) {
             throw new IOException("Files '" + src + "' and '" + dest + "' are equal");
         }
@@ -703,8 +703,8 @@ public class FileUtil {
      * @throws IOException
      */
     public static Path copyFile(Path src, Path dest, StandardCopyOption...options) throws IOException {
-        Assert.notNull(src, "Source File is null !");
-        Assert.notNull(dest, "Destination File or directiory is null !");
+        AssertCommand.notNull(src, "Source File is null !");
+        AssertCommand.notNull(dest, "Destination File or directiory is null !");
 
         Path destPath = dest.toFile().isDirectory() ? dest.resolve(src.getFileName()) : dest;
         return Files.copy(src, destPath, options);
@@ -739,11 +739,11 @@ public class FileUtil {
      */
     public static File copy(File src, File dest, boolean isOverride) throws IOException {
         // check
-        Assert.notNull(src, "Source File is null !");
+        AssertCommand.notNull(src, "Source File is null !");
         if (false == src.exists()) {
             throw new FileNotFoundException("File not exist: " + src);
         }
-        Assert.notNull(dest, "Destination File or directiory is null !");
+        AssertCommand.notNull(dest, "Destination File or directiory is null !");
         if (equals(src, dest)) {
             throw new IOException("Files '" + src + "' and '" + dest + "' are equal");
         }

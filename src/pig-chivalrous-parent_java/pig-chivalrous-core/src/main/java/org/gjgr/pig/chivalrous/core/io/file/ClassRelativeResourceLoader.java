@@ -17,7 +17,7 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 
 /**
  * {@link ResourceLoader} implementation that interprets plain resource paths as relative to a given
@@ -38,7 +38,7 @@ public class ClassRelativeResourceLoader extends DefaultResourceLoader {
      * @param clazz the class to load resources through
      */
     public ClassRelativeResourceLoader(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         this.clazz = clazz;
         setClassLoader(clazz.getClassLoader());
     }

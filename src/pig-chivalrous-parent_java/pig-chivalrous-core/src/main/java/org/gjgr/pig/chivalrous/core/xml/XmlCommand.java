@@ -449,7 +449,7 @@ public class XmlCommand {
     /**
      * 将String类型的xml转换成对象
      */
-    public static Object convertXmlStrToObject(Class clazz, String xmlStr) {
+    public static <T> T convertXmlStrToObject(Class clazz, String xmlStr) {
         Object xmlObject = null;
         try {
             JAXBContext context = JAXBContext.newInstance(clazz);
@@ -463,10 +463,10 @@ public class XmlCommand {
             return null;
         }
         logger.debug("covert xml str  to object success.{}", clazz);
-        return xmlObject;
+        return (T) xmlObject;
     }
 
-    public static Object convertStreamFileToObject(Class clazz, InputStream inputStream) {
+    public static <T> T convertStreamFileToObject(Class clazz, InputStream inputStream) {
         Object xmlObject = null;
         if (inputStream == null) {
             return null;
@@ -500,7 +500,7 @@ public class XmlCommand {
         }
         // System.out.println("this is the content xml正文内容:");
         // System.out.println(XmlCommand.convertToXml(xmlObject));
-        return xmlObject;
+        return (T) xmlObject;
     }
 
     @SuppressWarnings("unchecked")

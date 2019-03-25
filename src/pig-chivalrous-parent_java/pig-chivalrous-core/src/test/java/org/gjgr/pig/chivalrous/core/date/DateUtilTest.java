@@ -58,7 +58,7 @@ public class DateUtilTest {
         Date beginOfDay = DateTimeCommand.beginOfDay(date);
         Assert.assertEquals("2017-03-01 00:00:00", beginOfDay.toString());
         // 一天的结束
-        Date endOfDay = DateTimeCommand.endOfDay(date);
+        Date endOfDay = DateTimeCommand.endOfDateTime(date);
         Assert.assertEquals("2017-03-01 23:59:59", endOfDay.toString());
 
     }
@@ -68,14 +68,14 @@ public class DateUtilTest {
         String dateStr = "2017-03-01 22:33:23";
         Date date = DateTimeCommand.parse(dateStr);
 
-        Date newDate = DateTimeCommand.offset(date, DateField.DAY_OF_MONTH, 2);
+        Date newDate = DateTimeCommand.offsetOfDateTime(date, DateField.DAY_OF_MONTH, 2);
         Assert.assertEquals("2017-03-03 22:33:23", newDate.toString());
 
         // 常用偏移
-        DateTime newDate2 = DateTimeCommand.offsetDay(date, 3);
+        DateTime newDate2 = DateTimeCommand.offsetDayOfDateTime(date, 3);
         Assert.assertEquals("2017-03-04 22:33:23", newDate2.toString());
         // 常用偏移
-        DateTime newDate3 = DateTimeCommand.offsetHour(date, -3);
+        DateTime newDate3 = DateTimeCommand.offsetHourOfDateTime(date, -3);
         Assert.assertEquals("2017-03-01 19:33:23", newDate3.toString());
     }
 

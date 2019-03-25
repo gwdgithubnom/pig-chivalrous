@@ -10,9 +10,9 @@ import java.util.function.Supplier;
  *
  * @author Looly
  */
-public final class Assert {
+public final class AssertCommand {
 
-    private Assert() {
+    private AssertCommand() {
     }
 
     /**

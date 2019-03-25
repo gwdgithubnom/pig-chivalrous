@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -28,6 +29,8 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -49,16 +52,18 @@ import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
 import org.gjgr.pig.chivalrous.core.io.file.download.DirectDownloader;
 import org.gjgr.pig.chivalrous.core.io.file.download.DownloadListener;
 import org.gjgr.pig.chivalrous.core.io.file.download.DownloadTask;
+import org.gjgr.pig.chivalrous.core.io.file.download.HttpConnector;
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
 import org.gjgr.pig.chivalrous.core.io.stream.BOMInputStream;
 import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.net.UriBuilder;
 import org.gjgr.pig.chivalrous.core.net.UriCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.slf4j.Logger;
@@ -207,8 +212,8 @@ public final class FileCommand {
      * @throws IOException in the case of I/O errors
      */
     public static void copyRecursively(File src, File dest) throws IOException {
-        Assert.notNull(src, "Source File must not be null");
-        Assert.notNull(dest, "Destination File must not be null");
+        AssertCommand.notNull(src, "Source File must not be null");
+        AssertCommand.notNull(dest, "Destination File must not be null");
         copyRecursively(src.toPath(), dest.toPath());
     }
 
@@ -221,8 +226,8 @@ public final class FileCommand {
      * @since 5.0
      */
     public static void copyRecursively(Path src, Path dest) throws IOException {
-        Assert.notNull(src, "Source Path must not be null");
-        Assert.notNull(dest, "Destination Path must not be null");
+        AssertCommand.notNull(src, "Source Path must not be null");
+        AssertCommand.notNull(dest, "Destination Path must not be null");
         BasicFileAttributes srcAttr = Files.readAttributes(src, BasicFileAttributes.class);
 
         if (srcAttr.isDirectory()) {
@@ -650,7 +655,7 @@ public final class FileCommand {
      * @return 总大小
      */
     public static long size(File file) {
-        Assert.notNull(file, "file argument is null !");
+        AssertCommand.notNull(file, "file argument is null !");
         if (false == file.exists()) {
             throw new IllegalArgumentException(StringCommand.format("File [{}] not isExist !", file.getAbsolutePath()));
         }
@@ -927,8 +932,8 @@ public final class FileCommand {
      * @throws IOException
      */
     public static File copyFile(String src, String dest, StandardCopyOption...options) throws IOException {
-        Assert.notBlank(src, "Source File path is blank !");
-        Assert.notNull(src, "Destination File path is null !");
+        AssertCommand.notBlank(src, "Source File path is blank !");
+        AssertCommand.notNull(src, "Destination File path is null !");
         return copyFile(Paths.get(src), Paths.get(dest), options).toFile();
     }
 
@@ -943,11 +948,11 @@ public final class FileCommand {
      */
     public static File copyFile(File src, File dest, StandardCopyOption...options) throws IOException {
         // check
-        Assert.notNull(src, "Source File is null !");
+        AssertCommand.notNull(src, "Source File is null !");
         if (false == src.exists()) {
             throw new FileNotFoundException("File not isExist: " + src);
         }
-        Assert.notNull(dest, "Destination File or directiory is null !");
+        AssertCommand.notNull(dest, "Destination File or directiory is null !");
         if (equals(src, dest)) {
             throw new IOException("Files '" + src + "' and '" + dest + "' are equal");
         }
@@ -967,8 +972,8 @@ public final class FileCommand {
      * @throws IOException
      */
     public static Path copyFile(Path src, Path dest, StandardCopyOption...options) throws IOException {
-        Assert.notNull(src, "Source File is null !");
-        Assert.notNull(dest, "Destination File or directiory is null !");
+        AssertCommand.notNull(src, "Source File is null !");
+        AssertCommand.notNull(dest, "Destination File or directiory is null !");
 
         Path destPath = dest.toFile().isDirectory() ? dest.resolve(src.getFileName()) : dest;
         return Files.copy(src, destPath, options);
@@ -1006,11 +1011,11 @@ public final class FileCommand {
      */
     public static File copy(File src, File dest, boolean isOverride) throws IOException {
         // check
-        Assert.notNull(src, "Source File is null !");
+        AssertCommand.notNull(src, "Source File is null !");
         if (false == src.exists()) {
             throw new FileNotFoundException("File not isExist: " + src);
         }
-        Assert.notNull(dest, "Destination File or directiory is null !");
+        AssertCommand.notNull(dest, "Destination File or directiory is null !");
         if (equals(src, dest)) {
             throw new IOException("Files '" + src + "' and '" + dest + "' are equal");
         }
@@ -2991,7 +2996,7 @@ public final class FileCommand {
      * @throws FileNotFoundException if the resource cannot be resolved to a URL
      */
     public static URL getURL(String resourceLocation) throws FileNotFoundException {
-        Assert.notNull(resourceLocation, "Resource location must not be null");
+        AssertCommand.notNull(resourceLocation, "Resource location must not be null");
         if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
             String path = resourceLocation.substring(CLASSPATH_URL_PREFIX.length());
             ClassLoader cl = ClassCommand.getDefaultClassLoader();
@@ -3029,7 +3034,7 @@ public final class FileCommand {
      * @throws FileNotFoundException if the resource cannot be resolved to a file in the file system
      */
     public static File getFile(String resourceLocation) throws FileNotFoundException {
-        Assert.notNull(resourceLocation, "Resource location must not be null");
+        AssertCommand.notNull(resourceLocation, "Resource location must not be null");
         if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
             String path = resourceLocation.substring(CLASSPATH_URL_PREFIX.length());
             String description = "class path resource [" + path + "]";
@@ -3071,7 +3076,7 @@ public final class FileCommand {
      * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
      */
     public static File getFile(URL resourceUrl, String description) throws FileNotFoundException {
-        Assert.notNull(resourceUrl, "Resource URL must not be null");
+        AssertCommand.notNull(resourceUrl, "Resource URL must not be null");
         if (!URL_PROTOCOL_FILE.equals(resourceUrl.getProtocol())) {
             throw new FileNotFoundException(
                     description + " cannot be resolved to absolute file path " +
@@ -3108,7 +3113,7 @@ public final class FileCommand {
      * @since 2.5
      */
     public static File getFile(URI resourceUri, String description) throws FileNotFoundException {
-        Assert.notNull(resourceUri, "Resource URI must not be null");
+        AssertCommand.notNull(resourceUri, "Resource URI must not be null");
         if (!URL_PROTOCOL_FILE.equals(resourceUri.getScheme())) {
             throw new FileNotFoundException(
                     description + " cannot be resolved to absolute file path " +
@@ -3249,6 +3254,89 @@ public final class FileCommand {
      */
     public static void useCachesIfNecessary(URLConnection con) {
         con.setUseCaches(con.getClass().getSimpleName().startsWith("JNLP"));
+    }
+
+    public static boolean downloadInDirectory(String src, String directory) {
+        UriBuilder uriBuilder = UriCommand.uriBuilder(src);
+        URL srcUrl = uriBuilder.buildURL();
+        String filename = uriBuilder.fileName();
+        String path = directory + File.separator + filename;
+        FileCommand.mkdir(directory);
+        try {
+            OutputStream outputStream = new FileOutputStream(path);
+            return download(srcUrl, outputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean download(String src, String dec) {
+        dec = LocationCommand.pathValue(dec);
+        return downloadWithDirectory(src, dec);
+    }
+
+    public static boolean downloadWithDirectory(String src, String dec) {
+        UriBuilder uriBuilder = UriCommand.uriBuilder(src);
+        URL srcUrl = uriBuilder.buildURL();
+        if (srcUrl == null) {
+            throw new UnsupportedOperationException("should not be null for src URL object url when download:{}" + src);
+        }
+        String realPath = LocationCommand.valuePath(dec);
+        FileCommand.mkParentDirs(realPath);
+        try {
+            OutputStream outputStream = new FileOutputStream(realPath);
+            return download(srcUrl, outputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean download(URL src, OutputStream dsc) {
+        HttpConnector httpConnector = new HttpConnector();
+        HttpURLConnection conn = null;
+        try {
+            conn = httpConnector.getSecureConnection(src, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+        conn.setReadTimeout(15000);
+        conn.setDoOutput(true);
+        InputStream is = null;
+        try {
+            conn.connect();
+            is = conn.getInputStream();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        OutputStream os = dsc;
+        byte[] buff = new byte[2048];
+        int res;
+        while (true) {
+            try {
+                if (!((res = is.read(buff)) != -1)) {
+                    break;
+                }
+                os.write(buff, 0, res);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        try {
+            is.close();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
 }

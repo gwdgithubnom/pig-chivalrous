@@ -31,7 +31,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardOpenOption;
 
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 
 /**
  * {@link Resource} implementation for {@code java.io.File} handles. Supports resolution as a {@code File} and also as a
@@ -65,7 +65,7 @@ public class FileSystemResource extends AbstractResource implements WritableReso
      * @param file a File handle
      */
     public FileSystemResource(File file) {
-        Assert.notNull(file, "File must not be null");
+        AssertCommand.notNull(file, "File must not be null");
         this.file = file;
         this.path = LocationCommand.cleanPath(file.getPath());
     }
@@ -81,7 +81,7 @@ public class FileSystemResource extends AbstractResource implements WritableReso
      * @param path a file path
      */
     public FileSystemResource(String path) {
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         this.file = new File(path);
         this.path = LocationCommand.cleanPath(path);
     }

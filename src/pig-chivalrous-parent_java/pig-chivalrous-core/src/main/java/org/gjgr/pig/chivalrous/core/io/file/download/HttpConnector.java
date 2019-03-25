@@ -59,7 +59,7 @@ public class HttpConnector {
      * @throws NoSuchAlgorithmException
      * @throws KeyManagementException
      */
-    protected URLConnection getConnection(URL url)
+    public URLConnection getConnection(URL url)
             throws IOException, KeyManagementException, NoSuchAlgorithmException {
         if ("http".equalsIgnoreCase(url.getProtocol()) || "ftp".equalsIgnoreCase(url.getProtocol())) {
             return getConnection(url, null);
@@ -78,7 +78,7 @@ public class HttpConnector {
      * @throws NoSuchAlgorithmException
      * @throws KeyManagementException
      */
-    protected URLConnection getConnection(URL url, Proxy proxy) throws IOException, KeyManagementException,
+    public URLConnection getConnection(URL url, Proxy proxy) throws IOException, KeyManagementException,
             NoSuchAlgorithmException {
         if ("http".equalsIgnoreCase(url.getProtocol()) || "ftp".equalsIgnoreCase(url.getProtocol())) {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy == null ? Proxy.NO_PROXY : proxy);
@@ -99,7 +99,7 @@ public class HttpConnector {
      * @throws KeyManagementException
      * @throws NoSuchAlgorithmException
      */
-    protected HttpsURLConnection getSecureConnection(URL url) throws IOException, KeyManagementException,
+    public HttpsURLConnection getSecureConnection(URL url) throws IOException, KeyManagementException,
             NoSuchAlgorithmException {
         return getSecureConnection(url, null);
     }
@@ -112,7 +112,7 @@ public class HttpConnector {
      * @throws NoSuchAlgorithmException
      * @throws KeyManagementException
      */
-    protected HttpsURLConnection getSecureConnection(URL url, Proxy proxy) throws IOException,
+    public HttpsURLConnection getSecureConnection(URL url, Proxy proxy) throws IOException,
             NoSuchAlgorithmException, KeyManagementException {
 
         SSLContext context = SSLContext.getInstance("TLS");
@@ -138,7 +138,7 @@ public class HttpConnector {
      * @param data
      * @throws IOException
      */
-    protected void doOutput(URLConnection conn, String data) throws IOException {
+    public void doOutput(URLConnection conn, String data) throws IOException {
         BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()),
                 DEFAULT_STREAM_BUFFER_SIZE);
 
@@ -152,7 +152,7 @@ public class HttpConnector {
      * @return
      * @throws IOException
      */
-    protected StringBuffer doInput(URLConnection conn) throws IOException {
+    public StringBuffer doInput(URLConnection conn) throws IOException {
         BufferedReader rd =
                 new BufferedReader(new InputStreamReader(conn.getInputStream()), DEFAULT_STREAM_BUFFER_SIZE);
 

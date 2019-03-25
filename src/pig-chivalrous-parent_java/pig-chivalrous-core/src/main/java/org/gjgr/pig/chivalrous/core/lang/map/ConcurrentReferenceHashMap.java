@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 
@@ -140,10 +140,10 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
     public ConcurrentReferenceHashMap(
             int initialCapacity, float loadFactor, int concurrencyLevel, ReferenceType referenceType) {
 
-        Assert.isTrue(initialCapacity >= 0, "Initial capacity must not be negative");
-        Assert.isTrue(loadFactor > 0f, "Load factor must be positive");
-        Assert.isTrue(concurrencyLevel > 0, "Concurrency level must be positive");
-        Assert.notNull(referenceType, "Reference type must not be null");
+        AssertCommand.isTrue(initialCapacity >= 0, "Initial capacity must not be negative");
+        AssertCommand.isTrue(loadFactor > 0f, "Load factor must be positive");
+        AssertCommand.isTrue(concurrencyLevel > 0, "Concurrency level must be positive");
+        AssertCommand.notNull(referenceType, "Reference type must not be null");
         this.loadFactor = loadFactor;
         this.shift = calculateShift(concurrencyLevel, MAXIMUM_CONCURRENCY_LEVEL);
         int size = 1 << this.shift;
@@ -308,7 +308,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
                     }
                     return oldValue;
                 }
-                Assert.state(entries != null, "No entries segment");
+                AssertCommand.state(entries != null, "No entries segment");
                 entries.add(value);
                 return null;
             }
@@ -968,7 +968,7 @@ public class ConcurrentReferenceHashMap<K, V> extends AbstractMap<K, V> implemen
 
         @Override
         public void remove() {
-            Assert.state(this.last != null, "No element to remove");
+            AssertCommand.state(this.last != null, "No element to remove");
             ConcurrentReferenceHashMap.this.remove(this.last.getKey());
         }
 

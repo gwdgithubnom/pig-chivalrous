@@ -23,7 +23,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Scanner;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 
@@ -84,8 +84,8 @@ public final class StreamCommand {
      * @throws IOException in case of I/O errors
      */
     public static void copy(byte[] in, OutputStream out) throws IOException {
-        Assert.notNull(in, "No input byte array specified");
-        Assert.notNull(out, "No OutputStream specified");
+        AssertCommand.notNull(in, "No input byte array specified");
+        AssertCommand.notNull(out, "No OutputStream specified");
 
         out.write(in);
     }
@@ -99,9 +99,9 @@ public final class StreamCommand {
      * @throws IOException in case of I/O errors
      */
     public static void copy(String in, Charset charset, OutputStream out) throws IOException {
-        Assert.notNull(in, "No input String specified");
-        Assert.notNull(charset, "No charset specified");
-        Assert.notNull(out, "No OutputStream specified");
+        AssertCommand.notNull(in, "No input String specified");
+        AssertCommand.notNull(charset, "No charset specified");
+        AssertCommand.notNull(out, "No OutputStream specified");
 
         Writer writer = new OutputStreamWriter(out, charset);
         writer.write(in);
@@ -117,8 +117,8 @@ public final class StreamCommand {
      * @throws IOException in case of I/O errors
      */
     public static int copy(InputStream in, OutputStream out) throws IOException {
-        Assert.notNull(in, "No InputStream specified");
-        Assert.notNull(out, "No OutputStream specified");
+        AssertCommand.notNull(in, "No InputStream specified");
+        AssertCommand.notNull(out, "No OutputStream specified");
 
         int byteCount = 0;
         byte[] buffer = new byte[BUFFER_SIZE];
@@ -148,8 +148,8 @@ public final class StreamCommand {
      * @since 4.3
      */
     public static long copyRange(InputStream in, OutputStream out, long start, long end) throws IOException {
-        Assert.notNull(in, "No InputStream specified");
-        Assert.notNull(out, "No OutputStream specified");
+        AssertCommand.notNull(in, "No InputStream specified");
+        AssertCommand.notNull(out, "No OutputStream specified");
 
         long skipped = in.skip(start);
         if (skipped < start) {
@@ -182,7 +182,7 @@ public final class StreamCommand {
      * @since 4.3
      */
     public static int drain(InputStream in) throws IOException {
-        Assert.notNull(in, "No InputStream specified");
+        AssertCommand.notNull(in, "No InputStream specified");
         byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead = -1;
         int byteCount = 0;
@@ -210,7 +210,7 @@ public final class StreamCommand {
      * @return a version of the InputStream that ignores calls to close
      */
     public static InputStream nonClosing(InputStream in) {
-        Assert.notNull(in, "No InputStream specified");
+        AssertCommand.notNull(in, "No InputStream specified");
         return new NonClosingInputStream(in);
     }
 
@@ -222,7 +222,7 @@ public final class StreamCommand {
      * @return a version of the OutputStream that ignores calls to close
      */
     public static OutputStream nonClosing(OutputStream out) {
-        Assert.notNull(out, "No OutputStream specified");
+        AssertCommand.notNull(out, "No OutputStream specified");
         return new NonClosingOutputStream(out);
     }
 

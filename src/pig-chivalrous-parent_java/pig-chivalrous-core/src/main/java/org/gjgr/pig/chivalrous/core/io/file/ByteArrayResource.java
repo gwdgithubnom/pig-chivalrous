@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
@@ -63,7 +63,7 @@ public class ByteArrayResource extends AbstractResource {
      * @param description where the byte array comes from
      */
     public ByteArrayResource(byte[] byteArray, @Nullable String description) {
-        Assert.notNull(byteArray, "Byte array must not be null");
+        AssertCommand.notNull(byteArray, "Byte array must not be null");
         this.byteArray = byteArray;
         this.description = (description != null ? description : "");
     }

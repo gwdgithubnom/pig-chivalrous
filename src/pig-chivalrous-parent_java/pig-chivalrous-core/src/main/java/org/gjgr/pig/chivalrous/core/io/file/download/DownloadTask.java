@@ -24,7 +24,7 @@ public class DownloadTask {
     private OutputStream outputStream;
     private boolean paused = false;
     private boolean cancelled = false;
-    private int timeout = 15000;
+    private int timeout = 60000;
 
     private Authentication authentication;
 

@@ -20,7 +20,7 @@ import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
 import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
 import org.gjgr.pig.chivalrous.core.io.watch.SimpleWatcher;
 import org.gjgr.pig.chivalrous.core.io.watch.WatchMonitor;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
@@ -59,7 +59,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param pathBaseClassLoader 相对路径（相对于当前项目的classes路径）
      */
     public Props(String pathBaseClassLoader) {
-        Assert.notBlank(pathBaseClassLoader, "Blank properties file path !");
+        AssertCommand.notBlank(pathBaseClassLoader, "Blank properties file path !");
         this.load(new ClassPathResource(pathBaseClassLoader));
     }
 
@@ -69,7 +69,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param propertiesFile 配置文件对象
      */
     public Props(File propertiesFile) {
-        Assert.notNull(propertiesFile, "Null properties file!");
+        AssertCommand.notNull(propertiesFile, "Null properties file!");
         this.load(new UrlResource(propertiesFile));
     }
 
@@ -80,7 +80,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param clazz 基准类
      */
     public Props(String path, Class<?> clazz) {
-        Assert.notBlank(path, "Blank properties file path !");
+        AssertCommand.notBlank(path, "Blank properties file path !");
         this.load(new ClassPathResource(path, clazz));
     }
 
@@ -90,7 +90,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param propertiesUrl 属性文件路径
      */
     public Props(URL propertiesUrl) {
-        Assert.notNull(propertiesUrl, "Null properties URL !");
+        AssertCommand.notNull(propertiesUrl, "Null properties URL !");
         this.load(new UrlResource(propertiesUrl));
     }
 

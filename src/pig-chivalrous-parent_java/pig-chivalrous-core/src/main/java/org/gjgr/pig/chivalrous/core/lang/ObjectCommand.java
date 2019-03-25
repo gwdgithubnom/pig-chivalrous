@@ -1674,7 +1674,7 @@ public final class ObjectCommand {
                 return null;
             }
             Object result = optional.get();
-            Assert.isTrue(!(result instanceof Optional), "Multi-level Optional usage not supported");
+            AssertCommand.isTrue(!(result instanceof Optional), "Multi-level Optional usage not supported");
             return result;
         }
         return obj;

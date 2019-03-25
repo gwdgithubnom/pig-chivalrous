@@ -2,6 +2,7 @@ package org.gjgr.pig.chivalrous.core.net;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -169,6 +170,15 @@ public class UriBuilder {
      */
     public URI build() throws URISyntaxException {
         return new URI(buildString(false));
+    }
+
+    public URL buildURL() {
+        try {
+            return build().toURL();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public String param() {

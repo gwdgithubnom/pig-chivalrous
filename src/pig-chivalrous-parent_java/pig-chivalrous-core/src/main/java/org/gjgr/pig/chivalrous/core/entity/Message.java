@@ -50,6 +50,40 @@ public class Message implements Serializable, Cloneable {
         return this;
     }
 
+    public String key(String prefix) {
+        return prefix + ":" + key();
+    }
+
+    public String key(String prefix, String suffix) {
+        return prefix + ":" + key() + ":" + suffix;
+    }
+
+    public String key() {
+        String key = null;
+        if (getCode() != null) {
+            if (this.getType() != null) {
+                if (getVersion() != null) {
+                    key = this.getCode() + ":" + this.getType() + ":" + this.getVersion();
+                } else {
+                    key = this.getCode() + ":" + this.getType();
+                }
+            } else {
+                throw new RuntimeException("did not define the code or type could not generate key.");
+            }
+        } else {
+            if (this.getType() != null) {
+                if (getVersion() != null) {
+                    key = this.getType() + ":" + this.getVersion();
+                } else {
+                    key = this.getType();
+                }
+            } else {
+                throw new RuntimeException("did not define the code or type could not generate key.");
+            }
+        }
+        return key;
+    }
+
     public HashMap<String, Object> getInfo() {
         return this.info;
     }

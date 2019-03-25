@@ -234,7 +234,7 @@ public final class RedisConfig {
         return that.hashCode() == this.hashCode();
     }
 
-    public String hasString() {
+    public String hashString() {
         return hashCode() + "";
     }
 
@@ -244,32 +244,62 @@ public final class RedisConfig {
 
     private class RedisClientBuilder {
 
-        public RedisClient redisClient() {
-            String id = hasString();
+        private RedisClient jedisPool(RedisClient redisClient) {
+            JedisPool jedisPool = null;
+            HostAndPort hostAndPort = base.iterator().next();
+            if (password == null) {
+                jedisPool = new JedisPool(genericObjectPoolConfig, hostAndPort.getHost(), hostAndPort.getPort(),
+                        timeout, password);
+            } else {
+                jedisPool = new JedisPool(genericObjectPoolConfig, hostAndPort.getHost(), hostAndPort.getPort(),
+                        timeout);
+            }
+            redisClient.put(me(), jedisPool);
+            return redisClient;
+        }
+
+        private RedisClient jedisCluster(RedisClient redisClient) {
+            JedisCluster jedisCluster = null;
+            if (password == null) {
+                jedisCluster =
+                        new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, genericObjectPoolConfig);
+            } else {
+                jedisCluster = new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, password,
+                        genericObjectPoolConfig);
+            }
+            redisClient.put(me(), jedisCluster);
+            return redisClient;
+        }
+
+        public RedisClient redisClient(String id) {
             RedisClient redisClient = new RedisClient(id);
             if (status > 0) {
-                JedisCluster jedisCluster = null;
-                if (password == null) {
-                    jedisCluster =
-                            new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, genericObjectPoolConfig);
-                } else {
-                    jedisCluster = new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, password,
-                            genericObjectPoolConfig);
+                try {
+                    jedisCluster(redisClient);
+                } catch (Exception e) {
+                    try {
+                        jedisPool(redisClient);
+                    } catch (Exception ee) {
+                        jedisCluster(redisClient);
+                    }
                 }
-                redisClient.put(me(), jedisCluster);
             } else {
-                JedisPool jedisPool = null;
-                HostAndPort hostAndPort = base.iterator().next();
-                if (password == null) {
-                    jedisPool = new JedisPool(genericObjectPoolConfig, hostAndPort.getHost(), hostAndPort.getPort(),
-                            timeout, password);
-                } else {
-                    jedisPool = new JedisPool(genericObjectPoolConfig, hostAndPort.getHost(), hostAndPort.getPort(),
-                            timeout);
+                try {
+                    jedisPool(redisClient);
+                } catch (Exception e) {
+                    try {
+                        jedisCluster(redisClient);
+                    } catch (Exception ee) {
+                        jedisPool(redisClient);
+                    }
                 }
-                redisClient.put(me(), jedisPool);
             }
             return redisClient;
+        }
+
+        public RedisClient redisClient() {
+            String id = hashString();
+            return redisClient(id);
         }
     }
 }

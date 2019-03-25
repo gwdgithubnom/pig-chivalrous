@@ -84,8 +84,14 @@ public class DirectDownloader extends HttpConnector implements Runnable {
         dts = new DirectDownloadThread[poolSize];
 
         for (int i = 0; i < dts.length; i++) {
-            dts[i] = new DirectDownloadThread(tasks);
-            dts[i].start();
+            try {
+                dts[i] = new DirectDownloadThread(tasks);
+                dts[i].start();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                logger.warning("pool size is big than task, not found any task" + dts.length + "/" + tasks.size());
+            }
+
         }
 
         logger.info("Downloader started, waiting for tasks.");

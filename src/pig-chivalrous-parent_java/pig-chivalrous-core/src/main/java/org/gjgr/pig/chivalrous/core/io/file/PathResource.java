@@ -32,7 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 
 /**
  * {@link Resource} implementation for {@code java.nio.file.Path} handles. Supports resolution as File, and also as URL.
@@ -59,7 +59,7 @@ public class PathResource extends AbstractResource implements WritableResource {
      * @param path a Path handle
      */
     public PathResource(Path path) {
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         this.path = path.normalize();
     }
 
@@ -74,7 +74,7 @@ public class PathResource extends AbstractResource implements WritableResource {
      * @see Paths#get(String, String...)
      */
     public PathResource(String path) {
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         this.path = Paths.get(path).normalize();
     }
 
@@ -89,7 +89,7 @@ public class PathResource extends AbstractResource implements WritableResource {
      * @param uri a path URI
      */
     public PathResource(URI uri) {
-        Assert.notNull(uri, "URI must not be null");
+        AssertCommand.notNull(uri, "URI must not be null");
         this.path = Paths.get(uri).normalize();
     }
 

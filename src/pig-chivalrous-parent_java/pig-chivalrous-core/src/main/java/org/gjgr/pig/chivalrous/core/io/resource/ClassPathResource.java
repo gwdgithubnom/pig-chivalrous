@@ -3,7 +3,7 @@ package org.gjgr.pig.chivalrous.core.io.resource;
 import java.net.URL;
 
 import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 /**
@@ -57,7 +57,7 @@ public class ClassPathResource extends UrlResource {
      */
     public ClassPathResource(String path, ClassLoader classLoader, Class<?> clazz) {
         super((URL) null);
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         this.path = path;
         this.classLoader = (classLoader != null ? classLoader : ClassCommand.getClassLoader());
         this.clazz = clazz;

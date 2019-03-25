@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
@@ -75,7 +75,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      * @see ClassLoader#getResourceAsStream(String)
      */
     public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         String pathToUse = LocationCommand.cleanPath(path);
         if (pathToUse.startsWith("/")) {
             pathToUse = pathToUse.substring(1);
@@ -93,7 +93,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
      * @see Class#getResourceAsStream
      */
     public ClassPathResource(String path, @Nullable Class<?> clazz) {
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         this.path = LocationCommand.cleanPath(path);
         this.clazz = clazz;
     }

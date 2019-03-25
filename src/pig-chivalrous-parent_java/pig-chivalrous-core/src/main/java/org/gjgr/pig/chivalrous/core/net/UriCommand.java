@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.slf4j.Logger;
@@ -178,7 +178,7 @@ public class UriCommand {
      * @throws UtilException MalformedURLException
      */
     public static URL getURL(File file) {
-        Assert.notNull(file, "File is null !");
+        AssertCommand.notNull(file, "File is null !");
         try {
             return file.toURI().toURL();
         } catch (MalformedURLException e) {

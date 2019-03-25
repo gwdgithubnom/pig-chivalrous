@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import com.google.common.base.MoreObjects;
@@ -54,6 +54,14 @@ public class LocationCommand {
         return check;
     }
 
+    public static String valuePath(String path) {
+        String p = pathValue(path);
+        if (!FileCommand.isExist(p)) {
+            p = path;
+        }
+        return p;
+    }
+
     public static String pathValue(String path) {
         String check = path;
         if (!FileCommand.isExist(check)) {
@@ -72,9 +80,7 @@ public class LocationCommand {
                 check = LocationCommand.userDir() + File.separator + path;
                 if (!FileCommand.isExist(check)) {
                     check = LocationCommand.classPath() + File.separator + path;
-                    if (!FileCommand.isExist(check)) {
-
-                    }
+                    // could try use other
                 }
             }
 
@@ -302,7 +308,7 @@ public class LocationCommand {
         if (length == 0) {
             return source;
         }
-        Assert.notNull(charset, "Charset must not be null");
+        AssertCommand.notNull(charset, "Charset must not be null");
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream(length);
         boolean changed = false;

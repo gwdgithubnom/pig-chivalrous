@@ -19,7 +19,7 @@ package org.gjgr.pig.chivalrous.core.io.file;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
@@ -65,7 +65,7 @@ public class InputStreamResource extends AbstractResource {
      * @param description where the InputStream comes from
      */
     public InputStreamResource(InputStream inputStream, @Nullable String description) {
-        Assert.notNull(inputStream, "InputStream must not be null");
+        AssertCommand.notNull(inputStream, "InputStream must not be null");
         this.inputStream = inputStream;
         this.description = (description != null ? description : "");
     }

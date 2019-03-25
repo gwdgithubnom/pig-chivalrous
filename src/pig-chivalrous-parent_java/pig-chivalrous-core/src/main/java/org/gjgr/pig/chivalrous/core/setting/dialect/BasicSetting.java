@@ -19,7 +19,7 @@ import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
 import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
 import org.gjgr.pig.chivalrous.core.io.watch.SimpleWatcher;
 import org.gjgr.pig.chivalrous.core.io.watch.WatchMonitor;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
@@ -87,7 +87,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(String pathBaseClassLoader, Charset charset, boolean isUseVariable) {
-        Assert.notBlank(pathBaseClassLoader, "Blank setting path !");
+        AssertCommand.notBlank(pathBaseClassLoader, "Blank setting path !");
         this.init(new ClassPathResource(pathBaseClassLoader), charset, isUseVariable);
     }
 
@@ -99,7 +99,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(File configFile, Charset charset, boolean isUseVariable) {
-        Assert.notNull(configFile, "Null setting file define!");
+        AssertCommand.notNull(configFile, "Null setting file define!");
         this.init(new UrlResource(configFile), charset, isUseVariable);
     }
 
@@ -112,7 +112,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(String path, Class<?> clazz, Charset charset, boolean isUseVariable) {
-        Assert.notBlank(path, "Blank setting path !");
+        AssertCommand.notBlank(path, "Blank setting path !");
         this.init(new ClassPathResource(path, clazz), charset, isUseVariable);
     }
 
@@ -124,7 +124,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(URL url, Charset charset, boolean isUseVariable) {
-        Assert.notNull(url, "Null setting url define!");
+        AssertCommand.notNull(url, "Null setting url define!");
         this.init(new UrlResource(url), charset, isUseVariable);
     }
 

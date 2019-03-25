@@ -288,8 +288,10 @@ public class JsonCommand {
         Object[] array = (Object[]) java.lang.reflect.Array.newInstance(clazz, 0);
         array = gson.fromJson(json, array.getClass());
         List<T> list = new ArrayList<T>();
-        for (int i = 0; i < array.length; i++) {
-            list.add(clazz.cast(array[i]));
+        if (array != null) {
+            for (int i = 0; i < array.length; i++) {
+                list.add(clazz.cast(array[i]));
+            }
         }
         return list;
     }

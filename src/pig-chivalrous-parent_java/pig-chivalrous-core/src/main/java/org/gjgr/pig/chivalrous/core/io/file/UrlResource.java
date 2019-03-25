@@ -27,7 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
@@ -64,7 +64,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * @since 2.5
      */
     public UrlResource(URI uri) throws MalformedURLException {
-        Assert.notNull(uri, "URI must not be null");
+        AssertCommand.notNull(uri, "URI must not be null");
         this.uri = uri;
         this.url = uri.toURL();
         this.cleanedUrl = getCleanedUrl(this.url, uri.toString());
@@ -76,7 +76,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * @param url a URL
      */
     public UrlResource(URL url) {
-        Assert.notNull(url, "URL must not be null");
+        AssertCommand.notNull(url, "URL must not be null");
         this.url = url;
         this.cleanedUrl = getCleanedUrl(this.url, url.toString());
         this.uri = null;
@@ -92,7 +92,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * @see URL#URL(String)
      */
     public UrlResource(String path) throws MalformedURLException {
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         this.uri = null;
         this.url = new URL(path);
         this.cleanedUrl = getCleanedUrl(this.url, path);

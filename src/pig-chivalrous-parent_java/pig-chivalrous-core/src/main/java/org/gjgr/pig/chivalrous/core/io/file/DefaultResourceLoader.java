@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
@@ -81,7 +81,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      * @sees #getProtocolResolvers()
      */
     public void addProtocolResolver(ProtocolResolver resolver) {
-        Assert.notNull(resolver, "ProtocolResolver must not be null");
+        AssertCommand.notNull(resolver, "ProtocolResolver must not be null");
         this.protocolResolvers.add(resolver);
     }
 
@@ -119,7 +119,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 
     @Override
     public Resource getResource(String location) {
-        Assert.notNull(location, "Location must not be null");
+        AssertCommand.notNull(location, "Location must not be null");
 
         for (ProtocolResolver protocolResolver : this.protocolResolvers) {
             Resource resource = protocolResolver.resolve(location, this);

@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.math.HexCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
@@ -628,8 +628,8 @@ public final class Convert {
      * @return 目标单位的时长
      */
     public static long convertTime(long sourceDuration, TimeUnit sourceUnit, TimeUnit destUnit) {
-        Assert.notNull(sourceUnit, "sourceUnit is null !");
-        Assert.notNull(destUnit, "destUnit is null !");
+        AssertCommand.notNull(sourceUnit, "sourceUnit is null !");
+        AssertCommand.notNull(destUnit, "destUnit is null !");
         return destUnit.convert(sourceDuration, sourceUnit);
     }
 

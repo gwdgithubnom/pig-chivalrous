@@ -39,7 +39,7 @@ import org.gjgr.pig.chivalrous.core.crypto.digest.HmacAlgorithm;
 import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricAlgorithm;
 import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricCrypto;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.Base64;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
@@ -95,7 +95,7 @@ public final class CryptoCommand {
      * @return {@link SecretKey}
      */
     public static SecretKey secretKey(String algorithm, byte[] key) {
-        Assert.notBlank(algorithm, "Algorithm is blank!");
+        AssertCommand.notBlank(algorithm, "Algorithm is blank!");
         SecretKey secretKey = null;
         if (algorithm.startsWith("PBE")) {
             // PBE密钥

@@ -1249,7 +1249,7 @@ public final class ClassCommand {
     public static Class<?> forName(String name, @Nullable ClassLoader classLoader)
             throws ClassNotFoundException, LinkageError {
 
-        Assert.notNull(name, "Name must not be null");
+        AssertCommand.notNull(name, "Name must not be null");
 
         Class<?> clazz = resolvePrimitiveClassName(name);
         if (clazz == null) {
@@ -1377,7 +1377,7 @@ public final class ClassCommand {
      *            system class loader)
      */
     public static boolean isCacheSafe(Class<?> clazz, @Nullable ClassLoader classLoader) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         try {
             ClassLoader target = clazz.getClassLoader();
             // Common cases
@@ -1459,7 +1459,7 @@ public final class ClassCommand {
      * @return whether the given class is a primitive or primitive wrapper class
      */
     public static boolean isPrimitiveOrWrapper(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         return (clazz.isPrimitive() || isPrimitiveWrapper(clazz));
     }
 
@@ -1471,7 +1471,7 @@ public final class ClassCommand {
      * @return whether the given class is a primitive array class
      */
     public static boolean isPrimitiveArray(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         return (clazz.isArray() && clazz.getComponentType().isPrimitive());
     }
 
@@ -1483,7 +1483,7 @@ public final class ClassCommand {
      * @return whether the given class is a primitive wrapper array class
      */
     public static boolean isPrimitiveWrapperArray(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         return (clazz.isArray() && isPrimitiveWrapper(clazz.getComponentType()));
     }
 
@@ -1494,7 +1494,7 @@ public final class ClassCommand {
      * @return the original class, or a primitive wrapper for the original primitive type
      */
     public static Class<?> resolvePrimitiveIfNecessary(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         return (clazz.isPrimitive() && clazz != void.class ? primitiveTypeToWrapperMap.get(clazz) : clazz);
     }
 
@@ -1507,7 +1507,7 @@ public final class ClassCommand {
      * @return if the type is assignable from the value
      */
     public static boolean isAssignableValue(Class<?> type, @Nullable Object value) {
-        Assert.notNull(type, "Type must not be null");
+        AssertCommand.notNull(type, "Type must not be null");
         return (value != null ? isAssignable(type, value.getClass()) : !type.isPrimitive());
     }
 
@@ -1518,7 +1518,7 @@ public final class ClassCommand {
      * @return the corresponding fully qualified class name
      */
     public static String convertResourcePathToClassName(String resourcePath) {
-        Assert.notNull(resourcePath, "Resource path must not be null");
+        AssertCommand.notNull(resourcePath, "Resource path must not be null");
         return resourcePath.replace(PATH_SEPARATOR, PACKAGE_SEPARATOR);
     }
 
@@ -1529,7 +1529,7 @@ public final class ClassCommand {
      * @return the corresponding resource path, pointing to the class
      */
     public static String convertClassNameToResourcePath(String className) {
-        Assert.notNull(className, "Class name must not be null");
+        AssertCommand.notNull(className, "Class name must not be null");
         return className.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR);
     }
 
@@ -1549,7 +1549,7 @@ public final class ClassCommand {
      * @see Class#getResource
      */
     public static String addResourcePathToPackagePath(Class<?> clazz, String resourceName) {
-        Assert.notNull(resourceName, "Resource name must not be null");
+        AssertCommand.notNull(resourceName, "Resource name must not be null");
         if (!resourceName.startsWith("/")) {
             return classPackageAsResourcePath(clazz) + '/' + resourceName;
         }
@@ -1643,7 +1643,7 @@ public final class ClassCommand {
      * @return all interfaces that the given instance implements as an array
      */
     public static Class<?>[] getAllInterfaces(Object instance) {
-        Assert.notNull(instance, "Instance must not be null");
+        AssertCommand.notNull(instance, "Instance must not be null");
         return getAllInterfacesForClass(instance.getClass());
     }
 
@@ -1680,7 +1680,7 @@ public final class ClassCommand {
      * @return all interfaces that the given instance implements as a Set
      */
     public static Set<Class<?>> getAllInterfacesAsSet(Object instance) {
-        Assert.notNull(instance, "Instance must not be null");
+        AssertCommand.notNull(instance, "Instance must not be null");
         return getAllInterfacesForClassAsSet(instance.getClass());
     }
 
@@ -1707,7 +1707,7 @@ public final class ClassCommand {
      * @return all interfaces that the given object implements as a Set
      */
     public static Set<Class<?>> getAllInterfacesForClassAsSet(Class<?> clazz, @Nullable ClassLoader classLoader) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         if (clazz.isInterface() && isVisible(clazz, classLoader)) {
             return Collections.singleton(clazz);
         }
@@ -1738,7 +1738,7 @@ public final class ClassCommand {
      */
     @SuppressWarnings("deprecation")
     public static Class<?> createCompositeInterface(Class<?>[] interfaces, @Nullable ClassLoader classLoader) {
-        Assert.notEmpty(interfaces, "Interfaces must not be empty");
+        AssertCommand.notEmpty(interfaces, "Interfaces must not be empty");
         return Proxy.getProxyClass(classLoader, interfaces);
     }
 
@@ -1837,7 +1837,7 @@ public final class ClassCommand {
      * @return the user-defined class
      */
     public static Class<?> getUserClass(Object instance) {
-        Assert.notNull(instance, "Instance must not be null");
+        AssertCommand.notNull(instance, "Instance must not be null");
         return getUserClass(instance.getClass());
     }
 
@@ -1906,7 +1906,7 @@ public final class ClassCommand {
      * @throws IllegalArgumentException if the className is empty
      */
     public static String getShortName(String className) {
-        Assert.hasLength(className, "Class name must not be empty");
+        AssertCommand.hasLength(className, "Class name must not be empty");
         int lastDotIndex = className.lastIndexOf(PACKAGE_SEPARATOR);
         int nameEndIndex = className.indexOf(CGLIB_CLASS_SEPARATOR);
         if (nameEndIndex == -1) {
@@ -1949,7 +1949,7 @@ public final class ClassCommand {
      * @return the file name of the ".class" file
      */
     public static String getClassFileName(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         String className = clazz.getName();
         int lastDotIndex = className.lastIndexOf(PACKAGE_SEPARATOR);
         return className.substring(lastDotIndex + 1) + CLASS_FILE_SUFFIX;
@@ -1962,7 +1962,7 @@ public final class ClassCommand {
      * @return the package name, or the empty String if the class is defined in the default package
      */
     public static String getPackageName(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         return getPackageName(clazz.getName());
     }
 
@@ -1974,7 +1974,7 @@ public final class ClassCommand {
      * @return the package name, or the empty String if the class is defined in the default package
      */
     public static String getPackageName(String fqClassName) {
-        Assert.notNull(fqClassName, "Class name must not be null");
+        AssertCommand.notNull(fqClassName, "Class name must not be null");
         int lastDotIndex = fqClassName.lastIndexOf(PACKAGE_SEPARATOR);
         return (lastDotIndex != -1 ? fqClassName.substring(0, lastDotIndex) : "");
     }
@@ -1987,7 +1987,7 @@ public final class ClassCommand {
      * @return the qualified name of the class
      */
     public static String getQualifiedName(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         return clazz.getTypeName();
     }
 
@@ -2013,7 +2013,7 @@ public final class ClassCommand {
      * @since 4.3.4
      */
     public static String getQualifiedMethodName(Method method, @Nullable Class<?> clazz) {
-        Assert.notNull(method, "Method must not be null");
+        AssertCommand.notNull(method, "Method must not be null");
         return (clazz != null ? clazz : method.getDeclaringClass()).getName() + '.' + method.getName();
     }
 
@@ -2044,7 +2044,7 @@ public final class ClassCommand {
      */
     @Nullable
     public static <T> Constructor<T> getConstructorIfAvailable(Class<T> clazz, Class<?>...paramTypes) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         try {
             return clazz.getConstructor(paramTypes);
         } catch (NoSuchMethodException ex) {
@@ -2084,8 +2084,8 @@ public final class ClassCommand {
      * @see Class#getMethod
      */
     public static Method getMethod(Class<?> clazz, String methodName, @Nullable Class<?>...paramTypes) {
-        Assert.notNull(clazz, "Class must not be null");
-        Assert.notNull(methodName, "Method name must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(methodName, "Method name must not be null");
         if (paramTypes != null) {
             try {
                 return clazz.getMethod(methodName, paramTypes);
@@ -2127,8 +2127,8 @@ public final class ClassCommand {
      */
     @Nullable
     public static Method getMethodIfAvailable(Class<?> clazz, String methodName, @Nullable Class<?>...paramTypes) {
-        Assert.notNull(clazz, "Class must not be null");
-        Assert.notNull(methodName, "Method name must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(methodName, "Method name must not be null");
         if (paramTypes != null) {
             try {
                 return clazz.getMethod(methodName, paramTypes);
@@ -2159,8 +2159,8 @@ public final class ClassCommand {
      * @return the number of methods with the given name
      */
     public static int getMethodCountForName(Class<?> clazz, String methodName) {
-        Assert.notNull(clazz, "Class must not be null");
-        Assert.notNull(methodName, "Method name must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(methodName, "Method name must not be null");
         int count = 0;
         Method[] declaredMethods = clazz.getDeclaredMethods();
         for (Method method : declaredMethods) {
@@ -2187,8 +2187,8 @@ public final class ClassCommand {
      * @return whether there is at least one method with the given name
      */
     public static boolean hasAtLeastOneMethodWithName(Class<?> clazz, String methodName) {
-        Assert.notNull(clazz, "Class must not be null");
-        Assert.notNull(methodName, "Method name must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(methodName, "Method name must not be null");
         Method[] declaredMethods = clazz.getDeclaredMethods();
         for (Method method : declaredMethods) {
             if (method.getName().equals(methodName)) {
@@ -2270,8 +2270,8 @@ public final class ClassCommand {
      */
     @Nullable
     public static Field findField(Class<?> clazz, @Nullable String name, @Nullable Class<?> type) {
-        Assert.notNull(clazz, "Class must not be null");
-        Assert.isTrue(name != null || type != null, "Either name or type of the field must be specified");
+        AssertCommand.notNull(clazz, "Class must not be null");
+        AssertCommand.isTrue(name != null || type != null, "Either name or type of the field must be specified");
         Class<?> searchType = clazz;
         while (Object.class != searchType && searchType != null) {
             Field[] fields = getDeclaredFields(searchType);
@@ -2357,8 +2357,8 @@ public final class ClassCommand {
      */
     @Nullable
     public static Method findMethod(Class<?> clazz, String name, @Nullable Class<?>...paramTypes) {
-        Assert.notNull(clazz, "Class must not be null");
-        Assert.notNull(name, "Method name must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(name, "Method name must not be null");
         Class<?> searchType = clazz;
         while (searchType != null) {
             Method[] methods = (searchType.isInterface() ? searchType.getMethods() : getDeclaredMethods(searchType));
@@ -2539,7 +2539,7 @@ public final class ClassCommand {
      * @return {@code true} if the exception can be thrown as-is; {@code false} if it needs to be wrapped
      */
     public static boolean declaresException(Method method, Class<?> exceptionType) {
-        Assert.notNull(method, "Method must not be null");
+        AssertCommand.notNull(method, "Method must not be null");
         Class<?>[] declaredExceptions = method.getExceptionTypes();
         for (Class<?> declaredException : declaredExceptions) {
             if (declaredException.isAssignableFrom(exceptionType)) {
@@ -2862,7 +2862,7 @@ public final class ClassCommand {
      * @see Class#getDeclaredFields()
      */
     private static Field[] getDeclaredFields(Class<?> clazz) {
-        Assert.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
         Field[] result = declaredFieldsCache.get(clazz);
         if (result == null) {
             try {
@@ -2883,8 +2883,8 @@ public final class ClassCommand {
      * @throws IllegalStateException if introspection fails
      */
     public static void shallowCopyFieldState(final Object src, final Object dest) {
-        Assert.notNull(src, "Source for field copy cannot be null");
-        Assert.notNull(dest, "Destination for field copy cannot be null");
+        AssertCommand.notNull(src, "Source for field copy cannot be null");
+        AssertCommand.notNull(dest, "Destination for field copy cannot be null");
         if (!src.getClass().isAssignableFrom(dest.getClass())) {
             throw new IllegalArgumentException("Destination class [" + dest.getClass().getName() +
                     "] must be same or subclass as source class [" + src.getClass().getName() + "]");
@@ -2918,7 +2918,7 @@ public final class ClassCommand {
      * @return {@code true} if the method can be considered as user-declared; [@code false} otherwise
      */
     public static boolean isUserLevelMethod(Method method) {
-        Assert.notNull(method, "Method must not be null");
+        AssertCommand.notNull(method, "Method must not be null");
         return (method.isBridge() || (!method.isSynthetic() && !isGroovyObjectMethod(method)));
     }
 
@@ -2954,8 +2954,8 @@ public final class ClassCommand {
      */
     @Nullable
     public static Method getStaticMethod(Class<?> clazz, String methodName, Class<?>...args) {
-        Assert.notNull(clazz, "Class must not be null");
-        Assert.notNull(methodName, "Method name must not be null");
+        AssertCommand.notNull(clazz, "Class must not be null");
+        AssertCommand.notNull(methodName, "Method name must not be null");
         try {
             Method method = clazz.getMethod(methodName, args);
             return Modifier.isStatic(method.getModifiers()) ? method : null;

@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
@@ -330,7 +330,7 @@ public class FileWriter extends FileWrapper {
      * @throws IOException
      */
     private void checkFile() throws IORuntimeException {
-        Assert.notNull(file, "File to write content is null !");
+        AssertCommand.notNull(file, "File to write content is null !");
         if (this.file.exists() && false == file.isFile()) {
             throw new IORuntimeException("File [{}] is not a file !", this.file.getAbsoluteFile());
         }

@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
@@ -275,7 +275,7 @@ public class SqlConnRunner {
      */
     public <T> T find(Connection conn, Query query, RsHandler<T> rsh) throws SQLException {
         checkConn(conn);
-        Assert.notNull(query, "[query] is null !");
+        AssertCommand.notNull(query, "[query] is null !");
 
         PreparedStatement ps = null;
         try {
