@@ -19,7 +19,7 @@ public class IORuntimeException extends RuntimeException {
         super(message);
     }
 
-    public IORuntimeException(String messageTemplate, Object...params) {
+    public IORuntimeException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -27,7 +27,7 @@ public class IORuntimeException extends RuntimeException {
         super(message, throwable);
     }
 
-    public IORuntimeException(Throwable throwable, String messageTemplate, Object...params) {
+    public IORuntimeException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 

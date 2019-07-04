@@ -1,5 +1,7 @@
 package org.gjgr.pig.chivalrous.media;
 
+import org.junit.Test;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,8 +9,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import org.junit.Test;
 
 /**
  * @Author gwd

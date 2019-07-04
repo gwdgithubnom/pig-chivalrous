@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.io.stream;
 
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -23,10 +27,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.Scanner;
 
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
-import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
-
 /**
  * File Name : pig-chivalrous - org.gjgr.pig.chivalrous.core.stream CopyRright (c) 1949-xxxx: File Number： Author：gwd
  * Date：on 2018/12/7 Modify：gwd Time ： Comment： Description： Version：
@@ -39,7 +39,7 @@ public final class StreamCommand {
 
     /**
      * Copy the contents of the given InputStream into a new byte array. Leaves the stream open when done.
-     * 
+     *
      * @param in the stream to copy from (may be {@code null} or empty)
      * @return the new byte array that has been copied to (possibly empty)
      * @throws IOException in case of I/O errors
@@ -56,7 +56,7 @@ public final class StreamCommand {
 
     /**
      * Copy the contents of the given InputStream into a String. Leaves the stream open when done.
-     * 
+     *
      * @param in the InputStream to copy from (may be {@code null} or empty)
      * @return the String that has been copied to (possibly empty)
      * @throws IOException in case of I/O errors
@@ -78,8 +78,8 @@ public final class StreamCommand {
 
     /**
      * Copy the contents of the given byte array to the given OutputStream. Leaves the stream open when done.
-     * 
-     * @param in the byte array to copy from
+     *
+     * @param in  the byte array to copy from
      * @param out the OutputStream to copy to
      * @throws IOException in case of I/O errors
      */
@@ -92,10 +92,10 @@ public final class StreamCommand {
 
     /**
      * Copy the contents of the given String to the given output OutputStream. Leaves the stream open when done.
-     * 
-     * @param in the String to copy from
+     *
+     * @param in      the String to copy from
      * @param charset the Charset
-     * @param out the OutputStream to copy to
+     * @param out     the OutputStream to copy to
      * @throws IOException in case of I/O errors
      */
     public static void copy(String in, Charset charset, OutputStream out) throws IOException {
@@ -110,8 +110,8 @@ public final class StreamCommand {
 
     /**
      * Copy the contents of the given InputStream to the given OutputStream. Leaves both streams open when done.
-     * 
-     * @param in the InputStream to copy from
+     *
+     * @param in  the InputStream to copy from
      * @param out the OutputStream to copy to
      * @return the number of bytes copied
      * @throws IOException in case of I/O errors
@@ -138,11 +138,11 @@ public final class StreamCommand {
      * the actual number of copied bytes.
      * <p>
      * Leaves both streams open when done.
-     * 
-     * @param in the InputStream to copy from
-     * @param out the OutputStream to copy to
+     *
+     * @param in    the InputStream to copy from
+     * @param out   the OutputStream to copy to
      * @param start the position to start copying from
-     * @param end the position to end copying
+     * @param end   the position to end copying
      * @return the number of bytes copied
      * @throws IOException in case of I/O errors
      * @since 4.3
@@ -175,7 +175,7 @@ public final class StreamCommand {
 
     /**
      * Drain the remaining content of the given InputStream. Leaves the InputStream open when done.
-     * 
+     *
      * @param in the InputStream to drain
      * @return the number of bytes read
      * @throws IOException in case of I/O errors
@@ -194,7 +194,7 @@ public final class StreamCommand {
 
     /**
      * Return an efficient empty {@link InputStream}.
-     * 
+     *
      * @return a {@link ByteArrayInputStream} based on an empty byte array
      * @since 4.2.2
      */
@@ -205,7 +205,7 @@ public final class StreamCommand {
     /**
      * Return a variant of the given {@link InputStream} where calling {@link InputStream#close() close()} has no
      * effect.
-     * 
+     *
      * @param in the InputStream to decorate
      * @return a version of the InputStream that ignores calls to close
      */
@@ -217,7 +217,7 @@ public final class StreamCommand {
     /**
      * Return a variant of the given {@link OutputStream} where calling {@link OutputStream#close() close()} has no
      * effect.
-     * 
+     *
      * @param out the OutputStream to decorate
      * @return a version of the OutputStream that ignores calls to close
      */
@@ -413,7 +413,7 @@ public final class StreamCommand {
      * Forces any updates to this channel's file to be written to the storage device that contains it.
      *
      * @param channel the file channel
-     * @param name the name of the resource
+     * @param name    the name of the resource
      */
     public static void force(FileChannel channel, String name) {
         try {
@@ -428,7 +428,7 @@ public final class StreamCommand {
     /**
      * Forces any updates to a FileOutputStream be written to the storage device that contains it.
      *
-     * @param os the file output stream
+     * @param os   the file output stream
      * @param name the name of the resource
      */
     public static void force(FileOutputStream os, String name) {
@@ -446,9 +446,9 @@ public final class StreamCommand {
      * optionally be forced to disk.
      *
      * @param writer the writer to close
-     * @param os an underlying FileOutputStream that will to be forced to disk according to the force parameter
-     * @param name the name of the resource
-     * @param force forces the FileOutputStream to disk
+     * @param os     an underlying FileOutputStream that will to be forced to disk according to the force parameter
+     * @param name   the name of the resource
+     * @param force  forces the FileOutputStream to disk
      */
     public static void close(Writer writer, FileOutputStream os, String name, boolean force) {
         if (writer != null && force) {
@@ -467,7 +467,7 @@ public final class StreamCommand {
      * Closes the given resource if it is available, logging any closing exceptions to the given log.
      *
      * @param closeable the object to close
-     * @param name the name of the resource
+     * @param name      the name of the resource
      */
     public static void close(Closeable closeable, String name) {
         if (closeable != null) {
@@ -501,8 +501,8 @@ public final class StreamCommand {
      * can optionally be forced to disk.
      *
      * @param channel the file channel
-     * @param name the name of the resource
-     * @param force forces the file channel to disk
+     * @param name    the name of the resource
+     * @param force   forces the file channel to disk
      */
     public static void close(FileChannel channel, String name, boolean force) {
         if (force) {
@@ -525,7 +525,7 @@ public final class StreamCommand {
      *
      * @param closeables the objects to close
      */
-    public static void close(Closeable...closeables) {
+    public static void close(Closeable... closeables) {
         for (Closeable closeable : closeables) {
             close(closeable);
         }

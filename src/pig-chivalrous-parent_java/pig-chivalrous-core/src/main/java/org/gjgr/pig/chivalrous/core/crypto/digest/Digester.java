@@ -1,17 +1,17 @@
 package org.gjgr.pig.chivalrous.core.crypto.digest;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.math.HexCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 摘要算法<br>
@@ -48,7 +48,7 @@ public class Digester {
     /**
      * 生成文件摘要
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return 摘要
      */
@@ -69,7 +69,7 @@ public class Digester {
     /**
      * 生成文件摘要，并转为16进制字符串
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return 摘要
      */
@@ -168,7 +168,7 @@ public class Digester {
     /**
      * 生成摘要
      *
-     * @param data {@link InputStream} 数据流
+     * @param data         {@link InputStream} 数据流
      * @param bufferLength 缓存长度，不足1使用 {@link IoCommand#DEFAULT_BUFFER_SIZE} 做为默认值
      * @return 摘要bytes
      */
@@ -199,7 +199,7 @@ public class Digester {
      * 生成摘要，并转为16进制字符串<br>
      * 使用默认缓存大小，见 {@link IoCommand#DEFAULT_BUFFER_SIZE}
      *
-     * @param data 被摘要数据
+     * @param data         被摘要数据
      * @param bufferLength 缓存长度，不足1使用 {@link IoCommand#DEFAULT_BUFFER_SIZE} 做为默认值
      * @return 摘要
      */

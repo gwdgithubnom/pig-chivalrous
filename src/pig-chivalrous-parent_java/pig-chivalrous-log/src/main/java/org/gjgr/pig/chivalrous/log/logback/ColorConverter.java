@@ -16,11 +16,6 @@
 
 package org.gjgr.pig.chivalrous.log.logback;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.Configuration;
@@ -36,6 +31,11 @@ import org.gjgr.pig.chivalrous.log.ansi.AnsiElement;
 import org.gjgr.pig.chivalrous.log.ansi.AnsiOutput;
 import org.gjgr.pig.chivalrous.log.ansi.AnsiStyle;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Logback {@links CompositeConverter} colors output using the {@links AnsiOutput} class. A single 'color' option can be
  * provided to the converter, or if not specified color will be picked based on the logging level.
@@ -43,7 +43,7 @@ import org.gjgr.pig.chivalrous.log.ansi.AnsiStyle;
  * @author Phillip Webb
  */
 @Plugin(name = "color", category = PatternConverter.CATEGORY)
-@ConverterKeys({ "clr", "color" })
+@ConverterKeys( {"clr", "color"})
 public class ColorConverter extends LogEventPatternConverter {
     private static final Map<String, AnsiElement> ELEMENTS;
     private static final Map<Integer, AnsiElement> LEVELS;
@@ -80,8 +80,8 @@ public class ColorConverter extends LogEventPatternConverter {
 
     /**
      * Creates a new instance of the class. Required by Log4J2.
-     * 
-     * @param config the configuration
+     *
+     * @param config  the configuration
      * @param options the options
      * @return a new instance, or {@code null} if the options are invalid
      */
@@ -129,7 +129,7 @@ public class ColorConverter extends LogEventPatternConverter {
     }
 
     protected void appendAnsiString(StringBuilder toAppendTo, String in,
-            AnsiElement element) {
+                                    AnsiElement element) {
         toAppendTo.append(AnsiOutput.toString(element, in));
     }
 }

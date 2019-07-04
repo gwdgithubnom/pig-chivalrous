@@ -23,9 +23,9 @@ public abstract class AbstractDateTime implements DateTimeBasic, Serializable {
     /**
      * 构造，内部使用
      *
-     * @param pattern 使用{@link java.text.SimpleDateFormat} 相同的日期格式
+     * @param pattern  使用{@link java.text.SimpleDateFormat} 相同的日期格式
      * @param timeZone 非空时区{@link TimeZone}
-     * @param locale 非空{@link Locale} 日期地理位置
+     * @param locale   非空{@link Locale} 日期地理位置
      */
     protected AbstractDateTime(final String pattern, final TimeZone timeZone, final Locale locale) {
         this.pattern = pattern;

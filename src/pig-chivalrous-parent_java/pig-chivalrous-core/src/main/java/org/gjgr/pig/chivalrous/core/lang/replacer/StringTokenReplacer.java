@@ -1,17 +1,17 @@
 package org.gjgr.pig.chivalrous.core.lang.replacer;
 
+import org.apache.commons.lang3.Validate;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.Validate;
-
 /**
  * A helper class can be used to replace tokens in a string with other values. <br>
  * For example, you have a replacement map: <br>
- * 
+ *
  * <pre>
  * <code>
  *  Map<String,String> map = new HashMap<String, String>();

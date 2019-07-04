@@ -29,7 +29,7 @@ public class LFUCache<K, V> extends AbstractCache<K, V> {
      * 构造
      *
      * @param capacity 容量
-     * @param timeout 过期时长
+     * @param timeout  过期时长
      */
     public LFUCache(int capacity, long timeout) {
         this.capacity = capacity;

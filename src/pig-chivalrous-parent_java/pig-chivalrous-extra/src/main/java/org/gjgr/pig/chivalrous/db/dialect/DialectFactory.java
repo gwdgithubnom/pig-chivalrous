@@ -1,9 +1,5 @@
 package org.gjgr.pig.chivalrous.db.dialect;
 
-import java.sql.Connection;
-
-import javax.sql.DataSource;
-
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.dialect.impl.AnsiSqlDialect;
@@ -11,6 +7,9 @@ import org.gjgr.pig.chivalrous.db.dialect.impl.MysqlDialect;
 import org.gjgr.pig.chivalrous.db.dialect.impl.OracleDialect;
 import org.gjgr.pig.chivalrous.db.dialect.impl.PostgresqlDialect;
 import org.gjgr.pig.chivalrous.db.dialect.impl.Sqlite3Dialect;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
 
 /**
  * 方言工厂类

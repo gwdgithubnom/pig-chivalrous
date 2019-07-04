@@ -13,6 +13,34 @@
 
 package org.gjgr.pig.chivalrous.core.json;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.reflect.TypeToken;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.file.FileReader;
+import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
+import org.gjgr.pig.chivalrous.core.json.bean.Json;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.xml.XmlBetweenJsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.lang.model.type.TypeVariable;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -34,36 +62,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
-
-import javax.lang.model.type.TypeVariable;
-
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.io.file.FileReader;
-import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
-import org.gjgr.pig.chivalrous.core.json.bean.Json;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.xml.XmlBetweenJsonObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * This class is used for ... ClassName: JSONHelper
@@ -205,15 +203,15 @@ public class JsonCommand {
      * @return
      */
     public static String serializer(Object ts,
-            final String dateformat) {
+                                    final String dateformat) {
         String jsonStr = null;
         gson = new GsonBuilder()
                 .registerTypeHierarchyAdapter(Date.class,
                         new JsonSerializer<Date>() {
                             @Override
                             public JsonElement serialize(Date src,
-                                    Type typeOfSrc,
-                                    JsonSerializationContext context) {
+                                                         Type typeOfSrc,
+                                                         JsonSerializationContext context) {
                                 SimpleDateFormat format = new SimpleDateFormat(
                                         dateformat);
                                 return new JsonPrimitive(format.format(src));
@@ -235,13 +233,13 @@ public class JsonCommand {
      */
     @SuppressWarnings("unchecked")
     public static <T> T serializer(String jsonStr, Class<T> cl,
-            final String pattern) {
+                                   final String pattern) {
         Object obj = null;
         gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                     @Override
                     public Date deserialize(JsonElement json, Type typeOfT,
-                            JsonDeserializationContext context)
+                                            JsonDeserializationContext context)
                             throws JsonParseException {
                         SimpleDateFormat format = new SimpleDateFormat(pattern);
                         String dateStr = json.getAsString();
@@ -315,6 +313,9 @@ public class JsonCommand {
     }
 
     public static <T> T to(String str, Class clazz) {
+        if (clazz.isArray()) {
+
+        }
         return fromJson(str, clazz);
     }
 
@@ -463,7 +464,7 @@ public class JsonCommand {
     /**
      * 读取JSON
      *
-     * @param file JSON文件
+     * @param file    JSON文件
      * @param charset 编码
      * @return Json（包括JSONObject和JSONArray）
      * @throws IORuntimeException
@@ -475,7 +476,7 @@ public class JsonCommand {
     /**
      * 读取JSONObject
      *
-     * @param file JSON文件
+     * @param file    JSON文件
      * @param charset 编码
      * @return JsonObject
      * @throws IORuntimeException
@@ -487,7 +488,7 @@ public class JsonCommand {
     /**
      * 读取JSONArray
      *
-     * @param file JSON文件
+     * @param file    JSON文件
      * @param charset 编码
      * @return JsonArray
      * @throws IORuntimeException
@@ -499,7 +500,7 @@ public class JsonCommand {
     /**
      * 转为JSON字符串
      *
-     * @param json Json
+     * @param json         Json
      * @param indentFactor 每一级别的缩进
      * @return JSON字符串
      */
@@ -728,7 +729,7 @@ public class JsonCommand {
     }
 
     public static com.google.gson.JsonObject replace(YmlNode ymlNode, JsonElement jsonElement, String to,
-            com.google.gson.JsonObject data) {
+                                                     com.google.gson.JsonObject data) {
         try {
             Map map = ymlNode.map();
             if (jsonElement.isJsonPrimitive()) {
@@ -1029,7 +1030,7 @@ public class JsonCommand {
     }
 
     public static com.google.gson.JsonObject mergeInLeft(com.google.gson.JsonObject left,
-            com.google.gson.JsonObject right) {
+                                                         com.google.gson.JsonObject right) {
         Set<Map.Entry<String, JsonElement>> ss = right.entrySet();
         for (Map.Entry<String, JsonElement> sss : ss) {
             if (left.has(sss.getKey())) {
@@ -1041,7 +1042,7 @@ public class JsonCommand {
     }
 
     public static com.google.gson.JsonObject mergeInRight(com.google.gson.JsonObject left,
-            com.google.gson.JsonObject right) {
+                                                          com.google.gson.JsonObject right) {
         return mergeInLeft(right, left);
     }
 

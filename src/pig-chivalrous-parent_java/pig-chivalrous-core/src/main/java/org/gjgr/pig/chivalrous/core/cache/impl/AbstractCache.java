@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.cache.impl;
 
+import org.gjgr.pig.chivalrous.core.cache.Cache;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import org.gjgr.pig.chivalrous.core.cache.Cache;
 
 /**
  * 超时和限制大小的缓存的默认实现<br>
@@ -80,7 +80,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Iterable<V> {
 
     /**
      * @return 默认缓存失效时长。<br>
-     *         每个对象可以单独设置失效时长
+     * 每个对象可以单独设置失效时长
      */
     @Override
     public long timeout() {
@@ -216,7 +216,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Iterable<V> {
     /**
      * 对象移除回调。默认无动作
      *
-     * @param key 键
+     * @param key          键
      * @param cachedObject 被缓存的对象
      */
     protected void onRemove(K key, V cachedObject) {

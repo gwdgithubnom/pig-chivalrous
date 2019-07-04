@@ -1,12 +1,12 @@
 package org.gjgr.pig.chivalrous.core.dfa;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Callable;
-
 import org.gjgr.pig.chivalrous.core.json.JsonCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * 敏感词工具类
@@ -32,7 +32,7 @@ public final class SensitiveUtil {
     /**
      * 初始化敏感词树
      *
-     * @param isAsync 是否异步初始化
+     * @param isAsync        是否异步初始化
      * @param sensitiveWords 敏感词列表
      */
     public static void init(final Collection<String> sensitiveWords, boolean isAsync) {
@@ -65,8 +65,8 @@ public final class SensitiveUtil {
      * 初始化敏感词树
      *
      * @param sensitiveWords 敏感词列表组成的字符串
-     * @param isAsync 是否异步初始化
-     * @param separator 分隔符
+     * @param isAsync        是否异步初始化
+     * @param separator      分隔符
      */
     public static void init(String sensitiveWords, char separator, boolean isAsync) {
         if (StringCommand.isNotBlank(sensitiveWords)) {
@@ -78,7 +78,7 @@ public final class SensitiveUtil {
      * 初始化敏感词树，使用逗号分隔每个单词
      *
      * @param sensitiveWords 敏感词列表组成的字符串
-     * @param isAsync 是否异步初始化
+     * @param isAsync        是否异步初始化
      */
     public static void init(String sensitiveWords, boolean isAsync) {
         init(sensitiveWords, DEFAULT_SEPARATOR, isAsync);
@@ -139,9 +139,9 @@ public final class SensitiveUtil {
      * 密集匹配原则：假如关键词有 ab,b，文本是abab，将匹配 [ab,b,ab]<br>
      * 贪婪匹配（最长匹配）原则：假如关键字a,ab，最长匹配将匹配[a, ab]
      *
-     * @param text 文本
+     * @param text           文本
      * @param isDensityMatch 是否使用密集匹配原则
-     * @param isGreedMatch 是否使用贪婪匹配（最长匹配）原则
+     * @param isGreedMatch   是否使用贪婪匹配（最长匹配）原则
      * @return 敏感词
      */
     public static List<String> getFindedAllSensitive(String text, boolean isDensityMatch, boolean isGreedMatch) {
@@ -163,9 +163,9 @@ public final class SensitiveUtil {
      * 密集匹配原则：假如关键词有 ab,b，文本是abab，将匹配 [ab,b,ab]<br>
      * 贪婪匹配（最长匹配）原则：假如关键字a,ab，最长匹配将匹配[a, ab]
      *
-     * @param bean 对象，会被转为JSON
+     * @param bean           对象，会被转为JSON
      * @param isDensityMatch 是否使用密集匹配原则
-     * @param isGreedMatch 是否使用贪婪匹配（最长匹配）原则
+     * @param isGreedMatch   是否使用贪婪匹配（最长匹配）原则
      * @return 敏感词
      */
     public static List<String> getFindedAllSensitive(Object bean, boolean isDensityMatch, boolean isGreedMatch) {

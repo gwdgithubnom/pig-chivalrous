@@ -27,12 +27,16 @@ public enum MessageStatus {
     MULTIPLE_CHOICES(300, "warn", "Multiple Choices"),
     MOVED_PERMANENTLY(301, "warn", "Moved Permanently"),
     FOUND(302, "warn", "Found"),
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     @Deprecated
     MOVED_TEMPORARILY(302, "warn", "Moved Temporarily"),
     SEE_OTHER(303, "warn", "See Other"),
     NOT_MODIFIED(304, "warn", "Not Modified"),
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     @Deprecated
     USE_PROXY(305, "warn", "Use Proxy"),
     TEMPORARY_REDIRECT(307, "warn", "Temporary Redirect"),
@@ -51,24 +55,34 @@ public enum MessageStatus {
     LENGTH_REQUIRED(411, "error", "Length Required"),
     PRECONDITION_FAILED(412, "error", "Precondition Failed"),
     PAYLOAD_TOO_LARGE(413, "error", "Payload Too Large"),
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     @Deprecated
     REQUEST_ENTITY_TOO_LARGE(413, "error", "Request Entity Too Large"),
     URI_TOO_LONG(414, "error", "URI Too Long"),
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     @Deprecated
     REQUEST_URI_TOO_LONG(414, "error", "Request-URI Too Long"),
     UNSUPPORTED_MEDIA_TYPE(415, "error", "Unsupported Media Type"),
     REQUESTED_RANGE_NOT_SATISFIABLE(416, "error", "Requested range not satisfiable"),
     EXPECTATION_FAILED(417, "error", "Expectation Failed"),
     I_AM_A_TEAPOT(418, "error", "I'm a teapot"),
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     @Deprecated
     INSUFFICIENT_SPACE_ON_RESOURCE(419, "error", "Insufficient Space On Resource"),
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     @Deprecated
     METHOD_FAILURE(420, "error", "Method Failure"),
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     @Deprecated
     DESTINATION_LOCKED(421, "error", "Destination Locked"),
     UNPROCESSABLE_ENTITY(422, "error", "Unprocessable Entity"),

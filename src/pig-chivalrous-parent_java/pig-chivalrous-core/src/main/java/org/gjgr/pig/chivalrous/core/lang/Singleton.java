@@ -23,7 +23,7 @@ public final class Singleton {
      * @return 单例对象
      */
     @SuppressWarnings("unchecked")
-    public static <T> T get(Class<T> clazz, Object...params) {
+    public static <T> T get(Class<T> clazz, Object... params) {
         T obj = (T) pool.get(clazz);
 
         if (null == obj) {
@@ -44,10 +44,10 @@ public final class Singleton {
      * 对象存在于池中返回，否则创建，每次调用此方法获得的对象为同一个对象<br>
      *
      * @param className 类名
-     * @param params 构造参数
+     * @param params    构造参数
      * @return 单例对象
      */
-    public static <T> T get(String className, Object...params) {
+    public static <T> T get(String className, Object... params) {
         final Class<T> clazz = ClassCommand.loadClass(className);
         return get(clazz, params);
     }

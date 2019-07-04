@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.thread;
 
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
 
 /**
  * 全局公共线程池

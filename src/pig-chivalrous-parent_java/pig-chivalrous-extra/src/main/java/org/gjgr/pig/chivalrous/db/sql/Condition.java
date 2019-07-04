@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.DbUtil;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 条件对象<br>
@@ -69,9 +69,9 @@ public class Condition implements Cloneable {
     /**
      * 构造
      *
-     * @param field 字段
+     * @param field    字段
      * @param operator 运算符（大于号，小于号，等于号 like 等）
-     * @param value 值
+     * @param value    值
      */
     public Condition(String field, String operator, Object value) {
         this.field = field;
@@ -82,8 +82,8 @@ public class Condition implements Cloneable {
     /**
      * 构造
      *
-     * @param field 字段
-     * @param value 值
+     * @param field    字段
+     * @param value    值
      * @param likeType {@link LikeType}
      */
     public Condition(String field, String value, LikeType likeType) {
@@ -95,7 +95,7 @@ public class Condition implements Cloneable {
     /**
      * 解析为Condition
      *
-     * @param field 字段名
+     * @param field      字段名
      * @param expression 表达式或普通值
      * @return Condition
      */
@@ -163,7 +163,7 @@ public class Condition implements Cloneable {
     /**
      * 设置值
      *
-     * @param value 值
+     * @param value   值
      * @param isParse 是否解析值表达式
      */
     public void setValue(Object value, boolean isParse) {

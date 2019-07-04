@@ -16,13 +16,13 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
  * {@link Resource} implementation for a given byte array.
@@ -36,10 +36,10 @@ import org.gjgr.pig.chivalrous.core.lang.Nullable;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 1.2.3
+ * @sees org.springframework.mail.javamail.MimeMessageHelper#addAttachment(String, InputStreamSource)
  * @see ByteArrayInputStream
  * @see InputStreamResource
- * @sees org.springframework.mail.javamail.MimeMessageHelper#addAttachment(String, InputStreamSource)
+ * @since 1.2.3
  */
 public class ByteArrayResource extends AbstractResource {
 
@@ -49,7 +49,7 @@ public class ByteArrayResource extends AbstractResource {
 
     /**
      * Create a new {@code ByteArrayResource}.
-     * 
+     *
      * @param byteArray the byte array to wrap
      */
     public ByteArrayResource(byte[] byteArray) {
@@ -58,8 +58,8 @@ public class ByteArrayResource extends AbstractResource {
 
     /**
      * Create a new {@code ByteArrayResource} with a description.
-     * 
-     * @param byteArray the byte array to wrap
+     *
+     * @param byteArray   the byte array to wrap
      * @param description where the byte array comes from
      */
     public ByteArrayResource(byte[] byteArray, @Nullable String description) {

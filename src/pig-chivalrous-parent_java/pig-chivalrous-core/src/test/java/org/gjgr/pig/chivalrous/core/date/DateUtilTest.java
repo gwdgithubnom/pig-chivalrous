@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.date;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import org.gjgr.pig.chivalrous.core.date.BetweenFormater.Level;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class DateUtilTest {
 

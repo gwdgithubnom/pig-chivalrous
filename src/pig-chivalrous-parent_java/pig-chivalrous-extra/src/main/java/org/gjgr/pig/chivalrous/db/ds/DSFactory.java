@@ -1,7 +1,5 @@
 package org.gjgr.pig.chivalrous.db.ds;
 
-import javax.sql.DataSource;
-
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.LogFactory;
@@ -11,6 +9,8 @@ import org.gjgr.pig.chivalrous.db.ds.druid.DruidDSFactory;
 import org.gjgr.pig.chivalrous.db.ds.hikari.HikariDSFactory;
 import org.gjgr.pig.chivalrous.db.ds.pooled.PooledDSFactory;
 import org.gjgr.pig.chivalrous.db.ds.tomcat.TomcatDSFactory;
+
+import javax.sql.DataSource;
 
 /**
  * 数据源工厂类
@@ -50,7 +50,7 @@ public abstract class DSFactory {
      * 构造
      *
      * @param dataSourceName 数据源名称
-     * @param setting 数据库连接配置
+     * @param setting        数据库连接配置
      */
     public DSFactory(String dataSourceName, Setting setting) {
         this.dataSourceName = dataSourceName;
@@ -84,7 +84,7 @@ public abstract class DSFactory {
      * 获得数据源
      *
      * @param dbSetting 数据库配置文件，如果为<code>null</code>，查找默认的配置文件
-     * @param group 配置文件中对应的分组
+     * @param group     配置文件中对应的分组
      * @return 数据源
      */
     public static DataSource get(Setting dbSetting, String group) {

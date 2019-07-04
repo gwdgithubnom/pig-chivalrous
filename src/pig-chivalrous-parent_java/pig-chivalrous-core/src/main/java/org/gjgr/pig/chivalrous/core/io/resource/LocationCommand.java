@@ -16,7 +16,11 @@
 
 package org.gjgr.pig.chivalrous.core.io.resource;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import com.google.common.base.MoreObjects;
+import com.google.common.io.Resources;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,12 +30,7 @@ import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-
-import com.google.common.base.MoreObjects;
-import com.google.common.io.Resources;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * new File("..\path\abc.txt") 中的三个方法获取路径的方法 1： getPath() 获取相对路径，例如 ..\path\abc.txt 2： getAbslutlyPath() 获取绝对路径，但可能包含
@@ -195,7 +194,7 @@ public class LocationCommand {
      * Apply the given relative path to the given Java resource path, assuming standard Java folder separation (i.e. "/"
      * separators).
      *
-     * @param path the path to start from (usually a full file path)
+     * @param path         the path to start from (usually a full file path)
      * @param relativePath the relative path to apply (relative to the full file path above)
      * @return the full file path that results from applying the relative path
      */
@@ -217,7 +216,7 @@ public class LocationCommand {
      * <p>
      * The result is convenient for path comparison. For other uses, notice that Windows separators ("\") are replaced
      * by simple slashes.
-     * 
+     *
      * @param path the original path
      * @return the normalized path
      */
@@ -278,7 +277,7 @@ public class LocationCommand {
 
     /**
      * Compare two paths after normalization of them.
-     * 
+     *
      * @param path1 first path for comparison
      * @param path2 second path for comparison
      * @return whether the two paths are equivalent after normalization
@@ -295,13 +294,13 @@ public class LocationCommand {
      * <li>Special characters {@code "-"}, {@code "_"}, {@code "."}, and {@code "*"} stay the same.</li>
      * <li>A sequence "{@code %<i>xy</i>}" is interpreted as a hexadecimal representation of the character.</li>
      * </ul>
-     * 
-     * @param source the encoded String
+     *
+     * @param source  the encoded String
      * @param charset the character set
      * @return the decoded value
      * @throws IllegalArgumentException when the given source contains invalid encoded sequences
-     * @since 5.0
      * @see java.net.URLDecoder#decode(String, String)
+     * @since 5.0
      */
     public static String uriDecode(String source, Charset charset) {
         int length = source.length();

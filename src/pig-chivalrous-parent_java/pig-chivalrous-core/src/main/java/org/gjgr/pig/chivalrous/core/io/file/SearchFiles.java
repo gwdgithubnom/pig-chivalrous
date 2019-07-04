@@ -28,7 +28,7 @@ public class SearchFiles {
 
     /**
      * List eligible files on current path
-     * 
+     *
      * @param directory The directory to be searched
      * @return Eligible files
      */
@@ -101,7 +101,6 @@ public class SearchFiles {
 
     /**
      * Get unvisited node of the node
-     *
      */
     private File getUnvisitedChild(File node) {
 

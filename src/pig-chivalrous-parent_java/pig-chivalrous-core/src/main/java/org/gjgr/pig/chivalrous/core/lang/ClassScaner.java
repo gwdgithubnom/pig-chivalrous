@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.lang.annotation.Annotation;
@@ -8,10 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.net.UriCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 类扫描器
@@ -38,12 +38,12 @@ public final class ClassScaner {
     /**
      * 扫描指定包路径下所有包含指定注解的类
      *
-     * @param packageName 包路径
+     * @param packageName     包路径
      * @param annotationClass 注解类
      * @return 类集合
      */
     public static Set<Class<?>> scanPackageByAnnotation(String packageName,
-            final Class<? extends Annotation> annotationClass) {
+                                                        final Class<? extends Annotation> annotationClass) {
         return scanPackage(packageName, new Filter<Class<?>>() {
             @Override
             public boolean accept(Class<?> clazz) {
@@ -56,7 +56,7 @@ public final class ClassScaner {
      * 扫描指定包路径下所有指定类或接口的子类或实现类
      *
      * @param packageName 包路径
-     * @param superClass 父类或接口
+     * @param superClass  父类或接口
      * @return 类集合
      */
     public static Set<Class<?>> scanPackageBySuper(String packageName, final Class<?> superClass) {
@@ -148,13 +148,13 @@ public final class ClassScaner {
      * 填充满足条件的class 填充到 classes<br>
      * 同时会判断给定的路径是否为Jar包内的路径，如果是，则扫描此Jar包
      *
-     * @param path Class文件路径或者所在目录Jar包路径
+     * @param path        Class文件路径或者所在目录Jar包路径
      * @param packageName 需要扫面的包名
      * @param classFilter class过滤器
-     * @param classes List 集合
+     * @param classes     List 集合
      */
     private static void fillClasses(String path, String packageName, Filter<Class<?>> classFilter,
-            Set<Class<?>> classes) {
+                                    Set<Class<?>> classes) {
         // 判定给定的路径是否为Jar
         int index = path.lastIndexOf(FileCommand.JAR_PATH_EXT);
         if (index != -1) {
@@ -170,14 +170,14 @@ public final class ClassScaner {
     /**
      * 填充满足条件的class 填充到 classes
      *
-     * @param classPath 类文件所在目录，当包名为空时使用此参数，用于截掉类名前面的文件路径
-     * @param file Class文件或者所在目录Jar包文件
+     * @param classPath   类文件所在目录，当包名为空时使用此参数，用于截掉类名前面的文件路径
+     * @param file        Class文件或者所在目录Jar包文件
      * @param packageName 需要扫面的包名
      * @param classFilter class过滤器
-     * @param classes List 集合
+     * @param classes     List 集合
      */
     private static void fillClasses(String classPath, File file, String packageName, Filter<Class<?>> classFilter,
-            Set<Class<?>> classes) {
+                                    Set<Class<?>> classes) {
         if (file.isDirectory()) {
             processDirectory(classPath, file, packageName, classFilter, classes);
         } else if (isClassFile(file)) {
@@ -190,13 +190,13 @@ public final class ClassScaner {
     /**
      * 处理如果为目录的情况,需要递归调用 fillClasses方法
      *
-     * @param directory 目录
+     * @param directory   目录
      * @param packageName 包名
      * @param classFilter 类过滤器
-     * @param classes 类集合
+     * @param classes     类集合
      */
     private static void processDirectory(String classPath, File directory, String packageName,
-            Filter<Class<?>> classFilter, Set<Class<?>> classes) {
+                                         Filter<Class<?>> classFilter, Set<Class<?>> classes) {
         for (File file : directory.listFiles(fileFilter)) {
             fillClasses(classPath, file, packageName, classFilter, classes);
         }
@@ -205,14 +205,14 @@ public final class ClassScaner {
     /**
      * 处理为class文件的情况,填充满足条件的class 到 classes
      *
-     * @param classPath 类文件所在目录，当包名为空时使用此参数，用于截掉类名前面的文件路径
-     * @param file class文件
+     * @param classPath   类文件所在目录，当包名为空时使用此参数，用于截掉类名前面的文件路径
+     * @param file        class文件
      * @param packageName 包名
      * @param classFilter 类过滤器
-     * @param classes 类集合
+     * @param classes     类集合
      */
     private static void processClassFile(String classPath, File file, String packageName, Filter<Class<?>> classFilter,
-            Set<Class<?>> classes) {
+                                         Set<Class<?>> classes) {
         if (false == classPath.endsWith(File.separator)) {
             classPath += File.separator;
         }
@@ -234,13 +234,13 @@ public final class ClassScaner {
     /**
      * 处理为jar文件的情况，填充满足条件的class 到 classes
      *
-     * @param file jar文件
+     * @param file        jar文件
      * @param packageName 包名
      * @param classFilter 类过滤器
-     * @param classes 类集合
+     * @param classes     类集合
      */
     private static void processJarFile(File file, String packageName, Filter<Class<?>> classFilter,
-            Set<Class<?>> classes) {
+                                       Set<Class<?>> classes) {
         try {
             for (JarEntry entry : Collections.list(new JarFile(file).entries())) {
                 if (isClass(entry.getName())) {
@@ -258,13 +258,13 @@ public final class ClassScaner {
     /**
      * 填充class 到 classes
      *
-     * @param className 类名
+     * @param className   类名
      * @param packageName 包名
-     * @param classes 类集合
+     * @param classes     类集合
      * @param classFilter 类过滤器
      */
     private static void fillClass(String className, String packageName, Set<Class<?>> classes,
-            Filter<Class<?>> classFilter) {
+                                  Filter<Class<?>> classFilter) {
         if (className.startsWith(packageName)) {
             try {
                 final Class<?> clazz = Class.forName(className, false, ClassCommand.getClassLoader());

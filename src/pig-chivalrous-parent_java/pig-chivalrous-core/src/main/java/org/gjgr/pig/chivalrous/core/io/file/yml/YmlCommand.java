@@ -1,12 +1,12 @@
 package org.gjgr.pig.chivalrous.core.io.file.yml;
 
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Map;
-
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * @Author gwd

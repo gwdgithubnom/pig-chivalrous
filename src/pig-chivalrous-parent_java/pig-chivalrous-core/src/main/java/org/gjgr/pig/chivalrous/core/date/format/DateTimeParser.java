@@ -28,7 +28,7 @@ public interface DateTimeParser extends DateTimeBasic {
      * 等价于 {@link java.text.DateFormat#parse(String, ParsePosition)}
      *
      * @param source 日期字符串
-     * @param pos {@link ParsePosition}
+     * @param pos    {@link ParsePosition}
      * @return {@link Date}
      */
     Date parse(String source, ParsePosition pos);
@@ -39,13 +39,13 @@ public interface DateTimeParser extends DateTimeBasic {
      * failure, ParsePosition error index is updated to the offset of the source text which does not match the supplied
      * format.
      *
-     * @param source 被转换的日期字符串
-     * @param pos 定义开始转换的位置，转换结束后更新转换到的位置
+     * @param source   被转换的日期字符串
+     * @param pos      定义开始转换的位置，转换结束后更新转换到的位置
      * @param calendar The calendar into which to set parsed fields.
      * @return true, if source has been parsed (pos parsePosition is updated); otherwise false (and pos errorIndex is
-     *         updated)
+     * updated)
      * @throws IllegalArgumentException when Calendar has been set to be not lenient, and a parsed field is out of
-     *             range.
+     *                                  range.
      */
     boolean parse(String source, ParsePosition pos, Calendar calendar);
 
@@ -63,7 +63,7 @@ public interface DateTimeParser extends DateTimeBasic {
      * 根据 {@link ParsePosition} 给定将日期字符串解析并转换为 {@link Date} 对象<br>
      *
      * @param source A <code>String</code> whose beginning should be parsed.
-     * @param pos the newJson position
+     * @param pos    the newJson position
      * @return a <code>java.util.Date</code> object
      * @see java.text.DateFormat#parseObject(String, ParsePosition)
      */

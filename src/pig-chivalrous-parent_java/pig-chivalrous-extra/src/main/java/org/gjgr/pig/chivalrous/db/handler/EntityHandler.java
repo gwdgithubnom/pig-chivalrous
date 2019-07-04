@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db.handler;
 
+import org.gjgr.pig.chivalrous.db.Entity;
+
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-
-import org.gjgr.pig.chivalrous.db.Entity;
 
 /**
  * @author loolly

@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.io.stream;
 
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
-
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 读取带BOM头的流内容，<code>getCharset()</code>方法调用后会得到BOM头的编码，且会去除BOM头<br>

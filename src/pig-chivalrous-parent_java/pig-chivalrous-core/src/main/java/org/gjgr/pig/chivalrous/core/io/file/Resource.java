@@ -16,6 +16,8 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,8 +25,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
  * Interface for a resource descriptor that abstracts from the actual type of underlying resource, such as a file or
@@ -35,7 +35,6 @@ import org.gjgr.pig.chivalrous.core.lang.Nullable;
  * returned for certain resources. The actual behavior is implementation-specific.
  *
  * @author Juergen Hoeller
- * @since 28.12.2003
  * @see #getInputStream()
  * @see #getURL()
  * @see #getURI()
@@ -48,6 +47,7 @@ import org.gjgr.pig.chivalrous.core.lang.Nullable;
  * @see PathResource
  * @see ByteArrayResource
  * @see InputStreamResource
+ * @since 28.12.2003
  */
 public interface Resource extends InputStreamSource {
 
@@ -64,7 +64,7 @@ public interface Resource extends InputStreamSource {
      * <p>
      * Will be {@code true} for typical resource descriptors; note that actual content reading may still fail when
      * attempted. However, a value of {@code false} is a definitive indication that the resource content cannot be read.
-     * 
+     *
      * @see #getInputStream()
      */
     default boolean isReadable() {
@@ -86,9 +86,9 @@ public interface Resource extends InputStreamSource {
      * (but does not guarantee) that a {@link #getFile()} call will succeed.
      * <p>
      * This is conservatively {@code false} by default.
-     * 
-     * @since 5.0
+     *
      * @see #getFile()
+     * @since 5.0
      */
     default boolean isFile() {
         return false;
@@ -96,27 +96,27 @@ public interface Resource extends InputStreamSource {
 
     /**
      * Return a URL handle for this resource.
-     * 
+     *
      * @throws IOException if the resource cannot be resolved as URL, i.e. if the resource is not available as
-     *             descriptor
+     *                     descriptor
      */
     URL getURL() throws IOException;
 
     /**
      * Return a URI handle for this resource.
-     * 
+     *
      * @throws IOException if the resource cannot be resolved as URI, i.e. if the resource is not available as
-     *             descriptor
+     *                     descriptor
      * @since 2.5
      */
     URI getURI() throws IOException;
 
     /**
      * Return a File handle for this resource.
-     * 
+     *
      * @throws java.io.FileNotFoundException if the resource cannot be resolved as absolute file path, i.e. if the
-     *             resource is not available in a file system
-     * @throws IOException in case of general resolution/reading failures
+     *                                       resource is not available in a file system
+     * @throws IOException                   in case of general resolution/reading failures
      * @see #getInputStream()
      */
     File getFile() throws IOException;
@@ -128,12 +128,12 @@ public interface Resource extends InputStreamSource {
      * <p>
      * The default implementation returns {@link Channels#newChannel(InputStream)} with the result of
      * {@link #getInputStream()}.
-     * 
+     *
      * @return the byte channel for the underlying resource (must not be {@code null})
      * @throws java.io.FileNotFoundException if the underlying resource doesn't exist
-     * @throws IOException if the content channel could not be opened
-     * @since 5.0
+     * @throws IOException                   if the content channel could not be opened
      * @see #getInputStream()
+     * @since 5.0
      */
     default ReadableByteChannel readableChannel() throws IOException {
         return Channels.newChannel(getInputStream());
@@ -141,23 +141,23 @@ public interface Resource extends InputStreamSource {
 
     /**
      * Determine the content length for this resource.
-     * 
+     *
      * @throws IOException if the resource cannot be resolved (in the file system or as some other known physical
-     *             resource type)
+     *                     resource type)
      */
     long contentLength() throws IOException;
 
     /**
      * Determine the last-modified timestamp for this resource.
-     * 
+     *
      * @throws IOException if the resource cannot be resolved (in the file system or as some other known physical
-     *             resource type)
+     *                     resource type)
      */
     long lastModified() throws IOException;
 
     /**
      * Create a resource relative to this resource.
-     * 
+     *
      * @param relativePath the relative path (relative to this resource)
      * @return the resource handle for the relative resource
      * @throws IOException if the relative resource cannot be determined
@@ -176,7 +176,7 @@ public interface Resource extends InputStreamSource {
      * Return a description for this resource, to be used for error output when working with the resource.
      * <p>
      * Implementations are also encouraged to return this value from their {@code toString} method.
-     * 
+     *
      * @see Object#toString()
      */
     String getDescription();

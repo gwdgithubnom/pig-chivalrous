@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import org.junit.Test;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.Test;
 
 /**
  * @Author gwd

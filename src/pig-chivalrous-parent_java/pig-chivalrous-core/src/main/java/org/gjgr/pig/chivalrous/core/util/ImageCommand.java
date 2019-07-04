@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.util;
 
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+
+import javax.imageio.ImageIO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -19,11 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 
 /**
  * 图片处理工具类：<br>
@@ -46,10 +45,10 @@ public final class ImageCommand {
     /**
      * 缩放图像（按比例缩放）
      *
-     * @param srcImageFile 源图像文件
+     * @param srcImageFile  源图像文件
      * @param destImageFile 缩放后的图像文件
-     * @param scale 缩放比例
-     * @param flag 缩放选择:true 放大; false 缩小;
+     * @param scale         缩放比例
+     * @param flag          缩放选择:true 放大; false 缩小;
      */
     public static final void scale(File srcImageFile, File destImageFile, int scale, boolean flag) {
         try {
@@ -79,11 +78,11 @@ public final class ImageCommand {
     /**
      * 缩放图像（按高度和宽度缩放）
      *
-     * @param srcImageFile 源图像文件地址
+     * @param srcImageFile  源图像文件地址
      * @param destImageFile 缩放后的图像地址
-     * @param height 缩放后的高度
-     * @param width 缩放后的宽度
-     * @param fixedColor 比例不对时补充的颜色，不补充为<code>null</code>
+     * @param height        缩放后的高度
+     * @param width         缩放后的宽度
+     * @param fixedColor    比例不对时补充的颜色，不补充为<code>null</code>
      */
     public static final void scale(File srcImageFile, File destImageFile, int height, int width, Color fixedColor) {
         try {
@@ -125,12 +124,12 @@ public final class ImageCommand {
     /**
      * 图像切割(按指定起点坐标和宽高切割)
      *
-     * @param srcImageFile 源图像地址
+     * @param srcImageFile  源图像地址
      * @param destImageFile 切片后的图像地址
-     * @param x 目标切片起点坐标X
-     * @param y 目标切片起点坐标Y
-     * @param width 目标切片宽度
-     * @param height 目标切片高度
+     * @param x             目标切片起点坐标X
+     * @param y             目标切片起点坐标Y
+     * @param width         目标切片宽度
+     * @param height        目标切片高度
      */
     public static final void cut(File srcImageFile, File destImageFile, int x, int y, int width, int height) {
         try {
@@ -161,9 +160,9 @@ public final class ImageCommand {
      * 图像切割（指定切片的行数和列数）
      *
      * @param srcImageFile 源图像地址
-     * @param descDir 切片目标文件夹
-     * @param rows 目标切片行数。默认2，必须是范围 [1, 20] 之内
-     * @param cols 目标切片列数。默认2，必须是范围 [1, 20] 之内
+     * @param descDir      切片目标文件夹
+     * @param rows         目标切片行数。默认2，必须是范围 [1, 20] 之内
+     * @param cols         目标切片列数。默认2，必须是范围 [1, 20] 之内
      */
     public static final void cutByRowsAndCols(File srcImageFile, File descDir, int rows, int cols) {
         try {
@@ -221,9 +220,9 @@ public final class ImageCommand {
      * 图像切割（指定切片的宽度和高度）
      *
      * @param srcImageFile 源图像地址
-     * @param descDir 切片目标文件夹
-     * @param destWidth 目标切片宽度。默认200
-     * @param destHeight 目标切片高度。默认150
+     * @param descDir      切片目标文件夹
+     * @param destWidth    目标切片宽度。默认200
+     * @param destHeight   目标切片高度。默认150
      */
     public static final void cut(File srcImageFile, File descDir, int destWidth, int destHeight) {
         try {
@@ -280,8 +279,8 @@ public final class ImageCommand {
     /**
      * 图像类型转换：GIF->JPG、GIF->PNG、PNG->JPG、PNG->GIF(X)、BMP->PNG
      *
-     * @param srcImageFile 源图像文件
-     * @param formatName 包含格式非正式名称的 String：如JPG、JPEG、GIF等
+     * @param srcImageFile  源图像文件
+     * @param formatName    包含格式非正式名称的 String：如JPG、JPEG、GIF等
      * @param destImageFile 目标图像文件
      */
     public static final void convert(File srcImageFile, String formatName, File destImageFile) {
@@ -296,7 +295,7 @@ public final class ImageCommand {
     /**
      * 彩色转为黑白
      *
-     * @param srcImageFile 源图像地址
+     * @param srcImageFile  源图像地址
      * @param destImageFile 目标图像地址
      */
     public static final void gray(File srcImageFile, File destImageFile) {
@@ -314,19 +313,19 @@ public final class ImageCommand {
     /**
      * 给图片添加文字水印
      *
-     * @param pressText 水印文字
-     * @param srcImageFile 源图像地址
+     * @param pressText     水印文字
+     * @param srcImageFile  源图像地址
      * @param destImageFile 目标图像地址
-     * @param fontName 水印的字体名称
-     * @param fontStyle 水印的字体样式，例如Font.BOLD
-     * @param color 水印的字体颜色
-     * @param fontSize 水印的字体大小
-     * @param x 修正值
-     * @param y 修正值
-     * @param alpha 透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
+     * @param fontName      水印的字体名称
+     * @param fontStyle     水印的字体样式，例如Font.BOLD
+     * @param color         水印的字体颜色
+     * @param fontSize      水印的字体大小
+     * @param x             修正值
+     * @param y             修正值
+     * @param alpha         透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
      */
     public static final void pressText(String pressText, File srcImageFile, File destImageFile, String fontName,
-            int fontStyle, Color color, int fontSize, int x, int y, float alpha) {
+                                       int fontStyle, Color color, int fontSize, int x, int y, float alpha) {
         try {
             Image src = ImageIO.read(srcImageFile);
             int width = src.getWidth(null);
@@ -349,15 +348,15 @@ public final class ImageCommand {
     /**
      * 给图片添加图片水印
      *
-     * @param pressImgFile 水印图片
-     * @param srcImageFile 源图像文件
+     * @param pressImgFile  水印图片
+     * @param srcImageFile  源图像文件
      * @param destImageFile 目标图像文件
-     * @param x 修正值。 默认在中间，偏移量相对于中间偏移
-     * @param y 修正值。 默认在中间，偏移量相对于中间偏移
-     * @param alpha 透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
+     * @param x             修正值。 默认在中间，偏移量相对于中间偏移
+     * @param y             修正值。 默认在中间，偏移量相对于中间偏移
+     * @param alpha         透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
      */
     public static final void pressImage(File pressImgFile, File srcImageFile, File destImageFile, int x, int y,
-            float alpha) {
+                                        float alpha) {
         try {
             Image src = ImageIO.read(srcImageFile);
             int width = src.getWidth(null);
@@ -423,7 +422,7 @@ public final class ImageCommand {
             InputStream inputStream = FileCommand.inputStream(url);
             return ImageIO.read(inputStream);
         } catch (Exception e) {
-            throw new RuntimeException("not found or did not support type, for url" + url);
+            throw new RuntimeException("not found or did not support type, for url " + url);
         }
     }
 

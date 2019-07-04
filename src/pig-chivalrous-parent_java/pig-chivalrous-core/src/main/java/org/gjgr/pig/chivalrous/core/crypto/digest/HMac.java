@@ -1,13 +1,5 @@
 package org.gjgr.pig.chivalrous.core.crypto.digest;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
 import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
 import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
@@ -15,6 +7,13 @@ import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.math.HexCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * HMAC摘要算法<br>
@@ -46,7 +45,7 @@ public class HMac {
      * 构造
      *
      * @param algorithm 算法 {@link HmacAlgorithm}
-     * @param key 密钥
+     * @param key       密钥
      */
     public HMac(HmacAlgorithm algorithm, byte[] key) {
         init(algorithm.getValue(), key);
@@ -56,7 +55,7 @@ public class HMac {
      * 构造
      *
      * @param algorithm 算法 {@link HmacAlgorithm}
-     * @param key 密钥
+     * @param key       密钥
      */
     public HMac(HmacAlgorithm algorithm, SecretKey key) {
         init(algorithm.getValue(), key);
@@ -67,7 +66,7 @@ public class HMac {
      * 初始化
      *
      * @param algorithm 算法
-     * @param key 密钥
+     * @param key       密钥
      * @return {@link HMac}
      * @throws CryptoException Cause by IOException
      */
@@ -79,7 +78,7 @@ public class HMac {
      * 初始化
      *
      * @param algorithm 算法
-     * @param key 密钥 {@link SecretKey}
+     * @param key       密钥 {@link SecretKey}
      * @return {@link HMac}
      * @throws CryptoException Cause by IOException
      */
@@ -103,7 +102,7 @@ public class HMac {
     /**
      * 生成文件摘要
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return 摘要
      */
@@ -124,7 +123,7 @@ public class HMac {
     /**
      * 生成文件摘要，并转为16进制字符串
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return 摘要
      */
@@ -223,7 +222,7 @@ public class HMac {
     /**
      * 生成摘要
      *
-     * @param data {@link InputStream} 数据流
+     * @param data         {@link InputStream} 数据流
      * @param bufferLength 缓存长度，不足1使用 {@link IoCommand#DEFAULT_BUFFER_SIZE} 做为默认值
      * @return 摘要bytes
      */
@@ -254,7 +253,7 @@ public class HMac {
      * 生成摘要，并转为16进制字符串<br>
      * 使用默认缓存大小，见 {@link IoCommand#DEFAULT_BUFFER_SIZE}
      *
-     * @param data 被摘要数据
+     * @param data         被摘要数据
      * @param bufferLength 缓存长度，不足1使用 {@link IoCommand#DEFAULT_BUFFER_SIZE} 做为默认值
      * @return 摘要
      */

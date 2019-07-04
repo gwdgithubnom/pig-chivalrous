@@ -1,5 +1,7 @@
 package org.gjgr.pig.chivalrous.core.date.format;
 
+import org.gjgr.pig.chivalrous.core.date.DateException;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.DateFormatSymbols;
@@ -11,8 +13,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-
-import org.gjgr.pig.chivalrous.core.date.DateException;
 
 /**
  * {@link java.text.SimpleDateFormat} 的线程安全版本，用于将 {@link Date} 格式化输出<br>
@@ -43,9 +43,9 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
     /**
      * 构造，内部使用<br>
      *
-     * @param pattern 使用{@link java.text.SimpleDateFormat} 相同的日期格式
+     * @param pattern  使用{@link java.text.SimpleDateFormat} 相同的日期格式
      * @param timeZone 非空时区{@link TimeZone}
-     * @param locale 非空{@link Locale} 日期地理位置
+     * @param locale   非空{@link Locale} 日期地理位置
      */
     protected SimpleDateTimePrinter(final String pattern, final TimeZone timeZone, final Locale locale) {
         super(pattern, timeZone, locale);
@@ -56,7 +56,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Appends two digits to the given buffer.
      *
      * @param buffer the buffer to append to.
-     * @param value the value to append digits from.
+     * @param value  the value to append digits from.
      */
     private static void appendDigits(final Appendable buffer, final int value) throws IOException {
         buffer.append((char) (value / 10 + '0'));
@@ -67,7 +67,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Appends all digits to the given buffer.
      *
      * @param buffer the buffer to append to.
-     * @param value the value to append digits from.
+     * @param value  the value to append digits from.
      */
     private static void appendFullDigits(final Appendable buffer, int value, int minFieldWidth) throws IOException {
         // specialized paths for 1 to 4 digits -> avoid the memory allocation from the temporary work array
@@ -152,10 +152,10 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Gets the time zone display name, using a cache for performance.
      * </p>
      *
-     * @param tz the zone to query
+     * @param tz       the zone to query
      * @param daylight true if daylight savings
-     * @param style the style to use {@code TimeZone.LONG} or {@code TimeZone.SHORT}
-     * @param locale the locale to use
+     * @param style    the style to use {@code TimeZone.LONG} or {@code TimeZone.SHORT}
+     * @param locale   the locale to use
      * @return the textual name of the time zone
      */
     static String getTimeZoneDisplay(final TimeZone tz, final boolean daylight, final int style, final Locale locale) {
@@ -180,7 +180,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
         rules = rulesList.toArray(new Rule[rulesList.size()]);
 
         int len = 0;
-        for (int i = rules.length; --i >= 0;) {
+        for (int i = rules.length; --i >= 0; ) {
             len += rules[i].estimateLength();
         }
 
@@ -335,7 +335,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Performs the parsing of tokens.
      * </p>
      *
-     * @param pattern the pattern
+     * @param pattern  the pattern
      * @param indexRef index references
      * @return parsed token
      */
@@ -395,7 +395,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Gets an appropriate rule for the padding required.
      * </p>
      *
-     * @param field the field to get a rule for
+     * @param field   the field to get a rule for
      * @param padding the padding required
      * @return a new rule with the correct padding
      */
@@ -492,8 +492,8 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * </p>
      *
      * @param calendar the calendar to format
-     * @param buf the buffer to format into
-     * @param <B> the Appendable class type, usually StringBuilder or StringBuffer.
+     * @param buf      the buffer to format into
+     * @param <B>      the Appendable class type, usually StringBuilder or StringBuffer.
      * @return the specified string buffer
      */
     private <B extends Appendable> B applyRules(final Calendar calendar, final B buf) {
@@ -524,7 +524,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
      * Create the object after serialization. This implementation reinitializes the transient properties.
      *
      * @param in ObjectInputStream from which the object is being deserialized.
-     * @throws IOException if there is an IO issue.
+     * @throws IOException            if there is an IO issue.
      * @throws ClassNotFoundException if a class cannot be found.
      */
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -546,7 +546,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
         /**
          * Appends the value of the specified calendar to the output buffer based on the rule implementation.
          *
-         * @param buf the output buffer
+         * @param buf      the output buffer
          * @param calendar calendar to be appended
          * @throws IOException if an I/O error occurs
          */
@@ -563,7 +563,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
          * Appends the specified value to the output buffer based on the rule implementation.
          *
          * @param buffer the output buffer
-         * @param value the value to be appended
+         * @param value  the value to be appended
          * @throws IOException if an I/O error occurs
          */
         void appendTo(Appendable buffer, int value) throws IOException;
@@ -643,7 +643,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
         /**
          * Constructs an instance of {@code TextField} with the specified field and values.
          *
-         * @param field the field
+         * @param field  the field
          * @param values the field values
          */
         TextField(final int field, final String[] values) {
@@ -657,7 +657,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
         @Override
         public int estimateLength() {
             int max = 0;
-            for (int i = mValues.length; --i >= 0;) {
+            for (int i = mValues.length; --i >= 0; ) {
                 final int len = mValues[i].length();
                 if (len > max) {
                     max = len;
@@ -781,7 +781,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
          * Constructs an instance of {@code PaddedNumberField}.
          *
          * @param field the field
-         * @param size size of the output field
+         * @param size  size of the output field
          */
         PaddedNumberField(final int field, final int size) {
             if (size < 3) {
@@ -1109,8 +1109,8 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
          * Constructs an instance of {@code TimeZoneNameRule} with the specified properties.
          *
          * @param timeZone the time zone
-         * @param locale the locale
-         * @param style the style
+         * @param locale   the locale
+         * @param style    the style
          */
         TimeZoneNameRule(final TimeZone timeZone, final Locale locale, final int style) {
             mLocale = locale;
@@ -1229,7 +1229,7 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
          *
          * @param tokenLen a token indicating the length of the TimeZone String to be formatted.
          * @return a Iso8601Rule that can format TimeZone String of length {@code tokenLen}. If no such rule exists, an
-         *         IllegalArgumentException will be thrown.
+         * IllegalArgumentException will be thrown.
          */
         static Iso8601Rule getRule(final int tokenLen) {
             switch (tokenLen) {
@@ -1303,8 +1303,8 @@ class SimpleDateTimePrinter extends AbstractDateTime implements DateTimePrinter 
          *
          * @param timeZone the time zone
          * @param daylight adjust the style for daylight saving time if {@code true}
-         * @param style the timezone style
-         * @param locale the timezone locale
+         * @param style    the timezone style
+         * @param locale   the timezone locale
          */
         TimeZoneDisplayKey(final TimeZone timeZone, final boolean daylight, final int style, final Locale locale) {
             mTimeZone = timeZone;

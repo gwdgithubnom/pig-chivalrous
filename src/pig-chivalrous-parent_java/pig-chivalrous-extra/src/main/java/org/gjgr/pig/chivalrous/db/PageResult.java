@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.db;
 
-import java.util.ArrayList;
-
 import org.gjgr.pig.chivalrous.core.util.PageUtil;
+
+import java.util.ArrayList;
 
 /**
  * 分页数据结果集
@@ -35,7 +35,7 @@ public class PageResult<T> extends ArrayList<T> {
     /**
      * 构造
      *
-     * @param page 页码
+     * @param page       页码
      * @param numPerPage 每页结果数
      */
     public PageResult(int page, int numPerPage) {
@@ -48,9 +48,9 @@ public class PageResult<T> extends ArrayList<T> {
     /**
      * 构造
      *
-     * @param page 页码
+     * @param page       页码
      * @param numPerPage 每页结果数
-     * @param total 结果总数
+     * @param total      结果总数
      */
     public PageResult(int page, int numPerPage, int total) {
         this(page, numPerPage);

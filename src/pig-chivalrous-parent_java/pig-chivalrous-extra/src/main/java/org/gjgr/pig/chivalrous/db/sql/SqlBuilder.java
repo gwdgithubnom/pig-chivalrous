@@ -1,11 +1,5 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map.Entry;
-
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
@@ -16,6 +10,12 @@ import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.Entity;
 import org.gjgr.pig.chivalrous.db.dialect.DialectName;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * SQL构建器<br>
@@ -75,7 +75,7 @@ public class SqlBuilder {
     /**
      * 设置全局配置：是否通过debug日志显示SQL
      *
-     * @param isShowSql 是否显示SQL
+     * @param isShowSql   是否显示SQL
      * @param isFormatSql 是否格式化显示的SQL
      */
     public static void setShowSql(boolean isShowSql, boolean isFormatSql) {
@@ -99,7 +99,7 @@ public class SqlBuilder {
     /**
      * 插入
      *
-     * @param entity 实体
+     * @param entity      实体
      * @param dialectName 方言名
      * @return 自己
      */
@@ -206,10 +206,10 @@ public class SqlBuilder {
      * 查询
      *
      * @param isDistinct 是否添加DISTINCT关键字（查询唯一结果）
-     * @param fields 查询的字段
+     * @param fields     查询的字段
      * @return 自己
      */
-    public SqlBuilder select(boolean isDistinct, String...fields) {
+    public SqlBuilder select(boolean isDistinct, String... fields) {
         return select(isDistinct, Arrays.asList(fields));
     }
 
@@ -217,7 +217,7 @@ public class SqlBuilder {
      * 查询
      *
      * @param isDistinct 是否添加DISTINCT关键字（查询唯一结果）
-     * @param fields 查询的字段
+     * @param fields     查询的字段
      * @return 自己
      */
     public SqlBuilder select(boolean isDistinct, Collection<String> fields) {
@@ -245,7 +245,7 @@ public class SqlBuilder {
      * @param fields 查询的字段
      * @return 自己
      */
-    public SqlBuilder select(String...fields) {
+    public SqlBuilder select(String... fields) {
         return select(false, fields);
     }
 
@@ -265,7 +265,7 @@ public class SqlBuilder {
      * @param tableNames 表名列表（多个表名用于多表查询）
      * @return 自己
      */
-    public SqlBuilder from(String...tableNames) {
+    public SqlBuilder from(String... tableNames) {
         if (ArrayCommand.isEmpty(tableNames) || StringCommand.hasBlank(tableNames)) {
             throw new DbRuntimeException("Table name is blank in table names !");
         }
@@ -285,10 +285,10 @@ public class SqlBuilder {
      * 只支持单一的逻辑运算符（例如多个条件之间）
      *
      * @param logicalOperator 逻辑运算符
-     * @param conditions 条件，当条件为空时，只添加WHERE关键字
+     * @param conditions      条件，当条件为空时，只添加WHERE关键字
      * @return 自己
      */
-    public SqlBuilder where(LogicalOperator logicalOperator, Condition...conditions) {
+    public SqlBuilder where(LogicalOperator logicalOperator, Condition... conditions) {
         if (ArrayCommand.isNotEmpty(conditions)) {
             if (null != wrapper) {
                 // 包装字段名
@@ -316,12 +316,12 @@ public class SqlBuilder {
     /**
      * 多值选择
      *
-     * @param field 字段名
+     * @param field  字段名
      * @param values 值列表
      * @return 自身
      */
     @SuppressWarnings("unchecked")
-    public <T> SqlBuilder in(String field, T...values) {
+    public <T> SqlBuilder in(String field, T... values) {
         sql.append(wrapper.wrap(field)).append(" IN ").append("(")
                 .append(ArrayCommand.join(values, StringCommand.COMMA))
                 .append(")");
@@ -334,7 +334,7 @@ public class SqlBuilder {
      * @param fields 字段
      * @return 自己
      */
-    public SqlBuilder groupBy(String...fields) {
+    public SqlBuilder groupBy(String... fields) {
         if (ArrayCommand.isNotEmpty(fields)) {
             if (null != wrapper) {
                 // 包装字段名
@@ -351,10 +351,10 @@ public class SqlBuilder {
      * 添加Having语句
      *
      * @param logicalOperator 逻辑运算符
-     * @param conditions 条件
+     * @param conditions      条件
      * @return 自己
      */
-    public SqlBuilder having(LogicalOperator logicalOperator, Condition...conditions) {
+    public SqlBuilder having(LogicalOperator logicalOperator, Condition... conditions) {
         if (ArrayCommand.isNotEmpty(conditions)) {
             if (null != wrapper) {
                 // 包装字段名
@@ -385,7 +385,7 @@ public class SqlBuilder {
      * @param orders 排序对象
      * @return 自己
      */
-    public SqlBuilder orderBy(Order...orders) {
+    public SqlBuilder orderBy(Order... orders) {
         if (ArrayCommand.isEmpty(orders)) {
             return this;
         }
@@ -421,7 +421,7 @@ public class SqlBuilder {
      * 多表关联
      *
      * @param tableName 被关联的表名
-     * @param join 内联方式
+     * @param join      内联方式
      * @return 自己
      */
     public SqlBuilder join(String tableName, Join join) {
@@ -445,10 +445,10 @@ public class SqlBuilder {
      * 只支持单一的逻辑运算符（例如多个条件之间）
      *
      * @param logicalOperator 逻辑运算符
-     * @param conditions 条件
+     * @param conditions      条件
      * @return 自己
      */
-    public SqlBuilder on(LogicalOperator logicalOperator, Condition...conditions) {
+    public SqlBuilder on(LogicalOperator logicalOperator, Condition... conditions) {
         if (ArrayCommand.isNotEmpty(conditions)) {
             if (null != wrapper) {
                 // 包装字段名
@@ -552,10 +552,10 @@ public class SqlBuilder {
      * 构建组合条件
      *
      * @param logicalOperator 逻辑运算符
-     * @param conditions 条件对象
+     * @param conditions      条件对象
      * @return 构建后的SQL语句条件部分
      */
-    private String buildCondition(LogicalOperator logicalOperator, Condition...conditions) {
+    private String buildCondition(LogicalOperator logicalOperator, Condition... conditions) {
         if (ArrayCommand.isEmpty(conditions)) {
             return StringCommand.EMPTY;
         }

@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.util;
 
-import java.util.HashMap;
-
 import org.gjgr.pig.chivalrous.core.lang.BeanUtil;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 /**
  * Bean工具单元测试

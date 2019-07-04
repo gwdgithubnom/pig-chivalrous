@@ -89,7 +89,7 @@ public final class ByteCommand {
         }
     }
 
-    public static byte[] byteArrayConcat(byte[]...args) {
+    public static byte[] byteArrayConcat(byte[]... args) {
         int fulllength = 0;
         for (byte[] arrItem : args) {
             fulllength += arrItem.length;
@@ -116,7 +116,7 @@ public final class ByteCommand {
 
     /**
      * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice.
-     * <p />
+     * <p/>
      * The order of elements in the original arrays is preserved.
      *
      * @param array1 the first array.
@@ -135,13 +135,13 @@ public final class ByteCommand {
      * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice. Returns a
      * new, empty array if {@code arrays} was empty and returns the first array if {@code arrays} contains only a single
      * array.
-     * <p />
+     * <p/>
      * The order of elements in the original arrays is preserved.
      *
      * @param arrays the arrays.
      * @return the new array.
      */
-    public static byte[] concatAll(byte[]...arrays) {
+    public static byte[] concatAll(byte[]... arrays) {
 
         if (arrays.length == 0) {
             return new byte[] {};
@@ -161,7 +161,7 @@ public final class ByteCommand {
      * Split {@code source} into partitioned arrays using delimiter {@code c}.
      *
      * @param source the source array.
-     * @param c delimiter.
+     * @param c      delimiter.
      * @return the partitioned arrays.
      */
     public static byte[][] split(byte[] source, int c) {
@@ -191,11 +191,11 @@ public final class ByteCommand {
     /**
      * Merge multiple {@code byte} arrays into one array
      *
-     * @param firstArray must not be {@literal null}
+     * @param firstArray       must not be {@literal null}
      * @param additionalArrays must not be {@literal null}
      * @return
      */
-    public static byte[][] mergeArrays(byte[] firstArray, byte[]...additionalArrays) {
+    public static byte[][] mergeArrays(byte[] firstArray, byte[]... additionalArrays) {
 
         AssertCommand.notNull(firstArray, "first array must not be null");
         AssertCommand.notNull(additionalArrays, "additional arrays must not be null");
@@ -228,7 +228,7 @@ public final class ByteCommand {
      * Tests if the {@code haystack} starts with the given {@code prefix}.
      *
      * @param haystack the source to scan.
-     * @param prefix the prefix to find.
+     * @param prefix   the prefix to find.
      * @return {@literal true} if {@code haystack} at position {@code offset} starts with {@code prefix}.
      * @see #startsWith(byte[], byte[], int)
      * @since 1.8.10
@@ -241,8 +241,8 @@ public final class ByteCommand {
      * Tests if the {@code haystack} beginning at the specified {@code offset} starts with the given {@code prefix}.
      *
      * @param haystack the source to scan.
-     * @param prefix the prefix to find.
-     * @param offset the offset to start at.
+     * @param prefix   the prefix to find.
+     * @param offset   the offset to start at.
      * @return {@literal true} if {@code haystack} at position {@code offset} starts with {@code prefix}.
      * @since 1.8.10
      */
@@ -270,7 +270,7 @@ public final class ByteCommand {
      * the {@code haystack}s natural order or {@code -1} of {@code needle} could not be found.
      *
      * @param haystack the source to scan.
-     * @param needle the value to scan for.
+     * @param needle   the value to scan for.
      * @return index of first appearance, or -1 if not found.
      * @since 1.8.10
      */
@@ -300,7 +300,7 @@ public final class ByteCommand {
      * Convert a {@link String} into a {@link ByteBuffer} using the given {@link Charset}.
      *
      * @param theString must not be {@literal null}.
-     * @param charset must not be {@literal null}.
+     * @param charset   must not be {@literal null}.
      * @return
      * @since 2.1
      */

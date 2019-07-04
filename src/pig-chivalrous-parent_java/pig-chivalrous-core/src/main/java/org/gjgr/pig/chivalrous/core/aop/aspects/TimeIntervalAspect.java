@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.aop.aspects;
 
-import java.lang.reflect.Method;
-
 import org.gjgr.pig.chivalrous.core.date.TimeInterval;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.LogFactory;
+
+import java.lang.reflect.Method;
 
 /**
  * 通过日志打印方法的执行时间的切面

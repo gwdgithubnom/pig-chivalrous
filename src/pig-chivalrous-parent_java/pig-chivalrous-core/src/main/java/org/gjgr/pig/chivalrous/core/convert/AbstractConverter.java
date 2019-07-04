@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.convert;
 
-import java.text.MessageFormat;
-
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+
+import java.text.MessageFormat;
 
 /**
  * 抽象转换器，提供通用的转换逻辑，同时通过

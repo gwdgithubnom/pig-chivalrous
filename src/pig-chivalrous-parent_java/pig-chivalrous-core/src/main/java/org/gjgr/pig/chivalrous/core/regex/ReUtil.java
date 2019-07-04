@@ -8,17 +8,17 @@ package org.gjgr.pig.chivalrous.core.regex;
  * @More:
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.Holder;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.lang.Validator;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 正则相关工具类
@@ -41,7 +41,7 @@ public final class ReUtil {
      * 正则中需要被转义的关键字
      */
     public static final Set<Character> RE_KEYS = CollectionCommand
-            .newHashSet(new Character[] { '$', '(', ')', '*', '+', '.', '[', ']', '?', '\\', '^', '{', '}', '|' });
+            .newHashSet(new Character[] {'$', '(', ')', '*', '+', '.', '[', ']', '?', '\\', '^', '{', '}', '|'});
 
     private ReUtil() {
     }
@@ -49,8 +49,8 @@ public final class ReUtil {
     /**
      * 获得匹配的字符串
      *
-     * @param regex 匹配的正则
-     * @param content 被匹配的内容
+     * @param regex      匹配的正则
+     * @param content    被匹配的内容
      * @param groupIndex 匹配正则的分组序号
      * @return 匹配后得到的字符串，未匹配返回null
      */
@@ -66,8 +66,8 @@ public final class ReUtil {
     /**
      * 获得匹配的字符串
      *
-     * @param pattern 编译后的正则模式
-     * @param content 被匹配的内容
+     * @param pattern    编译后的正则模式
+     * @param content    被匹配的内容
      * @param groupIndex 匹配正则的分组序号
      * @return 匹配后得到的字符串，未匹配返回null
      */
@@ -88,8 +88,8 @@ public final class ReUtil {
      * 例如：<br>
      * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
-     * @param pattern 匹配正则
-     * @param content 被匹配的内容
+     * @param pattern  匹配正则
+     * @param content  被匹配的内容
      * @param template 生成内容模板，变量 $1 表示group1的内容，以此类推
      * @return 新字符串
      */
@@ -117,8 +117,8 @@ public final class ReUtil {
      * 例如：<br>
      * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
-     * @param regex 匹配正则字符串
-     * @param content 被匹配的内容
+     * @param regex    匹配正则字符串
+     * @param content  被匹配的内容
      * @param template 生成内容模板，变量 $1 表示group1的内容，以此类推
      * @return 按照template拼接后的字符串
      */
@@ -137,9 +137,9 @@ public final class ReUtil {
      * 例如：<br>
      * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
-     * @param pattern 匹配正则
+     * @param pattern       匹配正则
      * @param contentHolder 被匹配的内容的Holder，value为内容正文，经过这个方法的原文将被去掉匹配之前的内容
-     * @param template 生成内容模板，变量 $1 表示group1的内容，以此类推
+     * @param template      生成内容模板，变量 $1 表示group1的内容，以此类推
      * @return 新字符串
      */
     public static String extractMultiAndDelPre(Pattern pattern, Holder<String> contentHolder, String template) {
@@ -167,9 +167,9 @@ public final class ReUtil {
      * 例如：<br>
      * content 2013年5月 pattern (.*?)年(.*?)月 template： $1-$2 return 2013-5
      *
-     * @param regex 匹配正则字符串
+     * @param regex         匹配正则字符串
      * @param contentHolder 被匹配的内容的Holder，value为内容正文，经过这个方法的原文将被去掉匹配之前的内容
-     * @param template 生成内容模板，变量 $1 表示group1的内容，以此类推
+     * @param template      生成内容模板，变量 $1 表示group1的内容，以此类推
      * @return 按照template拼接后的字符串
      */
     public static String extractMultiAndDelPre(String regex, Holder<String> contentHolder, String template) {
@@ -184,7 +184,7 @@ public final class ReUtil {
     /**
      * 删除匹配的内容
      *
-     * @param regex 正则
+     * @param regex   正则
      * @param content 被匹配的内容
      * @return 删除后剩余的内容
      */
@@ -199,7 +199,7 @@ public final class ReUtil {
     /**
      * 删除正则匹配到的内容之前的字符 如果没有找到，则返回原文
      *
-     * @param regex 定位正则
+     * @param regex   定位正则
      * @param content 被查找的内容
      * @return 删除前缀后的新内容
      */
@@ -218,9 +218,9 @@ public final class ReUtil {
     /**
      * 取得内容中匹配的所有结果
      *
-     * @param regex 正则
-     * @param content 被查找的内容
-     * @param group 正则的分组
+     * @param regex      正则
+     * @param content    被查找的内容
+     * @param group      正则的分组
      * @param collection 返回的集合类型
      * @return 结果集
      */
@@ -236,9 +236,9 @@ public final class ReUtil {
     /**
      * 取得内容中匹配的所有结果
      *
-     * @param pattern 编译后的正则模式
-     * @param content 被查找的内容
-     * @param group 正则的分组
+     * @param pattern    编译后的正则模式
+     * @param content    被查找的内容
+     * @param group      正则的分组
      * @param collection 返回的集合类型
      * @return 结果集
      */
@@ -261,7 +261,7 @@ public final class ReUtil {
     /**
      * 计算指定字符串中，匹配pattern的个数
      *
-     * @param regex 正则表达式
+     * @param regex   正则表达式
      * @param content 被查找的内容
      * @return 匹配个数
      */
@@ -308,7 +308,7 @@ public final class ReUtil {
     /**
      * 给定内容是否匹配正则
      *
-     * @param regex 正则
+     * @param regex   正则
      * @param content 内容
      * @return 正则为null或者""则不检查，返回true，内容为null返回false
      */
@@ -345,8 +345,8 @@ public final class ReUtil {
      * 正则替换指定值<br>
      * 通过正则查找到字符串，然后把匹配到的字符串加入到replacementTemplate中，$1表示分组1的字符串
      *
-     * @param content 文本
-     * @param regex 正则
+     * @param content             文本
+     * @param regex               正则
      * @param replacementTemplate 替换的文本模板，可以使用$1类似的变量提取正则匹配出的内容
      * @return 处理后的文本
      */
@@ -359,8 +359,8 @@ public final class ReUtil {
      * 正则替换指定值<br>
      * 通过正则查找到字符串，然后把匹配到的字符串加入到replacementTemplate中，$1表示分组1的字符串
      *
-     * @param content 文本
-     * @param pattern {@link Pattern}
+     * @param content             文本
+     * @param pattern             {@link Pattern}
      * @param replacementTemplate 替换的文本模板，可以使用$1类似的变量提取正则匹配出的内容
      * @return 处理后的文本
      * @since 3.0.4

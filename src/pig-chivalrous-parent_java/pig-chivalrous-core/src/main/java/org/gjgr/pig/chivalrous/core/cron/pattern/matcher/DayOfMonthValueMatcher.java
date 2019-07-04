@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class DayOfMonthValueMatcher extends BoolArrayValueMatcher {
 
-    private static final int[] LAST_DAYS = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    private static final int[] LAST_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     public DayOfMonthValueMatcher(List<Integer> intValueList) {
         super(intValueList);
@@ -19,8 +19,8 @@ public class DayOfMonthValueMatcher extends BoolArrayValueMatcher {
     /**
      * 是否为本月最后一天
      *
-     * @param value 被检查的值
-     * @param month 月份
+     * @param value      被检查的值
+     * @param month      月份
      * @param isLeapYear 是否闰年
      * @return 是否为本月最后一天
      */
@@ -35,8 +35,8 @@ public class DayOfMonthValueMatcher extends BoolArrayValueMatcher {
     /**
      * 是否匹配
      *
-     * @param value 被检查的值
-     * @param month 月份
+     * @param value      被检查的值
+     * @param month      月份
      * @param isLeapYear 是否闰年
      * @return 是否匹配
      */

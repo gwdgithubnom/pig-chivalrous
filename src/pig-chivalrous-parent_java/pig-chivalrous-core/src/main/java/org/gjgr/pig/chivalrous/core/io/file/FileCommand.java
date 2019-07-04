@@ -1,5 +1,29 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.file.download.DirectDownloader;
+import org.gjgr.pig.chivalrous.core.io.file.download.DownloadListener;
+import org.gjgr.pig.chivalrous.core.io.file.download.DownloadTask;
+import org.gjgr.pig.chivalrous.core.io.file.download.HttpConnector;
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
+import org.gjgr.pig.chivalrous.core.io.stream.BOMInputStream;
+import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.net.UriBuilder;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -47,31 +71,6 @@ import java.util.Random;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.io.file.download.DirectDownloader;
-import org.gjgr.pig.chivalrous.core.io.file.download.DownloadListener;
-import org.gjgr.pig.chivalrous.core.io.file.download.DownloadTask;
-import org.gjgr.pig.chivalrous.core.io.file.download.HttpConnector;
-import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.io.stream.BOMInputStream;
-import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
-import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.net.UriBuilder;
-import org.gjgr.pig.chivalrous.core.net.UriCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-
 /**
  * 文件工具类
  *
@@ -96,35 +95,65 @@ public final class FileCommand {
      */
     public static final String PATH_FILE_PRE = "file:";
     public static final int BUFFER_SIZE = 128 * 1024;
-    /** Pseudo URL prefix for loading from the class path: "classpath:" */
+    /**
+     * Pseudo URL prefix for loading from the class path: "classpath:"
+     */
     public static final String CLASSPATH_URL_PREFIX = "classpath:";
-    /** URL prefix for loading from the file system: "file:" */
+    /**
+     * URL prefix for loading from the file system: "file:"
+     */
     public static final String FILE_URL_PREFIX = "file:";
-    /** URL prefix for loading from a jar file: "jar:" */
+    /**
+     * URL prefix for loading from a jar file: "jar:"
+     */
     public static final String JAR_URL_PREFIX = "jar:";
-    /** URL prefix for loading from a war file on Tomcat: "war:" */
+    /**
+     * URL prefix for loading from a war file on Tomcat: "war:"
+     */
     public static final String WAR_URL_PREFIX = "war:";
-    /** URL protocol for a file in the file system: "file" */
+    /**
+     * URL protocol for a file in the file system: "file"
+     */
     public static final String URL_PROTOCOL_FILE = "file";
-    /** URL protocol for an entry from a jar file: "jar" */
+    /**
+     * URL protocol for an entry from a jar file: "jar"
+     */
     public static final String URL_PROTOCOL_JAR = "jar";
-    /** URL protocol for an entry from a war file: "war" */
+    /**
+     * URL protocol for an entry from a war file: "war"
+     */
     public static final String URL_PROTOCOL_WAR = "war";
-    /** URL protocol for an entry from a zip file: "zip" */
+    /**
+     * URL protocol for an entry from a zip file: "zip"
+     */
     public static final String URL_PROTOCOL_ZIP = "zip";
-    /** URL protocol for an entry from a WebSphere jar file: "wsjar" */
+    /**
+     * URL protocol for an entry from a WebSphere jar file: "wsjar"
+     */
     public static final String URL_PROTOCOL_WSJAR = "wsjar";
-    /** URL protocol for an entry from a JBoss jar file: "vfszip" */
+    /**
+     * URL protocol for an entry from a JBoss jar file: "vfszip"
+     */
     public static final String URL_PROTOCOL_VFSZIP = "vfszip";
-    /** URL protocol for a JBoss file system resource: "vfsfile" */
+    /**
+     * URL protocol for a JBoss file system resource: "vfsfile"
+     */
     public static final String URL_PROTOCOL_VFSFILE = "vfsfile";
-    /** URL protocol for a general JBoss VFS resource: "vfs" */
+    /**
+     * URL protocol for a general JBoss VFS resource: "vfs"
+     */
     public static final String URL_PROTOCOL_VFS = "vfs";
-    /** File extension for a regular jar file: ".jar" */
+    /**
+     * File extension for a regular jar file: ".jar"
+     */
     public static final String JAR_FILE_EXTENSION = ".jar";
-    /** Separator between JAR URL and file path within the JAR: "!/" */
+    /**
+     * Separator between JAR URL and file path within the JAR: "!/"
+     */
     public static final String JAR_URL_SEPARATOR = "!/";
-    /** Special separator between WAR URL and jar part on Tomcat */
+    /**
+     * Special separator between WAR URL and jar part on Tomcat
+     */
     public static final String WAR_URL_SEPARATOR = "*/";
     /**
      * The Unix separator character.
@@ -207,7 +236,7 @@ public final class FileCommand {
     /**
      * Recursively copy the contents of the {@code src} file/directory to the {@code dest} file/directory.
      *
-     * @param src the source directory
+     * @param src  the source directory
      * @param dest the destination directory
      * @throws IOException in the case of I/O errors
      */
@@ -220,7 +249,7 @@ public final class FileCommand {
     /**
      * Recursively copy the contents of the {@code src} file/directory to the {@code dest} file/directory.
      *
-     * @param src the source directory
+     * @param src  the source directory
      * @param dest the destination directory
      * @throws IOException in the case of I/O errors
      * @since 5.0
@@ -429,7 +458,7 @@ public final class FileCommand {
      * 递归遍历目录以及子目录中的所有文件<br>
      * 如果提供file为文件，直接返回过滤结果
      *
-     * @param file 当前遍历文件或目录
+     * @param file       当前遍历文件或目录
      * @param fileFilter 文件过滤规则对象，选择要保留的文件，只对文件有效，不过滤目录
      */
     public static List<File> loopFiles(File file, FileFilter fileFilter) {
@@ -528,7 +557,7 @@ public final class FileCommand {
      * 创建File对象
      *
      * @param parent 父目录
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      */
     public static File file(String parent, String path) {
@@ -542,7 +571,7 @@ public final class FileCommand {
      * 创建File对象
      *
      * @param parent 父文件对象
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      */
     public static File file(File parent, String path) {
@@ -599,7 +628,7 @@ public final class FileCommand {
      * 是否存在匹配文件
      *
      * @param directory 文件夹路径
-     * @param regexp 文件夹中所包含文件名的正则表达式
+     * @param regexp    文件夹中所包含文件名的正则表达式
      * @return 如果存在匹配文件返回true
      */
     public static boolean isExist(String directory, String regexp) {
@@ -678,7 +707,7 @@ public final class FileCommand {
     /**
      * 给定文件或目录的最后修改时间是否晚于给定时间
      *
-     * @param file 文件或目录
+     * @param file      文件或目录
      * @param reference 参照文件
      * @return 是否晚于给定时间
      */
@@ -692,7 +721,7 @@ public final class FileCommand {
     /**
      * 给定文件或目录的最后修改时间是否晚于给定时间
      *
-     * @param file 文件或目录
+     * @param file       文件或目录
      * @param timeMillis 做为对比的时间
      * @return 是否晚于给定时间
      */
@@ -746,7 +775,7 @@ public final class FileCommand {
      * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
      *
      * @param parent 父文件对象
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      * @throws IOException
      */
@@ -759,7 +788,7 @@ public final class FileCommand {
      * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
      *
      * @param parent 父文件对象
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      * @throws IOException
      */
@@ -884,7 +913,7 @@ public final class FileCommand {
      * 创建临时文件<br>
      * 创建后的文件名为 prefix[Randon].tmp
      *
-     * @param dir 临时文件创建的所在目录
+     * @param dir       临时文件创建的所在目录
      * @param isReCreat 是否重新创建文件（删掉原来的，创建新的）
      * @return 临时文件
      * @throws IOException
@@ -897,9 +926,9 @@ public final class FileCommand {
      * 创建临时文件<br>
      * 创建后的文件名为 prefix[Randon].suffix From com.jodd.io.FileCommand
      *
-     * @param prefix 前缀，至少3个字符
-     * @param suffix 后缀，如果null则使用默认.tmp
-     * @param dir 临时文件创建的所在目录
+     * @param prefix    前缀，至少3个字符
+     * @param suffix    后缀，如果null则使用默认.tmp
+     * @param dir       临时文件创建的所在目录
      * @param isReCreat 是否重新创建文件（删掉原来的，创建新的）
      * @return 临时文件
      * @throws IOException
@@ -925,13 +954,13 @@ public final class FileCommand {
     /**
      * 通过JDK7+的 {@link Files#copy(Path, Path, CopyOption...)} 方法拷贝文件
      *
-     * @param src 源文件路径
-     * @param dest 目标文件或目录路径，如果为目录使用与源文件相同的文件名
+     * @param src     源文件路径
+     * @param dest    目标文件或目录路径，如果为目录使用与源文件相同的文件名
      * @param options {@link StandardCopyOption}
      * @return File
      * @throws IOException
      */
-    public static File copyFile(String src, String dest, StandardCopyOption...options) throws IOException {
+    public static File copyFile(String src, String dest, StandardCopyOption... options) throws IOException {
         AssertCommand.notBlank(src, "Source File path is blank !");
         AssertCommand.notNull(src, "Destination File path is null !");
         return copyFile(Paths.get(src), Paths.get(dest), options).toFile();
@@ -940,13 +969,13 @@ public final class FileCommand {
     /**
      * 通过JDK7+的 {@link Files#copy(Path, Path, CopyOption...)} 方法拷贝文件
      *
-     * @param src 源文件
-     * @param dest 目标文件或目录，如果为目录使用与源文件相同的文件名
+     * @param src     源文件
+     * @param dest    目标文件或目录，如果为目录使用与源文件相同的文件名
      * @param options {@link StandardCopyOption}
      * @return File
      * @throws IOException
      */
-    public static File copyFile(File src, File dest, StandardCopyOption...options) throws IOException {
+    public static File copyFile(File src, File dest, StandardCopyOption... options) throws IOException {
         // check
         AssertCommand.notNull(src, "Source File is null !");
         if (false == src.exists()) {
@@ -965,13 +994,13 @@ public final class FileCommand {
     /**
      * 通过JDK7+的 {@link Files#copy(Path, Path, CopyOption...)} 方法拷贝文件
      *
-     * @param src 源文件路径
-     * @param dest 目标文件或目录，如果为目录使用与源文件相同的文件名
+     * @param src     源文件路径
+     * @param dest    目标文件或目录，如果为目录使用与源文件相同的文件名
      * @param options {@link StandardCopyOption}
      * @return Path
      * @throws IOException
      */
-    public static Path copyFile(Path src, Path dest, StandardCopyOption...options) throws IOException {
+    public static Path copyFile(Path src, Path dest, StandardCopyOption... options) throws IOException {
         AssertCommand.notNull(src, "Source File is null !");
         AssertCommand.notNull(dest, "Destination File or directiory is null !");
 
@@ -986,8 +1015,8 @@ public final class FileCommand {
      * 复制文件或目录<br>
      * 如果目标文件为目录，则将源文件以相同文件名拷贝到目标目录
      *
-     * @param srcPath 源文件或目录
-     * @param destPath 目标文件或目录，目标不存在会自动创建（目录、文件都创建）
+     * @param srcPath    源文件或目录
+     * @param destPath   目标文件或目录，目标不存在会自动创建（目录、文件都创建）
      * @param isOverride 是否覆盖目标文件
      * @return 目标目录或文件
      * @throws IOException
@@ -1003,8 +1032,8 @@ public final class FileCommand {
      * 2、src和dest都为文件，直接复制，名字为dest<br>
      * 3、src为文件，dest为目录，将src拷贝到dest目录下<br>
      *
-     * @param src 源文件
-     * @param dest 目标文件或目录，目标不存在会自动创建（目录、文件都创建）
+     * @param src        源文件
+     * @param dest       目标文件或目录，目标不存在会自动创建（目录、文件都创建）
      * @param isOverride 是否覆盖目标文件
      * @return 目标目录或文件
      * @throws IOException
@@ -1033,8 +1062,8 @@ public final class FileCommand {
     /**
      * 拷贝目录，只用于内部，不做任何安全检查
      *
-     * @param src 源目录
-     * @param dest 目标目录
+     * @param src        源目录
+     * @param dest       目标目录
      * @param isOverride 是否覆盖
      * @throws IOException
      */
@@ -1063,8 +1092,8 @@ public final class FileCommand {
     /**
      * 拷贝文件，只用于内部，不做任何安全检查
      *
-     * @param src 源文件，必须为文件
-     * @param dest 目标文件，必须为文件
+     * @param src        源文件，必须为文件
+     * @param dest       目标文件，必须为文件
      * @param isOverride 是否覆盖已有文件
      * @throws IOException
      */
@@ -1101,8 +1130,8 @@ public final class FileCommand {
     /**
      * 移动文件或者目录
      *
-     * @param src 源文件或者目录
-     * @param dest 目标文件或者目录
+     * @param src        源文件或者目录
+     * @param dest       目标文件或者目录
      * @param isOverride 是否覆盖目标，只有目标为文件才覆盖
      * @throws IOException
      */
@@ -1143,7 +1172,7 @@ public final class FileCommand {
      * 获取绝对路径<br/>
      * 此方法不会判定给定路径是否有效（文件或目录存在）
      *
-     * @param path 相对路径
+     * @param path      相对路径
      * @param baseClass 相对路径所相对的类
      * @return 绝对路径
      */
@@ -1284,7 +1313,7 @@ public final class FileCommand {
      * 判断文件是否被改动<br>
      * 如果文件对象为 null 或者文件不存在，被视为改动
      *
-     * @param file 文件对象
+     * @param file           文件对象
      * @param lastModifyTime 上次的改动时间
      * @return 是否被改动
      */
@@ -1356,7 +1385,7 @@ public final class FileCommand {
     /**
      * 获得相对子路径
      *
-     * @param rootDir 绝对父路径
+     * @param rootDir  绝对父路径
      * @param filePath 文件路径
      * @return 相对子路径
      */
@@ -1370,7 +1399,7 @@ public final class FileCommand {
      * 获得相对子路径
      *
      * @param rootDir 绝对父路径
-     * @param file 文件
+     * @param file    文件
      * @return 相对子路径
      */
     public static String subPath(String rootDir, File file) {
@@ -1524,7 +1553,7 @@ public final class FileCommand {
      * 判断文件路径是否有指定后缀，忽略大小写<br>
      * 常用语判断扩展名
      *
-     * @param file 文件或目录
+     * @param file   文件或目录
      * @param suffix 后缀
      * @return 是否有指定后缀
      */
@@ -1628,7 +1657,7 @@ public final class FileCommand {
     /**
      * 获得一个文件读取器
      *
-     * @param file 文件
+     * @param file        文件
      * @param charsetName 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1640,7 +1669,7 @@ public final class FileCommand {
     /**
      * 获得一个文件读取器
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1652,7 +1681,7 @@ public final class FileCommand {
     /**
      * 获得一个文件读取器
      *
-     * @param path 绝对路径
+     * @param path        绝对路径
      * @param charsetName 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1664,7 +1693,7 @@ public final class FileCommand {
     /**
      * 获得一个文件读取器
      *
-     * @param path 绝对路径
+     * @param path    绝对路径
      * @param charset 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1753,7 +1782,7 @@ public final class FileCommand {
     /**
      * 读取文件内容
      *
-     * @param file 文件
+     * @param file        文件
      * @param charsetName 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1765,7 +1794,7 @@ public final class FileCommand {
     /**
      * 读取文件内容
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1778,7 +1807,7 @@ public final class FileCommand {
     /**
      * 读取文件内容
      *
-     * @param path 文件路径
+     * @param path        文件路径
      * @param charsetName 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1790,7 +1819,7 @@ public final class FileCommand {
     /**
      * 读取文件内容
      *
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1802,7 +1831,7 @@ public final class FileCommand {
     /**
      * 读取文件内容
      *
-     * @param url 文件URL
+     * @param url     文件URL
      * @param charset 字符集
      * @return 内容
      * @throws IOException
@@ -1826,8 +1855,8 @@ public final class FileCommand {
     /**
      * 从文件中读取每一行数据
      *
-     * @param path 文件路径
-     * @param charset 字符集
+     * @param path       文件路径
+     * @param charset    字符集
      * @param collection 集合
      * @return 文件中的每行内容的集合
      * @throws IORuntimeException
@@ -1840,8 +1869,8 @@ public final class FileCommand {
     /**
      * 从文件中读取每一行数据
      *
-     * @param file 文件路径
-     * @param charset 字符集
+     * @param file       文件路径
+     * @param charset    字符集
      * @param collection 集合
      * @return 文件中的每行内容的集合
      * @throws IORuntimeException
@@ -1854,8 +1883,8 @@ public final class FileCommand {
     /**
      * 从文件中读取每一行数据
      *
-     * @param url 文件的URL
-     * @param charset 字符集
+     * @param url        文件的URL
+     * @param charset    字符集
      * @param collection 集合
      * @return 文件中的每行内容的集合
      * @throws IOException
@@ -1876,7 +1905,7 @@ public final class FileCommand {
     /**
      * 从文件中读取每一行数据
      *
-     * @param url 文件的URL
+     * @param url     文件的URL
      * @param charset 字符集
      * @return 文件中的每行内容的集合List
      * @throws IORuntimeException
@@ -1888,7 +1917,7 @@ public final class FileCommand {
     /**
      * 从文件中读取每一行数据
      *
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 文件中的每行内容的集合List
      * @throws IORuntimeException
@@ -1900,7 +1929,7 @@ public final class FileCommand {
     /**
      * 从文件中读取每一行数据
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 文件中的每行内容的集合List
      * @throws IORuntimeException
@@ -1913,8 +1942,8 @@ public final class FileCommand {
      * 按照给定的readerHandler读取文件中的数据
      *
      * @param readerHandler Reader处理类
-     * @param path 文件的绝对路径
-     * @param charset 字符集
+     * @param path          文件的绝对路径
+     * @param charset       字符集
      * @return 从文件中load出的数据
      * @throws IORuntimeException
      */
@@ -1948,9 +1977,9 @@ public final class FileCommand {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param path 输出路径，绝对路径
+     * @param path        输出路径，绝对路径
      * @param charsetName 字符集
-     * @param isAppend 是否追加
+     * @param isAppend    是否追加
      * @return BufferedReader对象
      * @throws IOException
      */
@@ -1961,8 +1990,8 @@ public final class FileCommand {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param path 输出路径，绝对路径
-     * @param charset 字符集
+     * @param path     输出路径，绝对路径
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return BufferedReader对象
      * @throws IOException
@@ -1974,9 +2003,9 @@ public final class FileCommand {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param file 输出文件
+     * @param file        输出文件
      * @param charsetName 字符集
-     * @param isAppend 是否追加
+     * @param isAppend    是否追加
      * @return BufferedReader对象
      * @throws IOException
      */
@@ -1987,8 +2016,8 @@ public final class FileCommand {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param file 输出文件
-     * @param charset 字符集
+     * @param file     输出文件
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return BufferedReader对象
      * @throws IOException
@@ -2000,8 +2029,8 @@ public final class FileCommand {
     /**
      * 获得一个打印写入对象，可以有print
      *
-     * @param path 输出路径，绝对路径
-     * @param charset 字符集
+     * @param path     输出路径，绝对路径
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return 打印对象
      * @throws IOException
@@ -2013,8 +2042,8 @@ public final class FileCommand {
     /**
      * 获得一个打印写入对象，可以有print
      *
-     * @param file 文件
-     * @param charset 字符集
+     * @param file     文件
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return 打印对象
      * @throws IOException
@@ -2027,7 +2056,7 @@ public final class FileCommand {
      * 将String写入文件，覆盖模式，字符集为UTF-8
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @return 写入的文件
      * @throws IORuntimeException
      */
@@ -2039,7 +2068,7 @@ public final class FileCommand {
      * 将String写入文件，覆盖模式，字符集为UTF-8
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @return 写入的文件
      * @throws IORuntimeException
      */
@@ -2051,7 +2080,7 @@ public final class FileCommand {
      * 将String写入文件，覆盖模式
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2064,7 +2093,7 @@ public final class FileCommand {
      * 将String写入文件，覆盖模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @throws IORuntimeException
      */
@@ -2076,7 +2105,7 @@ public final class FileCommand {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2089,7 +2118,7 @@ public final class FileCommand {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2102,7 +2131,7 @@ public final class FileCommand {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2114,8 +2143,8 @@ public final class FileCommand {
     /**
      * 将列表写入文件，追加模式
      *
-     * @param list 列表
-     * @param path 绝对路径
+     * @param list    列表
+     * @param path    绝对路径
      * @param charset 字符集
      * @throws IORuntimeException
      */
@@ -2131,7 +2160,7 @@ public final class FileCommand {
      * 将String写入文件，覆盖模式
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2144,7 +2173,7 @@ public final class FileCommand {
      * 将String写入文件，覆盖模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @throws IORuntimeException
      */
@@ -2155,8 +2184,8 @@ public final class FileCommand {
     /**
      * 将列表写入文件，覆盖模式
      *
-     * @param list 列表
-     * @param path 绝对路径
+     * @param list    列表
+     * @param path    绝对路径
      * @param charset 字符集
      * @throws IORuntimeException
      */
@@ -2167,9 +2196,9 @@ public final class FileCommand {
     /**
      * 将列表写入文件
      *
-     * @param list 列表
-     * @param path 文件路径
-     * @param charset 字符集
+     * @param list     列表
+     * @param path     文件路径
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @throws IORuntimeException
      */
@@ -2181,9 +2210,9 @@ public final class FileCommand {
     /**
      * 将列表写入文件
      *
-     * @param list 列表
-     * @param file 文件
-     * @param charset 字符集
+     * @param list     列表
+     * @param file     文件
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @throws IORuntimeException
      */
@@ -2229,10 +2258,10 @@ public final class FileCommand {
     /**
      * 写入数据到文件
      *
-     * @param data 数据
-     * @param dest 目标文件
-     * @param off 数据开始位置
-     * @param len 数据长度
+     * @param data   数据
+     * @param dest   目标文件
+     * @param off    数据开始位置
+     * @param len    数据长度
      * @param append 是否追加模式
      * @return File
      * @throws IORuntimeException
@@ -2245,7 +2274,7 @@ public final class FileCommand {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2258,7 +2287,7 @@ public final class FileCommand {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2271,7 +2300,7 @@ public final class FileCommand {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -2284,7 +2313,7 @@ public final class FileCommand {
      * 将流的内容写入文件<br>
      *
      * @param dest 目标文件
-     * @param in 输入流
+     * @param in   输入流
      * @return dest
      * @throws IORuntimeException
      */
@@ -2295,7 +2324,7 @@ public final class FileCommand {
     /**
      * 将流的内容写入文件<br>
      *
-     * @param in 输入流
+     * @param in           输入流
      * @param fullFilePath 文件绝对路径
      * @return dest
      * @throws IORuntimeException
@@ -2308,7 +2337,7 @@ public final class FileCommand {
      * 将文件写入流中
      *
      * @param file 文件
-     * @param out 流
+     * @param out  流
      * @return File
      * @throws IORuntimeException
      */
@@ -2320,7 +2349,7 @@ public final class FileCommand {
      * 将流的内容写入文件<br>
      *
      * @param fullFilePath 文件绝对路径
-     * @param out 输出流
+     * @param out          输出流
      * @throws IORuntimeException
      */
     public static void writeToStream(String fullFilePath, OutputStream out) throws IORuntimeException {
@@ -2348,7 +2377,7 @@ public final class FileCommand {
         if (size <= 0) {
             return "0";
         }
-        final String[] units = new String[] { "B", "kB", "MB", "GB", "TB", "EB" };
+        final String[] units = new String[] {"B", "kB", "MB", "GB", "TB", "EB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.##").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
@@ -2448,7 +2477,7 @@ public final class FileCommand {
         }
 
         // now we build back using FIFO so need to use descending
-        for (Iterator<String> it = stack.descendingIterator(); it.hasNext();) {
+        for (Iterator<String> it = stack.descendingIterator(); it.hasNext(); ) {
             sb.append(it.next());
             if (it.hasNext()) {
                 sb.append(separator);
@@ -2726,8 +2755,8 @@ public final class FileCommand {
     /**
      * Renames a file.
      *
-     * @param from the from file
-     * @param to the to file
+     * @param from                      the from file
+     * @param to                        the to file
      * @param copyAndDeleteOnRenameFail whether to fallback and do copy and delete, if renameTo fails
      * @return <tt>true</tt> if the file was renamed, otherwise <tt>false</tt>
      * @throws java.io.IOException is thrown if error renaming file
@@ -2769,7 +2798,7 @@ public final class FileCommand {
      * operation is unreliable.
      *
      * @param from the file to be renamed
-     * @param to the new target file
+     * @param to   the new target file
      * @return <tt>true</tt> if the file was renamed successfully, otherwise <tt>false</tt>
      * @throws IOException If an I/O error occurs during copy or delete operations.
      */
@@ -2791,7 +2820,7 @@ public final class FileCommand {
      * Copies the file
      *
      * @param from the source file
-     * @param to the destination file
+     * @param to   the destination file
      * @throws IOException If an I/O error occurs during copy operation
      */
     public static void copyFile(File from, File to) throws IOException {
@@ -2896,7 +2925,7 @@ public final class FileCommand {
     }
 
     public static boolean downloaderWithOutListener(DirectDownloader directDownloader, String url,
-            String path) {
+                                                    String path) {
         try {
             DownloadTask downloadTask = new DownloadTask(new URL(url), new FileOutputStream(path));
             downloader(directDownloader, downloadTask);
@@ -2908,7 +2937,7 @@ public final class FileCommand {
     }
 
     public static boolean downloader(DirectDownloader directDownloader, DownloadListener downloadListener, String url,
-            String path) {
+                                     String path) {
         try {
             DownloadTask downloadTask = new DownloadTask(new URL(url), new FileOutputStream(path), downloadListener);
             directDownloader.download(downloadTask);
@@ -2963,7 +2992,7 @@ public final class FileCommand {
 
     /**
      * Return whether the given resource location is a URL: either a special "classpath" pseudo URL or a standard URL.
-     * 
+     *
      * @param resourceLocation the location String to check
      * @return whether the location qualifies as a URL
      * @see #CLASSPATH_URL_PREFIX
@@ -2989,9 +3018,9 @@ public final class FileCommand {
      * <p>
      * Does not check whether the URL actually exists; simply returns the URL that the given location would correspond
      * to.
-     * 
+     *
      * @param resourceLocation the resource location to resolve: either a "classpath:" pseudo URL, a "file:" URL, or a
-     *            plain file path
+     *                         plain file path
      * @return a corresponding URL object
      * @throws FileNotFoundException if the resource cannot be resolved to a URL
      */
@@ -3027,9 +3056,9 @@ public final class FileCommand {
      * <p>
      * Does not check whether the file actually exists; simply returns the File that the given location would correspond
      * to.
-     * 
+     *
      * @param resourceLocation the resource location to resolve: either a "classpath:" pseudo URL, a "file:" URL, or a
-     *            plain file path
+     *                         plain file path
      * @return a corresponding File object
      * @throws FileNotFoundException if the resource cannot be resolved to a file in the file system
      */
@@ -3057,7 +3086,7 @@ public final class FileCommand {
 
     /**
      * Resolve the given resource URL to a {@code java.io.File}, i.e. to a file in the file system.
-     * 
+     *
      * @param resourceUrl the resource URL to resolve
      * @return a corresponding File object
      * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
@@ -3068,10 +3097,10 @@ public final class FileCommand {
 
     /**
      * Resolve the given resource URL to a {@code java.io.File}, i.e. to a file in the file system.
-     * 
+     *
      * @param resourceUrl the resource URL to resolve
      * @param description a description of the original resource that the URL was created for (for example, a class path
-     *            location)
+     *                    location)
      * @return a corresponding File object
      * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
      */
@@ -3092,7 +3121,7 @@ public final class FileCommand {
 
     /**
      * Resolve the given resource URI to a {@code java.io.File}, i.e. to a file in the file system.
-     * 
+     *
      * @param resourceUri the resource URI to resolve
      * @return a corresponding File object
      * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
@@ -3104,10 +3133,10 @@ public final class FileCommand {
 
     /**
      * Resolve the given resource URI to a {@code java.io.File}, i.e. to a file in the file system.
-     * 
+     *
      * @param resourceUri the resource URI to resolve
      * @param description a description of the original resource that the URI was created for (for example, a class path
-     *            location)
+     *                    location)
      * @return a corresponding File object
      * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
      * @since 2.5
@@ -3125,7 +3154,7 @@ public final class FileCommand {
     /**
      * Determine whether the given URL points to a resource in the file system, i.e. has protocol "file", "vfsfile" or
      * "vfs".
-     * 
+     *
      * @param url the URL to check
      * @return whether the URL has been identified as a file system URL
      */
@@ -3138,7 +3167,7 @@ public final class FileCommand {
     /**
      * Determine whether the given URL points to a resource in a jar file. i.e. has protocol "jar", "war, ""zip",
      * "vfszip" or "wsjar".
-     * 
+     *
      * @param url the URL to check
      * @return whether the URL has been identified as a JAR URL
      */
@@ -3152,7 +3181,7 @@ public final class FileCommand {
     /**
      * Determine whether the given URL points to a jar file itself, that is, has protocol "file" and ends with the
      * ".jar" extension.
-     * 
+     *
      * @param url the URL to check
      * @return whether the URL has been identified as a JAR file URL
      * @since 4.1
@@ -3165,7 +3194,7 @@ public final class FileCommand {
     /**
      * Extract the URL for the actual jar file from the given URL (which may point to a resource in a jar file or to a
      * jar file itself).
-     * 
+     *
      * @param jarUrl the original URL
      * @return the URL for the actual jar file
      * @throwss MalformedURLException if no valid jar file URL could be extracted
@@ -3196,12 +3225,12 @@ public final class FileCommand {
      * <p>
      * In the case of a jar file nested within a war file, this will return a URL to the war file since that is the one
      * resolvable in the file system.
-     * 
+     *
      * @param jarUrl the original URL
      * @return the URL for the actual jar file
      * @throwss MalformedURL Exception if no valid jar file URL could be extracted
-     * @since 4.1.8
      * @see #extractJarFileURL(URL)
+     * @since 4.1.8
      */
     public static URL extractArchiveURL(URL jarUrl) throws MalformedURLException {
         String urlFile = jarUrl.getFile();
@@ -3225,7 +3254,7 @@ public final class FileCommand {
 
     /**
      * Create a URI instance for the given URL, replacing spaces with "%20" URI encoding first.
-     * 
+     *
      * @param url the URL to convert into a URI instance
      * @return the URI instance
      * @throws URISyntaxException if the URL wasn't a valid URI
@@ -3237,7 +3266,7 @@ public final class FileCommand {
 
     /**
      * Create a URI instance for the given location String, replacing spaces with "%20" URI encoding first.
-     * 
+     *
      * @param location the location String to convert into a URI instance
      * @return the URI instance
      * @throwss URISyntaxException if the location wasn't a valid URI
@@ -3249,7 +3278,7 @@ public final class FileCommand {
     /**
      * Set the {@link URL Connection # setUseCaches "useCaches"} flag on the given connection, preferring {@code false}
      * but leaving the flag at {@code true} for JNLP based resources.
-     * 
+     *
      * @param con the URLConnection to set the flag on
      */
     public static void useCachesIfNecessary(URLConnection con) {
@@ -3337,6 +3366,116 @@ public final class FileCommand {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public static InputStream tryUserSystemExternal(String filename) {
+        InputStream inputStream;
+        if (System.getenv(filename) != null) {
+            if (FileCommand.isExist(System.getenv(filename))) {
+                try {
+                    inputStream = FileCommand
+                            .inputStream(System.getenv(filename));
+                } catch (RuntimeException e) {
+                    inputStream = null;
+                    e.printStackTrace();
+                }
+            } else {
+                inputStream = null;
+            }
+        } else {
+            inputStream = null;
+        }
+        if (inputStream == null) {
+            if (FileCommand.isExist(System.getProperty(filename))) {
+                try {
+                    inputStream = FileCommand
+                            .inputStream(System.getProperty(filename));
+                } catch (RuntimeException e) {
+                    inputStream = null;
+                    e.printStackTrace();
+                }
+            } else {
+                inputStream = null;
+            }
+        }
+        return inputStream;
+    }
+
+    public static InputStream tryUserSystemDefault(String key, String filename) {
+        InputStream inputStream;
+        if (System.getProperty(key) != null) {
+            if (FileCommand.isExist(System.getProperty(key) + File.separator + (filename))) {
+                try {
+                    inputStream = FileCommand
+                            .inputStream(System.getProperty(key) + File.separator + (filename));
+                } catch (RuntimeException e) {
+                    inputStream = null;
+                    e.printStackTrace();
+                }
+            } else {
+                inputStream = null;
+            }
+        } else {
+            inputStream = null;
+        }
+        if (inputStream == null) {
+            if (System.getenv(key) != null) {
+                if (FileCommand.isExist(System.getenv(key) + File.separator + (filename))) {
+                    try {
+                        inputStream = FileCommand
+                                .inputStream(System.getenv(key) + File.separator + (filename));
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                        inputStream = null;
+                    }
+                } else {
+                    inputStream = null;
+                }
+            } else {
+                inputStream = null;
+            }
+        }
+        return inputStream;
+    }
+
+    public static InputStream getResource(String filename) {
+        InputStream inputStream;
+        if (isExist(filename)) {
+            try {
+                inputStream = inputStream(filename);
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                inputStream = null;
+            }
+        } else {
+            inputStream = tryUserSystemExternal(filename);
+        }
+        if (inputStream == null) {
+            try {
+                inputStream = inputStream(LocationCommand.pathValue(filename));
+            } catch (RuntimeException e) {
+                try {
+                    inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
+                } catch (Exception eeeee) {
+
+                } finally {
+                    if (inputStream == null) {
+                        try {
+                            inputStream = inputStream(new File(System.getProperty(filename)));
+                        } catch (Exception eeeee) {
+                            inputStream = tryUserSystemDefault("user.dir", filename);
+                            if (inputStream == null) {
+                                inputStream = tryUserSystemDefault("basedir", filename);
+                            }
+                            if (inputStream == null) {
+                                logger.warn("should define the {} file location.", filename);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return inputStream;
     }
 
 }

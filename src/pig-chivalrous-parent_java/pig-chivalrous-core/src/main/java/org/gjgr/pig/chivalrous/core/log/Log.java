@@ -30,19 +30,19 @@ public interface Log extends TraceLog, DebugLog, InfoLog, WarnLog, ErrorLog {
     /**
      * 打印指定级别的日志
      *
-     * @param level 级别
-     * @param format 消息模板
+     * @param level     级别
+     * @param format    消息模板
      * @param arguments 参数
      */
-    void log(Level level, String format, Object...arguments);
+    void log(Level level, String format, Object... arguments);
 
     /**
      * 打印 指定级别的日志
      *
-     * @param level 级别
-     * @param t 错误对象
-     * @param format 消息模板
+     * @param level     级别
+     * @param t         错误对象
+     * @param format    消息模板
      * @param arguments 参数
      */
-    void log(Level level, Throwable t, String format, Object...arguments);
+    void log(Level level, Throwable t, String format, Object... arguments);
 }

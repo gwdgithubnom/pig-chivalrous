@@ -9,9 +9,9 @@
 
 package org.gjgr.pig.chivalrous.core.geo;
 
-import java.io.Serializable;
-
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
+import java.io.Serializable;
 
 /**
  * 表示一个坐标位置
@@ -33,7 +33,7 @@ public class Location implements Serializable {
     /**
      * 构造
      *
-     * @param latitude 纬度
+     * @param latitude  纬度
      * @param longitude 经度
      */
     public Location(double latitude, double longitude) {

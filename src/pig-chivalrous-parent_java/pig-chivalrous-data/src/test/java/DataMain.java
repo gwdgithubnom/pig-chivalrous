@@ -1,12 +1,12 @@
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
 import org.jcodec.api.transcode.Transcoder;
 import org.jcodec.common.Demuxer;
 import org.jcodec.common.Format;
 import org.jcodec.common.JCodecUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
 
 /**
  * @Author gwd

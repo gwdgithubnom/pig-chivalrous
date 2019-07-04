@@ -56,6 +56,7 @@ public class UTF8Parser {
     }
 
     /**
+     *
      */
     private void parse2UTF_8(File file, File destFile) throws IOException {
         StringBuffer msg = new StringBuffer();

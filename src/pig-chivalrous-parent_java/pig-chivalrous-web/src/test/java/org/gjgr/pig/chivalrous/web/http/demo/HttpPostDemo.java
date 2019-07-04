@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.web.http.demo;
 
-import java.util.HashMap;
-
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.gjgr.pig.chivalrous.web.http.Header;
 import org.gjgr.pig.chivalrous.web.http.HttpRequest;
 import org.gjgr.pig.chivalrous.web.http.HttpUtil;
+
+import java.util.HashMap;
 
 /**
  * Post请求样例

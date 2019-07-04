@@ -19,7 +19,7 @@ public interface TypeConverter {
     /**
      * Converts the value to the specified type
      *
-     * @param type the requested type
+     * @param type  the requested type
      * @param value the value to be converted
      * @return the converted value, or <tt>null</tt> if not possible to convert
      * @throws TypeConversionException is thrown if error during type conversion
@@ -31,9 +31,9 @@ public interface TypeConverter {
      * <p/>
      * Used when conversion requires extra information from the current exchange (such as encoding).
      *
-     * @param type the requested type
+     * @param type     the requested type
      * @param exchange the current exchange
-     * @param value the value to be converted
+     * @param value    the value to be converted
      * @return the converted value, or <tt>null</tt> if not possible to convert
      * @throws TypeConversionException is thrown if error during type conversion
      */
@@ -42,10 +42,10 @@ public interface TypeConverter {
     /**
      * Converts the value to the specified type
      *
-     * @param type the requested type
+     * @param type  the requested type
      * @param value the value to be converted
      * @return the converted value, is never <tt>null</tt>
-     * @throws TypeConversionException is thrown if error during type conversion
+     * @throws TypeConversionException            is thrown if error during type conversion
      * @throws NoTypeConversionAvailableException if no type converters exists to convert to the given type
      */
     <T> T mandatoryConvertTo(Class<T> type, Object value)
@@ -56,11 +56,11 @@ public interface TypeConverter {
      * <p/>
      * Used when conversion requires extra information from the current exchange (such as encoding).
      *
-     * @param type the requested type
+     * @param type     the requested type
      * @param exchange the current exchange
-     * @param value the value to be converted
+     * @param value    the value to be converted
      * @return the converted value, is never <tt>null</tt>
-     * @throws TypeConversionException is thrown if error during type conversion
+     * @throws TypeConversionException            is thrown if error during type conversion
      * @throws NoTypeConversionAvailableException if no type converters exists to convert to the given type
      */
     <T> T mandatoryConvertTo(Class<T> type, Exchange exchange, Object value)
@@ -71,7 +71,7 @@ public interface TypeConverter {
      * <p/>
      * This method will <b>not</b> throw an exception if an exception occurred during conversion.
      *
-     * @param type the requested type
+     * @param type  the requested type
      * @param value the value to be converted
      * @return the converted value, or <tt>null</tt> if not possible to convert
      */
@@ -86,9 +86,9 @@ public interface TypeConverter {
      * <p/>
      * Used when conversion requires extra information from the current exchange (such as encoding).
      *
-     * @param type the requested type
+     * @param type     the requested type
      * @param exchange the current exchange
-     * @param value the value to be converted
+     * @param value    the value to be converted
      * @return the converted value, or <tt>null</tt> if not possible to convert
      */
     <T> T tryConvertTo(Class<T> type, Exchange exchange, Object value);

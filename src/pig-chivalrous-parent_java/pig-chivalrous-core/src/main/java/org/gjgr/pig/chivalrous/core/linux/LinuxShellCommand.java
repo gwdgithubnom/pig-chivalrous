@@ -19,7 +19,7 @@ public class LinuxShellCommand extends LinuxCommand {
         this.command = command;
     }
 
-    public LinuxShellCommand(String command, String...params) {
+    public LinuxShellCommand(String command, String... params) {
         this.params = new HashSet<>(Arrays.asList(params));
         this.command = command;
     }

@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.geo;
 
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * GeoHash实现<br>
@@ -20,10 +20,10 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
      */
     private static final int MAX_BIT_PRECISION = 64;
     private static final int MAX_CHARACTER_PRECISION = 12;
-    private static final int[] BITS = { 16, 8, 4, 2, 1 };
+    private static final int[] BITS = {16, 8, 4, 2, 1};
     private static final int BASE32_BITS = 5;
-    private static final char[] base32 = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'b', 'c', 'd', 'e', 'f',
-            'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+    private static final char[] base32 = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'b', 'c', 'd', 'e', 'f',
+            'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
     private static final Map<Character, Integer> decodeMap = new HashMap<>();
 
@@ -51,8 +51,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 构造
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude         纬度
+     * @param longitude        经度
      * @param desiredPrecision 限制长度
      */
     private GeoHash(double latitude, double longitude, int desiredPrecision) {
@@ -60,8 +60,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
         desiredPrecision = Math.min(desiredPrecision, MAX_BIT_PRECISION);
 
         boolean isEvenBit = true;
-        double[] latitudeRange = { -90, 90 };
-        double[] longitudeRange = { -180, 180 };
+        double[] latitudeRange = {-90, 90};
+        double[] longitudeRange = {-180, 180};
 
         while (significantBits < desiredPrecision) {
             if (isEvenBit) {
@@ -79,8 +79,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 使用字符数限制精度
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude           纬度
+     * @param longitude          经度
      * @param numberOfCharacters 字符数
      * @return {@link GeoHash}
      */
@@ -95,8 +95,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 创建 {@link GeoHash}，限制bit位精度
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude     纬度
+     * @param longitude    经度
      * @param numberOfBits 限制bit位数
      * @return {@link GeoHash}
      */
@@ -140,8 +140,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
      * @return {@link GeoHash}
      */
     public static GeoHash fromGeohashString(String geohash) {
-        double[] latitudeRange = { -90.0, 90.0 };
-        double[] longitudeRange = { -180.0, 180.0 };
+        double[] latitudeRange = {-90.0, 90.0};
+        double[] longitudeRange = {-180.0, 180.0};
 
         boolean isEvenBit = true;
         GeoHash hash = new GeoHash();
@@ -176,13 +176,13 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 坐标转为base32GeoHash编码
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude           纬度
+     * @param longitude          经度
      * @param numberOfCharacters 字符长度
      * @return GeoHash字符串
      */
     public static String geoHashStringWithCharacterPrecision(double latitude, double longitude,
-            int numberOfCharacters) {
+                                                             int numberOfCharacters) {
         GeoHash hash = withCharacterPrecision(latitude, longitude, numberOfCharacters);
         return hash.toBase32();
     }
@@ -211,9 +211,9 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 当值为1在range的右半区，为0在左半区
      *
-     * @param hash {@link GeoHash}
+     * @param hash  {@link GeoHash}
      * @param range 区域
-     * @param b bit值
+     * @param b     bit值
      */
     private static void divideRangeDecode(GeoHash hash, double[] range, boolean b) {
         double mid = (range[0] + range[1]) / 2;
@@ -247,7 +247,7 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
      * Returns the number of characters that represent this hash.
      *
      * @throws IllegalStateException when the hash cannot be encoded in base32, i.e. when the precision is not a
-     *             multiple of 5.
+     *                               multiple of 5.
      */
     public int getCharacterPrecision() {
         if (significantBits % 5 != 0) {
@@ -386,8 +386,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
         boolean isEvenBit = false;
         latBits[0] <<= (MAX_BIT_PRECISION - latBits[1]);
         lonBits[0] <<= (MAX_BIT_PRECISION - lonBits[1]);
-        double[] latitudeRange = { -90.0, 90.0 };
-        double[] longitudeRange = { -180.0, 180.0 };
+        double[] latitudeRange = {-90.0, 90.0};
+        double[] longitudeRange = {-180.0, 180.0};
 
         for (int i = 0; i < latBits[1] + lonBits[1]; i++) {
             if (isEvenBit) {
@@ -440,13 +440,13 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     protected long[] getRightAlignedLatitudeBits() {
         long copyOfBits = bits << 1;
         long value = extractEverySecondBit(copyOfBits, getNumberOfLatLonBits()[0]);
-        return new long[] { value, getNumberOfLatLonBits()[0] };
+        return new long[] {value, getNumberOfLatLonBits()[0]};
     }
 
     protected long[] getRightAlignedLongitudeBits() {
         long copyOfBits = bits;
         long value = extractEverySecondBit(copyOfBits, getNumberOfLatLonBits()[1]);
-        return new long[] { value, getNumberOfLatLonBits()[1] };
+        return new long[] {value, getNumberOfLatLonBits()[1]};
     }
 
     private long extractEverySecondBit(long copyOfBits, int numberOfBits) {
@@ -464,9 +464,9 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
 
     protected int[] getNumberOfLatLonBits() {
         if (significantBits % 2 == 0) {
-            return new int[] { significantBits / 2, significantBits / 2 };
+            return new int[] {significantBits / 2, significantBits / 2};
         } else {
-            return new int[] { significantBits / 2, significantBits / 2 + 1 };
+            return new int[] {significantBits / 2, significantBits / 2 + 1};
         }
     }
 

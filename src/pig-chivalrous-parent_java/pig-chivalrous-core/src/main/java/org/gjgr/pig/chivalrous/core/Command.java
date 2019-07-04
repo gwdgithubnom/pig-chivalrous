@@ -10,7 +10,7 @@ import java.util.Map;
  * @More:
  */
 public interface Command {
-    public Object execute(String...params);
+    public Object execute(String... params);
 
-    public Object execute(Map.Entry...map);
+    public Object execute(Map.Entry... map);
 }

@@ -1,15 +1,15 @@
 package org.gjgr.pig.chivalrous.core.json;
 
+import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
 
 /**
  * JSON解析器，用于将JSON字符串解析为JSONObject或者JSONArray
@@ -235,7 +235,7 @@ public class JsonTokener {
     public String nextString(char quote) throws JsonException {
         char c;
         StringBuilder sb = new StringBuilder();
-        for (;;) {
+        for (; ; ) {
             c = this.next();
             switch (c) {
                 case 0:
@@ -291,7 +291,7 @@ public class JsonTokener {
      */
     public String nextTo(char delimiter) throws JsonException {
         StringBuilder sb = new StringBuilder();
-        for (;;) {
+        for (; ; ) {
             char c = this.next();
             if (c == delimiter || c == 0 || c == '\n' || c == '\r') {
                 if (c != 0) {
@@ -313,7 +313,7 @@ public class JsonTokener {
     public String nextTo(String delimiters) throws JsonException {
         char c;
         StringBuilder sb = new StringBuilder();
-        for (;;) {
+        for (; ; ) {
             c = this.next();
             if (delimiters.indexOf(c) >= 0 || c == 0 || c == '\n' || c == '\r') {
                 if (c != 0) {

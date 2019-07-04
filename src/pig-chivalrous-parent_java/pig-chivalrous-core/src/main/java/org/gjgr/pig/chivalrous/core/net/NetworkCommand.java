@@ -1,5 +1,13 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.lang.Validator;
+import org.gjgr.pig.chivalrous.core.system.HostInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -14,14 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
-
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.lang.Validator;
-import org.gjgr.pig.chivalrous.core.system.HostInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 网络相关工具
@@ -204,7 +204,7 @@ public final class NetworkCommand {
      * 相对URL转换为绝对URL
      *
      * @param absoluteBasePath 基准路径，绝对
-     * @param relativePath 相对路径
+     * @param relativePath     相对路径
      * @return 绝对URL
      */
     public static String toAbsoluteUrl(String absoluteBasePath, String relativePath) {
@@ -242,7 +242,7 @@ public final class NetworkCommand {
      * 当host中包含端口时（用“：”隔开），使用host中的端口，否则使用默认端口<br>
      * 给定host为空时使用本地host（127.0.0.1）
      *
-     * @param host Host
+     * @param host        Host
      * @param defaultPort 默认端口
      * @return InetSocketAddress
      */
@@ -313,9 +313,9 @@ public final class NetworkCommand {
         InetAddress inetAddr;
         try {
             for (Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces(); ifaces
-                    .hasMoreElements();) {
+                    .hasMoreElements(); ) {
                 iface = ifaces.nextElement();
-                for (Enumeration<InetAddress> inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements();) {
+                for (Enumeration<InetAddress> inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); ) {
                     inetAddr = inetAddrs.nextElement();
                     if (false == inetAddr.isLoopbackAddress()) {
                         if (inetAddr.isSiteLocalAddress()) {
@@ -348,8 +348,8 @@ public final class NetworkCommand {
      * 指定IP的long是否在指定范围内
      *
      * @param userIp 用户IP
-     * @param begin 开始IP
-     * @param end 结束IP
+     * @param begin  开始IP
+     * @param end    结束IP
      * @return 是否在范围内
      */
     private static boolean isInner(long userIp, long begin, long end) {

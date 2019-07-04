@@ -16,11 +16,11 @@
 
 package org.gjgr.pig.chivalrous.core.kit;
 
+import org.gjgr.pig.chivalrous.core.lang.ConstEnumStringValue;
+
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.gjgr.pig.chivalrous.core.lang.ConstEnumStringValue;
 
 /**
  * PropKit. PropKit can load properties file from CLASSPATH or File object.
@@ -90,7 +90,7 @@ public class PropKit {
      * PropKit.use(new File("/var/config/my_config.txt"), "UTF-8");<br>
      * Strig userName = PropKit.use("my_config.txt").get("userName");
      *
-     * @param file the properties File object
+     * @param file     the properties File object
      * @param encoding the encoding
      */
     public static Prop use(File file, String encoding) {

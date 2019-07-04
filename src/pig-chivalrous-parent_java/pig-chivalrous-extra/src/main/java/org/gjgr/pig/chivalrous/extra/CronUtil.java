@@ -1,14 +1,13 @@
 package org.gjgr.pig.chivalrous.extra;
 
-import java.util.Map.Entry;
-
+import it.sauronsoftware.cron4j.Scheduler;
+import it.sauronsoftware.cron4j.Task;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
 
-import it.sauronsoftware.cron4j.Scheduler;
-import it.sauronsoftware.cron4j.Task;
+import java.util.Map.Entry;
 
 /**
  * 定时任务工具类
@@ -49,7 +48,7 @@ public class CronUtil {
      * 加入定时任务
      *
      * @param schedulingPattern 定时任务执行时间的crontab表达式
-     * @param task 任务
+     * @param task              任务
      * @return 定时任务ID
      */
     public static String schedule(String schedulingPattern, Task task) {
@@ -60,7 +59,7 @@ public class CronUtil {
      * 加入定时任务
      *
      * @param schedulingPattern 定时任务执行时间的crontab表达式
-     * @param task 任务
+     * @param task              任务
      * @return 定时任务ID
      */
     public static String schedule(String schedulingPattern, Runnable task) {

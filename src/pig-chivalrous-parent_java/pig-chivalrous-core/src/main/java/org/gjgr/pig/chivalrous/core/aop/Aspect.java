@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.aop;
 
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 /**
  * 切面抽象
@@ -28,7 +28,7 @@ public abstract class Aspect implements InvocationHandler {
      *
      * @param target 目标对象
      * @param method 目标方法
-     * @param args 参数
+     * @param args   参数
      * @return 是否继续执行接下来的操作
      */
     public abstract boolean before(Object target, Method method, Object[] args);
@@ -38,7 +38,7 @@ public abstract class Aspect implements InvocationHandler {
      *
      * @param target 目标对象
      * @param method 目标方法
-     * @param args 参数
+     * @param args   参数
      * @return 是否允许返回值（接下来的操作）
      */
     public abstract boolean after(Object target, Method method, Object[] args);
@@ -48,8 +48,8 @@ public abstract class Aspect implements InvocationHandler {
      *
      * @param target 目标对象
      * @param method 目标方法
-     * @param args 参数
-     * @param e 异常
+     * @param args   参数
+     * @param e      异常
      * @return 是否允许抛出异常
      */
     public abstract boolean afterException(Object target, Method method, Object[] args, Throwable e);

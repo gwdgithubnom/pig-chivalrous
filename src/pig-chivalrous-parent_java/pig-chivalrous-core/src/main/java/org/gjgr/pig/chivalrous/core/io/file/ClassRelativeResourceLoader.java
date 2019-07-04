@@ -24,9 +24,9 @@ import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
  * {@code java.lang.Class}.
  *
  * @author Juergen Hoeller
- * @since 3.0
  * @see Class#getResource(String)
  * @see ClassPathResource#ClassPathResource(String, Class)
+ * @since 3.0
  */
 public class ClassRelativeResourceLoader extends DefaultResourceLoader {
 
@@ -34,7 +34,7 @@ public class ClassRelativeResourceLoader extends DefaultResourceLoader {
 
     /**
      * Create a new ClassRelativeResourceLoader for the given class.
-     * 
+     *
      * @param clazz the class to load resources through
      */
     public ClassRelativeResourceLoader(Class<?> clazz) {

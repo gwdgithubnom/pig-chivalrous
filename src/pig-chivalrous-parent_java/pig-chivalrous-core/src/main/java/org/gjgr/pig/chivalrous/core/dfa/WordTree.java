@@ -1,14 +1,14 @@
 package org.gjgr.pig.chivalrous.core.dfa;
 
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * DFA（Deterministic Finite Automaton 确定有穷自动机） DFA单词树（以下简称单词树），常用于在某大段文字中快速查找某几个关键词是否存在。<br>
@@ -62,7 +62,7 @@ public class WordTree extends HashMap<Character, WordTree> {
      *
      * @param words 单词数组
      */
-    public void addWords(String...words) {
+    public void addWords(String... words) {
         HashSet<String> wordsSet = CollectionCommand.newHashSet(words);
         for (String word : wordsSet) {
             addWord(word);
@@ -146,7 +146,7 @@ public class WordTree extends HashMap<Character, WordTree> {
     /**
      * 找出所有匹配的关键字
      *
-     * @param text 被检查的文本
+     * @param text  被检查的文本
      * @param limit 限制匹配个数
      * @return 匹配的词列表
      */
@@ -159,10 +159,10 @@ public class WordTree extends HashMap<Character, WordTree> {
      * 密集匹配原则：假如关键词有 ab,b，文本是abab，将匹配 [ab,b,ab]<br>
      * 贪婪匹配（最长匹配）原则：假如关键字a,ab，最长匹配将匹配[a, ab]
      *
-     * @param text 被检查的文本
-     * @param limit 限制匹配个数
+     * @param text           被检查的文本
+     * @param limit          限制匹配个数
      * @param isDensityMatch 是否使用密集匹配原则
-     * @param isGreedMatch 是否使用贪婪匹配（最长匹配）原则
+     * @param isGreedMatch   是否使用贪婪匹配（最长匹配）原则
      * @return 匹配的词列表
      */
     public List<String> matchAll(String text, int limit, boolean isDensityMatch, boolean isGreedMatch) {

@@ -1,5 +1,16 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.stream.BOMInputStream;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -31,17 +42,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.io.stream.BOMInputStream;
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.net.UriCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * @Author gwd
@@ -162,7 +162,7 @@ public class FileUtil {
      * 递归遍历目录以及子目录中的所有文件<br>
      * 如果提供file为文件，直接返回过滤结果
      *
-     * @param file 当前遍历文件或目录
+     * @param file       当前遍历文件或目录
      * @param fileFilter 文件过滤规则对象，选择要保留的文件，只对文件有效，不过滤目录
      */
     public static List<File> loopFiles(File file, FileFilter fileFilter) {
@@ -261,7 +261,7 @@ public class FileUtil {
      * 创建File对象
      *
      * @param parent 父目录
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      */
     public static File file(String parent, String path) {
@@ -275,7 +275,7 @@ public class FileUtil {
      * 创建File对象
      *
      * @param parent 父文件对象
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      */
     public static File file(File parent, String path) {
@@ -332,7 +332,7 @@ public class FileUtil {
      * 是否存在匹配文件
      *
      * @param directory 文件夹路径
-     * @param regexp 文件夹中所包含文件名的正则表达式
+     * @param regexp    文件夹中所包含文件名的正则表达式
      * @return 如果存在匹配文件返回true
      */
     public static boolean exist(String directory, String regexp) {
@@ -411,7 +411,7 @@ public class FileUtil {
     /**
      * 给定文件或目录的最后修改时间是否晚于给定时间
      *
-     * @param file 文件或目录
+     * @param file      文件或目录
      * @param reference 参照文件
      * @return 是否晚于给定时间
      */
@@ -425,7 +425,7 @@ public class FileUtil {
     /**
      * 给定文件或目录的最后修改时间是否晚于给定时间
      *
-     * @param file 文件或目录
+     * @param file       文件或目录
      * @param timeMillis 做为对比的时间
      * @return 是否晚于给定时间
      */
@@ -479,7 +479,7 @@ public class FileUtil {
      * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
      *
      * @param parent 父文件对象
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      * @throws IOException
      */
@@ -492,7 +492,7 @@ public class FileUtil {
      * 此方法不对File对象类型做判断，如果File不存在，无法判断其类型
      *
      * @param parent 父文件对象
-     * @param path 文件路径
+     * @param path   文件路径
      * @return File
      * @throws IOException
      */
@@ -615,7 +615,7 @@ public class FileUtil {
      * 创建临时文件<br>
      * 创建后的文件名为 prefix[Randon].tmp
      *
-     * @param dir 临时文件创建的所在目录
+     * @param dir       临时文件创建的所在目录
      * @param isReCreat 是否重新创建文件（删掉原来的，创建新的）
      * @return 临时文件
      * @throws IOException
@@ -628,9 +628,9 @@ public class FileUtil {
      * 创建临时文件<br>
      * 创建后的文件名为 prefix[Randon].suffix From com.jodd.io.FileUtil
      *
-     * @param prefix 前缀，至少3个字符
-     * @param suffix 后缀，如果null则使用默认.tmp
-     * @param dir 临时文件创建的所在目录
+     * @param prefix    前缀，至少3个字符
+     * @param suffix    后缀，如果null则使用默认.tmp
+     * @param dir       临时文件创建的所在目录
      * @param isReCreat 是否重新创建文件（删掉原来的，创建新的）
      * @return 临时文件
      * @throws IOException
@@ -656,13 +656,13 @@ public class FileUtil {
     /**
      * 通过JDK7+的 {@link Files#copy(Path, Path, CopyOption...)} 方法拷贝文件
      *
-     * @param src 源文件路径
-     * @param dest 目标文件或目录路径，如果为目录使用与源文件相同的文件名
+     * @param src     源文件路径
+     * @param dest    目标文件或目录路径，如果为目录使用与源文件相同的文件名
      * @param options {@link StandardCopyOption}
      * @return File
      * @throws IOException
      */
-    public static File copyFile(String src, String dest, StandardCopyOption...options) throws IOException {
+    public static File copyFile(String src, String dest, StandardCopyOption... options) throws IOException {
         AssertCommand.notBlank(src, "Source File path is blank !");
         AssertCommand.notNull(src, "Destination File path is null !");
         return copyFile(Paths.get(src), Paths.get(dest), options).toFile();
@@ -671,13 +671,13 @@ public class FileUtil {
     /**
      * 通过JDK7+的 {@link Files#copy(Path, Path, CopyOption...)} 方法拷贝文件
      *
-     * @param src 源文件
-     * @param dest 目标文件或目录，如果为目录使用与源文件相同的文件名
+     * @param src     源文件
+     * @param dest    目标文件或目录，如果为目录使用与源文件相同的文件名
      * @param options {@link StandardCopyOption}
      * @return File
      * @throws IOException
      */
-    public static File copyFile(File src, File dest, StandardCopyOption...options) throws IOException {
+    public static File copyFile(File src, File dest, StandardCopyOption... options) throws IOException {
         // check
         AssertCommand.notNull(src, "Source File is null !");
         if (false == src.exists()) {
@@ -696,13 +696,13 @@ public class FileUtil {
     /**
      * 通过JDK7+的 {@link Files#copy(Path, Path, CopyOption...)} 方法拷贝文件
      *
-     * @param src 源文件路径
-     * @param dest 目标文件或目录，如果为目录使用与源文件相同的文件名
+     * @param src     源文件路径
+     * @param dest    目标文件或目录，如果为目录使用与源文件相同的文件名
      * @param options {@link StandardCopyOption}
      * @return Path
      * @throws IOException
      */
-    public static Path copyFile(Path src, Path dest, StandardCopyOption...options) throws IOException {
+    public static Path copyFile(Path src, Path dest, StandardCopyOption... options) throws IOException {
         AssertCommand.notNull(src, "Source File is null !");
         AssertCommand.notNull(dest, "Destination File or directiory is null !");
 
@@ -714,8 +714,8 @@ public class FileUtil {
      * 复制文件或目录<br>
      * 如果目标文件为目录，则将源文件以相同文件名拷贝到目标目录
      *
-     * @param srcPath 源文件或目录
-     * @param destPath 目标文件或目录，目标不存在会自动创建（目录、文件都创建）
+     * @param srcPath    源文件或目录
+     * @param destPath   目标文件或目录，目标不存在会自动创建（目录、文件都创建）
      * @param isOverride 是否覆盖目标文件
      * @return 目标目录或文件
      * @throws IOException
@@ -731,8 +731,8 @@ public class FileUtil {
      * 2、src和dest都为文件，直接复制，名字为dest<br>
      * 3、src为文件，dest为目录，将src拷贝到dest目录下<br>
      *
-     * @param src 源文件
-     * @param dest 目标文件或目录，目标不存在会自动创建（目录、文件都创建）
+     * @param src        源文件
+     * @param dest       目标文件或目录，目标不存在会自动创建（目录、文件都创建）
      * @param isOverride 是否覆盖目标文件
      * @return 目标目录或文件
      * @throws IOException
@@ -761,8 +761,8 @@ public class FileUtil {
     /**
      * 拷贝目录，只用于内部，不做任何安全检查
      *
-     * @param src 源目录
-     * @param dest 目标目录
+     * @param src        源目录
+     * @param dest       目标目录
      * @param isOverride 是否覆盖
      * @throws IOException
      */
@@ -791,8 +791,8 @@ public class FileUtil {
     /**
      * 拷贝文件，只用于内部，不做任何安全检查
      *
-     * @param src 源文件，必须为文件
-     * @param dest 目标文件，必须为文件
+     * @param src        源文件，必须为文件
+     * @param dest       目标文件，必须为文件
      * @param isOverride 是否覆盖已有文件
      * @throws IOException
      */
@@ -829,8 +829,8 @@ public class FileUtil {
     /**
      * 移动文件或者目录
      *
-     * @param src 源文件或者目录
-     * @param dest 目标文件或者目录
+     * @param src        源文件或者目录
+     * @param dest       目标文件或者目录
      * @param isOverride 是否覆盖目标，只有目标为文件才覆盖
      * @throws IOException
      */
@@ -871,7 +871,7 @@ public class FileUtil {
      * 获取绝对路径<br/>
      * 此方法不会判定给定路径是否有效（文件或目录存在）
      *
-     * @param path 相对路径
+     * @param path      相对路径
      * @param baseClass 相对路径所相对的类
      * @return 绝对路径
      */
@@ -1012,7 +1012,7 @@ public class FileUtil {
      * 判断文件是否被改动<br>
      * 如果文件对象为 null 或者文件不存在，被视为改动
      *
-     * @param file 文件对象
+     * @param file           文件对象
      * @param lastModifyTime 上次的改动时间
      * @return 是否被改动
      */
@@ -1084,7 +1084,7 @@ public class FileUtil {
     /**
      * 获得相对子路径
      *
-     * @param rootDir 绝对父路径
+     * @param rootDir  绝对父路径
      * @param filePath 文件路径
      * @return 相对子路径
      */
@@ -1096,7 +1096,7 @@ public class FileUtil {
      * 获得相对子路径
      *
      * @param rootDir 绝对父路径
-     * @param file 文件
+     * @param file    文件
      * @return 相对子路径
      */
     public static String subPath(String rootDir, File file) {
@@ -1191,7 +1191,7 @@ public class FileUtil {
      * 判断文件路径是否有指定后缀，忽略大小写<br>
      * 常用语判断扩展名
      *
-     * @param file 文件或目录
+     * @param file   文件或目录
      * @param suffix 后缀
      * @return 是否有指定后缀
      */
@@ -1276,7 +1276,7 @@ public class FileUtil {
     /**
      * 获得一个文件读取器
      *
-     * @param file 文件
+     * @param file        文件
      * @param charsetName 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1288,7 +1288,7 @@ public class FileUtil {
     /**
      * 获得一个文件读取器
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1300,7 +1300,7 @@ public class FileUtil {
     /**
      * 获得一个文件读取器
      *
-     * @param path 绝对路径
+     * @param path        绝对路径
      * @param charsetName 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1312,7 +1312,7 @@ public class FileUtil {
     /**
      * 获得一个文件读取器
      *
-     * @param path 绝对路径
+     * @param path    绝对路径
      * @param charset 字符集
      * @return BufferedReader对象
      * @throws IOException
@@ -1360,7 +1360,7 @@ public class FileUtil {
     /**
      * 读取文件内容
      *
-     * @param file 文件
+     * @param file        文件
      * @param charsetName 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1372,7 +1372,7 @@ public class FileUtil {
     /**
      * 读取文件内容
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1384,7 +1384,7 @@ public class FileUtil {
     /**
      * 读取文件内容
      *
-     * @param path 文件路径
+     * @param path        文件路径
      * @param charsetName 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1396,7 +1396,7 @@ public class FileUtil {
     /**
      * 读取文件内容
      *
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 内容
      * @throws IORuntimeException
@@ -1408,7 +1408,7 @@ public class FileUtil {
     /**
      * 读取文件内容
      *
-     * @param url 文件URL
+     * @param url     文件URL
      * @param charset 字符集
      * @return 内容
      * @throws IOException
@@ -1432,8 +1432,8 @@ public class FileUtil {
     /**
      * 从文件中读取每一行数据
      *
-     * @param path 文件路径
-     * @param charset 字符集
+     * @param path       文件路径
+     * @param charset    字符集
      * @param collection 集合
      * @return 文件中的每行内容的集合
      * @throws IORuntimeException
@@ -1446,8 +1446,8 @@ public class FileUtil {
     /**
      * 从文件中读取每一行数据
      *
-     * @param file 文件路径
-     * @param charset 字符集
+     * @param file       文件路径
+     * @param charset    字符集
      * @param collection 集合
      * @return 文件中的每行内容的集合
      * @throws IORuntimeException
@@ -1460,8 +1460,8 @@ public class FileUtil {
     /**
      * 从文件中读取每一行数据
      *
-     * @param url 文件的URL
-     * @param charset 字符集
+     * @param url        文件的URL
+     * @param charset    字符集
      * @param collection 集合
      * @return 文件中的每行内容的集合
      * @throws IOException
@@ -1482,7 +1482,7 @@ public class FileUtil {
     /**
      * 从文件中读取每一行数据
      *
-     * @param url 文件的URL
+     * @param url     文件的URL
      * @param charset 字符集
      * @return 文件中的每行内容的集合List
      * @throws IORuntimeException
@@ -1494,7 +1494,7 @@ public class FileUtil {
     /**
      * 从文件中读取每一行数据
      *
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 文件中的每行内容的集合List
      * @throws IORuntimeException
@@ -1506,7 +1506,7 @@ public class FileUtil {
     /**
      * 从文件中读取每一行数据
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 文件中的每行内容的集合List
      * @throws IORuntimeException
@@ -1519,8 +1519,8 @@ public class FileUtil {
      * 按照给定的readerHandler读取文件中的数据
      *
      * @param readerHandler Reader处理类
-     * @param path 文件的绝对路径
-     * @param charset 字符集
+     * @param path          文件的绝对路径
+     * @param charset       字符集
      * @return 从文件中load出的数据
      * @throws IORuntimeException
      */
@@ -1556,9 +1556,9 @@ public class FileUtil {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param path 输出路径，绝对路径
+     * @param path        输出路径，绝对路径
      * @param charsetName 字符集
-     * @param isAppend 是否追加
+     * @param isAppend    是否追加
      * @return BufferedReader对象
      * @throws IOException
      */
@@ -1569,8 +1569,8 @@ public class FileUtil {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param path 输出路径，绝对路径
-     * @param charset 字符集
+     * @param path     输出路径，绝对路径
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return BufferedReader对象
      * @throws IOException
@@ -1582,9 +1582,9 @@ public class FileUtil {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param file 输出文件
+     * @param file        输出文件
      * @param charsetName 字符集
-     * @param isAppend 是否追加
+     * @param isAppend    是否追加
      * @return BufferedReader对象
      * @throws IOException
      */
@@ -1595,8 +1595,8 @@ public class FileUtil {
     /**
      * 获得一个带缓存的写入对象
      *
-     * @param file 输出文件
-     * @param charset 字符集
+     * @param file     输出文件
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return BufferedReader对象
      * @throws IOException
@@ -1608,8 +1608,8 @@ public class FileUtil {
     /**
      * 获得一个打印写入对象，可以有print
      *
-     * @param path 输出路径，绝对路径
-     * @param charset 字符集
+     * @param path     输出路径，绝对路径
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return 打印对象
      * @throws IOException
@@ -1621,8 +1621,8 @@ public class FileUtil {
     /**
      * 获得一个打印写入对象，可以有print
      *
-     * @param file 文件
-     * @param charset 字符集
+     * @param file     文件
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @return 打印对象
      * @throws IOException
@@ -1637,7 +1637,7 @@ public class FileUtil {
      * 将String写入文件，覆盖模式，字符集为UTF-8
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @return 写入的文件
      * @throws IORuntimeException
      */
@@ -1649,7 +1649,7 @@ public class FileUtil {
      * 将String写入文件，覆盖模式，字符集为UTF-8
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @return 写入的文件
      * @throws IORuntimeException
      */
@@ -1661,7 +1661,7 @@ public class FileUtil {
      * 将String写入文件，覆盖模式
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -1674,7 +1674,7 @@ public class FileUtil {
      * 将String写入文件，覆盖模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @throws IORuntimeException
      */
@@ -1686,7 +1686,7 @@ public class FileUtil {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -1699,7 +1699,7 @@ public class FileUtil {
      * 将String写入文件，追加模式
      *
      * @param content 写入的内容
-     * @param file 文件
+     * @param file    文件
      * @param charset 字符集
      * @return 写入的文件
      * @throws IORuntimeException
@@ -1711,8 +1711,8 @@ public class FileUtil {
     /**
      * 将列表写入文件，覆盖模式
      *
-     * @param list 列表
-     * @param path 绝对路径
+     * @param list    列表
+     * @param path    绝对路径
      * @param charset 字符集
      * @throws IORuntimeException
      */
@@ -1723,8 +1723,8 @@ public class FileUtil {
     /**
      * 将列表写入文件，追加模式
      *
-     * @param list 列表
-     * @param path 绝对路径
+     * @param list    列表
+     * @param path    绝对路径
      * @param charset 字符集
      * @throws IORuntimeException
      */
@@ -1735,9 +1735,9 @@ public class FileUtil {
     /**
      * 将列表写入文件
      *
-     * @param list 列表
-     * @param path 文件路径
-     * @param charset 字符集
+     * @param list     列表
+     * @param path     文件路径
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @throws IORuntimeException
      */
@@ -1749,9 +1749,9 @@ public class FileUtil {
     /**
      * 将列表写入文件
      *
-     * @param list 列表
-     * @param file 文件
-     * @param charset 字符集
+     * @param list     列表
+     * @param file     文件
+     * @param charset  字符集
      * @param isAppend 是否追加
      * @throws IORuntimeException
      */
@@ -1787,10 +1787,10 @@ public class FileUtil {
     /**
      * 写入数据到文件
      *
-     * @param data 数据
-     * @param dest 目标文件
-     * @param off 数据开始位置
-     * @param len 数据长度
+     * @param data   数据
+     * @param dest   目标文件
+     * @param off    数据开始位置
+     * @param len    数据长度
      * @param append 是否追加模式
      * @return File
      * @throws IORuntimeException
@@ -1803,7 +1803,7 @@ public class FileUtil {
      * 将流的内容写入文件<br>
      *
      * @param dest 目标文件
-     * @param in 输入流
+     * @param in   输入流
      * @return dest
      * @throws IORuntimeException
      */
@@ -1814,7 +1814,7 @@ public class FileUtil {
     /**
      * 将流的内容写入文件<br>
      *
-     * @param in 输入流
+     * @param in           输入流
      * @param fullFilePath 文件绝对路径
      * @return dest
      * @throws IORuntimeException
@@ -1827,7 +1827,7 @@ public class FileUtil {
      * 将文件写入流中
      *
      * @param file 文件
-     * @param out 流
+     * @param out  流
      * @return File
      * @throws IORuntimeException
      */
@@ -1839,7 +1839,7 @@ public class FileUtil {
      * 将流的内容写入文件<br>
      *
      * @param fullFilePath 文件绝对路径
-     * @param out 输出流
+     * @param out          输出流
      * @throws IORuntimeException
      */
     public static void writeToStream(String fullFilePath, OutputStream out) throws IORuntimeException {
@@ -1867,7 +1867,7 @@ public class FileUtil {
         if (size <= 0) {
             return "0";
         }
-        final String[] units = new String[] { "B", "kB", "MB", "GB", "TB", "EB" };
+        final String[] units = new String[] {"B", "kB", "MB", "GB", "TB", "EB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.##").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }

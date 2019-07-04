@@ -19,7 +19,7 @@ public class DbRuntimeException extends RuntimeException {
         super(message);
     }
 
-    public DbRuntimeException(String messageTemplate, Object...params) {
+    public DbRuntimeException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -27,7 +27,7 @@ public class DbRuntimeException extends RuntimeException {
         super(message, throwable);
     }
 
-    public DbRuntimeException(Throwable throwable, String messageTemplate, Object...params) {
+    public DbRuntimeException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

@@ -1,16 +1,15 @@
 package org.gjgr.pig.chivalrous.db.ds.simple;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.sql.DataSource;
-
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
+
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 简单数据源工厂类

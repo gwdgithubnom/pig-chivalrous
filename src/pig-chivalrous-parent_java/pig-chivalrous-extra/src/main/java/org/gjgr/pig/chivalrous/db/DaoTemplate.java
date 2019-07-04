@@ -1,16 +1,15 @@
 package org.gjgr.pig.chivalrous.db;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.ds.pooled.PooledDataSource;
 import org.gjgr.pig.chivalrous.db.handler.EntityHandler;
 import org.gjgr.pig.chivalrous.db.handler.EntityListHandler;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 数据访问层模板<br>
@@ -49,7 +48,7 @@ public class DaoTemplate {
     /**
      * 构造，使用默认的池化连接池，读取默认配置文件的空分组，适用于只有一个数据库的情况
      *
-     * @param tableName 数据库表名
+     * @param tableName       数据库表名
      * @param primaryKeyField 主键字段名
      */
     public DaoTemplate(String tableName, String primaryKeyField) {
@@ -63,9 +62,9 @@ public class DaoTemplate {
     /**
      * 构造
      *
-     * @param tableName 表名
+     * @param tableName       表名
      * @param primaryKeyField 主键字段名
-     * @param ds 数据源
+     * @param ds              数据源
      */
     public DaoTemplate(String tableName, String primaryKeyField, DataSource ds) {
         this(tableName, primaryKeyField, DbUtil.newSqlRunner(ds));
@@ -74,9 +73,9 @@ public class DaoTemplate {
     /**
      * 构造
      *
-     * @param tableName 表名
+     * @param tableName       表名
      * @param primaryKeyField 主键字段名
-     * @param runner SqlRunner对象
+     * @param runner          SqlRunner对象
      */
     public DaoTemplate(String tableName, String primaryKeyField, SqlRunner runner) {
         this.tableName = tableName;
@@ -129,7 +128,7 @@ public class DaoTemplate {
      * 删除
      *
      * @param <T> 主键类型
-     * @param pk 主键
+     * @param pk  主键
      * @return 删除行数
      * @throws SQLException
      */
@@ -143,7 +142,7 @@ public class DaoTemplate {
     /**
      * 删除
      *
-     * @param <T> 主键类型
+     * @param <T>   主键类型
      * @param field 字段名
      * @param value 字段值
      * @return 删除行数
@@ -160,7 +159,7 @@ public class DaoTemplate {
     /**
      * 删除
      *
-     * @param <T> 主键类型
+     * @param <T>   主键类型
      * @param where 删除条件，当条件为空时，返回0（防止误删全表）
      * @return 删除行数
      * @throws SQLException
@@ -179,7 +178,7 @@ public class DaoTemplate {
      * 按照条件更新
      *
      * @param record 更新的内容
-     * @param where 条件
+     * @param where  条件
      * @return 更新条目数
      * @throws SQLException
      */
@@ -232,7 +231,7 @@ public class DaoTemplate {
      * 根据主键获取单个记录
      *
      * @param <T>
-     * @param pk 主键值
+     * @param pk  主键值
      * @return 记录
      * @throws SQLException
      */
@@ -311,7 +310,7 @@ public class DaoTemplate {
      * @return 记录
      * @throws SQLException
      */
-    public List<Entity> findBySql(String sql, Object...params) throws SQLException {
+    public List<Entity> findBySql(String sql, Object... params) throws SQLException {
         String selectKeyword = StringCommand.subPre(sql.trim(), 6).toLowerCase();
         if (false == "select".equals(selectKeyword)) {
             sql = "SELECT * FROM " + this.tableName + " " + sql;
@@ -322,13 +321,13 @@ public class DaoTemplate {
     /**
      * 分页
      *
-     * @param where 条件
-     * @param page 分页对象
+     * @param where        条件
+     * @param page         分页对象
      * @param selectFields 查询的字段列表
      * @return 分页结果集
      * @throws SQLException
      */
-    public PageResult<Entity> page(Entity where, Page page, String...selectFields) throws SQLException {
+    public PageResult<Entity> page(Entity where, Page page, String... selectFields) throws SQLException {
         return runner.page(Arrays.asList(selectFields), fixEntity(where), page);
     }
 
@@ -336,7 +335,7 @@ public class DaoTemplate {
      * 分页
      *
      * @param where 条件
-     * @param page 分页对象
+     * @param page  分页对象
      * @return 分页结果集
      * @throws SQLException
      */

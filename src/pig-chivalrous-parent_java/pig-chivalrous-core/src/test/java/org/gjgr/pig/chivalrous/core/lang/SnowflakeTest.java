@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import java.util.HashSet;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashSet;
 
 /**
  * Snowflake单元测试

@@ -16,6 +16,9 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,9 +27,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
-
-import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
  * Utility for detecting and accessing JBoss VFS in the classpath.
@@ -92,7 +92,7 @@ public abstract class VfsUtils {
         }
     }
 
-    protected static Object invokeVfsMethod(Method method, @Nullable Object target, Object...args) throws IOException {
+    protected static Object invokeVfsMethod(Method method, @Nullable Object target, Object... args) throws IOException {
         try {
             return method.invoke(target, args);
         } catch (InvocationTargetException ex) {

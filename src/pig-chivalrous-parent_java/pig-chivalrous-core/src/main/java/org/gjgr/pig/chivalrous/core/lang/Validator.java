@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import java.net.MalformedURLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
 import org.gjgr.pig.chivalrous.core.exceptions.ValidateException;
 import org.gjgr.pig.chivalrous.core.util.RegexCommand;
+
+import java.net.MalformedURLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 字段验证器
@@ -106,7 +106,7 @@ public final class Validator {
      * 验证是否为空，为空时抛出异常<br>
      * 对于String类型判定是否为empty(null 或 "")<br>
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -131,8 +131,8 @@ public final class Validator {
     /**
      * 验证是否相等，不相等抛出异常<br>
      *
-     * @param t1 对象1
-     * @param t2 对象2
+     * @param t1       对象1
+     * @param t2       对象2
      * @param errorMsg 错误信息
      * @throws ValidateException
      */
@@ -145,8 +145,8 @@ public final class Validator {
     /**
      * 验证是否不等，相等抛出异常<br>
      *
-     * @param t1 对象1
-     * @param t2 对象2
+     * @param t1       对象1
+     * @param t2       对象2
      * @param errorMsg 错误信息
      * @throws ValidateException
      */
@@ -161,8 +161,8 @@ public final class Validator {
      * 当数据为空时抛出验证异常<br>
      * 当两值不等时抛出异常
      *
-     * @param t1 对象1
-     * @param t2 对象2
+     * @param t1       对象1
+     * @param t2       对象2
      * @param errorMsg 错误信息
      * @throws ValidateException
      */
@@ -176,8 +176,8 @@ public final class Validator {
      * 当数据为空时抛出验证异常<br>
      * 当两值相等时抛出异常
      *
-     * @param t1 对象1
-     * @param t2 对象2
+     * @param t1       对象1
+     * @param t2       对象2
      * @param errorMsg 错误信息
      * @throws ValidateException
      */
@@ -201,8 +201,8 @@ public final class Validator {
      * 通过正则表达式验证<br>
      * 不符合正则
      *
-     * @param regex 正则
-     * @param value 值
+     * @param regex    正则
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -216,7 +216,7 @@ public final class Validator {
      * 通过正则表达式验证
      *
      * @param pattern 正则模式
-     * @param value 值
+     * @param value   值
      * @return 是否匹配正则
      */
     public static boolean isMactchRegex(Pattern pattern, String value) {
@@ -236,7 +236,7 @@ public final class Validator {
     /**
      * 验证是否为英文字母 、数字和下划线
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -250,8 +250,8 @@ public final class Validator {
      * 验证是否为给定长度范围的英文字母 、数字和下划线
      *
      * @param value 值
-     * @param min 最小长度，负数自动识别为0
-     * @param max 最大长度，0或负数表示不限制最大长度
+     * @param min   最小长度，负数自动识别为0
+     * @param max   最大长度，0或负数表示不限制最大长度
      * @return 是否为给定长度范围的英文字母 、数字和下划线
      */
     public static boolean isGeneral(String value, int min, int max) {
@@ -268,9 +268,9 @@ public final class Validator {
     /**
      * 验证是否为给定长度范围的英文字母 、数字和下划线
      *
-     * @param value 值
-     * @param min 最小长度，负数自动识别为0
-     * @param max 最大长度，0或负数表示不限制最大长度
+     * @param value    值
+     * @param min      最小长度，负数自动识别为0
+     * @param max      最大长度，0或负数表示不限制最大长度
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -284,7 +284,7 @@ public final class Validator {
      * 验证是否为给定最小长度的英文字母 、数字和下划线
      *
      * @param value 值
-     * @param min 最小长度，负数自动识别为0
+     * @param min   最小长度，负数自动识别为0
      * @return 是否为给定最小长度的英文字母 、数字和下划线
      */
     public static boolean isGeneral(String value, int min) {
@@ -294,8 +294,8 @@ public final class Validator {
     /**
      * 验证是否为给定最小长度的英文字母 、数字和下划线
      *
-     * @param value 值
-     * @param min 最小长度，负数自动识别为0
+     * @param value    值
+     * @param min      最小长度，负数自动识别为0
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -319,7 +319,7 @@ public final class Validator {
     /**
      * 验证是否为数字
      *
-     * @param value 表单值
+     * @param value    表单值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -342,7 +342,7 @@ public final class Validator {
     /**
      * 验证是否为货币
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -365,7 +365,7 @@ public final class Validator {
     /**
      * 验证是否为邮政编码（中国）
      *
-     * @param value 表单值
+     * @param value    表单值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -388,7 +388,7 @@ public final class Validator {
     /**
      * 验证是否为可用邮箱地址
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -411,7 +411,7 @@ public final class Validator {
     /**
      * 验证是否为手机号码（中国）
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -436,7 +436,7 @@ public final class Validator {
      * 验证是否为身份证号码（18位中国）<br>
      * 出生日期只支持到到2999年
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -449,9 +449,9 @@ public final class Validator {
     /**
      * 验证是否为生日<br>
      *
-     * @param year 年
+     * @param year  年
      * @param month 月
-     * @param day 日
+     * @param day   日
      * @return 是否为生日
      */
     public static boolean isBirthday(int year, int month, int day) {
@@ -511,7 +511,7 @@ public final class Validator {
     /**
      * 验证验证是否为生日<br>
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -534,7 +534,7 @@ public final class Validator {
     /**
      * 验证是否为IPV4地址
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -562,7 +562,7 @@ public final class Validator {
     /**
      * 验证是否为URL
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -585,7 +585,7 @@ public final class Validator {
     /**
      * 验证是否为汉字
      *
-     * @param value 表单值
+     * @param value    表单值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -608,7 +608,7 @@ public final class Validator {
     /**
      * 验证是否为中文字、英文字母、数字和下划线
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */
@@ -633,7 +633,7 @@ public final class Validator {
      * 验证是否为UUID<br>
      * 包括带横线标准格式和不带横线的简单模式
      *
-     * @param value 值
+     * @param value    值
      * @param errorMsg 验证错误的信息
      * @throws ValidateException
      */

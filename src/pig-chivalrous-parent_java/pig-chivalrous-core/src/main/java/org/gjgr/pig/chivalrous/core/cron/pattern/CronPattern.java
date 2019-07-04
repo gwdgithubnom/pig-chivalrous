@@ -1,11 +1,5 @@
 package org.gjgr.pig.chivalrous.core.cron.pattern;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.TimeZone;
-
 import org.gjgr.pig.chivalrous.core.cron.CronException;
 import org.gjgr.pig.chivalrous.core.cron.pattern.matcher.AlwaysTrueValueMatcher;
 import org.gjgr.pig.chivalrous.core.cron.pattern.matcher.DayOfMonthValueMatcher;
@@ -22,6 +16,12 @@ import org.gjgr.pig.chivalrous.core.cron.pattern.parser.YearValueParser;
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
+
 /**
  * 定时任务表达式<br>
  * 表达式类似于Linux的crontab表达式，表达式使用空格分成5个部分，按顺序依次为：
@@ -37,7 +37,7 @@ import org.gjgr.pig.chivalrous.core.lang.StringCommand;
  * <p>
  * 为了兼容Quartz表达式，同时支持6位和7位表达式，其中：<br>
  * <p>
- * 
+ *
  * <pre>
  * 当为6位时，第一位表示<strong>秒</strong>，范围0~59，但是第一位不做匹配
  * 当为7位时，最后一位表示<strong>年</strong>，范围1970~2099，但是第7位不做解析，也不做匹配
@@ -45,7 +45,7 @@ import org.gjgr.pig.chivalrous.core.lang.StringCommand;
  * <p>
  * 当定时任务运行到的时间匹配这些表达式后，任务被启动。<br>
  * 注意：
- * 
+ *
  * <pre>
  * 当isMatchSecond为<code>true</code>时才会匹配秒部分
  * 当isMatchYear为<code>true</code>时才会匹配年部分
@@ -61,11 +61,11 @@ import org.gjgr.pig.chivalrous.core.lang.StringCommand;
  * <li><strong>cronA | cronB</strong>：表示多个定时表达式</li>
  * </ul>
  * 注意：在每一个子表达式中优先级：
- * 
+ *
  * <pre>
  * 间隔（/） &gt; 区间（-） &gt; 列表（,）
  * </pre>
- * 
+ * <p>
  * 例如 2,3,6/3中，由于“/”优先级高，因此相当于2,3,(6/3)，结果与 2,3,6等价<br>
  * <br>
  * <p>
@@ -142,9 +142,9 @@ public class CronPattern {
     /**
      * 是否匹配日（指定月份的第几天）
      *
-     * @param matcher {@link ValueMatcher}
+     * @param matcher    {@link ValueMatcher}
      * @param dayOfMonth 日
-     * @param month 月
+     * @param month      月
      * @param isLeapYear 是否闰年
      * @return 是否匹配
      */
@@ -172,9 +172,9 @@ public class CronPattern {
     /**
      * 给定时间是否匹配定时任务表达式
      *
-     * @param millis 时间毫秒数
+     * @param millis        时间毫秒数
      * @param isMatchSecond 是否匹配秒
-     * @param isMatchYear 是否匹配年
+     * @param isMatchYear   是否匹配年
      * @return 如果匹配返回 <code>true</code>, 否则返回 <code>false</code>
      */
     public boolean match(long millis, boolean isMatchSecond, boolean isMatchYear) {
@@ -185,10 +185,10 @@ public class CronPattern {
     /**
      * 给定时间是否匹配定时任务表达式
      *
-     * @param timezone 时区 {@link TimeZone}
-     * @param millis 时间毫秒数
+     * @param timezone      时区 {@link TimeZone}
+     * @param millis        时间毫秒数
      * @param isMatchSecond 是否匹配秒
-     * @param isMatchYear 是否匹配年
+     * @param isMatchYear   是否匹配年
      * @return 如果匹配返回 <code>true</code>, 否则返回 <code>false</code>
      */
     public boolean match(TimeZone timezone, long millis, boolean isMatchSecond, boolean isMatchYear) {
@@ -202,9 +202,9 @@ public class CronPattern {
     /**
      * 给定时间是否匹配定时任务表达式
      *
-     * @param calendar 时间
+     * @param calendar      时间
      * @param isMatchSecond 是否匹配秒
-     * @param isMatchYear 是否匹配年
+     * @param isMatchYear   是否匹配年
      * @return 如果匹配返回 <code>true</code>, 否则返回 <code>false</code>
      */
     public boolean match(GregorianCalendar calendar, boolean isMatchSecond, boolean isMatchYear) {

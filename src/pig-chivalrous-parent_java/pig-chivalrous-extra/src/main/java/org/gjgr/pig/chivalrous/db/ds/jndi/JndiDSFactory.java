@@ -1,15 +1,14 @@
 package org.gjgr.pig.chivalrous.db.ds.jndi;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.sql.DataSource;
-
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
+
+import javax.sql.DataSource;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * JNDI数据源工厂类<br>

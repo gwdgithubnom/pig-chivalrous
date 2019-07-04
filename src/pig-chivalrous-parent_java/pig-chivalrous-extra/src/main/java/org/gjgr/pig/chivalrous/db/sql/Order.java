@@ -33,7 +33,7 @@ public class Order {
     /**
      * 构造
      *
-     * @param field 排序字段
+     * @param field     排序字段
      * @param direction 排序方式
      */
     public Order(String field, Direction direction) {

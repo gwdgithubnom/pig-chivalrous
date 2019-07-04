@@ -1,12 +1,12 @@
 package org.gjgr.pig.chivalrous.core.bloom;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.BitSet;
-
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.math.HashCommand;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.BitSet;
 
 /**
  * BloomFilter实现方式2，此方式使用BitSet存储。<br>
@@ -37,7 +37,7 @@ public class BitSetBloomFilter implements BloomFilter {
     /**
      * 将字符串的字节表示进行多哈希编码.
      *
-     * @param str 待添加进过滤器的字符串字节表示.
+     * @param str        待添加进过滤器的字符串字节表示.
      * @param hashNumber 要经过的哈希个数.
      * @return 各个哈希的结果数组.
      */
@@ -54,7 +54,7 @@ public class BitSetBloomFilter implements BloomFilter {
      * 计算Hash值
      *
      * @param str 被计算Hash的字符串
-     * @param k Hash算法序号
+     * @param k   Hash算法序号
      * @return Hash值
      */
     public static int hash(String str, int k) {
@@ -83,7 +83,7 @@ public class BitSetBloomFilter implements BloomFilter {
     /**
      * 通过文件初始化过滤器.
      *
-     * @param path 文件路径
+     * @param path    文件路径
      * @param charset 字符集
      * @throws IOException
      */

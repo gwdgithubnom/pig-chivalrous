@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.util;
 
-import java.util.Locale;
-
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
+import java.util.Locale;
 
 /**
  * @Author gwd
@@ -16,15 +16,15 @@ public class LocaleCommand {
     /**
      * Parse the given {@code String} value into a {@link Locale}, accepting the {@link Locale#toString} format as well
      * as BCP 47 language tags.
-     * 
+     *
      * @param localeValue the locale value: following either {@code Locale's} {@code toString()} format ("en", "en_UK",
-     *            etc), also accepting spaces as separators (as an alternative to underscores), or BCP 47 (e.g. "en-UK")
-     *            as specified by {@link Locale#forLanguageTag} on Java 7+
+     *                    etc), also accepting spaces as separators (as an alternative to underscores), or BCP 47 (e.g. "en-UK")
+     *                    as specified by {@link Locale#forLanguageTag} on Java 7+
      * @return a corresponding {@code Locale} instance, or {@code null} if none
      * @throws IllegalArgumentException in case of an invalid locale specification
-     * @since 5.0.4
      * @see #parseLocaleString
      * @see Locale#forLanguageTag
+     * @since 5.0.4
      */
     @Nullable
     public static Locale parseLocale(String localeValue) {
@@ -39,12 +39,12 @@ public class LocaleCommand {
      * Parse the given {@code String} representation into a {@link Locale}.
      * <p>
      * This is the inverse operation of {@link Locale#toString Locale's toString}.
-     * 
+     *
      * @param localeString the locale {@code String}: following {@code Locale's} {@code toString()} format ("en",
-     *            "en_UK", etc), also accepting spaces as separators (as an alternative to underscores)
-     *            <p>
-     *            Note: This variant does not accept the BCP 47 language tag format. Please use {@link #parseLocale} for
-     *            lenient parsing of both formats.
+     *                     "en_UK", etc), also accepting spaces as separators (as an alternative to underscores)
+     *                     <p>
+     *                     Note: This variant does not accept the BCP 47 language tag format. Please use {@link #parseLocale} for
+     *                     lenient parsing of both formats.
      * @return a corresponding {@code Locale} instance, or {@code null} if none
      * @throws IllegalArgumentException in case of an invalid locale specification
      */

@@ -1,5 +1,10 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.util.PageUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,11 +24,6 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.util.PageUtil;
 
 /**
  * @Author gwd
@@ -93,14 +93,14 @@ public class CollectionCommand {
      * 例如：集合1：[a, b, c, c, c]，集合2：[a, b, c, c]<br>
      * 结果：[a, b, c, c, c]，此结果中只保留了三个c
      *
-     * @param coll1 集合1
-     * @param coll2 集合2
+     * @param coll1      集合1
+     * @param coll2      集合2
      * @param otherColls 其它集合
      * @return 并集的集合，返回 {@link ArrayList}
      */
     @SafeVarargs
     public static <T> Collection<T> union(final Collection<T> coll1, final Collection<T> coll2,
-            final Collection<T>...otherColls) {
+                                          final Collection<T>... otherColls) {
         Collection<T> union = union(coll1, coll2);
         for (Collection<T> coll : otherColls) {
             union = union(union, coll);
@@ -125,8 +125,7 @@ public class CollectionCommand {
             final Map<T, Integer> map2 = countMap(coll2);
             final Set<T> elts = newHashSet(coll2);
             for (T t : elts) {
-                for (int i = 0, m =
-                        Math.min(Convert.toInt(map1.get(t), 0), Convert.toInt(map2.get(t), 0)); i < m; i++) {
+                for (int i = 0, m = Math.min(Convert.toInt(map1.get(t), 0), Convert.toInt(map2.get(t), 0)); i < m; i++) {
                     list.add(t);
                 }
             }
@@ -140,14 +139,14 @@ public class CollectionCommand {
      * 例如：集合1：[a, b, c, c, c]，集合2：[a, b, c, c]<br>
      * 结果：[a, b, c, c]，此结果中只保留了两个c
      *
-     * @param coll1 集合1
-     * @param coll2 集合2
+     * @param coll1      集合1
+     * @param coll2      集合2
      * @param otherColls 其它集合
      * @return 并集的集合，返回 {@link ArrayList}
      */
     @SafeVarargs
     public static <T> Collection<T> intersection(final Collection<T> coll1, final Collection<T> coll2,
-            final Collection<T>...otherColls) {
+                                                 final Collection<T>... otherColls) {
         Collection<T> intersection = intersection(coll1, coll2);
         if (isEmpty(intersection)) {
             return intersection;
@@ -244,8 +243,8 @@ public class CollectionCommand {
     /**
      * 以 conjunction 为分隔符将集合转换为字符串
      *
-     * @param <T> 被处理的集合
-     * @param iterable {@link Iterable}
+     * @param <T>         被处理的集合
+     * @param iterable    {@link Iterable}
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -259,8 +258,8 @@ public class CollectionCommand {
     /**
      * 以 conjunction 为分隔符将集合转换为字符串
      *
-     * @param <T> 被处理的集合
-     * @param iterator 集合
+     * @param <T>         被处理的集合
+     * @param iterator    集合
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -296,14 +295,14 @@ public class CollectionCommand {
     /**
      * 将多个集合排序并显示不同的段落（分页）
      *
-     * @param pageNo 页码，从1开始
+     * @param pageNo     页码，从1开始
      * @param numPerPage 每页的条目数
      * @param comparator 比较器
-     * @param colls 集合数组
+     * @param colls      集合数组
      * @return 分页后的段落内容
      */
     @SafeVarargs
-    public static <T> List<T> sortPageAll(int pageNo, int numPerPage, Comparator<T> comparator, Collection<T>...colls) {
+    public static <T> List<T> sortPageAll(int pageNo, int numPerPage, Comparator<T> comparator, Collection<T>... colls) {
         final List<T> result = new ArrayList<T>();
         for (Collection<T> coll : colls) {
             result.addAll(coll);
@@ -328,15 +327,15 @@ public class CollectionCommand {
     /**
      * 将多个集合排序并显示不同的段落（分页）
      *
-     * @param pageNo 页码
+     * @param pageNo     页码
      * @param numPerPage 每页的条目数
      * @param comparator 比较器
-     * @param colls 集合数组
+     * @param colls      集合数组
      * @return 分业后的段落内容
      */
     @SafeVarargs
     public static <T> List<T> sortPageAll2(int pageNo, int numPerPage, Comparator<T> comparator,
-            Collection<T>...colls) {
+                                           Collection<T>... colls) {
         BoundedPriorityQueue<T> queue = new BoundedPriorityQueue<T>(pageNo * numPerPage);
         for (Collection<T> coll : colls) {
             queue.addAll(coll);
@@ -383,9 +382,9 @@ public class CollectionCommand {
     /**
      * 切取部分数据
      *
-     * @param <T> 集合元素类型
+     * @param <T>             集合元素类型
      * @param surplusAlaDatas 原数据
-     * @param partSize 每部分数据的长度
+     * @param partSize        每部分数据的长度
      * @return 切取出的数据或null
      */
     public static <T> List<T> popPart(Stack<T> surplusAlaDatas, int partSize) {
@@ -411,9 +410,9 @@ public class CollectionCommand {
     /**
      * 切取部分数据
      *
-     * @param <T> 集合元素类型
+     * @param <T>             集合元素类型
      * @param surplusAlaDatas 原数据
-     * @param partSize 每部分数据的长度
+     * @param partSize        每部分数据的长度
      * @return 切取出的数据或null
      */
     public static <T> List<T> popPart(Deque<T> surplusAlaDatas, int partSize) {
@@ -448,7 +447,7 @@ public class CollectionCommand {
     /**
      * 新建一个HashMap
      *
-     * @param size 初始大小，由于默认负载因子0.75，传入的size会实际初始大小为size / 0.75
+     * @param size    初始大小，由于默认负载因子0.75，传入的size会实际初始大小为size / 0.75
      * @param isOrder Map的Key是否有序，有序返回 {@link LinkedHashMap}，否则返回 {@link HashMap}
      * @return HashMap对象
      * @since 3.0.4
@@ -475,7 +474,7 @@ public class CollectionCommand {
      * @return HashSet对象
      */
     @SafeVarargs
-    public static <T> HashSet<T> newHashSet(T...ts) {
+    public static <T> HashSet<T> newHashSet(T... ts) {
         HashSet<T> set = new HashSet<T>(Math.max((int) (ts.length / .75f) + 1, 16));
         for (T t : ts) {
             set.add(t);
@@ -487,11 +486,11 @@ public class CollectionCommand {
      * 新建一个HashSet
      *
      * @param isSorted 是否有序，有序返回 {@link LinkedHashSet}，否则返回 {@link HashSet}
-     * @param ts 元素数组
+     * @param ts       元素数组
      * @return HashSet对象
      */
     @SafeVarargs
-    public static <T> HashSet<T> newHashSet(boolean isSorted, T...ts) {
+    public static <T> HashSet<T> newHashSet(boolean isSorted, T... ts) {
         int initialCapacity = Math.max((int) (ts.length / .75f) + 1, 16);
         HashSet<T> set = isSorted ? new LinkedHashSet<T>(initialCapacity) : new HashSet<T>(initialCapacity);
         for (T t : ts) {
@@ -525,7 +524,7 @@ public class CollectionCommand {
      * @return ArrayList对象
      */
     @SafeVarargs
-    public static <T> ArrayList<T> newArrayList(T...values) {
+    public static <T> ArrayList<T> newArrayList(T... values) {
         ArrayList<T> arrayList = new ArrayList<T>(values.length);
         for (T t : values) {
             arrayList.add(t);
@@ -572,9 +571,9 @@ public class CollectionCommand {
     /**
      * 截取数组的部分
      *
-     * @param list 被截取的数组
+     * @param list  被截取的数组
      * @param start 开始位置（包含）
-     * @param end 结束位置（不包含）
+     * @param end   结束位置（不包含）
      * @return 截取后的数组，当开始位置超过最大时，返回null
      */
     public static <T> List<T> sub(List<T> list, int start, int end) {
@@ -609,9 +608,9 @@ public class CollectionCommand {
     /**
      * 截取集合的部分
      *
-     * @param list 被截取的数组
+     * @param list  被截取的数组
      * @param start 开始位置（包含）
-     * @param end 结束位置（不包含）
+     * @param end   结束位置（不包含）
      * @return 截取后的数组，当开始位置超过最大时，返回null
      */
     public static <T> List<T> sub(Collection<T> list, int start, int end) {
@@ -626,7 +625,7 @@ public class CollectionCommand {
      * 对集合按照指定长度分段，每一个段为单独的集合，返回这个集合的列表
      *
      * @param collection 集合
-     * @param size 每个段的长度
+     * @param size       每个段的长度
      * @return 分段列表
      */
     public static <T> List<List<T>> split(Collection<T> collection, int size) {
@@ -649,7 +648,7 @@ public class CollectionCommand {
      * 过滤会改变原集合的内容
      *
      * @param collection 集合
-     * @param editor 编辑器接口
+     * @param editor     编辑器接口
      * @return 过滤后的数组
      */
     public static <T> Collection<T> filter(Collection<T> collection, Editor<T> editor) {
@@ -669,7 +668,7 @@ public class CollectionCommand {
     /**
      * 过滤
      *
-     * @param map Map
+     * @param map    Map
      * @param editor 编辑器接口
      * @return 过滤后的Map
      */
@@ -691,7 +690,7 @@ public class CollectionCommand {
      * 集合中匹配规则的数量
      *
      * @param iterable {@link Iterable}
-     * @param matcher 匹配器，为空则全部匹配
+     * @param matcher  匹配器，为空则全部匹配
      * @return 匹配数量
      */
     public static <T> int count(Iterable<T> iterable, Matcher<T> matcher) {
@@ -816,8 +815,8 @@ public class CollectionCommand {
      * delimiter = , 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      *
-     * @param keys 键列表
-     * @param values 值列表
+     * @param keys    键列表
+     * @param values  值列表
      * @param isOrder 是否有序
      * @return Map
      * @since 3.0.4
@@ -834,7 +833,7 @@ public class CollectionCommand {
      * delimiter = , 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      *
-     * @param keys 键列表
+     * @param keys   键列表
      * @param values 值列表
      * @return Map
      */
@@ -850,7 +849,7 @@ public class CollectionCommand {
      * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      *
-     * @param keys 键列表
+     * @param keys   键列表
      * @param values 值列表
      * @return Map
      */
@@ -965,7 +964,7 @@ public class CollectionCommand {
      * 加入全部
      *
      * @param collection 被加入的集合 {@link Collection}
-     * @param iterator 要加入的{@link Iterator}
+     * @param iterator   要加入的{@link Iterator}
      * @return 原集合
      */
     public static <T> Collection<T> addAll(Collection<T> collection, Iterator<T> iterator) {
@@ -981,7 +980,7 @@ public class CollectionCommand {
      * 加入全部
      *
      * @param collection 被加入的集合 {@link Collection}
-     * @param iterable 要加入的内容{@link Iterable}
+     * @param iterable   要加入的内容{@link Iterable}
      * @return 原集合
      */
     public static <T> Collection<T> addAll(Collection<T> collection, Iterable<T> iterable) {
@@ -991,7 +990,7 @@ public class CollectionCommand {
     /**
      * 加入全部
      *
-     * @param collection 被加入的集合 {@link Collection}
+     * @param collection  被加入的集合 {@link Collection}
      * @param enumeration 要加入的内容{@link Enumeration}
      * @return 原集合
      */
@@ -1007,7 +1006,7 @@ public class CollectionCommand {
     /**
      * 将另一个列表中的元素加入到列表中，如果列表中已经存在此元素则忽略之
      *
-     * @param list 列表
+     * @param list      列表
      * @param otherList 其它列表
      * @return 此列表
      */
@@ -1066,7 +1065,7 @@ public class CollectionCommand {
      * 循环遍历 {@link Enumeration}，使用{@link Consumer} 接受遍历的每条数据，并针对每条数据做处理
      *
      * @param enumeration {@link Enumeration}
-     * @param consumer {@link Consumer} 遍历的每条数据处理器
+     * @param consumer    {@link Consumer} 遍历的每条数据处理器
      */
     public static <T> void forEach(Enumeration<T> enumeration, Consumer<T> consumer) {
         int index = 0;
@@ -1079,7 +1078,7 @@ public class CollectionCommand {
     /**
      * 循环遍历Map，使用{@link KVConsumer} 接受遍历的每条数据，并针对每条数据做处理
      *
-     * @param map {@link Map}
+     * @param map        {@link Map}
      * @param kvConsumer {@link KVConsumer} 遍历的每条数据处理器
      */
     public static <K, V> void forEach(Map<K, V> map, KVConsumer<K, V> kvConsumer) {
@@ -1152,7 +1151,7 @@ public class CollectionCommand {
         /**
          * 接受并处理一对参数
          *
-         * @param key 键
+         * @param key   键
          * @param value 值
          * @param index 参数在集合中的索引
          */

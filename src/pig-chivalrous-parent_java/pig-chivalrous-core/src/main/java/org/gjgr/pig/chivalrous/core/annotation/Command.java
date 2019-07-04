@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @Target:
  * @More:
  */
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target( {ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 // @Mapping

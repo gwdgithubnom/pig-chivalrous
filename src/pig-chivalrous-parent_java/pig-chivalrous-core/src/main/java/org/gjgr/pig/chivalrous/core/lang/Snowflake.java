@@ -5,7 +5,7 @@ package org.gjgr.pig.chivalrous.core.lang;
  * 分布式系统中，有一些需要使用全局唯一ID的场景，有些时候我们希望能使用一种简单一些的ID，并且希望ID能够按照时间有序生成。<br>
  * snowflake的结构如下(每部分用-分开):<br>
  * <p>
- * 
+ *
  * <pre>
  * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
  * </pre>
@@ -40,7 +40,7 @@ public class Snowflake {
     /**
      * 构造
      *
-     * @param workerId 终端ID
+     * @param workerId     终端ID
      * @param datacenterId 数据中心ID
      */
     public Snowflake(long workerId, long datacenterId) {

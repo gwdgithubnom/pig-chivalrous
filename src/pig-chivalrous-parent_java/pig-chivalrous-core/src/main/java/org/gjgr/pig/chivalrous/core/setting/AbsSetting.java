@@ -40,8 +40,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获得字符串类型值
      *
-     * @param key KEY
-     * @param group 分组
+     * @param key          KEY
+     * @param group        分组
      * @param defaultValue 默认值
      * @return 值或默认值
      */
@@ -58,7 +58,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获得指定分组的键对应值
      *
-     * @param key 键
+     * @param key   键
      * @param group 分组
      * @return 值
      */
@@ -109,7 +109,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获得数组型
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认的值
      * @return 属性值
      */
@@ -125,7 +125,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获得数组型
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组名
      * @return 属性值
      */
@@ -138,8 +138,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获得数组型
      *
-     * @param key 属性名
-     * @param group 分组名
+     * @param key       属性名
+     * @param group     分组名
      * @param delimiter 分隔符
      * @return 属性值
      */
@@ -154,7 +154,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取数字型型属性值
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组名
      * @return 属性值
      */
@@ -167,8 +167,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取数字型型属性值
      *
-     * @param key 属性名
-     * @param group 分组名
+     * @param key          属性名
+     * @param group        分组名
      * @param defaultValue 默认值
      * @return 属性值
      */
@@ -179,7 +179,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取波尔型属性值
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组名
      * @return 属性值
      */
@@ -192,8 +192,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取波尔型型属性值
      *
-     * @param key 属性名
-     * @param group 分组名
+     * @param key          属性名
+     * @param group        分组名
      * @param defaultValue 默认值
      * @return 属性值
      */
@@ -204,7 +204,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取long类型属性值
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组名
      * @return 属性值
      */
@@ -217,8 +217,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取long类型属性值
      *
-     * @param key 属性名
-     * @param group 分组名
+     * @param key          属性名
+     * @param group        分组名
      * @param defaultValue 默认值
      * @return 属性值
      */
@@ -231,7 +231,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取char类型属性值
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组名
      * @return 属性值
      */
@@ -246,7 +246,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取double类型属性值
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组名
      * @return 属性值
      */
@@ -257,8 +257,8 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
     /**
      * 获取double类型属性值
      *
-     * @param key 属性名
-     * @param group 分组名
+     * @param key          属性名
+     * @param group        分组名
      * @param defaultValue 默认值
      * @return 属性值
      */
@@ -271,7 +271,7 @@ public abstract class AbsSetting extends OptNullBasicTypeFromObjectGetter<String
      * 只支持基本类型的转换
      *
      * @param group 分组
-     * @param bean Bean对象
+     * @param bean  Bean对象
      * @return Bean
      */
     public Object toBean(final String group, Object bean) {

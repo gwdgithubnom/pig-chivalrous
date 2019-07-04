@@ -18,7 +18,7 @@ public class SettingRuntimeException extends RuntimeException {
         super(message);
     }
 
-    public SettingRuntimeException(String messageTemplate, Object...params) {
+    public SettingRuntimeException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -26,7 +26,7 @@ public class SettingRuntimeException extends RuntimeException {
         super(message, throwable);
     }
 
-    public SettingRuntimeException(Throwable throwable, String messageTemplate, Object...params) {
+    public SettingRuntimeException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
 import org.gjgr.pig.chivalrous.core.convert.ConverterRegistry;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 数组转换器，包括原始类型数组
@@ -135,7 +135,7 @@ public class ArrayConverter<T> extends AbstractConverter<T[]> {
     /**
      * 基本类型数组转为目标类型
      *
-     * @param value 被转换的值
+     * @param value                  被转换的值
      * @param primitiveComponentType 基本类型的类型
      * @return 转换后的数组
      */

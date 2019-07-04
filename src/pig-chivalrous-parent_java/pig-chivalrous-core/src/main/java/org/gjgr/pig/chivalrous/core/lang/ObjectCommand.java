@@ -1,5 +1,15 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.exceptions.ThrowingFunction;
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
+import org.gjgr.pig.chivalrous.core.util.TypeConverter;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -37,16 +47,6 @@ import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import org.gjgr.pig.chivalrous.core.exceptions.ThrowingFunction;
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
-import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
-import org.gjgr.pig.chivalrous.core.util.TypeConverter;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * @Author gwd
@@ -89,7 +89,7 @@ public final class ObjectCommand {
      * be able to coerce the types.
      */
     public static boolean typeCoerceEquals(TypeConverter converter, Object leftValue, Object rightValue,
-            boolean ignoreCase) {
+                                           boolean ignoreCase) {
         // sanity check
         if (leftValue == null && rightValue == null) {
             // they are equal
@@ -137,7 +137,7 @@ public final class ObjectCommand {
      * and right values. This allows you test for ordering for example with a String and Integer type as Camel will be
      * able to coerce the types.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings( {"unchecked", "rawtypes"})
     public static int typeCoerceCompare(TypeConverter converter, Object leftValue, Object rightValue) {
 
         // if both values is numeric then compare using numeric
@@ -245,7 +245,7 @@ public final class ObjectCommand {
     /**
      * Returns true if the given object is equal to any of the expected value
      */
-    public static boolean isEqualToAny(Object object, Object...values) {
+    public static boolean isEqualToAny(Object object, Object... values) {
         for (Object value : values) {
             if (equal(object, value)) {
                 return true;
@@ -266,11 +266,11 @@ public final class ObjectCommand {
      * A helper method for performing an ordered comparison on the objects handling nulls and objects which do not
      * handle sorting gracefully
      *
-     * @param a the first object
-     * @param b the second object
+     * @param a          the first object
+     * @param b          the second object
      * @param ignoreCase ignore case for string comparison
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings( {"unchecked", "rawtypes"})
     public static int compare(Object a, Object b, boolean ignoreCase) {
         if (a == b) {
             return 0;
@@ -315,7 +315,7 @@ public final class ObjectCommand {
      * Asserts whether the value is <b>not</b> <tt>null</tt>
      *
      * @param value the value to test
-     * @param name the key that resolved the value
+     * @param name  the key that resolved the value
      * @return the passed {@code value} as is
      * @throws IllegalArgumentException is thrown if assertion fails
      */
@@ -331,8 +331,8 @@ public final class ObjectCommand {
      * Asserts whether the value is <b>not</b> <tt>null</tt>
      *
      * @param value the value to test
-     * @param on additional description to indicate where this problem occurred (appended as toString())
-     * @param name the key that resolved the value
+     * @param on    additional description to indicate where this problem occurred (appended as toString())
+     * @param name  the key that resolved the value
      * @return the passed {@code value} as is
      * @throws IllegalArgumentException is thrown if assertion fails
      */
@@ -350,7 +350,7 @@ public final class ObjectCommand {
      * Asserts whether the string is <b>not</b> empty.
      *
      * @param value the string to test
-     * @param name the key that resolved the value
+     * @param name  the key that resolved the value
      * @return the passed {@code value} as is
      * @throws IllegalArgumentException is thrown if assertion fails
      * @deprecated use {@links StringCommand#notEmpty(String, String)} instead
@@ -364,8 +364,8 @@ public final class ObjectCommand {
      * Asserts whether the string is <b>not</b> empty.
      *
      * @param value the string to test
-     * @param on additional description to indicate where this problem occurred (appended as toString())
-     * @param name the key that resolved the value
+     * @param on    additional description to indicate where this problem occurred (appended as toString())
+     * @param name  the key that resolved the value
      * @return the passed {@code value} as is
      * @throws IllegalArgumentException is thrown if assertion fails
      * @deprecated use {@links StringCommand#notEmpty(String, String, Object)} instead
@@ -402,7 +402,7 @@ public final class ObjectCommand {
      * @param values the values
      * @return an Optional
      */
-    public static Optional<Object> firstNotNull(Object...values) {
+    public static Optional<Object> firstNotNull(Object... values) {
         for (Object value : values) {
             if (value != null) {
                 return Optional.of(value);
@@ -415,7 +415,7 @@ public final class ObjectCommand {
     /**
      * Tests whether the value is <tt>null</tt>, an empty string, an empty collection or a map
      *
-     * @param value the value, if its a String it will be tested for text length as well
+     * @param value    the value, if its a String it will be tested for text length as well
      * @param supplier the supplier, the supplier to be used to get a value if value is null
      */
     public static <T> T supplyIfEmpty(T value, Supplier<T> supplier) {
@@ -430,7 +430,7 @@ public final class ObjectCommand {
     /**
      * Tests whether the value is <b>not</b> <tt>null</tt>, an empty string, an empty collection or a map
      *
-     * @param value the value, if its a String it will be tested for text length as well
+     * @param value    the value, if its a String it will be tested for text length as well
      * @param consumer the consumer, the operation to be executed against value if not empty
      */
     public static <T> void ifNotEmpty(T value, Consumer<T> consumer) {
@@ -443,7 +443,7 @@ public final class ObjectCommand {
      * Tests whether the value is <b>not</b> <tt>null</tt>, an empty string, an empty collection or a map and transform
      * it using the given function.
      *
-     * @param value the value, if its a String it will be tested for text length as well
+     * @param value    the value, if its a String it will be tested for text length as well
      * @param function the function to be executed against value if not empty
      */
     public static <I, R, T extends Throwable> Optional<R> applyIfNotEmpty(I value, ThrowingFunction<I, R, T> function)
@@ -459,12 +459,12 @@ public final class ObjectCommand {
      * Tests whether the value is <b>not</b> <tt>null</tt>, an empty string, an empty collection or a map and transform
      * it using the given function.
      *
-     * @param value the value, if its a String it will be tested for text length as well
+     * @param value    the value, if its a String it will be tested for text length as well
      * @param consumer the function to be executed against value if not empty
-     * @param orElse the supplier to use to retrieve a result if the given value is empty
+     * @param orElse   the supplier to use to retrieve a result if the given value is empty
      */
     public static <I, R, T extends Throwable> R applyIfNotEmpty(I value, ThrowingFunction<I, R, T> consumer,
-            Supplier<R> orElse) throws T {
+                                                                Supplier<R> orElse) throws T {
         if (isNotEmpty(value)) {
             return consumer.apply(value);
         }
@@ -484,7 +484,7 @@ public final class ObjectCommand {
      * Removes any starting characters on the given text which match the given character
      *
      * @param text the string
-     * @param ch the initial characters to remove
+     * @param ch   the initial characters to remove
      * @return either the original string or the new substring
      * @deprecated use {@links StringCommand#removeStartingCharacters(String, char)} instead
      */
@@ -504,7 +504,7 @@ public final class ObjectCommand {
     /**
      * Returns the string after the given token
      *
-     * @param text the text
+     * @param text  the text
      * @param after the token
      * @return the text after the token, or <tt>null</tt> if text does not contain the token
      * @deprecated use {@linksStringCommand#after(String, String)} instead
@@ -517,12 +517,12 @@ public final class ObjectCommand {
     /**
      * Returns an object after the given token
      *
-     * @param text the text
-     * @param after the token
+     * @param text   the text
+     * @param after  the token
      * @param mapper a mapping function to convert the string after the token to type T
      * @return an Optional describing the result of applying a mapping function to the text after the token.
      * @deprecated use {@linksStringCommand#after(String, String, Function) StringCommand.after(String, String,
-     *             Function&lt;String,T&gt;)} instead
+     * Function&lt;String,T&gt;)} instead
      */
     @Deprecated
     public static <T> Optional<T> after(String text, String after, Function<String, T> mapper) {
@@ -532,7 +532,7 @@ public final class ObjectCommand {
     /**
      * Returns the string before the given token
      *
-     * @param text the text
+     * @param text   the text
      * @param before the token
      * @return the text before the token, or <tt>null</tt> if text does not contain the token
      * @deprecated use {@linksStringCommand#before(String, String)} instead
@@ -545,12 +545,12 @@ public final class ObjectCommand {
     /**
      * Returns an object before the given token
      *
-     * @param text the text
+     * @param text   the text
      * @param before the token
      * @param mapper a mapping function to convert the string before the token to type T
      * @return an Optional describing the result of applying a mapping function to the text before the token.
      * @deprecated use {@linksStringCommand#before(String, String, Function) StringCommand.before(String, String,
-     *             Function&lt;String,T&gt;)} instead
+     * Function&lt;String,T&gt;)} instead
      */
     @Deprecated
     public static <T> Optional<T> before(String text, String before, Function<String, T> mapper) {
@@ -560,8 +560,8 @@ public final class ObjectCommand {
     /**
      * Returns the string between the given tokens
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @return the text between the tokens, or <tt>null</tt> if text does not contain the tokens
      * @deprecated use {@linksStringCommand#between(String, String, String)} instead
@@ -574,13 +574,13 @@ public final class ObjectCommand {
     /**
      * Returns an object between the given token
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @param mapper a mapping function to convert the string between the token to type T
      * @return an Optional describing the result of applying a mapping function to the text between the token.
      * @deprecated use {@linksStringCommand#between(String, String, String, Function) StringCommand.between(String,
-     *             String, String, Function&lt;String,T&gt;)} instead
+     * String, String, Function&lt;String,T&gt;)} instead
      */
     @Deprecated
     public static <T> Optional<T> between(String text, String after, String before, Function<String, T> mapper) {
@@ -596,8 +596,8 @@ public final class ObjectCommand {
      * This implementation skips matching when the text is either single or double quoted. For example:
      * <tt>${body.matches("foo('bar')")</tt> Will not match the parenthesis from the quoted text.
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @return the text between the outer most tokens, or <tt>null</tt> if text does not contain the tokens
      * @deprecated use {@linksStringCommand#betweenOuterPair(String, char, char)} instead
@@ -610,14 +610,14 @@ public final class ObjectCommand {
     /**
      * Returns an object between the most outer pair of tokens
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @param mapper a mapping function to convert the string between the most outer pair of tokens to type T
      * @return an Optional describing the result of applying a mapping function to the text between the most outer pair
-     *         of tokens.
+     * of tokens.
      * @deprecated use {@linksStringCommand#betweenOuterPair(String, char, char, Function)
-     *             StringCommand.betweenOuterPair(String, char, char, Function&lt;String,T&gt;)} instead
+     * StringCommand.betweenOuterPair(String, char, char, Function&lt;String,T&gt;)} instead
      */
     @Deprecated
     public static <T> Optional<T> betweenOuterPair(String text, char before, char after, Function<String, T> mapper) {
@@ -646,11 +646,11 @@ public final class ObjectCommand {
     /**
      * A helper method to access a system property, catching any security exceptions
      *
-     * @param name the name of the system property required
+     * @param name         the name of the system property required
      * @param defaultValue the default value to use if the property is not available or a security exception prevents
-     *            access
+     *                     access
      * @return the system property value or the default value if the property is not available or security does not
-     *         allow its access
+     * allow its access
      */
     public static String getSystemProperty(String name, String defaultValue) {
         try {
@@ -663,11 +663,11 @@ public final class ObjectCommand {
     /**
      * A helper method to access a boolean system property, catching any security exceptions
      *
-     * @param name the name of the system property required
+     * @param name         the name of the system property required
      * @param defaultValue the default value to use if the property is not available or a security exception prevents
-     *            access
+     *                     access
      * @return the boolean representation of the system property value or the default value if the property is not
-     *         available or security does not allow its access
+     * available or security does not allow its access
      */
     public static boolean getSystemProperty(String name, Boolean defaultValue) {
         String result = getSystemProperty(name, defaultValue.toString());
@@ -713,7 +713,7 @@ public final class ObjectCommand {
     /**
      * Attempts to load the given class name using the thread context class loader or the given class loader
      *
-     * @param name the name of the class to load
+     * @param name   the name of the class to load
      * @param loader the class loader to use after the thread context class loader
      * @return the class or <tt>null</tt> if it could not be loaded
      */
@@ -724,8 +724,8 @@ public final class ObjectCommand {
     /**
      * Attempts to load the given class name using the thread context class loader or the given class loader
      *
-     * @param name the name of the class to load
-     * @param loader the class loader to use after the thread context class loader
+     * @param name       the name of the class to load
+     * @param loader     the class loader to use after the thread context class loader
      * @param needToWarn when <tt>true</tt> logs a warning when a class with the given name could not be loaded
      * @return the class or <tt>null</tt> if it could not be loaded
      */
@@ -815,7 +815,7 @@ public final class ObjectCommand {
      * Loads the given class with the provided classloader (may be null). Will ignore any class not found and return
      * null.
      *
-     * @param name the name of the class to load
+     * @param name   the name of the class to load
      * @param loader a provided loader (may be null)
      * @return the class, or null if it could not be loaded
      */
@@ -849,7 +849,7 @@ public final class ObjectCommand {
      * Attempts to load the given resource as a stream using the thread context class loader or the class loader used to
      * load this class
      *
-     * @param name the name of the resource to load
+     * @param name   the name of the resource to load
      * @param loader optional classloader to attempt first
      * @return the stream or null if it could not be loaded
      */
@@ -891,7 +891,7 @@ public final class ObjectCommand {
      * Attempts to load the given resource as a stream using the thread context class loader or the class loader used to
      * load this class
      *
-     * @param name the name of the resource to load
+     * @param name   the name of the resource to load
      * @param loader optional classloader to attempt first
      * @return the stream or null if it could not be loaded
      */
@@ -934,7 +934,7 @@ public final class ObjectCommand {
      * class loader used to load this class
      *
      * @param packageName the name of the package to load its resources
-     * @param loader optional classloader to attempt first
+     * @param loader      optional classloader to attempt first
      * @return the URLs for the resources or null if it could not be loaded
      */
     public static Enumeration<URL> loadResourcesAsURL(String packageName, ClassLoader loader) {
@@ -985,12 +985,12 @@ public final class ObjectCommand {
      * A helper method to invoke a method via reflection and wrap any exceptions as
      * {@linksRuntimeCamelException} instances
      *
-     * @param method the method to invoke
-     * @param instance the object instance (or null for static methods)
+     * @param method     the method to invoke
+     * @param instance   the object instance (or null for static methods)
      * @param parameters the parameters to the method
      * @return the result of the method invocation
      */
-    public static Object invokeMethod(Method method, Object instance, Object...parameters) {
+    public static Object invokeMethod(Method method, Object instance, Object... parameters) {
         try {
             return method.invoke(instance, parameters);
         } catch (IllegalAccessException e) {
@@ -1020,8 +1020,8 @@ public final class ObjectCommand {
      *
      * @param source the source method
      * @param target the target method
-     * @param exact <tt>true</tt> if the override must be exact same types, <tt>false</tt> if the types should be
-     *            assignable
+     * @param exact  <tt>true</tt> if the override must be exact same types, <tt>false</tt> if the types should be
+     *               assignable
      * @return <tt>true</tt> if it override, <tt>false</tt> otherwise
      */
     public static boolean isOverridingMethod(Method source, Method target, boolean exact) {
@@ -1034,10 +1034,10 @@ public final class ObjectCommand {
      * Tests whether they have the same name, return type, and parameter list.
      *
      * @param inheritingClass the class inheriting the target method overriding the source method
-     * @param source the source method
-     * @param target the target method
-     * @param exact <tt>true</tt> if the override must be exact same types, <tt>false</tt> if the types should be
-     *            assignable
+     * @param source          the source method
+     * @param target          the target method
+     * @param exact           <tt>true</tt> if the override must be exact same types, <tt>false</tt> if the types should be
+     *                        assignable
      * @return <tt>true</tt> if it override, <tt>false</tt> otherwise
      */
     public static boolean isOverridingMethod(Class<?> inheritingClass, Method source, Method target, boolean exact) {
@@ -1102,26 +1102,26 @@ public final class ObjectCommand {
     /**
      * Returns a list of methods which are annotated with the given annotation
      *
-     * @param type the type to reflect on
+     * @param type           the type to reflect on
      * @param annotationType the annotation type
      * @return a list of the methods found
      */
     public static List<Method> findMethodsWithAnnotation(Class<?> type,
-            Class<? extends Annotation> annotationType) {
+                                                         Class<? extends Annotation> annotationType) {
         return findMethodsWithAnnotation(type, annotationType, false);
     }
 
     /**
      * Returns a list of methods which are annotated with the given annotation
      *
-     * @param type the type to reflect on
-     * @param annotationType the annotation type
+     * @param type                 the type to reflect on
+     * @param annotationType       the annotation type
      * @param checkMetaAnnotations check for meta annotations
      * @return a list of the methods found
      */
     public static List<Method> findMethodsWithAnnotation(Class<?> type,
-            Class<? extends Annotation> annotationType,
-            boolean checkMetaAnnotations) {
+                                                         Class<? extends Annotation> annotationType,
+                                                         boolean checkMetaAnnotations) {
         List<Method> answer = new ArrayList<>();
         do {
             Method[] methods = type.getDeclaredMethods();
@@ -1138,13 +1138,13 @@ public final class ObjectCommand {
     /**
      * Checks if a Class or Method are annotated with the given annotation
      *
-     * @param elem the Class or Method to reflect on
-     * @param annotationType the annotation type
+     * @param elem                 the Class or Method to reflect on
+     * @param annotationType       the annotation type
      * @param checkMetaAnnotations check for meta annotations
      * @return true if annotations is present
      */
     public static boolean hasAnnotation(AnnotatedElement elem, Class<? extends Annotation> annotationType,
-            boolean checkMetaAnnotations) {
+                                        boolean checkMetaAnnotations) {
         if (elem.isAnnotationPresent(annotationType)) {
             return true;
         }
@@ -1272,7 +1272,7 @@ public final class ObjectCommand {
      * Gets the annotation from the given instance.
      *
      * @param instance the instance
-     * @param type the annotation
+     * @param type     the annotation
      * @return the annotation, or <tt>null</tt> if the instance does not have the given annotation
      */
     public static <A extends java.lang.annotation.Annotation> A getAnnotation(Object instance, Class<A> type) {
@@ -1283,9 +1283,9 @@ public final class ObjectCommand {
      * Closes the given resource if it is available, logging any closing exceptions to the given log
      *
      * @param closeable the object to close
-     * @param name the name of the resource
+     * @param name      the name of the resource
      * @deprecated will be removed in Camel 3.0. Instead use
-     *             {@linksorg.apache.camel.util.IOHelper#close(java.io.Closeable, String, org.slf4j.Logger)} instead
+     * {@linksorg.apache.camel.util.IOHelper#close(java.io.Closeable, String, org.slf4j.Logger)} instead
      */
     @Deprecated
     public static void close(Closeable closeable, String name) {
@@ -1455,7 +1455,7 @@ public final class ObjectCommand {
      * The strategy is to look in the exception hierarchy to find the first given cause that matches the type. Will
      * start from the bottom (the real cause) and walk upwards.
      *
-     * @param type the exception type wanted to retrieve
+     * @param type      the exception type wanted to retrieve
      * @param exception the caused exception
      * @return the exception found (or <tt>null</tt> if not found in the exception hierarchy)
      */
@@ -1490,7 +1490,7 @@ public final class ObjectCommand {
      * Lookup the constant field on the given class with the given name
      *
      * @param clazz the class
-     * @param name the name of the field to lookup
+     * @param name  the name of the field to lookup
      * @return the value of the constant field, or <tt>null</tt> if not found
      */
     public static String lookupConstantFieldValue(Class<?> clazz, String name) {
@@ -1535,7 +1535,7 @@ public final class ObjectCommand {
     /**
      * Calling the Callable with the setting of TCCL with a given classloader.
      *
-     * @param call the Callable instance
+     * @param call        the Callable instance
      * @param classloader the class loader
      * @return the result of Callable return
      */
@@ -1570,11 +1570,11 @@ public final class ObjectCommand {
      * Check whether the given exception is compatible with the specified exception types, as declared in a throws
      * clause.
      *
-     * @param ex the exception to check
+     * @param ex                 the exception to check
      * @param declaredExceptions the exception types declared in the throws clause
      * @return whether the given exception is compatible
      */
-    public static boolean isCompatibleWithThrowsClause(Throwable ex, @Nullable Class<?>...declaredExceptions) {
+    public static boolean isCompatibleWithThrowsClause(Throwable ex, @Nullable Class<?>... declaredExceptions) {
         if (!isCheckedException(ex)) {
             return true;
         }
@@ -1663,7 +1663,7 @@ public final class ObjectCommand {
      *
      * @param obj the candidate object
      * @return either the value held within the {@code Optional}, {@code null} if the {@code Optional} is empty, or
-     *         simply the given object as-is
+     * simply the given object as-is
      * @since 5.0
      */
     @Nullable
@@ -1683,8 +1683,8 @@ public final class ObjectCommand {
     /**
      * Check whether the given array contains the given element.
      *
-     * @param array the array to check (may be {@code null}, in which case the return value will always be
-     *            {@code false})
+     * @param array   the array to check (may be {@code null}, in which case the return value will always be
+     *                {@code false})
      * @param element the element to check for
      * @return whether the element has been found in the given array
      */
@@ -1705,7 +1705,7 @@ public final class ObjectCommand {
      * determining a match.
      *
      * @param enumValues the enum values to check, typically obtained via {@code MyEnum.values()}
-     * @param constant the constant name to find (must not be null or empty string)
+     * @param constant   the constant name to find (must not be null or empty string)
      * @return whether the constant has been found in the given array
      */
     public static boolean containsConstant(Enum<?>[] enumValues, String constant) {
@@ -1715,8 +1715,8 @@ public final class ObjectCommand {
     /**
      * Check whether the given array of enum constants contains a constant with the given name.
      *
-     * @param enumValues the enum values to check, typically obtained via {@code MyEnum.values()}
-     * @param constant the constant name to find (must not be null or empty string)
+     * @param enumValues    the enum values to check, typically obtained via {@code MyEnum.values()}
+     * @param constant      the constant name to find (must not be null or empty string)
      * @param caseSensitive whether case is significant in determining a match
      * @return whether the constant has been found in the given array
      */
@@ -1733,11 +1733,11 @@ public final class ObjectCommand {
     /**
      * Case insensitive alternative to {@linksEnum#valueOf(Class, String)}.
      *
-     * @param <E> the concrete Enum type
+     * @param <E>        the concrete Enum type
      * @param enumValues the array of all Enum constants in question, usually per {@code Enum.values()}
-     * @param constant the constant to get the enum value of
+     * @param constant   the constant to get the enum value of
      * @throws IllegalArgumentException if the given constant is not found in the given array of enum values. Use
-     *             {@links#containsConstant(Enum[], String)} as a guard to avoid this exception.
+     *                                  {@links#containsConstant(Enum[], String)} as a guard to avoid this exception.
      */
     public static <E extends Enum<?>> E caseInsensitiveValueOf(E[] enumValues, String constant) {
         for (E candidate : enumValues) {
@@ -1754,7 +1754,7 @@ public final class ObjectCommand {
      * given object.
      *
      * @param array the array to append to (can be {@code null})
-     * @param obj the object to append
+     * @param obj   the object to append
      * @return the new array (of the same component type; never {@code null})
      */
     public static <A, O extends A> A[] addObjectToArray(@Nullable A[] array, @Nullable O obj) {
@@ -2558,7 +2558,7 @@ public final class ObjectCommand {
      * <li>Array</li>
      * </ul>
      *
-     * @param obj 对象
+     * @param obj     对象
      * @param element 元素
      * @return 是否包含
      */

@@ -16,6 +16,11 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
@@ -23,11 +28,6 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
  * Default implementation of the {@links ResourceLoader} interface. Used by {@links ResourceEditor}, and serves as base
@@ -38,9 +38,9 @@ import org.gjgr.pig.chivalrous.core.lang.Nullable;
  * non-URL path or a "classpath:" pseudo-URL.
  *
  * @author Juergen Hoeller
- * @since 10.03.2004
  * @sees FileSystemResourceLoader
  * @sees org.springframework.context.support.ClassPathXmlApplicationContext
+ * @since 10.03.2004
  */
 public class DefaultResourceLoader implements ResourceLoader {
 
@@ -54,7 +54,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      * <p>
      * ClassLoader access will happen using the thread context class loader at the time of this ResourceLoader's
      * initialization.
-     * 
+     *
      * @sees Thread#getContextClassLoader()
      */
     public DefaultResourceLoader() {
@@ -63,9 +63,9 @@ public class DefaultResourceLoader implements ResourceLoader {
 
     /**
      * Create a new DefaultResourceLoader.
-     * 
+     *
      * @param classLoader the ClassLoader to load class path resources with, or {@code null} for using the thread
-     *            context class loader at the time of actual resource access
+     *                    context class loader at the time of actual resource access
      */
     public DefaultResourceLoader(@Nullable ClassLoader classLoader) {
         this.classLoader = classLoader;
@@ -77,8 +77,8 @@ public class DefaultResourceLoader implements ResourceLoader {
      * Any such resolver will be invoked ahead of this loader's standard resolution rules. It may therefore also
      * override any default rules.
      *
-     * @since 4.3
      * @sees #getProtocolResolvers()
+     * @since 4.3
      */
     public void addProtocolResolver(ProtocolResolver resolver) {
         AssertCommand.notNull(resolver, "ProtocolResolver must not be null");
@@ -110,8 +110,8 @@ public class DefaultResourceLoader implements ResourceLoader {
     /**
      * Clear all resource caches in this resource loader.
      *
-     * @since 5.0
      * @sees #getResourceCache
+     * @since 5.0
      */
     public void clearResourceCaches() {
         this.resourceCaches.clear();
@@ -174,7 +174,7 @@ public class DefaultResourceLoader implements ResourceLoader {
      * <p>
      * The default implementation supports class path locations. This should be appropriate for standalone
      * implementations but can be overridden, e.g. for implementations targeted at a Servlet container.
-     * 
+     *
      * @param path the path to the resource
      * @return the corresponding Resource handle
      * @sees ClassPathResource

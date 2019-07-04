@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
 
 /**
  * 文件类型判断工具类
@@ -88,7 +88,7 @@ public final class FileTypeUtil {
      * 如果已经存在将覆盖之前的映射
      *
      * @param fileStreamHexHead 文件流头部Hex信息
-     * @param extName 文件扩展名
+     * @param extName           文件扩展名
      * @return 之前已经存在的文件扩展名
      */
     public static String putFileType(String fileStreamHexHead, String extName) {

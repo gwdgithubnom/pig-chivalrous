@@ -22,7 +22,7 @@ public class WgetCommand extends LinuxShellCommand {
         this.targetFile = targetFile;
     }
 
-    public WgetCommand(String command, String...params) {
+    public WgetCommand(String command, String... params) {
         super("wget ", params);
     }
 

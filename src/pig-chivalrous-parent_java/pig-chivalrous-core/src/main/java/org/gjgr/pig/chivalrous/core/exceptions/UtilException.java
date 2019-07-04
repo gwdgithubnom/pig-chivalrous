@@ -18,7 +18,7 @@ public class UtilException extends RuntimeException {
         super(message);
     }
 
-    public UtilException(String messageTemplate, Object...params) {
+    public UtilException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -26,7 +26,7 @@ public class UtilException extends RuntimeException {
         super(message, throwable);
     }
 
-    public UtilException(Throwable throwable, String messageTemplate, Object...params) {
+    public UtilException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

@@ -1,5 +1,10 @@
 package org.gjgr.pig.chivalrous.web.http;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
 import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.FileNotFoundException;
@@ -8,11 +13,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
-
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * Http响应类

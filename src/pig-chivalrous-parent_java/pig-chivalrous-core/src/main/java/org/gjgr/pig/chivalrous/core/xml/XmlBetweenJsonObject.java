@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.xml;
 
-import java.util.Iterator;
-
 import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
 import org.gjgr.pig.chivalrous.core.json.JsonException;
 import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
 import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
+
+import java.util.Iterator;
 
 /**
  * 提供静态方法在XML和JSONObject之间转换
@@ -62,7 +62,7 @@ public class XmlBetweenJsonObject {
     /**
      * Replace special characters with XmlBetweenJsonObject escapes:
      * <p>
-     * 
+     *
      * <pre>
      * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
      * &lt; <small>(less than)</small> is replaced by &amp;lt;
@@ -122,9 +122,9 @@ public class XmlBetweenJsonObject {
     /**
      * Scan the content following the named tag, attaching it to the context.
      *
-     * @param x The XmlTokener containing the source string.
+     * @param x       The XmlTokener containing the source string.
      * @param context The JsonObject that will include the new material.
-     * @param name The tag name.
+     * @param name    The tag name.
      * @return true if the close tag is processed.
      * @throws JsonException
      */
@@ -214,7 +214,7 @@ public class XmlBetweenJsonObject {
             tagName = (String) token;
             token = null;
             jsonobject = new JsonObject();
-            for (;;) {
+            for (; ; ) {
                 if (token == null) {
                     token = x.nextToken();
                 }
@@ -249,7 +249,7 @@ public class XmlBetweenJsonObject {
 
                 } else if (token == GT) {
                     // Content, between <...> and </...>
-                    for (;;) {
+                    for (; ; ) {
                         token = x.nextContent();
                         if (token == null) {
                             if (tagName != null) {
@@ -311,9 +311,9 @@ public class XmlBetweenJsonObject {
      * All values are converted as strings, for 1, 01, 29.0 will not be coerced to numbers but will instead be the exact
      * value as seen in the XmlBetweenJsonObject document.
      *
-     * @param string The source string.
+     * @param string      The source string.
      * @param keepStrings If true, then values will not be coerced into boolean or numeric values and will instead be
-     *            left as strings
+     *                    left as strings
      * @return A JsonObject containing the structured data from the XmlBetweenJsonObject string.
      * @throws JsonException Thrown if there is an errors while parsing the string
      */
@@ -340,7 +340,7 @@ public class XmlBetweenJsonObject {
     /**
      * Convert a JsonObject into a well-formed, element-normal XmlBetweenJsonObject string.
      *
-     * @param object A JsonObject.
+     * @param object  A JsonObject.
      * @param tagName The optional name of the enclosing tag.
      * @return A string.
      * @throws JsonException Thrown if there is an error parsing the string

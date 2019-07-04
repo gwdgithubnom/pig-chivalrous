@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.json;
 
-import java.lang.reflect.Type;
-
 import com.google.gson.InstanceCreator;
+
+import java.lang.reflect.Type;
 
 /**
  * @Author gwd

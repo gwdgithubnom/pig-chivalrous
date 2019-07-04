@@ -1,5 +1,15 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,16 +38,6 @@ import java.util.StringTokenizer;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @Author gwd
@@ -119,7 +119,7 @@ public final class StringCommand {
 
     /**
      * Trim <i>all</i> whitespace from the given {@code String}: leading, trailing, and in between characters.
-     * 
+     *
      * @param str the {@code String} to check
      * @return the trimmed {@code String}
      * @see java.lang.Character#isWhitespace
@@ -142,7 +142,7 @@ public final class StringCommand {
 
     /**
      * Trim leading whitespace from the given {@code String}.
-     * 
+     *
      * @param str the {@code String} to check
      * @return the trimmed {@code String}
      * @see java.lang.Character#isWhitespace
@@ -161,7 +161,7 @@ public final class StringCommand {
 
     /**
      * Trim trailing whitespace from the given {@code String}.
-     * 
+     *
      * @param str the {@code String} to check
      * @return the trimmed {@code String}
      * @see java.lang.Character#isWhitespace
@@ -180,8 +180,8 @@ public final class StringCommand {
 
     /**
      * Trim all occurrences of the supplied leading character from the given {@code String}.
-     * 
-     * @param str the {@code String} to check
+     *
+     * @param str              the {@code String} to check
      * @param leadingCharacter the leading character to be trimmed
      * @return the trimmed {@code String}
      */
@@ -199,8 +199,8 @@ public final class StringCommand {
 
     /**
      * Trim all occurrences of the supplied trailing character from the given {@code String}.
-     * 
-     * @param str the {@code String} to check
+     *
+     * @param str               the {@code String} to check
      * @param trailingCharacter the trailing character to be trimmed
      * @return the trimmed {@code String}
      */
@@ -235,7 +235,7 @@ public final class StringCommand {
      * @param strs 字符串列表
      * @return 是否包含空字符串
      */
-    public static boolean hasBlank(CharSequence...strs) {
+    public static boolean hasBlank(CharSequence... strs) {
         if (ArrayCommand.isEmpty(strs)) {
             return true;
         }
@@ -253,14 +253,14 @@ public final class StringCommand {
      * <p>
      * Note: this method returns {@code true} for a {@code CharSequence} that purely consists of whitespace.
      * <p>
-     * 
+     *
      * <pre class="code">
      * StringUtils.hasLength(null) = false
      * StringUtils.hasLength("") = false
      * StringUtils.hasLength(" ") = true
      * StringUtils.hasLength("Hello") = true
      * </pre>
-     * 
+     *
      * @param str the {@code CharSequence} to check (may be {@code null})
      * @return {@code true} if the {@code CharSequence} is not {@code null} and has length
      * @see #hasText(String)
@@ -273,7 +273,7 @@ public final class StringCommand {
      * Check that the given {@code String} is neither {@code null} nor of length 0.
      * <p>
      * Note: this method returns {@code true} for a {@code String} that purely consists of whitespace.
-     * 
+     *
      * @param str the {@code String} to check (may be {@code null})
      * @return {@code true} if the {@code String} is not {@code null} and has length
      * @see #hasLength(CharSequence)
@@ -289,7 +289,7 @@ public final class StringCommand {
      * More specifically, this method returns {@code true} if the {@code CharSequence} is not {@code null}, its length
      * is greater than 0, and it contains at least one non-whitespace character.
      * <p>
-     * 
+     *
      * <pre class="code">
      * StringUtils.hasText(null) = false
      * StringUtils.hasText("") = false
@@ -297,10 +297,10 @@ public final class StringCommand {
      * StringUtils.hasText("12345") = true
      * StringUtils.hasText(" 12345 ") = true
      * </pre>
-     * 
+     *
      * @param str the {@code CharSequence} to check (may be {@code null})
      * @return {@code true} if the {@code CharSequence} is not {@code null}, its length is greater than 0, and it does
-     *         not contain whitespace only
+     * not contain whitespace only
      * @see Character#isWhitespace
      */
     public static boolean hasText(@Nullable CharSequence str) {
@@ -312,10 +312,10 @@ public final class StringCommand {
      * <p>
      * More specifically, this method returns {@code true} if the {@code String} is not {@code null}, its length is
      * greater than 0, and it contains at least one non-whitespace character.
-     * 
+     *
      * @param str the {@code String} to check (may be {@code null})
      * @return {@code true} if the {@code String} is not {@code null}, its length is greater than 0, and it does not
-     *         contain whitespace only
+     * contain whitespace only
      * @see #hasText(CharSequence)
      */
     public static boolean hasText(@Nullable String str) {
@@ -334,7 +334,7 @@ public final class StringCommand {
 
     /**
      * Check whether the given {@code CharSequence} contains any whitespace characters.
-     * 
+     *
      * @param str the {@code CharSequence} to check (may be {@code null})
      * @return {@code true} if the {@code CharSequence} is not empty and contains at least 1 whitespace character
      * @see Character#isWhitespace
@@ -355,7 +355,7 @@ public final class StringCommand {
 
     /**
      * Check whether the given {@code String} contains any whitespace characters.
-     * 
+     *
      * @param str the {@code String} to check (may be {@code null})
      * @return {@code true} if the {@code String} is not empty and contains at least 1 whitespace character
      * @see #containsWhitespace(CharSequence)
@@ -366,8 +366,8 @@ public final class StringCommand {
 
     /**
      * Replace all occurrences of a substring within a string with another string.
-     * 
-     * @param inString {@code String} to examine
+     *
+     * @param inString   {@code String} to examine
      * @param oldPattern {@code String} to replace
      * @param newPattern {@code String} to insert
      * @return a {@code String} with the replacements
@@ -404,9 +404,9 @@ public final class StringCommand {
 
     /**
      * Delete all occurrences of the given substring.
-     * 
+     *
      * @param inString the original {@code String}
-     * @param pattern the pattern to delete all occurrences of
+     * @param pattern  the pattern to delete all occurrences of
      * @return the resulting {@code String}
      */
     public static String delete(String inString, String pattern) {
@@ -417,9 +417,9 @@ public final class StringCommand {
      * Convert a {@link Collection} to a delimited {@code String} (e.g. CSV).
      * <p>
      * Useful for {@code toString()} implementations.
-     * 
-     * @param coll the {@code Collection} to convert
-     * @param delim the delimiter to use (typically a ",")
+     *
+     * @param coll   the {@code Collection} to convert
+     * @param delim  the delimiter to use (typically a ",")
      * @param prefix the {@code String} to start each element with
      * @param suffix the {@code String} to end each element with
      * @return the delimited {@code String}
@@ -446,8 +446,8 @@ public final class StringCommand {
      * Convert a {@code Collection} into a delimited {@code String} (e.g. CSV).
      * <p>
      * Useful for {@code toString()} implementations.
-     * 
-     * @param coll the {@code Collection} to convert
+     *
+     * @param coll  the {@code Collection} to convert
      * @param delim the delimiter to use (typically a ",")
      * @return the delimited {@code String}
      */
@@ -459,7 +459,7 @@ public final class StringCommand {
      * Convert a {@code Collection} into a delimited {@code String} (e.g., CSV).
      * <p>
      * Useful for {@code toString()} implementations.
-     * 
+     *
      * @param coll the {@code Collection} to convert
      * @return the delimited {@code String}
      */
@@ -471,8 +471,8 @@ public final class StringCommand {
      * Convert a {@code String} array into a delimited {@code String} (e.g. CSV).
      * <p>
      * Useful for {@code toString()} implementations.
-     * 
-     * @param arr the array to display
+     *
+     * @param arr   the array to display
      * @param delim the delimiter to use (typically a ",")
      * @return the delimited {@code String}
      */
@@ -497,14 +497,14 @@ public final class StringCommand {
     /**
      * Append the given {@code String} to the given {@code String} array, returning a new array consisting of the input
      * array contents plus the given {@code String}.
-     * 
+     *
      * @param array the array to append to (can be {@code null})
-     * @param str the {@code String} to append
+     * @param str   the {@code String} to append
      * @return the new array (never {@code null})
      */
     public static String[] addStringToArray(@Nullable String[] array, String str) {
         if (ObjectCommand.isEmpty(array)) {
-            return new String[] { str };
+            return new String[] {str};
         }
 
         String[] newArr = new String[array.length + 1];
@@ -517,7 +517,7 @@ public final class StringCommand {
      * Concatenate the given {@code String} arrays into one, with overlapping array elements included twice.
      * <p>
      * The order of elements in the original arrays is preserved.
-     * 
+     *
      * @param array1 the first array (can be {@code null})
      * @param array2 the second array (can be {@code null})
      * @return the new array ({@code null} if both given arrays were {@code null})
@@ -542,12 +542,12 @@ public final class StringCommand {
      * <p>
      * The order of elements in the original arrays is preserved (with the exception of overlapping elements, which are
      * only included on their first occurrence).
-     * 
+     *
      * @param array1 the first array (can be {@code null})
      * @param array2 the second array (can be {@code null})
      * @return the new array ({@code null} if both given arrays were {@code null})
      * @deprecated as of 4.3.15, in favor of manual merging via {@link LinkedHashSet} (with every entry included at most
-     *             once, even entries within the first array)
+     * once, even entries within the first array)
      */
     @Deprecated
     @Nullable
@@ -571,7 +571,7 @@ public final class StringCommand {
 
     /**
      * Turn given source {@code String} array into sorted array.
-     * 
+     *
      * @param array the source array
      * @return the sorted array (never {@code null})
      */
@@ -586,7 +586,7 @@ public final class StringCommand {
 
     /**
      * Trim the elements of the given {@code String} array, calling {@code String.trim()} on each of them.
-     * 
+     *
      * @param array the original {@code String} array
      * @return the resulting array (of the same size) with trimmed elements
      */
@@ -607,7 +607,7 @@ public final class StringCommand {
      * Remove duplicate strings from the given array.
      * <p>
      * As of 4.2, it preserves the original order, as it uses a {@link LinkedHashSet}.
-     * 
+     *
      * @param array the {@code String} array
      * @return an array without duplicates, in natural sort order
      */
@@ -629,11 +629,11 @@ public final class StringCommand {
      * value.
      * <p>
      * Will trim both the key and value before adding them to the {@code Properties}.
-     * 
-     * @param array the array to process
+     *
+     * @param array     the array to process
      * @param delimiter to split each element using (typically the equals symbol)
      * @return a {@code Properties} instance representing the array contents, or {@code null} if the array to process
-     *         was {@code null} or empty
+     * was {@code null} or empty
      */
     @Nullable
     public static Properties splitArrayElementsIntoProperties(String[] array, String delimiter) {
@@ -646,13 +646,13 @@ public final class StringCommand {
      * value.
      * <p>
      * Will trim both the key and value before adding them to the {@code Properties} instance.
-     * 
-     * @param array the array to process
-     * @param delimiter to split each element using (typically the equals symbol)
+     *
+     * @param array         the array to process
+     * @param delimiter     to split each element using (typically the equals symbol)
      * @param charsToDelete one or more characters to remove from each element prior to attempting the split operation
-     *            (typically the quotation mark symbol), or {@code null} if no removal should occur
+     *                      (typically the quotation mark symbol), or {@code null} if no removal should occur
      * @return a {@code Properties} instance representing the array contents, or {@code null} if the array to process
-     *         was {@code null} or empty
+     * was {@code null} or empty
      */
     @Nullable
     public static Properties splitArrayElementsIntoProperties(
@@ -684,10 +684,10 @@ public final class StringCommand {
      * The given {@code delimiters} string can consist of any number of delimiter characters. Each of those characters
      * can be used to separate tokens. A delimiter is always a single character; for multi-character delimiters,
      * consider using {@link #delimitedListToStringArray}.
-     * 
-     * @param str the {@code String} to tokenize
+     *
+     * @param str        the {@code String} to tokenize
      * @param delimiters the delimiter characters, assembled as a {@code String} (each of the characters is individually
-     *            considered as a delimiter)
+     *                   considered as a delimiter)
      * @return an array of the tokens
      * @see java.util.StringTokenizer
      * @see String#trim()
@@ -703,13 +703,13 @@ public final class StringCommand {
      * The given {@code delimiters} string can consist of any number of delimiter characters. Each of those characters
      * can be used to separate tokens. A delimiter is always a single character; for multi-character delimiters,
      * consider using {@link #delimitedListToStringArray}.
-     * 
-     * @param str the {@code String} to tokenize
-     * @param delimiters the delimiter characters, assembled as a {@code String} (each of the characters is individually
-     *            considered as a delimiter)
-     * @param trimTokens trim the tokens via {@link String#trim()}
+     *
+     * @param str               the {@code String} to tokenize
+     * @param delimiters        the delimiter characters, assembled as a {@code String} (each of the characters is individually
+     *                          considered as a delimiter)
+     * @param trimTokens        trim the tokens via {@link String#trim()}
      * @param ignoreEmptyTokens omit empty tokens from the result array (only applies to tokens that are empty after
-     *            trimming; StringTokenizer will not consider subsequent delimiters as token in the first place).
+     *                          trimming; StringTokenizer will not consider subsequent delimiters as token in the first place).
      * @return an array of the tokens
      * @see java.util.StringTokenizer
      * @see String#trim()
@@ -738,7 +738,7 @@ public final class StringCommand {
 
     /**
      * Convert a comma delimited list (e.g., a row from a CSV file) into an array of strings.
-     * 
+     *
      * @param str the input {@code String}
      * @return an array of strings, or the empty array in case of empty input
      */
@@ -751,7 +751,7 @@ public final class StringCommand {
      * <p>
      * Note that this will suppress duplicates, and as of 4.2, the elements in the returned set will preserve the
      * original order in a {@link LinkedHashSet}.
-     * 
+     *
      * @param str the input {@code String}
      * @return a set of {@code String} entries in the list
      * @see #removeDuplicateStrings(String[])
@@ -769,7 +769,7 @@ public final class StringCommand {
      * Convert a {@code String} array into a comma delimited {@code String} (i.e., CSV).
      * <p>
      * Useful for {@code toString()} implementations.
-     * 
+     *
      * @param arr the array to display
      * @return the delimited {@code String}
      */
@@ -783,12 +783,12 @@ public final class StringCommand {
      * A single {@code delimiter} may consist of more than one character, but it will still be considered as a single
      * delimiter string, rather than as bunch of potential delimiter characters, in contrast to
      * {@link %tokenizeToStringArray }.
-     * 
-     * @param str the input {@code String}
-     * @param delimiter the delimiter between elements (this is a single delimiter, rather than a bunch individual
-     *            delimiter characters)
+     *
+     * @param str           the input {@code String}
+     * @param delimiter     the delimiter between elements (this is a single delimiter, rather than a bunch individual
+     *                      delimiter characters)
      * @param charsToDelete a set of characters to delete; useful for deleting unwanted line breaks: e.g. "\r\n\f" will
-     *            delete all new lines and line feeds in a {@code String}
+     *                      delete all new lines and line feeds in a {@code String}
      * @return an array of the tokens in the list
      * @see %tokenizeToStringArray
      */
@@ -799,7 +799,7 @@ public final class StringCommand {
             return new String[0];
         }
         if (delimiter == null) {
-            return new String[] { str };
+            return new String[] {str};
         }
 
         List<String> result = new ArrayList<>();
@@ -826,7 +826,7 @@ public final class StringCommand {
      * Copy the given {@code Collection} into a {@code String} array.
      * <p>
      * The {@code Collection} must contain {@code String} elements only.
-     * 
+     *
      * @param collection the {@code Collection} to copy
      * @return the {@code String} array
      */
@@ -837,7 +837,7 @@ public final class StringCommand {
     /**
      * Copy the given Enumeration into a {@code String} array. The Enumeration must contain {@code String} elements
      * only.
-     * 
+     *
      * @param enumeration the Enumeration to copy
      * @return the {@code String} array
      */
@@ -851,10 +851,10 @@ public final class StringCommand {
      * A single {@code delimiter} may consist of more than one character, but it will still be considered as a single
      * delimiter string, rather than as bunch of potential delimiter characters, in contrast to
      * {@link %tokenizeToStringArray}.
-     * 
-     * @param str the input {@code String}
+     *
+     * @param str       the input {@code String}
      * @param delimiter the delimiter between elements (this is a single delimiter, rather than a bunch individual
-     *            delimiter characters)
+     *                  delimiter characters)
      * @return an array of the tokens in the list
      * @see %tokenizeToStringArray
      */
@@ -864,8 +864,8 @@ public final class StringCommand {
 
     /**
      * Delete any character in a given {@code String}.
-     * 
-     * @param inString the original {@code String}
+     *
+     * @param inString      the original {@code String}
      * @param charsToDelete a set of characters to delete. E.g. "az\n" will delete 'a's, 'z's and new lines.
      * @return the resulting {@code String}
      */
@@ -892,7 +892,7 @@ public final class StringCommand {
      * @param strs 字符串
      * @return 所有字符串是否为空白
      */
-    public static boolean isAllBlank(CharSequence...strs) {
+    public static boolean isAllBlank(CharSequence... strs) {
         if (ArrayCommand.isEmpty(strs)) {
             return true;
         }
@@ -949,7 +949,7 @@ public final class StringCommand {
      * nullToDefault(&quot;bat&quot;, &quot;default&quot;) = &quot;bat&quot;
      * </pre>
      *
-     * @param str 要转换的字符串
+     * @param str        要转换的字符串
      * @param defaultStr 默认字符串
      * @return 字符串本身或指定的默认字符串
      */
@@ -973,7 +973,7 @@ public final class StringCommand {
      * @param strs 字符串列表
      * @return 是否包含空字符串
      */
-    public static boolean hasEmpty(CharSequence...strs) {
+    public static boolean hasEmpty(CharSequence... strs) {
         if (ArrayCommand.isEmpty(strs)) {
             return true;
         }
@@ -994,7 +994,7 @@ public final class StringCommand {
      * @param strs 字符串列表
      * @return 是否全部为空字符串
      */
-    public static boolean isAllEmpty(CharSequence...strs) {
+    public static boolean isAllEmpty(CharSequence... strs) {
         if (ArrayCommand.isEmpty(strs)) {
             return true;
         }
@@ -1102,7 +1102,7 @@ public final class StringCommand {
     /**
      * 除去字符串头尾部的空白符，如果字符串是<code>null</code>，依然返回<code>null</code>。
      *
-     * @param str 要处理的字符串
+     * @param str  要处理的字符串
      * @param mode <code>-1</code>表示trimStart，<code>0</code>表示trim全部， <code>1</code>表示trimEnd
      * @return 除去指定字符后的的字符串，如果原字串为<code>null</code>，则返回<code>null</code>
      */
@@ -1139,8 +1139,8 @@ public final class StringCommand {
     /**
      * 是否以指定字符串开头
      *
-     * @param str 被监测字符串
-     * @param prefix 开头字符串
+     * @param str          被监测字符串
+     * @param prefix       开头字符串
      * @param isIgnoreCase 是否忽略大小写
      * @return 是否以指定字符串开头
      */
@@ -1155,7 +1155,7 @@ public final class StringCommand {
     /**
      * 是否以指定字符串开头，忽略大小写
      *
-     * @param str 被监测字符串
+     * @param str    被监测字符串
      * @param prefix 开头字符串
      * @return 是否以指定字符串开头
      */
@@ -1166,8 +1166,8 @@ public final class StringCommand {
     /**
      * 是否以指定字符串结尾
      *
-     * @param str 被监测字符串
-     * @param suffix 结尾字符串
+     * @param str          被监测字符串
+     * @param suffix       结尾字符串
      * @param isIgnoreCase 是否忽略大小写
      * @return 是否以指定字符串结尾
      */
@@ -1182,7 +1182,7 @@ public final class StringCommand {
     /**
      * 是否以指定字符串结尾，忽略大小写
      *
-     * @param str 被监测字符串
+     * @param str    被监测字符串
      * @param suffix 结尾字符串
      * @return 是否以指定字符串结尾
      */
@@ -1229,7 +1229,7 @@ public final class StringCommand {
      * 移除字符串中所有给定字符串<br>
      * 例：removeAll("aa-bb-cc-dd", "-") -> aabbccdd
      *
-     * @param str 字符串
+     * @param str         字符串
      * @param strToRemove 被移除的字符串
      * @return 移除后的字符串
      */
@@ -1241,7 +1241,7 @@ public final class StringCommand {
      * 去掉首部指定长度的字符串并将剩余字符串首字母小写<br/>
      * 例如：str=setName, preLength=3 -> return name
      *
-     * @param str 被处理的字符串
+     * @param str       被处理的字符串
      * @param preLength 去掉的长度
      * @return 处理后的字符串，不符合规范返回null
      */
@@ -1264,7 +1264,7 @@ public final class StringCommand {
      * 去掉首部指定长度的字符串并将剩余字符串首字母小写<br/>
      * 例如：str=setName, prefix=set -> return name
      *
-     * @param str 被处理的字符串
+     * @param str    被处理的字符串
      * @param prefix 前缀
      * @return 处理后的字符串，不符合规范返回null
      */
@@ -1275,7 +1275,7 @@ public final class StringCommand {
     /**
      * 原字符串首字母大写并在其首部添加指定字符串 例如：str=name, preString=get -> return getName
      *
-     * @param str 被处理的字符串
+     * @param str       被处理的字符串
      * @param preString 添加的首部
      * @return 处理后的字符串
      */
@@ -1317,7 +1317,7 @@ public final class StringCommand {
     /**
      * 去掉指定前缀
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @return 切掉后的字符串，若前缀不是 preffix， 返回原字符串
      */
@@ -1335,7 +1335,7 @@ public final class StringCommand {
     /**
      * 忽略大小写去掉指定前缀
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @return 切掉后的字符串，若前缀不是 prefix， 返回原字符串
      */
@@ -1353,7 +1353,7 @@ public final class StringCommand {
     /**
      * 去掉指定后缀
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param suffix 后缀
      * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
      */
@@ -1371,7 +1371,7 @@ public final class StringCommand {
     /**
      * 去掉指定后缀，并小写首字母
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param suffix 后缀
      * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
      */
@@ -1382,7 +1382,7 @@ public final class StringCommand {
     /**
      * 忽略大小写去掉指定后缀
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param suffix 后缀
      * @return 切掉后的字符串，若后缀不是 suffix， 返回原字符串
      */
@@ -1400,7 +1400,7 @@ public final class StringCommand {
     /**
      * 如果给定字符串不是以prefix开头的，在开头补充 prefix
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @return 补充后的字符串
      */
@@ -1417,7 +1417,7 @@ public final class StringCommand {
     /**
      * 如果给定字符串不是以suffix结尾的，在尾部补充 suffix
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param suffix 后缀
      * @return 补充后的字符串
      */
@@ -1457,7 +1457,7 @@ public final class StringCommand {
     /**
      * 切分字符串
      *
-     * @param str 被切分的字符串
+     * @param str       被切分的字符串
      * @param separator 分隔符字符
      * @return 切分后的集合
      */
@@ -1471,7 +1471,7 @@ public final class StringCommand {
      * a#b#c -> [a,b,c] <br>
      * a##b#c -> [a,"",b,c]
      *
-     * @param str 被切分的字符串
+     * @param str       被切分的字符串
      * @param separator 分隔符字符
      * @return 切分后的集合
      */
@@ -1482,9 +1482,9 @@ public final class StringCommand {
     /**
      * 切分字符串
      *
-     * @param str 被切分的字符串
+     * @param str       被切分的字符串
      * @param separator 分隔符字符
-     * @param limit 限制分片数
+     * @param limit     限制分片数
      * @return 切分后的集合
      */
     public static String[] splitToArray(String str, char separator, int limit) {
@@ -1495,9 +1495,9 @@ public final class StringCommand {
     /**
      * 切分字符串
      *
-     * @param str 被切分的字符串
+     * @param str       被切分的字符串
      * @param separator 分隔符字符
-     * @param limit 限制分片数
+     * @param limit     限制分片数
      * @return 切分后的集合
      */
     public static List<String> split(String str, char separator, int limit) {
@@ -1534,12 +1534,12 @@ public final class StringCommand {
 
     /**
      * Split a {@code String} at the first occurrence of the delimiter. Does not include the delimiter in the result.
-     * 
-     * @param toSplit the string to split
+     *
+     * @param toSplit   the string to split
      * @param delimiter to split the string up with
      * @return a two element array with index 0 being before the delimiter, and index 1 being after the delimiter
-     *         (neither element includes the delimiter); or {@code null} if the delimiter wasn't found in the given
-     *         input {@code String}
+     * (neither element includes the delimiter); or {@code null} if the delimiter wasn't found in the given
+     * input {@code String}
      */
     public static String[] split(String toSplit, String delimiter) {
         if (!hasLength(toSplit) || !hasLength(delimiter)) {
@@ -1552,7 +1552,7 @@ public final class StringCommand {
 
         String beforeDelimiter = toSplit.substring(0, offset);
         String afterDelimiter = toSplit.substring(offset + delimiter.length());
-        return new String[] { beforeDelimiter, afterDelimiter };
+        return new String[] {beforeDelimiter, afterDelimiter};
 
     }
 
@@ -1560,7 +1560,7 @@ public final class StringCommand {
      * 切分字符串<br>
      * from jodd
      *
-     * @param str 被切分的字符串
+     * @param str       被切分的字符串
      * @param delimiter 分隔符
      * @return 字符串
      */
@@ -1569,7 +1569,7 @@ public final class StringCommand {
             return null;
         }
         if (str.trim().length() == 0) {
-            return new String[] { str };
+            return new String[] {str};
         }
         /**
          * del length
@@ -1635,9 +1635,9 @@ public final class StringCommand {
      * abcdefgh 2 3 -> c <br>
      * abcdefgh 2 -3 -> cde <br>
      *
-     * @param string String
+     * @param string    String
      * @param fromIndex 开始的index（包括）
-     * @param toIndex 结束的index（不包括）
+     * @param toIndex   结束的index（不包括）
      * @return 字串
      */
     public static String sub(String string, int fromIndex, int toIndex) {
@@ -1677,7 +1677,7 @@ public final class StringCommand {
     /**
      * 切割前部分
      *
-     * @param string 字符串
+     * @param string  字符串
      * @param toIndex 切割到的位置（不包括）
      * @return 切割后的字符串
      */
@@ -1688,7 +1688,7 @@ public final class StringCommand {
     /**
      * 切割后部分
      *
-     * @param string 字符串
+     * @param string    字符串
      * @param fromIndex 切割开始的位置（包括）
      * @return 切割后的字符串
      */
@@ -1702,7 +1702,7 @@ public final class StringCommand {
     /**
      * 给定字符串是否被字符包围
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @param suffix 后缀
      * @return 是否包围，空串不包围
@@ -1721,7 +1721,7 @@ public final class StringCommand {
     /**
      * 给定字符串是否被字符包围
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @param suffix 后缀
      * @return 是否包围，空串不包围
@@ -1740,7 +1740,7 @@ public final class StringCommand {
     /**
      * 重复某个字符
      *
-     * @param c 被重复的字符
+     * @param c     被重复的字符
      * @param count 重复的数目
      * @return 重复字符字符串
      */
@@ -1755,7 +1755,7 @@ public final class StringCommand {
     /**
      * 重复某个字符串
      *
-     * @param str 被重复的字符
+     * @param str   被重复的字符
      * @param count 重复的数目
      * @return 重复字符字符串
      */
@@ -1837,10 +1837,10 @@ public final class StringCommand {
      * 转义\： format("this is \\\\{} for {}", "a", "b") -> this is \a for b<br>
      *
      * @param template 文本模板，被替换的部分用 {} 表示
-     * @param params 参数值
+     * @param params   参数值
      * @return 格式化后的文本
      */
-    public static String format(String template, Object...params) {
+    public static String format(String template, Object... params) {
         if (ArrayCommand.isEmpty(params) || isBlank(template)) {
             return template;
         }
@@ -1852,11 +1852,11 @@ public final class StringCommand {
      * 例：<br>
      * 通常使用：format("this is {0} for {1}", "a", "b") -> this is a for b<br>
      *
-     * @param pattern 文本格式
+     * @param pattern   文本格式
      * @param arguments 参数
      * @return 格式化后的文本
      */
-    public static String indexedFormat(String pattern, Object...arguments) {
+    public static String indexedFormat(String pattern, Object... arguments) {
         return MessageFormat.format(pattern, arguments);
     }
 
@@ -1866,7 +1866,7 @@ public final class StringCommand {
      * and bValue
      *
      * @param template 文本模板，被替换的部分用 {key} 表示
-     * @param map 参数值对
+     * @param map      参数值对
      * @return 格式化后的文本
      */
     public static String format(String template, Map<?, ?> map) {
@@ -1904,7 +1904,7 @@ public final class StringCommand {
     /**
      * 编码字符串
      *
-     * @param str 字符串
+     * @param str     字符串
      * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
      * @return 编码后的字节码
      */
@@ -1915,7 +1915,7 @@ public final class StringCommand {
     /**
      * 编码字符串
      *
-     * @param str 字符串
+     * @param str     字符串
      * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
      * @return 编码后的字节码
      */
@@ -1945,7 +1945,7 @@ public final class StringCommand {
      * 将对象转为字符串<br>
      * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
      *
-     * @param obj 对象
+     * @param obj         对象
      * @param charsetName 字符集
      * @return 字符串
      */
@@ -1957,7 +1957,7 @@ public final class StringCommand {
      * 将对象转为字符串<br>
      * 1、Byte数组和ByteBuffer会被转换为对应字符串的数组 2、对象数组会调用Arrays.toString方法
      *
-     * @param obj 对象
+     * @param obj     对象
      * @param charset 字符集
      * @return 字符串
      */
@@ -1984,7 +1984,7 @@ public final class StringCommand {
     /**
      * 将byte数组转为字符串
      *
-     * @param bytes byte数组
+     * @param bytes   byte数组
      * @param charset 字符集
      * @return 字符串
      */
@@ -1995,7 +1995,7 @@ public final class StringCommand {
     /**
      * 解码字节码
      *
-     * @param data 字符串
+     * @param data    字符串
      * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
      * @return 解码后的字符串
      */
@@ -2013,7 +2013,7 @@ public final class StringCommand {
     /**
      * 将Byte数组转为字符串
      *
-     * @param bytes byte数组
+     * @param bytes   byte数组
      * @param charset 字符集
      * @return 字符串
      */
@@ -2024,7 +2024,7 @@ public final class StringCommand {
     /**
      * 解码字节码
      *
-     * @param data 字符串
+     * @param data    字符串
      * @param charset 字符集，如果此字段为空，则解码的结果取决于平台
      * @return 解码后的字符串
      */
@@ -2046,7 +2046,7 @@ public final class StringCommand {
     /**
      * 将编码的byteBuffer数据转换为字符串
      *
-     * @param data 数据
+     * @param data    数据
      * @param charset 字符集，如果为空使用当前系统字符集
      * @return 字符串
      */
@@ -2061,7 +2061,7 @@ public final class StringCommand {
     /**
      * 将编码的byteBuffer数据转换为字符串
      *
-     * @param data 数据
+     * @param data    数据
      * @param charset 字符集，如果为空使用当前系统字符集
      * @return 字符串
      */
@@ -2075,7 +2075,7 @@ public final class StringCommand {
     /**
      * 字符串转换为byteBuffer
      *
-     * @param str 字符串
+     * @param str     字符串
      * @param charset 编码
      * @return byteBuffer
      */
@@ -2087,11 +2087,11 @@ public final class StringCommand {
      * 以 conjunction 为分隔符将多个对象转换为字符串
      *
      * @param conjunction 分隔符
-     * @param objs 数组
+     * @param objs        数组
      * @return 连接后的字符串
      * @see ArrayCommand#join(Object[], String)
      */
-    public static String join(String conjunction, Object...objs) {
+    public static String join(String conjunction, Object... objs) {
         return ArrayCommand.join(objs, conjunction);
     }
 
@@ -2169,7 +2169,7 @@ public final class StringCommand {
     /**
      * 包装指定字符串
      *
-     * @param str 被包装的字符串
+     * @param str    被包装的字符串
      * @param prefix 前缀
      * @param suffix 后缀
      * @return 包装后的字符串
@@ -2181,7 +2181,7 @@ public final class StringCommand {
     /**
      * 指定字符串是否被包装
      *
-     * @param str 字符串
+     * @param str    字符串
      * @param prefix 前缀
      * @param suffix 后缀
      * @return 是否被包装
@@ -2193,7 +2193,7 @@ public final class StringCommand {
     /**
      * 指定字符串是否被同一字符包装（前后都有这些字符串）
      *
-     * @param str 字符串
+     * @param str     字符串
      * @param wrapper 包装字符串
      * @return 是否被包装
      */
@@ -2204,7 +2204,7 @@ public final class StringCommand {
     /**
      * 指定字符串是否被同一字符包装（前后都有这些字符串）
      *
-     * @param str 字符串
+     * @param str     字符串
      * @param wrapper 包装字符
      * @return 是否被包装
      */
@@ -2215,7 +2215,7 @@ public final class StringCommand {
     /**
      * 指定字符串是否被包装
      *
-     * @param str 字符串
+     * @param str        字符串
      * @param prefixChar 前缀
      * @param suffixChar 后缀
      * @return 是否被包装
@@ -2227,9 +2227,9 @@ public final class StringCommand {
     /**
      * 补充字符串以满足最小长度 StrUtil.padPre("1", 3, '0');//"001"
      *
-     * @param str 字符串
+     * @param str       字符串
      * @param minLength 最小长度
-     * @param padChar 补充的字符
+     * @param padChar   补充的字符
      * @return 补充后的字符串
      */
     public static String padPre(String str, int minLength, char padChar) {
@@ -2247,9 +2247,9 @@ public final class StringCommand {
     /**
      * 补充字符串以满足最小长度 StrUtil.padEnd("1", 3, '0');//"100"
      *
-     * @param str 字符串
+     * @param str       字符串
      * @param minLength 最小长度
-     * @param padChar 补充的字符
+     * @param padChar   补充的字符
      * @return 补充后的字符串
      */
     public static String padEnd(String str, int minLength, char padChar) {
@@ -2287,7 +2287,7 @@ public final class StringCommand {
      *
      * @return StringBuilder对象
      */
-    public static StringBuilder builder(String...strs) {
+    public static StringBuilder builder(String... strs) {
         final StringBuilder sb = new StringBuilder();
         for (String str : strs) {
             sb.append(str);
@@ -2329,7 +2329,7 @@ public final class StringCommand {
      * StrUtil.count("abba", "xxx") = 0
      * </pre>
      *
-     * @param content 被查找的字符串
+     * @param content      被查找的字符串
      * @param strForSearch 需要查找的字符串
      * @return 查找到的个数
      */
@@ -2350,7 +2350,7 @@ public final class StringCommand {
     /**
      * 统计指定内容中包含指定字符的数量
      *
-     * @param content 内容
+     * @param content       内容
      * @param charForSearch 被统计的字符
      * @return 包含数量
      */
@@ -2387,7 +2387,7 @@ public final class StringCommand {
     /**
      * Counts the number of times the given char is in the string
      *
-     * @param s the string
+     * @param s  the string
      * @param ch the char
      * @return number of times char is located in the string
      */
@@ -2410,7 +2410,7 @@ public final class StringCommand {
     /**
      * Limits the length of a string
      *
-     * @param s the string
+     * @param s         the string
      * @param maxLength the maximum length of the returned string
      * @return s if the length of s is less than maxLength or the first maxLength characters of s
      * @deprecated use {@link #limitLength(String, int)}
@@ -2423,7 +2423,7 @@ public final class StringCommand {
     /**
      * Limits the length of a string
      *
-     * @param s the string
+     * @param s         the string
      * @param maxLength the maximum length of the returned string
      * @return s if the length of s is less than maxLength or the first maxLength characters of s
      */
@@ -2554,7 +2554,7 @@ public final class StringCommand {
      * Does the expression have the language start token?
      *
      * @param expression the expression
-     * @param language the name of the language, such as simple
+     * @param language   the name of the language, such as simple
      * @return <tt>true</tt> if the expression contains the start token, <tt>false</tt> otherwise
      */
     public static boolean hasStartToken(String expression, String language) {
@@ -2580,8 +2580,8 @@ public final class StringCommand {
      * This implementation is not recursive, not does it check for tokens in the replacement string.
      *
      * @param input the input string
-     * @param from the from string, must <b>not</b> be <tt>null</tt> or empty
-     * @param to the replacement string, must <b>not</b> be empty
+     * @param from  the from string, must <b>not</b> be <tt>null</tt> or empty
+     * @param to    the replacement string, must <b>not</b> be empty
      * @return the replaced string, or the input string if no replacement was needed
      * @throws IllegalArgumentException if the input arguments is invalid
      */
@@ -2605,7 +2605,7 @@ public final class StringCommand {
         final int len = from.length();
         final int max = input.length();
         StringBuilder sb = new StringBuilder(max);
-        for (int i = 0; i < max;) {
+        for (int i = 0; i < max; ) {
             if (i + len <= max) {
                 String token = input.substring(i, i + len);
                 if (from.equals(token)) {
@@ -2627,7 +2627,7 @@ public final class StringCommand {
     /**
      * Creates a json tuple with the given name/value pair.
      *
-     * @param name the name
+     * @param name  the name
      * @param value the value
      * @param isMap whether the tuple should be map
      * @return the json
@@ -2657,7 +2657,7 @@ public final class StringCommand {
     /**
      * Wraps the text in the given quote text
      *
-     * @param text the text to wrap in quotes
+     * @param text  the text to wrap in quotes
      * @param quote the quote text added to the prefix and postfix of the text
      * @return the text wrapped in the given quotes
      */
@@ -2673,7 +2673,7 @@ public final class StringCommand {
      * <p/>
      * Will <i>trim</i> each splitted value by default.
      *
-     * @param input the input
+     * @param input     the input
      * @param separator the separator char to split the input, for example a comma.
      * @return the input splitted, or <tt>null</tt> if the input is null.
      */
@@ -2687,9 +2687,9 @@ public final class StringCommand {
      * Though this method does not support double quoting values. A quoted value must start with the same start and
      * ending quote, which is either a single quote or double quote value. \
      *
-     * @param input the input
+     * @param input     the input
      * @param separator the separator char to split the input, for example a comma.
-     * @param trim whether to trim each splitted value
+     * @param trim      whether to trim each splitted value
      * @return the input splitted, or <tt>null</tt> if the input is null.
      */
     public static String[] splitSafeQuote(String input, char separator, boolean trim) {
@@ -2699,7 +2699,7 @@ public final class StringCommand {
 
         if (input.indexOf(separator) == -1) {
             // no separator in data, so return single string with input as is
-            return new String[] { trim ? input.trim() : input };
+            return new String[] {trim ? input.trim() : input};
         }
 
         List<String> answer = new ArrayList<>();
@@ -2783,7 +2783,7 @@ public final class StringCommand {
      * Asserts whether the string is <b>not</b> empty.
      *
      * @param value the string to test
-     * @param name the key that resolved the value
+     * @param name  the key that resolved the value
      * @return the passed {@code value} as is
      * @throws IllegalArgumentException is thrown if assertion fails
      */
@@ -2799,8 +2799,8 @@ public final class StringCommand {
      * Asserts whether the string is <b>not</b> empty.
      *
      * @param value the string to test
-     * @param on additional description to indicate where this problem occurred (appended as toString())
-     * @param name the key that resolved the value
+     * @param on    additional description to indicate where this problem occurred (appended as toString())
+     * @param name  the key that resolved the value
      * @return the passed {@code value} as is
      * @throws IllegalArgumentException is thrown if assertion fails
      */
@@ -2833,7 +2833,7 @@ public final class StringCommand {
      * Removes any starting characters on the given text which match the given character
      *
      * @param text the string
-     * @param ch the initial characters to remove
+     * @param ch   the initial characters to remove
      * @return either the original string or the new substring
      */
     public static String removeStartingCharacters(String text, char ch) {
@@ -2860,7 +2860,7 @@ public final class StringCommand {
     /**
      * Capitalize the string (upper case first character)
      *
-     * @param text the string
+     * @param text            the string
      * @param dashToCamelCase whether to also convert dash format into camel case (hello-great-world -> helloGreatWorld)
      * @return the string capitalized (upper case first character)
      */
@@ -2917,7 +2917,7 @@ public final class StringCommand {
     /**
      * Returns the string after the given token
      *
-     * @param text the text
+     * @param text  the text
      * @param after the token
      * @return the text after the token, or <tt>null</tt> if text does not contain the token
      */
@@ -2931,8 +2931,8 @@ public final class StringCommand {
     /**
      * Returns an object after the given token
      *
-     * @param text the text
-     * @param after the token
+     * @param text   the text
+     * @param after  the token
      * @param mapper a mapping function to convert the string after the token to type T
      * @return an Optional describing the result of applying a mapping function to the text after the token.
      */
@@ -2948,7 +2948,7 @@ public final class StringCommand {
     /**
      * Returns the string before the given token
      *
-     * @param text the text
+     * @param text   the text
      * @param before the token
      * @return the text before the token, or <tt>null</tt> if text does not contain the token
      */
@@ -2962,7 +2962,7 @@ public final class StringCommand {
     /**
      * Returns an object before the given token
      *
-     * @param text the text
+     * @param text   the text
      * @param before the token
      * @param mapper a mapping function to convert the string before the token to type T
      * @return an Optional describing the result of applying a mapping function to the text before the token.
@@ -2979,8 +2979,8 @@ public final class StringCommand {
     /**
      * Returns the string between the given tokens
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @return the text between the tokens, or <tt>null</tt> if text does not contain the tokens
      */
@@ -2995,8 +2995,8 @@ public final class StringCommand {
     /**
      * Returns an object between the given token
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @param mapper a mapping function to convert the string between the token to type T
      * @return an Optional describing the result of applying a mapping function to the text between the token.
@@ -3019,8 +3019,8 @@ public final class StringCommand {
      * This implementation skips matching when the text is either single or double quoted. For example:
      * <tt>${body.matches("foo('bar')")</tt> Will not match the parenthesis from the quoted text.
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @return the text between the outer most tokens, or <tt>null</tt> if text does not contain the tokens
      */
@@ -3075,12 +3075,12 @@ public final class StringCommand {
     /**
      * Returns an object between the most outer pair of tokens
      *
-     * @param text the text
-     * @param after the before token
+     * @param text   the text
+     * @param after  the before token
      * @param before the after token
      * @param mapper a mapping function to convert the string between the most outer pair of tokens to type T
      * @return an Optional describing the result of applying a mapping function to the text between the most outer pair
-     *         of tokens.
+     * of tokens.
      */
     public static <T> Optional<T> betweenOuterPair(String text, char before, char after, Function<String, T> mapper) {
         String result = betweenOuterPair(text, before, after);
@@ -3166,7 +3166,7 @@ public final class StringCommand {
      * Removes the leading and trailing whitespace and if the resulting string is empty returns {@code null}. Examples:
      * <p>
      * Examples: <blockquote>
-     * 
+     *
      * <pre>
      * trimToNull("abc") -> "abc"
      * trimToNull(" abc") -> "abc"
@@ -3174,7 +3174,7 @@ public final class StringCommand {
      * trimToNull(" ") -> null
      * trimToNull("") -> null
      * </pre>
-     * 
+     *
      * </blockquote>
      */
     public static String trimToNull(final String given) {
@@ -3193,8 +3193,8 @@ public final class StringCommand {
 
     /**
      * Checks if the src string contains what 是否包含特定字符，忽略大小写，如果给定两个参数都为<code>null</code>，返回true
-     * 
-     * @param src is the source string to be checked
+     *
+     * @param src  is the source string to be checked
      * @param what is the string which will be looked up in the src argument
      * @return true/false
      */
@@ -3230,7 +3230,7 @@ public final class StringCommand {
      * Outputs the bytes in human readable format in units of KB,MB,GB etc.
      *
      * @param locale The locale to apply during formatting. If l is {@code null} then no localization is applied.
-     * @param bytes number of bytes
+     * @param bytes  number of bytes
      * @return human readable output
      * @see java.lang.String#format(Locale, String, Object...)
      */
@@ -3246,7 +3246,7 @@ public final class StringCommand {
 
     /**
      * Outputs the bytes in human readable format in units of KB,MB,GB etc.
-     *
+     * <p>
      * The locale always used is the one returned by {@link java.util.Locale#getDefault()}.
      *
      * @param bytes number of bytes
@@ -3259,7 +3259,7 @@ public final class StringCommand {
 
     /**
      * Check for string pattern matching with a number of strategies in the following order:
-     *
+     * <p>
      * - equals - null pattern always matches - * always matches - Ant style matching - Regexp
      *
      * @param patter the pattern
@@ -3292,12 +3292,12 @@ public final class StringCommand {
     /**
      * Parse {@ value} to given type {@link T}
      *
-     * @param <T> Class of return type. can be int/Integer, long/Long, boolean/Boolean and String
-     * @param clazz Class of return type.
-     * @param value The input value.
+     * @param <T>          Class of return type. can be int/Integer, long/Long, boolean/Boolean and String
+     * @param clazz        Class of return type.
+     * @param value        The input value.
      * @param defaultValue default value.
      * @return the converted value, or defaultValue if {@ value} is <code>null</code>, or it's not a well formated
-     *         value.
+     * value.
      */
     @SuppressWarnings("unchecked")
     public static <T> T parse(Class<T> clazz, String value, T defaultValue) {
@@ -3354,8 +3354,8 @@ public final class StringCommand {
      * Get the longest substring of {@ src}, the UTF-8 size should be less than or equals to {@ length}. <br>
      * see http://en.wikipedia.org/wiki/UTF-8
      *
-     * @param src the input String.
-     * @param start start index of src
+     * @param src    the input String.
+     * @param start  start index of src
      * @param length the max UTF-8 length
      * @return
      */
@@ -3367,9 +3367,9 @@ public final class StringCommand {
      * Get the longest substring of {@ src}, the UTF-8 size should be less than or equals to {@ length}. <br>
      * see http://en.wikipedia.org/wiki/UTF-8
      *
-     * @param src the input String.
-     * @param start start index of src
-     * @param byteLen the max length of bytes from src with UTF-8 encoding
+     * @param src                 the input String.
+     * @param start               start index of src
+     * @param byteLen             the max length of bytes from src with UTF-8 encoding
      * @param replaceLastWithDots replace last chars with three dots ...
      * @return
      */
@@ -3500,12 +3500,12 @@ public final class StringCommand {
      * seperator, duplcated seperators will be removed.
      *
      * @param appendStart add the seperator at the start of the result.
-     * @param appendEnd add the seperator at the end of the result.
-     * @param seperator seperator for join
-     * @param array input string array,.
+     * @param appendEnd   add the seperator at the end of the result.
+     * @param seperator   seperator for join
+     * @param array       input string array,.
      * @return
      */
-    public static String join(boolean appendStart, boolean appendEnd, String seperator, String...array) {
+    public static String join(boolean appendStart, boolean appendEnd, String seperator, String... array) {
         if (array == null) {
             return null;
         }

@@ -28,7 +28,7 @@ public class BoundedPriorityQueue<E> extends PriorityQueue<E> {
     /**
      * 构造
      *
-     * @param capacity 容量
+     * @param capacity   容量
      * @param comparator 比较器
      */
     public BoundedPriorityQueue(int capacity, final Comparator<? super E> comparator) {

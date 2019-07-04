@@ -1,8 +1,5 @@
 package org.gjgr.pig.chivalrous.core.cron.pattern.matcher;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gjgr.pig.chivalrous.core.cron.CronException;
 import org.gjgr.pig.chivalrous.core.cron.pattern.parser.DayOfMonthValueParser;
 import org.gjgr.pig.chivalrous.core.cron.pattern.parser.ValueParser;
@@ -10,6 +7,9 @@ import org.gjgr.pig.chivalrous.core.cron.pattern.parser.YearValueParser;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.math.NumberCommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link ValueMatcher} 构建器
@@ -21,7 +21,7 @@ public class ValueMatcherBuilder {
      * 处理定时任务表达式每个时间字段<br>
      * 多个时间使用逗号分隔
      *
-     * @param value 某个时间字段
+     * @param value  某个时间字段
      * @param parser 针对这个时间字段的解析器
      * @return List
      */
@@ -54,7 +54,7 @@ public class ValueMatcherBuilder {
      * <li><strong>a,b,c,d</strong></li>
      * </ul>
      *
-     * @param value 子表达式值
+     * @param value  子表达式值
      * @param parser 针对这个字段的解析器
      * @return 值列表
      */
@@ -77,7 +77,7 @@ public class ValueMatcherBuilder {
      * <li><strong>a-b/2</strong></li>
      * </ul>
      *
-     * @param value 表达式值
+     * @param value  表达式值
      * @param parser 针对这个时间字段的解析器
      * @return List
      */
@@ -115,7 +115,7 @@ public class ValueMatcherBuilder {
      * <li>3-3</li>
      * </ul>
      *
-     * @param value 范围表达式
+     * @param value  范围表达式
      * @param parser 针对这个时间字段的解析器
      * @return List
      */

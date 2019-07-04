@@ -1,15 +1,15 @@
 package org.gjgr.pig.chivalrous.db;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
-
 import org.gjgr.pig.chivalrous.db.handler.EntityHandler;
 import org.gjgr.pig.chivalrous.db.handler.EntityListHandler;
 import org.gjgr.pig.chivalrous.db.handler.RsHandler;
 import org.gjgr.pig.chivalrous.db.sql.Condition;
 import org.gjgr.pig.chivalrous.db.sql.SqlExecutor;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 抽象SQL执行类<br>
@@ -42,13 +42,13 @@ public abstract class AbstractSqlRunner {
     /**
      * 查询
      *
-     * @param sql 查询语句
-     * @param rsh 结果集处理对象
+     * @param sql    查询语句
+     * @param rsh    结果集处理对象
      * @param params 参数
      * @return 结果对象
      * @throws SQLException
      */
-    public <T> T query(String sql, RsHandler<T> rsh, Object...params) throws SQLException {
+    public <T> T query(String sql, RsHandler<T> rsh, Object... params) throws SQLException {
         Connection conn = null;
         try {
             conn = this.getConnection();
@@ -64,12 +64,12 @@ public abstract class AbstractSqlRunner {
      * 执行非查询语句<br>
      * 语句包括 插入、更新、删除
      *
-     * @param sql SQL
+     * @param sql    SQL
      * @param params 参数
      * @return 影响行数
      * @throws SQLException
      */
-    public int execute(String sql, Object...params) throws SQLException {
+    public int execute(String sql, Object... params) throws SQLException {
         Connection conn = null;
         try {
             conn = this.getConnection();
@@ -85,12 +85,12 @@ public abstract class AbstractSqlRunner {
      * 执行非查询语句<br>
      * 语句包括 插入、更新、删除
      *
-     * @param sql SQL
+     * @param sql    SQL
      * @param params 参数
      * @return 主键
      * @throws SQLException
      */
-    public Long executeForGeneratedKey(String sql, Object...params) throws SQLException {
+    public Long executeForGeneratedKey(String sql, Object... params) throws SQLException {
         Connection conn = null;
         try {
             conn = this.getConnection();
@@ -105,12 +105,12 @@ public abstract class AbstractSqlRunner {
     /**
      * 批量执行非查询语句
      *
-     * @param sql SQL
+     * @param sql         SQL
      * @param paramsBatch 批量的参数
      * @return 每个SQL执行影响的行数
      * @throws SQLException
      */
-    public int[] executeBatch(String sql, Object[]...paramsBatch) throws SQLException {
+    public int[] executeBatch(String sql, Object[]... paramsBatch) throws SQLException {
         Connection conn = null;
         try {
             conn = this.getConnection();
@@ -204,8 +204,8 @@ public abstract class AbstractSqlRunner {
      * 删除数据
      *
      * @param tableName 表名
-     * @param field 字段名，最好是主键
-     * @param value 值，值可以是列表或数组，被当作IN查询处理
+     * @param field     字段名，最好是主键
+     * @param value     值，值可以是列表或数组，被当作IN查询处理
      * @return 删除行数
      * @throws SQLException
      */
@@ -259,8 +259,8 @@ public abstract class AbstractSqlRunner {
      *
      * @param <T>
      * @param tableName 表名
-     * @param field 字段名
-     * @param value 字段值
+     * @param field     字段名
+     * @param value     字段值
      * @return 记录
      * @throws SQLException
      */
@@ -284,8 +284,8 @@ public abstract class AbstractSqlRunner {
      * 查询
      *
      * @param fields 返回的字段列表，null则返回所有字段
-     * @param where 条件实体类（包含表名）
-     * @param rsh 结果集处理对象
+     * @param where  条件实体类（包含表名）
+     * @param rsh    结果集处理对象
      * @return 结果对象
      * @throws SQLException
      */
@@ -305,7 +305,7 @@ public abstract class AbstractSqlRunner {
      * 查询，返回所有字段
      *
      * @param where 条件实体类（包含表名）
-     * @param rsh 结果集处理对象
+     * @param rsh   结果集处理对象
      * @return 结果对象
      * @throws SQLException
      */
@@ -339,8 +339,8 @@ public abstract class AbstractSqlRunner {
      * 根据某个字段名条件查询数据列表，返回所有字段
      *
      * @param tableName 表名
-     * @param field 字段名
-     * @param value 字段值
+     * @param field     字段名
+     * @param value     字段值
      * @return 数据对象列表
      * @throws SQLException
      */
@@ -352,9 +352,9 @@ public abstract class AbstractSqlRunner {
      * 根据某个字段名条件查询数据列表，返回所有字段
      *
      * @param tableName 表名
-     * @param field 字段名
-     * @param value 字段值
-     * @param likeType {@link Condition.LikeType}
+     * @param field     字段名
+     * @param value     字段值
+     * @param likeType  {@link Condition.LikeType}
      * @return 数据对象列表
      * @throws SQLException
      */
@@ -385,11 +385,11 @@ public abstract class AbstractSqlRunner {
     /**
      * 分页查询<br/>
      *
-     * @param fields 返回的字段列表，null则返回所有字段
-     * @param where 条件实体类（包含表名）
-     * @param page 页码
+     * @param fields     返回的字段列表，null则返回所有字段
+     * @param where      条件实体类（包含表名）
+     * @param page       页码
      * @param numPerPage 每页条目数
-     * @param rsh 结果集处理对象
+     * @param rsh        结果集处理对象
      * @return 结果对象
      * @throws SQLException
      */
@@ -410,9 +410,9 @@ public abstract class AbstractSqlRunner {
      * 分页查询<br/>
      *
      * @param fields 返回的字段列表，null则返回所有字段
-     * @param where 条件实体类（包含表名）
-     * @param page 分页对象
-     * @param rsh 结果集处理对象
+     * @param where  条件实体类（包含表名）
+     * @param page   分页对象
+     * @param rsh    结果集处理对象
      * @return 结果对象
      * @throws SQLException
      */
@@ -431,9 +431,9 @@ public abstract class AbstractSqlRunner {
     /**
      * 分页查询<br/>
      *
-     * @param fields 返回的字段列表，null则返回所有字段
-     * @param where 条件实体类（包含表名）
-     * @param page 页码
+     * @param fields     返回的字段列表，null则返回所有字段
+     * @param where      条件实体类（包含表名）
+     * @param page       页码
      * @param numPerPage 每页条目数
      * @return 结果对象
      * @throws SQLException
@@ -455,8 +455,8 @@ public abstract class AbstractSqlRunner {
      * 分页查询<br/>
      *
      * @param fields 返回的字段列表，null则返回所有字段
-     * @param where 条件实体类（包含表名）
-     * @param page 页码
+     * @param where  条件实体类（包含表名）
+     * @param page   页码
      * @return 结果对象
      * @throws SQLException
      */
@@ -476,7 +476,7 @@ public abstract class AbstractSqlRunner {
      * 分页查询<br/>
      *
      * @param where 条件实体类（包含表名）
-     * @param page 页码
+     * @param page  页码
      * @return 分页结果集
      * @throws SQLException
      */

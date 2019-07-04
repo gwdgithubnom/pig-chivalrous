@@ -30,9 +30,9 @@ package org.gjgr.pig.chivalrous.core.io.file;
  * implementation that provides the same resource path resolution strategy.
  *
  * @author Juergen Hoeller
- * @since 1.1.3
- * @see DefaultResourceLoader
  * @sees org.springframework.context.support.FileSystemXmlApplicationContext
+ * @see DefaultResourceLoader
+ * @since 1.1.3
  */
 public class FileSystemResourceLoader extends DefaultResourceLoader {
 
@@ -41,11 +41,11 @@ public class FileSystemResourceLoader extends DefaultResourceLoader {
      * <p>
      * Note: Even if a given path starts with a slash, it will get interpreted as relative to the current VM working
      * directory.
-     * 
+     *
      * @param path the path to the resource
      * @return the corresponding Resource handle
-     * @see FileSystemResource
      * @sees org.springframework.web.context.support.ServletContextResourceLoader#getResourceByPath
+     * @see FileSystemResource
      */
     @Override
     protected Resource getResourceByPath(String path) {

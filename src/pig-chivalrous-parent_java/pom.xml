@@ -10,6 +10,7 @@
         <module>pig-chivalrous-data</module>
         <module>pig-chivalrous-io</module>
         <module>pig-chivalrous-lang</module>
+        <module>pig-chivalrous-image</module>
         <module>pig-chivalrous-language</module>
         <module>pig-chivalrous-math</module>
         <module>pig-chivalrous-net</module>

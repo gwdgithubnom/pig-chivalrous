@@ -1,13 +1,12 @@
 package org.gjgr.pig.chivalrous.core.image;
 
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URL;
-
-import javax.imageio.ImageIO;
-
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
 
 /**
  * File Name : pig-chivalrous - org.gjgr.pig.chivalrous.core.image CopyRright (c) 1949-xxxx: File Number： Author：gwd

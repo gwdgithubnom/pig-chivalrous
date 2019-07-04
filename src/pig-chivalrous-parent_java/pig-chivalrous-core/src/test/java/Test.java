@@ -1,6 +1,6 @@
-import java.io.IOException;
-
 import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+
+import java.io.IOException;
 
 /**
  * @Author gwd
@@ -16,7 +16,7 @@ public class Test {
      * Appends all digits to the given buffer.
      *
      * @param buffer the buffer to append to.
-     * @param value the value to append digits from.
+     * @param value  the value to append digits from.
      */
     private static void appendFullDigits(final Appendable buffer, int value, int minFieldWidth) throws IOException {
         // specialized paths for 1 to 4 digits -> avoid the memory allocation from the temporary work array

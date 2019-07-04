@@ -26,7 +26,7 @@ public interface TaskListener {
     /**
      * 任务启动失败时触发
      *
-     * @param executor {@link TaskExecutor}
+     * @param executor  {@link TaskExecutor}
      * @param exception 异常
      */
     public void onFailed(TaskExecutor executor, Throwable exception);

@@ -1,16 +1,5 @@
 package org.gjgr.pig.chivalrous.core.setting.dialect;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.nio.file.WatchEvent;
-import java.util.Properties;
-
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.getter.BasicTypeGetter;
 import org.gjgr.pig.chivalrous.core.getter.OptBasicTypeGetter;
@@ -26,6 +15,17 @@ import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
 import org.gjgr.pig.chivalrous.core.setting.SettingRuntimeException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.nio.file.WatchEvent;
+import java.util.Properties;
 
 /**
  * Properties文件读取封装类
@@ -76,7 +76,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     /**
      * 构造，相对于classes读取文件
      *
-     * @param path 相对路径
+     * @param path  相对路径
      * @param clazz 基准类
      */
     public Props(String path, Class<?> clazz) {
@@ -334,7 +334,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     /**
      * 设置值，无给定键创建之。设置后未持久化
      *
-     * @param key 属性键
+     * @param key   属性键
      * @param value 属性值
      */
     public void setProperty(String key, Object value) {
@@ -360,7 +360,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     /**
      * 存储当前设置，会覆盖掉以前的设置
      *
-     * @param path 相对路径
+     * @param path  相对路径
      * @param clazz 相对的类
      */
     public void store(String path, Class<?> clazz) {

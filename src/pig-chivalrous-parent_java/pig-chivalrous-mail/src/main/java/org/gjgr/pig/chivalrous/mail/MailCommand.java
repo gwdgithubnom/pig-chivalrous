@@ -1,13 +1,5 @@
 package org.gjgr.pig.chivalrous.mail;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.http.NameValuePair;
@@ -25,6 +17,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * @Author gwd
@@ -74,8 +74,8 @@ public final class MailCommand {
     }
 
     public static boolean sendMail(MailContentType mailContentType, String host, String username, String from,
-            String password,
-            String title, String content, String nickname, String to, String cc, Set<String> files) {
+                                   String password,
+                                   String title, String content, String nickname, String to, String cc, Set<String> files) {
         boolean status;
         HtmlEmail email = new HtmlEmail();
         email.setCharset("UTF-8");
@@ -156,7 +156,7 @@ public final class MailCommand {
     }
 
     public static boolean sendMail(MailContentType mailContentType, String url, String from, String to, String cc,
-            String title, String content, List<String> files) {
+                                   String title, String content, List<String> files) {
         Set<String> setFiles = new HashSet<>(files);
         StringBuffer stringBuffer = new StringBuffer();
         for (String string : setFiles) {
@@ -166,13 +166,13 @@ public final class MailCommand {
     }
 
     public static boolean sendMail(MailContentType mailContentType, String url, String from, String to, String cc,
-            String title, String content, String file) {
+                                   String title, String content, String file) {
         url = url + "&file=" + file;
         return sendMail(mailContentType, url, from, to, cc, title, content);
     }
 
     public static boolean sendMail(MailContentType mailContentType, String url, String from, String to, String cc,
-            String title, String content) {
+                                   String title, String content) {
         try {
             UriBuilder uriBuilder = UriCommand.uriBuilder(url);
             if (from != null) {
@@ -313,7 +313,7 @@ public final class MailCommand {
         if (simpleMail.getHeadline() != null) {
             message.getInfo().put("headline", simpleMail.getHeadline());
         }
-        if (message.getStatus() != 1) {
+        if (message.getStatus() == null) {
             message.setStatus(1);
         }
         return message;
@@ -386,7 +386,7 @@ public final class MailCommand {
     }
 
     public static boolean sendMail(MailContentType mailContentType, UriBuilder uriBuilder, String title,
-            String content) {
+                                   String content) {
         boolean status = false;
         if (uriBuilder.getScheme().equalsIgnoreCase("mail")) {
             String username = uriBuilder.getUserInfo();

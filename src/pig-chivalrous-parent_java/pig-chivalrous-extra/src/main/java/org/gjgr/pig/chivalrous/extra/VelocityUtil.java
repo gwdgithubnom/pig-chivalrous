@@ -1,15 +1,5 @@
 package org.gjgr.pig.chivalrous.extra;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -20,6 +10,16 @@ import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.util.RandomCommand;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Velocity模板引擎工具类<br>
@@ -56,8 +56,8 @@ public class VelocityUtil {
     /**
      * 初始化全局属性
      *
-     * @param templateDir 模板目录
-     * @param charset 字符集编码
+     * @param templateDir         模板目录
+     * @param charset             字符集编码
      * @param initedGlobalContext 初始的全局上下文
      */
     public static void init(String templateDir, String charset, Map<String, Object> initedGlobalContext) {
@@ -83,14 +83,14 @@ public class VelocityUtil {
     /**
      * 获得指定模板填充后的内容
      *
-     * @param templateDir 模板所在目录，绝对路径
+     * @param templateDir      模板所在目录，绝对路径
      * @param templateFileName 模板名称
-     * @param context 上下文（变量值的容器）
-     * @param charset 字符集
+     * @param context          上下文（变量值的容器）
+     * @param charset          字符集
      * @return 模板和内容匹配后的内容
      */
     public static String getContent(String templateDir, String templateFileName, VelocityContext context,
-            String charset) {
+                                    String charset) {
         // 初始化模板引擎
         final VelocityEngine ve = newEngine(templateDir, charset);
 
@@ -100,9 +100,9 @@ public class VelocityUtil {
     /**
      * 获得指定模板填充后的内容
      *
-     * @param ve 模板引擎
+     * @param ve               模板引擎
      * @param templateFileName 模板名称
-     * @param context 上下文（变量值的容器）
+     * @param context          上下文（变量值的容器）
      * @return 模板和内容匹配后的内容
      */
     public static String getContent(VelocityEngine ve, String templateFileName, VelocityContext context) {
@@ -115,7 +115,7 @@ public class VelocityUtil {
      * 获得指定模板填充后的内容，使用默认引擎
      *
      * @param templateFileName 模板文件
-     * @param context 上下文（变量值的容器）
+     * @param context          上下文（变量值的容器）
      * @return 模板和内容匹配后的内容
      */
     public static String getContent(String templateFileName, VelocityContext context) {
@@ -127,10 +127,10 @@ public class VelocityUtil {
     /**
      * 生成文件
      *
-     * @param ve 模板引擎
+     * @param ve               模板引擎
      * @param templateFileName 模板文件名
-     * @param context 上下文
-     * @param destPath 目标路径（绝对）
+     * @param context          上下文
+     * @param destPath         目标路径（绝对）
      */
     public static void toFile(VelocityEngine ve, String templateFileName, VelocityContext context, String destPath) {
         toFile(ve.getTemplate(templateFileName), context, destPath);
@@ -140,8 +140,8 @@ public class VelocityUtil {
      * 生成文件，使用默认引擎
      *
      * @param templateFileName 模板文件名
-     * @param context 模板上下文
-     * @param destPath 目标路径（绝对）
+     * @param context          模板上下文
+     * @param destPath         目标路径（绝对）
      */
     public static void toFile(String templateFileName, VelocityContext context, String destPath) {
         assertInit();
@@ -153,7 +153,7 @@ public class VelocityUtil {
      * 生成文件
      *
      * @param template 模板
-     * @param context 模板上下文
+     * @param context  模板上下文
      * @param destPath 目标路径（绝对）
      */
     public static void toFile(Template template, VelocityContext context, String destPath) {
@@ -173,10 +173,10 @@ public class VelocityUtil {
      * 生成内容写入流<br>
      * 会自动关闭Writer
      *
-     * @param ve 引擎
+     * @param ve               引擎
      * @param templateFileName 模板文件名
-     * @param context 上下文
-     * @param writer 流
+     * @param context          上下文
+     * @param writer           流
      */
     public static void toWriter(VelocityEngine ve, String templateFileName, VelocityContext context, Writer writer) {
         final Template template = ve.getTemplate(templateFileName);
@@ -188,8 +188,8 @@ public class VelocityUtil {
      * 会自动关闭Writer
      *
      * @param templateFileName 模板文件名
-     * @param context 上下文
-     * @param writer 流
+     * @param context          上下文
+     * @param writer           流
      */
     public static void toWriter(String templateFileName, VelocityContext context, Writer writer) {
         assertInit();
@@ -203,11 +203,11 @@ public class VelocityUtil {
      * 模板的变量来自于Request的Attribute对象
      *
      * @param templateFileName 模板文件
-     * @param request 请求对象，用于获取模板中的变量值
-     * @param response 响应对象
+     * @param request          请求对象，用于获取模板中的变量值
+     * @param response         响应对象
      */
     public static void toWriter(String templateFileName, javax.servlet.http.HttpServletRequest request,
-            javax.servlet.http.HttpServletResponse response) {
+                                javax.servlet.http.HttpServletResponse response) {
         final VelocityContext context = new VelocityContext();
         parseRequest(context, request);
         parseSession(context, request.getSession(false));
@@ -230,7 +230,7 @@ public class VelocityUtil {
      * 融合模板和内容
      *
      * @param templateContent 模板的内容字符串
-     * @param context 上下文
+     * @param context         上下文
      * @return 模板和内容匹配后的内容
      */
     public static String merge(String templateContent, VelocityContext context) {
@@ -247,8 +247,8 @@ public class VelocityUtil {
      * 融合模板和内容并写入到Writer
      *
      * @param template 模板
-     * @param context 内容
-     * @param writer Writer
+     * @param context  内容
+     * @param writer   Writer
      */
     public static void merge(Template template, VelocityContext context, Writer writer) {
         if (template == null) {
@@ -335,7 +335,7 @@ public class VelocityUtil {
      * 设置Velocity全局上下文<br>
      * 当设定值时，对于每个模板都有效
      *
-     * @param name 名
+     * @param name  名
      * @param value 值
      */
     public void putGlobalContext(String name, Object value) {

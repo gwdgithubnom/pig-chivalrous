@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.web.http;
 
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,10 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * http基类
@@ -104,8 +104,8 @@ public abstract class HttpBase<T> {
      * 设置一个header<br>
      * 如果覆盖模式，则替换之前的值，否则加入到值列表中
      *
-     * @param name Header名
-     * @param value Header值
+     * @param name       Header名
+     * @param value      Header值
      * @param isOverride 是否覆盖已有值
      * @return T 本身
      */
@@ -127,8 +127,8 @@ public abstract class HttpBase<T> {
      * 设置一个header<br>
      * 如果覆盖模式，则替换之前的值，否则加入到值列表中
      *
-     * @param name Header名
-     * @param value Header值
+     * @param name       Header名
+     * @param value      Header值
      * @param isOverride 是否覆盖已有值
      * @return T 本身
      */
@@ -140,7 +140,7 @@ public abstract class HttpBase<T> {
      * 设置一个header<br>
      * 覆盖模式，则替换之前的值
      *
-     * @param name Header名
+     * @param name  Header名
      * @param value Header值
      * @return T 本身
      */
@@ -152,7 +152,7 @@ public abstract class HttpBase<T> {
      * 设置一个header<br>
      * 覆盖模式，则替换之前的值
      *
-     * @param name Header名
+     * @param name  Header名
      * @param value Header值
      * @return T 本身
      */
@@ -184,7 +184,7 @@ public abstract class HttpBase<T> {
     /**
      * 获取headers
      *
-     * @return Map<String , List < String>>
+     * @return Map<String                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                               List                                                                                                                                                                                                                                                               <                                                                                                                                                                                                                                                               String>>
      */
     public Map<String, List<String>> headers() {
         return Collections.unmodifiableMap(headers);

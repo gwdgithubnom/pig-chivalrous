@@ -1,5 +1,13 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.http.Consts;
+import org.apache.http.NameValuePair;
+import org.apache.http.conn.util.InetAddressUtils;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.TextUtils;
+import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -11,14 +19,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.http.Consts;
-import org.apache.http.NameValuePair;
-import org.apache.http.conn.util.InetAddressUtils;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.TextUtils;
-import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
 
 /**
  * @Author gwd
@@ -422,7 +422,7 @@ public class UriBuilder {
      *
      * @since 4.3
      */
-    public UriBuilder setParameters(final NameValuePair...nvps) {
+    public UriBuilder setParameters(final NameValuePair... nvps) {
         if (this.queryParams == null) {
             this.queryParams = new ArrayList<NameValuePair>();
         } else {
@@ -493,7 +493,7 @@ public class UriBuilder {
             this.queryParams = new ArrayList<NameValuePair>();
         }
         if (!this.queryParams.isEmpty()) {
-            for (final Iterator<NameValuePair> it = this.queryParams.iterator(); it.hasNext();) {
+            for (final Iterator<NameValuePair> it = this.queryParams.iterator(); it.hasNext(); ) {
                 final NameValuePair nvp = it.next();
                 if (nvp.getName().equals(param)) {
                     it.remove();
@@ -634,6 +634,17 @@ public class UriBuilder {
             return new ArrayList<NameValuePair>();
         }
     }
+
+
+    public Map<String, String> getParams() {
+        List<NameValuePair> nameValuePairs = getQueryParams();
+        Map<String, String> data = new HashMap<>();
+        for (NameValuePair nameValuePair : nameValuePairs) {
+            data.put(nameValuePair.getName(), nameValuePair.getValue());
+        }
+        return data;
+    }
+
 
     public String getFragment() {
         return this.fragment;

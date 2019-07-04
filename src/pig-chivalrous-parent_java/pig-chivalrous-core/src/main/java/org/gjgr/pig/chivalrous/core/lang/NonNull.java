@@ -8,14 +8,13 @@ package org.gjgr.pig.chivalrous.core.lang;
  * @More:
  */
 
+import javax.annotation.Nonnull;
+import javax.annotation.meta.TypeQualifierNickname;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import javax.annotation.Nonnull;
-import javax.annotation.meta.TypeQualifierNickname;
 
 /**
  * A common Spring annotation to declare that annotated elements cannot be {@code null}. Leverages JSR 305
@@ -37,7 +36,7 @@ import javax.annotation.meta.TypeQualifierNickname;
  * @see Nullable
  * @since 5.0
  */
-@Target({ ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD })
+@Target( {ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Nonnull

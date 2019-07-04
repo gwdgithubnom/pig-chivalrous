@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import static org.apache.commons.lang3.ArrayUtils.EMPTY_DOUBLE_ARRAY;
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
 
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import static org.apache.commons.lang3.ArrayUtils.EMPTY_DOUBLE_ARRAY;
 
 /**
  * 数组工具类
@@ -227,7 +227,7 @@ public final class ArrayCommand {
      * 新建一个空数组
      *
      * @param componentType 元素类型
-     * @param newSize 大小
+     * @param newSize       大小
      * @return 空数组
      */
     @SuppressWarnings("unchecked")
@@ -239,12 +239,12 @@ public final class ArrayCommand {
      * 将新元素添加到已有数组中<br/>
      * 添加新元素会生成一个新的数组，不影响原数组
      *
-     * @param buffer 已有数组
+     * @param buffer      已有数组
      * @param newElements 新元素
      * @return 新数组
      */
     @SafeVarargs
-    public static <T> T[] append(T[] buffer, T...newElements) {
+    public static <T> T[] append(T[] buffer, T... newElements) {
         if (isEmpty(newElements)) {
             return buffer;
         }
@@ -257,8 +257,8 @@ public final class ArrayCommand {
     /**
      * 生成一个新的重新设置大小的数组
      *
-     * @param buffer 原数组
-     * @param newSize 新的数组大小
+     * @param buffer        原数组
+     * @param newSize       新的数组大小
      * @param componentType 数组元素类型
      * @return 调整后的新数组
      */
@@ -274,7 +274,7 @@ public final class ArrayCommand {
      * 生成一个新的重新设置大小的数组<br/>
      * 新数组的类型为原数组的类型
      *
-     * @param buffer 原数组
+     * @param buffer  原数组
      * @param newSize 新的数组大小
      * @return 调整后的新数组
      */
@@ -290,7 +290,7 @@ public final class ArrayCommand {
      * @return 合并后的数组
      */
     @SafeVarargs
-    public static <T> T[] addAll(T[]...arrays) {
+    public static <T> T[] addAll(T[]... arrays) {
         if (arrays.length == 1) {
             return arrays[0];
         }
@@ -372,7 +372,7 @@ public final class ArrayCommand {
      * 自动判定正序反序
      *
      * @param includedStart 开始的数字（包含）
-     * @param excludedEnd 结束的数字（不包含）
+     * @param excludedEnd   结束的数字（不包含）
      * @return 数字列表
      */
     public static int[] range(int includedStart, int excludedEnd) {
@@ -384,8 +384,8 @@ public final class ArrayCommand {
      * 自动判定正序反序
      *
      * @param includedStart 开始的数字（包含）
-     * @param excludedEnd 结束的数字（不包含）
-     * @param step 步进
+     * @param excludedEnd   结束的数字（不包含）
+     * @param step          步进
      * @return 数字列表
      */
     public static int[] range(int includedStart, int excludedEnd, int step) {
@@ -416,7 +416,7 @@ public final class ArrayCommand {
      * 拆分byte数组为几个等份（最后一份可能小于len）
      *
      * @param array 数组
-     * @param len 每个小节的长度
+     * @param len   每个小节的长度
      * @return 拆分后的数组
      */
     public static byte[][] split(byte[] array, int len) {
@@ -443,7 +443,7 @@ public final class ArrayCommand {
     /**
      * 过滤
      *
-     * @param array 数组
+     * @param array  数组
      * @param editor 编辑器接口
      * @return 过滤后的数组
      */
@@ -467,8 +467,8 @@ public final class ArrayCommand {
      * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      *
-     * @param keys 键列表
-     * @param values 值列表
+     * @param keys    键列表
+     * @param values  值列表
      * @param isOrder 是否有序
      * @return Map
      * @since 3.0.4
@@ -495,7 +495,7 @@ public final class ArrayCommand {
      * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
      * 如果两个数组长度不同，则只对应最短部分
      *
-     * @param keys 键列表
+     * @param keys   键列表
      * @param values 值列表
      * @return Map
      */
@@ -534,7 +534,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Integer[] wrap(int...values) {
+    public static Integer[] wrap(int... values) {
         final int length = values.length;
         Integer[] array = new Integer[length];
         for (int i = 0; i < length; i++) {
@@ -549,7 +549,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static int[] unWrap(Integer...values) {
+    public static int[] unWrap(Integer... values) {
         final int length = values.length;
         int[] array = new int[length];
         for (int i = 0; i < length; i++) {
@@ -564,7 +564,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Long[] wrap(long...values) {
+    public static Long[] wrap(long... values) {
         final int length = values.length;
         Long[] array = new Long[length];
         for (int i = 0; i < length; i++) {
@@ -579,7 +579,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static long[] unWrap(Long...values) {
+    public static long[] unWrap(Long... values) {
         final int length = values.length;
         long[] array = new long[length];
         for (int i = 0; i < length; i++) {
@@ -594,7 +594,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Character[] wrap(char...values) {
+    public static Character[] wrap(char... values) {
         final int length = values.length;
         Character[] array = new Character[length];
         for (int i = 0; i < length; i++) {
@@ -609,7 +609,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static char[] unWrap(Character...values) {
+    public static char[] unWrap(Character... values) {
         final int length = values.length;
         char[] array = new char[length];
         for (int i = 0; i < length; i++) {
@@ -624,7 +624,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Byte[] wrap(byte...values) {
+    public static Byte[] wrap(byte... values) {
         final int length = values.length;
         Byte[] array = new Byte[length];
         for (int i = 0; i < length; i++) {
@@ -639,7 +639,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static byte[] unWrap(Byte...values) {
+    public static byte[] unWrap(Byte... values) {
         final int length = values.length;
         byte[] array = new byte[length];
         for (int i = 0; i < length; i++) {
@@ -654,7 +654,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Short[] wrap(short...values) {
+    public static Short[] wrap(short... values) {
         final int length = values.length;
         Short[] array = new Short[length];
         for (int i = 0; i < length; i++) {
@@ -669,7 +669,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static short[] unWrap(Short...values) {
+    public static short[] unWrap(Short... values) {
         final int length = values.length;
         short[] array = new short[length];
         for (int i = 0; i < length; i++) {
@@ -684,7 +684,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Float[] wrap(float...values) {
+    public static Float[] wrap(float... values) {
         final int length = values.length;
         Float[] array = new Float[length];
         for (int i = 0; i < length; i++) {
@@ -699,7 +699,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static float[] unWrap(Float...values) {
+    public static float[] unWrap(Float... values) {
         final int length = values.length;
         float[] array = new float[length];
         for (int i = 0; i < length; i++) {
@@ -714,7 +714,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Double[] wrap(double...values) {
+    public static Double[] wrap(double... values) {
         final int length = values.length;
         Double[] array = new Double[length];
         for (int i = 0; i < length; i++) {
@@ -729,7 +729,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static double[] unWrap(Double...values) {
+    public static double[] unWrap(Double... values) {
         final int length = values.length;
         double[] array = new double[length];
         for (int i = 0; i < length; i++) {
@@ -744,7 +744,7 @@ public final class ArrayCommand {
      * @param values 原始类型数组
      * @return 包装类型数组
      */
-    public static Boolean[] wrap(boolean...values) {
+    public static Boolean[] wrap(boolean... values) {
         final int length = values.length;
         Boolean[] array = new Boolean[length];
         for (int i = 0; i < length; i++) {
@@ -759,7 +759,7 @@ public final class ArrayCommand {
      * @param values 包装类型数组
      * @return 原始类型数组
      */
-    public static boolean[] unWrap(Boolean...values) {
+    public static boolean[] unWrap(Boolean... values) {
         final int length = values.length;
         boolean[] array = new boolean[length];
         for (int i = 0; i < length; i++) {
@@ -863,8 +863,8 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param <T> 被处理的集合
-     * @param array 数组
+     * @param <T>         被处理的集合
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -897,7 +897,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -922,7 +922,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -947,7 +947,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -972,7 +972,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -997,7 +997,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -1022,7 +1022,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -1047,7 +1047,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -1072,7 +1072,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */
@@ -1097,7 +1097,7 @@ public final class ArrayCommand {
     /**
      * 以 conjunction 为分隔符将数组转换为字符串
      *
-     * @param array 数组
+     * @param array       数组
      * @param conjunction 分隔符
      * @return 连接后的字符串
      */

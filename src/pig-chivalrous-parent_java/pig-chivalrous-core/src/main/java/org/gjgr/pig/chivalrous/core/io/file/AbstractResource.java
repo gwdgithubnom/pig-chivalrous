@@ -16,6 +16,10 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.exceptions.NestedIOException;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,10 +28,6 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-
-import org.gjgr.pig.chivalrous.core.exceptions.NestedIOException;
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
-import org.gjgr.pig.chivalrous.core.net.UriCommand;
 
 /**
  * Convenience base class for {@link Resource} implementations, pre-implementing typical behavior.
@@ -131,7 +131,7 @@ public abstract class AbstractResource implements Resource {
     /**
      * This implementation reads the entire InputStream to calculate the content length. Subclasses will almost always
      * be able to provide a more optimal version of this, e.g. checking a File length.
-     * 
+     *
      * @see #getInputStream()
      */
     @Override
@@ -155,7 +155,7 @@ public abstract class AbstractResource implements Resource {
 
     /**
      * This implementation checks the timestamp of the underlying File, if available.
-     * 
+     *
      * @see #getFileForLastModifiedCheck()
      */
     @Override
@@ -193,8 +193,8 @@ public abstract class AbstractResource implements Resource {
      *
      * @return the File to use for timestamp checking (never {@code null})
      * @throws FileNotFoundException if the resource cannot be resolved as an absolute file path, i.e. is not available
-     *             in a file system
-     * @throws IOException in case of general resolution/reading failures
+     *                               in a file system
+     * @throws IOException           in case of general resolution/reading failures
      */
     protected File getFileForLastModifiedCheck() throws IOException {
         return getFile();
@@ -212,7 +212,7 @@ public abstract class AbstractResource implements Resource {
 
     /**
      * This implementation compares description strings.
-     * 
+     *
      * @see #getDescription()
      */
     @Override

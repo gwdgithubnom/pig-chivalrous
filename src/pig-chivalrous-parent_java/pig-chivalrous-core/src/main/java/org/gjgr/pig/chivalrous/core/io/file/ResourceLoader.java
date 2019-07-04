@@ -32,15 +32,17 @@ import org.gjgr.pig.chivalrous.core.lang.Nullable;
  * ApplicationContext, using the particular context's resource loading strategy.
  *
  * @author Juergen Hoeller
- * @since 10.03.2004
- * @see Resource
  * @sees org.springframework.core.io.support.ResourcePatternResolver
  * @sees org.springframework.context.ApplicationContext
  * @sees org.springframework.context.ResourceLoaderAware
+ * @see Resource
+ * @since 10.03.2004
  */
 public interface ResourceLoader {
 
-    /** Pseudo URL prefix for loading from the class path: "classpath:" */
+    /**
+     * Pseudo URL prefix for loading from the class path: "classpath:"
+     */
     String CLASSPATH_URL_PREFIX = FileCommand.CLASSPATH_URL_PREFIX;
 
     /**
@@ -58,7 +60,7 @@ public interface ResourceLoader {
      * <p>
      * Note that a Resource handle does not imply an existing resource; you need to invoke {@link Resource#exists} to
      * check for existence.
-     * 
+     *
      * @param location the resource location
      * @return a corresponding Resource handle (never {@code null})
      * @see #CLASSPATH_URL_PREFIX
@@ -72,7 +74,7 @@ public interface ResourceLoader {
      * <p>
      * Clients which need to access the ClassLoader directly can do so in a uniform manner with the ResourceLoader,
      * rather than relying on the thread context ClassLoader.
-     * 
+     *
      * @return the ClassLoader
      * @sees org.springframework.util.ClassUtils#getDefaultClassLoader()
      */

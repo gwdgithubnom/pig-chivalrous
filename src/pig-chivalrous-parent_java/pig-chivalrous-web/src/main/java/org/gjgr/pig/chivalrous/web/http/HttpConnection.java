@@ -1,5 +1,18 @@
 package org.gjgr.pig.chivalrous.web.http;
 
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.lang.Validator;
+import org.gjgr.pig.chivalrous.core.log.Log;
+import org.gjgr.pig.chivalrous.core.log.LogFactory;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
+import org.gjgr.pig.chivalrous.web.http.ssl.TrustAnyHostnameVerifier;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,20 +26,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocketFactory;
-
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.lang.Validator;
-import org.gjgr.pig.chivalrous.core.log.Log;
-import org.gjgr.pig.chivalrous.core.log.LogFactory;
-import org.gjgr.pig.chivalrous.core.net.UriCommand;
-import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
-import org.gjgr.pig.chivalrous.web.http.ssl.TrustAnyHostnameVerifier;
 
 /**
  * http连接对象，对HttpURLConnection的包装
@@ -57,8 +56,8 @@ public class HttpConnection {
     /**
      * 构造HttpConnection
      *
-     * @param urlStr URL
-     * @param method HTTP方法
+     * @param urlStr  URL
+     * @param method  HTTP方法
      * @param timeout 超时时长
      */
     public HttpConnection(String urlStr, Method method, int timeout) {
@@ -68,15 +67,15 @@ public class HttpConnection {
     /**
      * 构造HttpConnection
      *
-     * @param urlStr URL
-     * @param method HTTP方法
+     * @param urlStr           URL
+     * @param method           HTTP方法
      * @param hostnameVerifier 域名验证器
-     * @param ssf SSLSocketFactory
-     * @param timeout 超时时长
-     * @param proxy 代理
+     * @param ssf              SSLSocketFactory
+     * @param timeout          超时时长
+     * @param proxy            代理
      */
     public HttpConnection(String urlStr, Method method, HostnameVerifier hostnameVerifier, SSLSocketFactory ssf,
-            int timeout, Proxy proxy) {
+                          int timeout, Proxy proxy) {
         if (StringCommand.isBlank(urlStr)) {
             throw new HttpException("Url is blank !");
         }
@@ -116,8 +115,8 @@ public class HttpConnection {
     /**
      * 创建HttpConnection
      *
-     * @param urlStr URL
-     * @param method HTTP方法
+     * @param urlStr  URL
+     * @param method  HTTP方法
      * @param timeout 超时时长
      * @return HttpConnection
      */
@@ -133,7 +132,7 @@ public class HttpConnection {
      * @return HttpConnection
      */
     public static HttpConnection create(String urlStr, Method method, HostnameVerifier hostnameVerifier,
-            SSLSocketFactory ssf) {
+                                        SSLSocketFactory ssf) {
         return new HttpConnection(urlStr, method, hostnameVerifier, ssf, 0, null);
     }
 
@@ -142,11 +141,11 @@ public class HttpConnection {
      *
      * @param urlStr URL
      * @param method HTTP方法
-     * @param proxy 代理
+     * @param proxy  代理
      * @return HttpConnection
      */
     public static HttpConnection create(String urlStr, Method method, HostnameVerifier hostnameVerifier,
-            SSLSocketFactory ssf, int timeout, Proxy proxy) {
+                                        SSLSocketFactory ssf, int timeout, Proxy proxy) {
         return new HttpConnection(urlStr, method, hostnameVerifier, ssf, timeout, proxy);
     }
 
@@ -247,8 +246,8 @@ public class HttpConnection {
      * 设置请求头<br>
      * 当请求头存在时，覆盖之
      *
-     * @param header 头名
-     * @param value 头值
+     * @param header     头名
+     * @param value      头值
      * @param isOverride 是否覆盖旧值
      * @return HttpConnection
      */
@@ -268,8 +267,8 @@ public class HttpConnection {
      * 设置请求头<br>
      * 当请求头存在时，覆盖之
      *
-     * @param header 头名
-     * @param value 头值
+     * @param header     头名
+     * @param value      头值
      * @param isOverride 是否覆盖旧值
      * @return HttpConnection
      */
@@ -528,7 +527,7 @@ public class HttpConnection {
      * 初始化https请求参数
      *
      * @param hostnameVerifier 域名验证器
-     * @param ssf SSLSocketFactory
+     * @param ssf              SSLSocketFactory
      */
     private HttpsURLConnection openHttps(HostnameVerifier hostnameVerifier, SSLSocketFactory ssf)
             throws IOException, NoSuchAlgorithmException, KeyManagementException {

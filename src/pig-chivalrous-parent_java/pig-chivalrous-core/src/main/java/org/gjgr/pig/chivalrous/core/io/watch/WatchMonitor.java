@@ -1,5 +1,8 @@
 package org.gjgr.pig.chivalrous.core.io.watch;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +16,6 @@ import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 
 /**
  * 路径监听器<br>
@@ -49,7 +49,7 @@ public class WatchMonitor extends Thread implements Closeable {
             StandardWatchEventKinds.OVERFLOW, // 事件丢失
             StandardWatchEventKinds.ENTRY_MODIFY, // 修改
             StandardWatchEventKinds.ENTRY_CREATE, // 创建
-            StandardWatchEventKinds.ENTRY_DELETE };// 删除
+            StandardWatchEventKinds.ENTRY_DELETE};// 删除
 
     /**
      * 监听路径，必须为目录
@@ -83,30 +83,30 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 构造
      *
-     * @param file 文件
+     * @param file   文件
      * @param events 监听的事件列表
      */
-    public WatchMonitor(File file, WatchEvent.Kind<?>...events) {
+    public WatchMonitor(File file, WatchEvent.Kind<?>... events) {
         this(file.toPath(), events);
     }
 
     /**
      * 构造
      *
-     * @param path 字符串路径
+     * @param path   字符串路径
      * @param events 监听的事件列表
      */
-    public WatchMonitor(String path, WatchEvent.Kind<?>...events) {
+    public WatchMonitor(String path, WatchEvent.Kind<?>... events) {
         this(Paths.get(path), events);
     }
 
     /**
      * 构造
      *
-     * @param path 字符串路径
+     * @param path   字符串路径
      * @param events 监听事件列表
      */
-    public WatchMonitor(Path path, WatchEvent.Kind<?>...events) {
+    public WatchMonitor(Path path, WatchEvent.Kind<?>... events) {
         this.path = path;
         this.events = events;
         this.init();
@@ -115,22 +115,22 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听
      *
-     * @param uri URI
+     * @param uri    URI
      * @param events 监听的事件列表
      * @return 监听对象
      */
-    public static WatchMonitor create(URI uri, WatchEvent.Kind<?>...events) {
+    public static WatchMonitor create(URI uri, WatchEvent.Kind<?>... events) {
         return create(Paths.get(uri), events);
     }
 
     /**
      * 创建并初始化监听
      *
-     * @param url URL
+     * @param url    URL
      * @param events 监听的事件列表
      * @return 监听对象
      */
-    public static WatchMonitor create(URL url, WatchEvent.Kind<?>...events) {
+    public static WatchMonitor create(URL url, WatchEvent.Kind<?>... events) {
         try {
             return create(Paths.get(url.toURI()), events);
         } catch (URISyntaxException e) {
@@ -143,40 +143,40 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听
      *
-     * @param file 文件
+     * @param file   文件
      * @param events 监听的事件列表
      * @return 监听对象
      */
-    public static WatchMonitor create(File file, WatchEvent.Kind<?>...events) {
+    public static WatchMonitor create(File file, WatchEvent.Kind<?>... events) {
         return new WatchMonitor(file, events);
     }
 
     /**
      * 创建并初始化监听
      *
-     * @param path 路径
+     * @param path   路径
      * @param events 监听的事件列表
      * @return 监听对象
      */
-    public static WatchMonitor create(String path, WatchEvent.Kind<?>...events) {
+    public static WatchMonitor create(String path, WatchEvent.Kind<?>... events) {
         return new WatchMonitor(path, events);
     }
 
     /**
      * 创建并初始化监听
      *
-     * @param path 路径
+     * @param path   路径
      * @param events 监听事件列表
      * @return 监听对象
      */
-    public static WatchMonitor create(Path path, WatchEvent.Kind<?>...events) {
+    public static WatchMonitor create(Path path, WatchEvent.Kind<?>... events) {
         return new WatchMonitor(path, events);
     }
 
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param uri URI
+     * @param uri     URI
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -187,7 +187,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param url URL
+     * @param url     URL
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -205,7 +205,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param file 被监听文件
+     * @param file    被监听文件
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -216,7 +216,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param path 路径
+     * @param path    路径
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -227,7 +227,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param path 路径
+     * @param path    路径
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */

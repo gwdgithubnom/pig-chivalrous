@@ -41,20 +41,20 @@ public final class Console {
      * 同 System.out.println()方法，打印控制台日志
      *
      * @param template 文本模板，被替换的部分用 {} 表示
-     * @param values 值
+     * @param values   值
      */
-    public static void log(String template, Object...values) {
+    public static void log(String template, Object... values) {
         log(null, template, values);
     }
 
     /**
      * 同 System.out.println()方法，打印控制台日志
      *
-     * @param t 异常对象
+     * @param t        异常对象
      * @param template 文本模板，被替换的部分用 {} 表示
-     * @param values 值
+     * @param values   值
      */
-    public static void log(Throwable t, String template, Object...values) {
+    public static void log(Throwable t, String template, Object... values) {
         out.println(StringCommand.format(template, values));
         if (null != t) {
             t.printStackTrace();
@@ -89,20 +89,20 @@ public final class Console {
      * 同 System.err.println()方法，打印控制台日志
      *
      * @param template 文本模板，被替换的部分用 {} 表示
-     * @param values 值
+     * @param values   值
      */
-    public static void error(String template, Object...values) {
+    public static void error(String template, Object... values) {
         error(null, template, values);
     }
 
     /**
      * 同 System.err.println()方法，打印控制台日志
      *
-     * @param t 异常对象
+     * @param t        异常对象
      * @param template 文本模板，被替换的部分用 {} 表示
-     * @param values 值
+     * @param values   值
      */
-    public static void error(Throwable t, String template, Object...values) {
+    public static void error(Throwable t, String template, Object... values) {
         err.println(StringCommand.format(template, values));
         if (null != t) {
             t.printStackTrace(err);

@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db.ds.pooled;
 
+import org.gjgr.pig.chivalrous.db.DbUtil;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import org.gjgr.pig.chivalrous.db.DbUtil;
 
 /**
  * 池化

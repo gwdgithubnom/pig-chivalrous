@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +17,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.net.UriCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 分组化的Set集合类<br>
@@ -36,7 +36,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
     /**
      * 分组行识别的环绕标记
      */
-    private static final char[] GROUP_SURROUND = { '[', ']' };
+    private static final char[] GROUP_SURROUND = {'[', ']'};
 
     /**
      * 本设置对象的字符集
@@ -61,7 +61,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
      * 构造，使用相对于Class文件根目录的相对路径
      *
      * @param pathBaseClassLoader 相对路径（相对于当前项目的classes路径）
-     * @param charset 字符集
+     * @param charset             字符集
      */
     public GroupedSet(String pathBaseClassLoader, Charset charset) {
         if (null == pathBaseClassLoader) {
@@ -79,7 +79,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
      * 构造
      *
      * @param configFile 配置文件对象
-     * @param charset 字符集
+     * @param charset    字符集
      */
     public GroupedSet(File configFile, Charset charset) {
         if (configFile == null) {
@@ -96,8 +96,8 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
     /**
      * 构造，相对于classes读取文件
      *
-     * @param path 相对路径
-     * @param clazz 基准类
+     * @param path    相对路径
+     * @param clazz   基准类
      * @param charset 字符集
      */
     public GroupedSet(String path, Class<?> clazz, Charset charset) {
@@ -111,7 +111,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
     /**
      * 构造
      *
-     * @param url 设定文件的URL
+     * @param url     设定文件的URL
      * @param charset 字符集
      */
     public GroupedSet(URL url, Charset charset) {
@@ -136,7 +136,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
      * 初始化设定文件
      *
      * @param groupedSetUrl 设定文件的URL
-     * @param charset 字符集
+     * @param charset       字符集
      * @return 成功初始化与否
      */
     public boolean init(URL groupedSetUrl, Charset charset) {
@@ -268,12 +268,12 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
      * 是否在给定分组的集合中包含指定值<br>
      * 如果给定分组对应集合不存在，则返回false
      *
-     * @param group 分组名
-     * @param value 测试的值
+     * @param group       分组名
+     * @param value       测试的值
      * @param otherValues 其他值
      * @return 是否包含
      */
-    public boolean contains(String group, String value, String...otherValues) {
+    public boolean contains(String group, String value, String... otherValues) {
         if (ArrayCommand.isNotEmpty(otherValues)) {
             // 需要测试多个值的情况
             final List<String> valueList = Arrays.asList(otherValues);
@@ -294,7 +294,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
      * 是否在给定分组的集合中全部包含指定值集合<br>
      * 如果给定分组对应集合不存在，则返回false
      *
-     * @param group 分组名
+     * @param group  分组名
      * @param values 测试的值集合
      * @return 是否包含
      */

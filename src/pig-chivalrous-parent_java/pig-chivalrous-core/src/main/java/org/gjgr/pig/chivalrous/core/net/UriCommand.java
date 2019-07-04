@@ -1,5 +1,12 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -11,13 +18,6 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @Author gwd
@@ -162,7 +162,7 @@ public class UriCommand {
     /**
      * 获得URL
      *
-     * @param path 相对给定 class所在的路径
+     * @param path  相对给定 class所在的路径
      * @param clazz 指定class
      * @return URL
      */
@@ -193,7 +193,7 @@ public class UriCommand {
      * @return URL
      * @throws UtilException MalformedURLException
      */
-    public static URL[] getURLs(File...files) {
+    public static URL[] getURLs(File... files) {
         final URL[] urls = new URL[files.length];
         try {
             for (int i = 0; i < files.length; i++) {
@@ -225,7 +225,7 @@ public class UriCommand {
     /**
      * 补全相对路径
      *
-     * @param baseUrl 基准URL
+     * @param baseUrl      基准URL
      * @param relativePath 相对URL
      * @return 相对路径
      * @throws UtilException MalformedURLException
@@ -249,7 +249,7 @@ public class UriCommand {
      * 编码URL<br>
      * 将需要转换的内容（ASCII码形式之外的内容），用十六进制表示法转换出来，并在之前加上%开头。
      *
-     * @param url URL
+     * @param url     URL
      * @param charset 编码
      * @return 编码后的URL
      * @throws UtilException UnsupportedEncodingException
@@ -266,7 +266,7 @@ public class UriCommand {
      * 解码URL<br>
      * 将%开头的16进制表示的内容解码。
      *
-     * @param url URL
+     * @param url     URL
      * @param charset 编码
      * @return 解码后的URL
      * @throws UtilException UnsupportedEncodingException

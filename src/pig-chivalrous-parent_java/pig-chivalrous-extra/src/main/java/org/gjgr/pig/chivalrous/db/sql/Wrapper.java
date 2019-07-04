@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map.Entry;
-
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.Entity;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map.Entry;
 
 /**
  * 包装器<br>
@@ -117,7 +117,7 @@ public class Wrapper {
      * @param fields 字段名
      * @return 包装后的字段名
      */
-    public String[] wrap(String...fields) {
+    public String[] wrap(String... fields) {
         if (ArrayCommand.isEmpty(fields)) {
             return fields;
         }
@@ -177,7 +177,7 @@ public class Wrapper {
      * @param conditions 被包装的实体
      * @return 包装后的字段名
      */
-    public Condition[] wrap(Condition...conditions) {
+    public Condition[] wrap(Condition... conditions) {
         final Condition[] clonedConditions = new Condition[conditions.length];
         if (ArrayCommand.isNotEmpty(conditions)) {
             Condition clonedCondition;

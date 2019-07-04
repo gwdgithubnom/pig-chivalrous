@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 文件包装器，扩展文件对象
@@ -24,7 +24,7 @@ public class FileWrapper {
     /**
      * 构造
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 编码，使用 {@link CharsetCommand}
      */
     public FileWrapper(File file, Charset charset) {

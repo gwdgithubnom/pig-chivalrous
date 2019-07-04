@@ -1,20 +1,5 @@
 package org.gjgr.pig.chivalrous.web.http;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.Proxy;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSocketFactory;
-
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
@@ -28,6 +13,20 @@ import org.gjgr.pig.chivalrous.core.log.StaticLog;
 import org.gjgr.pig.chivalrous.core.util.RandomCommand;
 import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
 import org.gjgr.pig.chivalrous.web.http.ssl.SSLSocketFactoryBuilder;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSocketFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
  * http请求类
@@ -244,7 +243,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 设置表单数据<br>
      *
-     * @param name 名
+     * @param name  名
      * @param value 值
      */
     public HttpRequest form(String name, Object value) {
@@ -280,11 +279,11 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 设置表单数据
      *
-     * @param name 名
-     * @param value 值
+     * @param name       名
+     * @param value      值
      * @param parameters 参数对，奇数为名，偶数为值
      */
-    public HttpRequest form(String name, Object value, Object...parameters) {
+    public HttpRequest form(String name, Object value, Object... parameters) {
         form(name, value);
 
         for (int i = 0; i < parameters.length; i += 2) {
@@ -334,7 +333,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 获取表单数据
      *
-     * @return Map<String , Object>
+     * @return Map<String                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                               Object>
      */
     public Map<String, Object> form() {
         return form;
@@ -358,7 +357,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
     /**
      * 设置内容主体
      *
-     * @param body 请求体
+     * @param body        请求体
      * @param contentType 请求体类型
      */
     public HttpRequest body(String body, String contentType) {

@@ -38,7 +38,7 @@ public class SimpleLog extends AbstractLog {
 
     // ------------------------------------------------------------------------- Log
     @Override
-    public void log(Level level, String format, Object...arguments) {
+    public void log(Level level, String format, Object... arguments) {
         switch (level) {
             case TRACE:
                 trace(format, arguments);
@@ -61,7 +61,7 @@ public class SimpleLog extends AbstractLog {
     }
 
     @Override
-    public void log(Level level, Throwable t, String format, Object...arguments) {
+    public void log(Level level, Throwable t, String format, Object... arguments) {
         switch (level) {
             case TRACE:
                 trace(t, format, arguments);
@@ -90,14 +90,14 @@ public class SimpleLog extends AbstractLog {
     }
 
     @Override
-    public void trace(String format, Object...arguments) {
+    public void trace(String format, Object... arguments) {
         if (isTraceEnabled()) {
             logger.trace(StringCommand.format(format, arguments));
         }
     }
 
     @Override
-    public void trace(Throwable t, String format, Object...arguments) {
+    public void trace(Throwable t, String format, Object... arguments) {
         if (isTraceEnabled()) {
             logger.trace(StringCommand.format(format, arguments), t);
         }
@@ -110,14 +110,14 @@ public class SimpleLog extends AbstractLog {
     }
 
     @Override
-    public void debug(String format, Object...arguments) {
+    public void debug(String format, Object... arguments) {
         if (isDebugEnabled()) {
             logger.debug(StringCommand.format(format, arguments));
         }
     }
 
     @Override
-    public void debug(Throwable t, String format, Object...arguments) {
+    public void debug(Throwable t, String format, Object... arguments) {
         if (isDebugEnabled()) {
             logger.debug(StringCommand.format(format, arguments), t);
         }
@@ -130,14 +130,14 @@ public class SimpleLog extends AbstractLog {
     }
 
     @Override
-    public void info(String format, Object...arguments) {
+    public void info(String format, Object... arguments) {
         if (isInfoEnabled()) {
             logger.info(StringCommand.format(format, arguments));
         }
     }
 
     @Override
-    public void info(Throwable t, String format, Object...arguments) {
+    public void info(Throwable t, String format, Object... arguments) {
         if (isInfoEnabled()) {
             logger.info(StringCommand.format(format, arguments), t);
         }
@@ -150,14 +150,14 @@ public class SimpleLog extends AbstractLog {
     }
 
     @Override
-    public void warn(String format, Object...arguments) {
+    public void warn(String format, Object... arguments) {
         if (isWarnEnabled()) {
             logger.warn(StringCommand.format(format, arguments));
         }
     }
 
     @Override
-    public void warn(Throwable t, String format, Object...arguments) {
+    public void warn(Throwable t, String format, Object... arguments) {
         if (isWarnEnabled()) {
             logger.warn(StringCommand.format(format, arguments), t);
         }
@@ -170,14 +170,14 @@ public class SimpleLog extends AbstractLog {
     }
 
     @Override
-    public void error(String format, Object...arguments) {
+    public void error(String format, Object... arguments) {
         if (isErrorEnabled()) {
             logger.error(StringCommand.format(format, arguments));
         }
     }
 
     @Override
-    public void error(Throwable t, String format, Object...arguments) {
+    public void error(Throwable t, String format, Object... arguments) {
         if (isErrorEnabled()) {
             logger.warn(StringCommand.format(format, arguments), t);
         }

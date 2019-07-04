@@ -13,7 +13,7 @@ public class MonthValueParser extends SimpleValueParser {
      * Months aliases.
      */
     private static final String[] ALIASES =
-            { "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" };
+            {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"};
 
     public MonthValueParser() {
         super(1, 12);

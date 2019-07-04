@@ -39,21 +39,21 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, String format, Object...arguments) {
+    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, String format, Object... arguments) {
         this.log(level, null, format, arguments);
 
     }
 
     @Override
     public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
-            Object...arguments) {
+                    Object... arguments) {
         this.log(FQCN, level, t, format, arguments);
 
     }
 
     @Override
     public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
-            Object...arguments) {
+                    Object... arguments) {
         Level log4jLevel;
         switch (level) {
             case TRACE:
@@ -87,12 +87,12 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void debug(String format, Object...arguments) {
+    public void debug(String format, Object... arguments) {
         debug(null, format, arguments);
     }
 
     @Override
-    public void debug(Throwable t, String format, Object...arguments) {
+    public void debug(Throwable t, String format, Object... arguments) {
         logger.debug(FQCN, Level.DEBUG, StringCommand.format(format, arguments), t);
 
     }
@@ -103,13 +103,13 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void error(String format, Object...arguments) {
+    public void error(String format, Object... arguments) {
         error(null, format, arguments);
 
     }
 
     @Override
-    public void error(Throwable t, String format, Object...arguments) {
+    public void error(Throwable t, String format, Object... arguments) {
         logger.error(FQCN, Level.ERROR, StringCommand.format(format, arguments), t);
 
     }
@@ -121,13 +121,13 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void info(String format, Object...arguments) {
+    public void info(String format, Object... arguments) {
         info(null, format, arguments);
 
     }
 
     @Override
-    public void info(Throwable t, String format, Object...arguments) {
+    public void info(Throwable t, String format, Object... arguments) {
         logger.info(FQCN, Level.INFO, StringCommand.format(format, arguments), t);
 
     }
@@ -138,13 +138,13 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void trace(String format, Object...arguments) {
+    public void trace(String format, Object... arguments) {
         trace(null, format, arguments);
 
     }
 
     @Override
-    public void trace(Throwable t, String format, Object...arguments) {
+    public void trace(Throwable t, String format, Object... arguments) {
         logger.trace(FQCN, Level.TRACE, StringCommand.format(format, arguments), t);
 
     }
@@ -155,13 +155,13 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void warn(String format, Object...arguments) {
+    public void warn(String format, Object... arguments) {
         warn(null, format, arguments);
 
     }
 
     @Override
-    public void warn(Throwable t, String format, Object...arguments) {
+    public void warn(Throwable t, String format, Object... arguments) {
         logger.warn(FQCN, Level.WARN, StringCommand.format(format, arguments), t);
 
     }

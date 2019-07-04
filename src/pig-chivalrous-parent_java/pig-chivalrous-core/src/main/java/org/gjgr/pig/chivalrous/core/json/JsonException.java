@@ -23,7 +23,7 @@ public class JsonException extends RuntimeException {
         super(cause.getMessage(), cause);
     }
 
-    public JsonException(Throwable throwable, String messageTemplate, Object...params) {
+    public JsonException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

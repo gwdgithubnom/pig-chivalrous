@@ -1,5 +1,14 @@
 package org.gjgr.pig.chivalrous.core.io;
 
+import org.apache.commons.lang3.StringUtils;
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.io.stream.StreamProgress;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -32,15 +41,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
-
-import org.apache.commons.lang3.StringUtils;
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
-import org.gjgr.pig.chivalrous.core.io.stream.StreamProgress;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.math.HexCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * IO工具类
@@ -244,8 +244,8 @@ public final class IoCommand {
     /**
      * 将Reader中的内容复制到Writer中
      *
-     * @param reader Reader
-     * @param writer Writer
+     * @param reader     Reader
+     * @param writer     Writer
      * @param bufferSize 缓存大小
      * @return 传输的byte数
      * @throws IOException
@@ -257,8 +257,8 @@ public final class IoCommand {
     /**
      * 将Reader中的内容复制到Writer中
      *
-     * @param reader Reader
-     * @param writer Writer
+     * @param reader     Reader
+     * @param writer     Writer
      * @param bufferSize 缓存大小
      * @return 传输的byte数
      * @throws IOException
@@ -288,7 +288,7 @@ public final class IoCommand {
     /**
      * 拷贝流，使用默认Buffer大小
      *
-     * @param in 输入流
+     * @param in  输入流
      * @param out 输出流
      * @return 传输的byte数
      * @throws IOException
@@ -300,8 +300,8 @@ public final class IoCommand {
     /**
      * 拷贝流
      *
-     * @param in 输入流
-     * @param out 输出流
+     * @param in         输入流
+     * @param out        输出流
      * @param bufferSize 缓存大小
      * @return 传输的byte数
      * @throws IOException
@@ -313,9 +313,9 @@ public final class IoCommand {
     /**
      * 拷贝流
      *
-     * @param in 输入流
-     * @param out 输出流
-     * @param bufferSize 缓存大小
+     * @param in             输入流
+     * @param out            输出流
+     * @param bufferSize     缓存大小
      * @param streamProgress 进度条
      * @return 传输的byte数
      * @throws IOException
@@ -337,7 +337,7 @@ public final class IoCommand {
         if (null != streamProgress) {
             streamProgress.start();
         }
-        for (int readSize = -1; (readSize = in.read(buffer)) != EOF;) {
+        for (int readSize = -1; (readSize = in.read(buffer)) != EOF; ) {
             out.write(buffer, 0, readSize);
             size += readSize;
             out.flush();
@@ -355,9 +355,9 @@ public final class IoCommand {
      * 拷贝流 thanks to:
      * https://github.com/venusdrogon/feilong-io/blob/master/src/main/java/com/feilong/io/IOWriteUtil.java
      *
-     * @param in 输入流
-     * @param out 输出流
-     * @param bufferSize 缓存大小
+     * @param in             输入流
+     * @param out            输出流
+     * @param bufferSize     缓存大小
      * @param streamProgress 进度条
      * @return 传输的byte数
      * @throws IOException
@@ -370,7 +370,7 @@ public final class IoCommand {
     /**
      * 拷贝文件流，使用NIO
      *
-     * @param in 输入
+     * @param in  输入
      * @param out 输出
      * @return 拷贝的字节数
      * @throws IOException
@@ -392,13 +392,13 @@ public final class IoCommand {
     /**
      * 拷贝流，使用NIO，不会关闭流
      *
-     * @param in {@link ReadableByteChannel}
+     * @param in  {@link ReadableByteChannel}
      * @param out {@link WritableByteChannel}
      * @return 拷贝的字节数
      * @throws IOException
      */
     public static long copy(ReadableByteChannel in, WritableByteChannel out, int bufferSize,
-            StreamProgress streamProgress)
+                            StreamProgress streamProgress)
             throws IOException {
         if (null == in) {
             throw new NullPointerException("In is null!");
@@ -434,7 +434,7 @@ public final class IoCommand {
     /**
      * 获得一个文件读取器
      *
-     * @param in 输入流
+     * @param in          输入流
      * @param charsetName 字符集名称
      * @return BufferedReader对象
      */
@@ -445,7 +445,7 @@ public final class IoCommand {
     /**
      * 获得一个Reader
      *
-     * @param in 输入流
+     * @param in      输入流
      * @param charset 字符集
      * @return BufferedReader对象
      */
@@ -467,7 +467,7 @@ public final class IoCommand {
     /**
      * 获得一个Writer
      *
-     * @param out 输入流
+     * @param out         输入流
      * @param charsetName 字符集
      * @return OutputStreamWriter对象
      * @throws IOException
@@ -479,7 +479,7 @@ public final class IoCommand {
     /**
      * 获得一个Writer
      *
-     * @param out 输入流
+     * @param out     输入流
      * @param charset 字符集
      * @return OutputStreamWriter对象
      * @throws IOException
@@ -503,7 +503,7 @@ public final class IoCommand {
     /**
      * 从流中读取内容
      *
-     * @param in 输入流
+     * @param in          输入流
      * @param charsetName 字符集
      * @return 内容
      * @throws IOException
@@ -516,7 +516,7 @@ public final class IoCommand {
     /**
      * 从流中读取内容
      *
-     * @param in 输入流
+     * @param in      输入流
      * @param charset 字符集
      * @return 内容
      * @throws IOException
@@ -571,7 +571,7 @@ public final class IoCommand {
      * 从FileChannel中读取内容
      *
      * @param fileChannel 文件管道
-     * @param charset 字符集
+     * @param charset     字符集
      * @return 内容
      * @throws IOException
      */
@@ -596,7 +596,7 @@ public final class IoCommand {
     /**
      * 读取指定长度的byte数组
      *
-     * @param in {@link InputStream}
+     * @param in     {@link InputStream}
      * @param length 长度
      * @return bytes
      * @throws IOException
@@ -610,8 +610,8 @@ public final class IoCommand {
     /**
      * 读取16进制字符串
      *
-     * @param in {@link InputStream}
-     * @param length 长度
+     * @param in          {@link InputStream}
+     * @param length      长度
      * @param toLowerCase true 传换成小写格式 ， false 传换成大写格式
      * @return 16进制字符串
      * @throws IOException
@@ -667,9 +667,9 @@ public final class IoCommand {
     /**
      * 从流中读取内容
      *
-     * @param in 输入流
+     * @param in          输入流
      * @param charsetName 字符集
-     * @param collection 返回集合
+     * @param collection  返回集合
      * @return 内容
      * @throws IOException
      */
@@ -681,8 +681,8 @@ public final class IoCommand {
     /**
      * 从流中读取内容
      *
-     * @param in 输入流
-     * @param charset 字符集
+     * @param in         输入流
+     * @param charset    字符集
      * @param collection 返回集合
      * @return 内容
      * @throws IOException
@@ -703,7 +703,7 @@ public final class IoCommand {
     /**
      * String 转为流
      *
-     * @param content 内容
+     * @param content     内容
      * @param charsetName 编码
      * @return 字节流
      */
@@ -742,9 +742,9 @@ public final class IoCommand {
     /**
      * 将byte[]写到流中
      *
-     * @param out 输出流
+     * @param out        输出流
      * @param isCloseOut 写入完毕是否关闭输出流
-     * @param content 写入的内容
+     * @param content    写入的内容
      * @throws IOException
      */
     public static void write(OutputStream out, boolean isCloseOut, byte[] content) throws IOException {
@@ -760,13 +760,13 @@ public final class IoCommand {
     /**
      * 将多部分内容写到流中，自动转换为字符串
      *
-     * @param out 输出流
-     * @param charset 写出的内容的字符集
+     * @param out        输出流
+     * @param charset    写出的内容的字符集
      * @param isCloseOut 写入完毕是否关闭输出流
-     * @param contents 写入的内容，调用toString()方法，不包括不会自动换行
+     * @param contents   写入的内容，调用toString()方法，不包括不会自动换行
      * @throws IOException
      */
-    public static void write(OutputStream out, String charset, boolean isCloseOut, Object...contents)
+    public static void write(OutputStream out, String charset, boolean isCloseOut, Object... contents)
             throws IOException {
         OutputStreamWriter osw = null;
         try {
@@ -789,13 +789,13 @@ public final class IoCommand {
     /**
      * 将多部分内容写到流中
      *
-     * @param out 输出流
-     * @param charset 写出的内容的字符集
+     * @param out        输出流
+     * @param charset    写出的内容的字符集
      * @param isCloseOut 写入完毕是否关闭输出流
-     * @param contents 写入的内容
+     * @param contents   写入的内容
      * @throws IOException
      */
-    public static void writeObjects(OutputStream out, String charset, boolean isCloseOut, Serializable...contents)
+    public static void writeObjects(OutputStream out, String charset, boolean isCloseOut, Serializable... contents)
             throws IOException {
         ObjectOutputStream osw = null;
         try {
@@ -849,7 +849,7 @@ public final class IoCommand {
 
     /**
      * This implementation opens an InputStream for the given class path resource.
-     * 
+     *
      * @see java.lang.ClassLoader#getResourceAsStream(String)
      * @see java.lang.Class#getResourceAsStream(String)
      */

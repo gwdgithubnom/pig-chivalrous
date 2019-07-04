@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
+
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
 
 /**
  * @Author gwd

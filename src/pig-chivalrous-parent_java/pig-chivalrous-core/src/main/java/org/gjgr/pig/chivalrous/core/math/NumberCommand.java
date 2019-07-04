@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.math;
 
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -8,16 +12,12 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-
 /**
  * 数字工具类<br>
  * 对于精确值计算应该使用 {@link BigDecimal}<br>
  * JDK7中<strong>BigDecimal(double val)</strong>构造方法的结果有一定的不可预知性，例如：
  * <p>
- * 
+ *
  * <pre>
  * new BigDecimal(0.1)
  * </pre>
@@ -98,8 +98,8 @@ public final class NumberCommand {
     /**
      * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度,后面的四舍五入
      *
-     * @param v1 被除数
-     * @param v2 除数
+     * @param v1    被除数
+     * @param v2    除数
      * @param scale 精确度，如果为负值，取绝对值
      * @return 两个参数的商
      */
@@ -110,9 +110,9 @@ public final class NumberCommand {
     /**
      * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
      *
-     * @param v1 被除数
-     * @param v2 除数
-     * @param scale 精确度，如果为负值，取绝对值
+     * @param v1           被除数
+     * @param v2           除数
+     * @param scale        精确度，如果为负值，取绝对值
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 两个参数的商
      */
@@ -132,7 +132,7 @@ public final class NumberCommand {
      * 采用四舍五入策略 {@link RoundingMode#HALF_UP}<br>
      * 例如保留2位小数：123.456789 -> 123.46
      *
-     * @param v 值
+     * @param v     值
      * @param scale 保留小数位数
      * @return 新值
      */
@@ -146,7 +146,7 @@ public final class NumberCommand {
      * 例如保留2位小数：123.456789 -> 123.46
      *
      * @param numberStr 数字值的字符串表现形式
-     * @param scale 保留小数位数
+     * @param scale     保留小数位数
      * @return 新值
      */
     public static double round(String numberStr, int scale) {
@@ -157,8 +157,8 @@ public final class NumberCommand {
      * 保留固定位数小数<br>
      * 例如保留四位小数：123.456789 -> 123.4567
      *
-     * @param v 值
-     * @param scale 保留小数位数
+     * @param v            值
+     * @param scale        保留小数位数
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 新值
      */
@@ -170,8 +170,8 @@ public final class NumberCommand {
      * 保留固定位数小数<br>
      * 例如保留四位小数：123.456789 -> 123.4567
      *
-     * @param numberStr 数字值的字符串表现形式
-     * @param scale 保留小数位数
+     * @param numberStr    数字值的字符串表现形式
+     * @param scale        保留小数位数
      * @param roundingMode 保留小数的模式 {@link RoundingMode}
      * @return 新值
      */
@@ -184,7 +184,7 @@ public final class NumberCommand {
      * 保留小数位，采用四舍五入
      *
      * @param number 被保留小数的数字
-     * @param digit 保留的小数位数
+     * @param digit  保留的小数位数
      * @return 保留小数后的字符串
      */
     public static String roundStr(double number, int digit) {
@@ -198,17 +198,17 @@ public final class NumberCommand {
      * 对 {@link DecimalFormat} 做封装<br>
      *
      * @param pattern 格式 格式中主要以 # 和 0 两种占位符号来指定数字长度。0 表示如果位数不足则以 0 填充，# 表示只要有可能就把数字拉上这个位置。<br>
-     *            <ul>
-     *            <li>0 -> 取一位整数</li>
-     *            <li>0.00 -> 取一位整数和两位小数</li>
-     *            <li>00.000 -> 取两位整数和三位小数</li>
-     *            <li># -> 取所有整数部分</li>
-     *            <li>#.##% -> 以百分比方式计数，并取两位小数</li>
-     *            <li>#.#####E0 -> 显示为科学计数法，并取五位小数</li>
-     *            <li>,### -> 每三位以逗号进行分隔，例如：299,792,458</li>
-     *            <li>光速大小为每秒,###米 -> 将格式嵌入文本</li>
-     *            </ul>
-     * @param value 值
+     *                <ul>
+     *                <li>0 -> 取一位整数</li>
+     *                <li>0.00 -> 取一位整数和两位小数</li>
+     *                <li>00.000 -> 取两位整数和三位小数</li>
+     *                <li># -> 取所有整数部分</li>
+     *                <li>#.##% -> 以百分比方式计数，并取两位小数</li>
+     *                <li>#.#####E0 -> 显示为科学计数法，并取五位小数</li>
+     *                <li>,### -> 每三位以逗号进行分隔，例如：299,792,458</li>
+     *                <li>光速大小为每秒,###米 -> 将格式嵌入文本</li>
+     *                </ul>
+     * @param value   值
      * @return 格式化后的值
      */
     public static String decimalFormat(String pattern, double value) {
@@ -220,17 +220,17 @@ public final class NumberCommand {
      * 对 {@link DecimalFormat} 做封装<br>
      *
      * @param pattern 格式 格式中主要以 # 和 0 两种占位符号来指定数字长度。0 表示如果位数不足则以 0 填充，# 表示只要有可能就把数字拉上这个位置。<br>
-     *            <ul>
-     *            <li>0 -> 取一位整数</li>
-     *            <li>0.00 -> 取一位整数和两位小数</li>
-     *            <li>00.000 -> 取两位整数和三位小数</li>
-     *            <li># -> 取所有整数部分</li>
-     *            <li>#.##% -> 以百分比方式计数，并取两位小数</li>
-     *            <li>#.#####E0 -> 显示为科学计数法，并取五位小数</li>
-     *            <li>,### -> 每三位以逗号进行分隔，例如：299,792,458</li>
-     *            <li>光速大小为每秒,###米 -> 将格式嵌入文本</li>
-     *            </ul>
-     * @param value 值
+     *                <ul>
+     *                <li>0 -> 取一位整数</li>
+     *                <li>0.00 -> 取一位整数和两位小数</li>
+     *                <li>00.000 -> 取两位整数和三位小数</li>
+     *                <li># -> 取所有整数部分</li>
+     *                <li>#.##% -> 以百分比方式计数，并取两位小数</li>
+     *                <li>#.#####E0 -> 显示为科学计数法，并取五位小数</li>
+     *                <li>,### -> 每三位以逗号进行分隔，例如：299,792,458</li>
+     *                <li>光速大小为每秒,###米 -> 将格式嵌入文本</li>
+     *                </ul>
+     * @param value   值
      * @return 格式化后的值
      * @since 3.0.5
      */
@@ -364,7 +364,7 @@ public final class NumberCommand {
      * 给定范围内的整数列表，步进为1
      *
      * @param start 开始（包含）
-     * @param stop 结束（包含）
+     * @param stop  结束（包含）
      * @return 整数列表
      */
     public static int[] range(int start, int stop) {
@@ -375,8 +375,8 @@ public final class NumberCommand {
      * 给定范围内的整数列表
      *
      * @param start 开始（包含）
-     * @param stop 结束（包含）
-     * @param step 步进
+     * @param stop  结束（包含）
+     * @param step  步进
      * @return 整数列表
      */
     public static int[] range(int start, int stop, int step) {
@@ -386,7 +386,7 @@ public final class NumberCommand {
             step = -Math.abs(step);
         } else {
             // start == end
-            return new int[] { start };
+            return new int[] {start};
         }
 
         int size = Math.abs((stop - start) / step) + 1;
@@ -404,8 +404,8 @@ public final class NumberCommand {
     /**
      * 将给定范围内的整数添加到已有集合中，步进为1
      *
-     * @param start 开始（包含）
-     * @param stop 结束（包含）
+     * @param start  开始（包含）
+     * @param stop   结束（包含）
      * @param values 集合
      * @return 集合
      */
@@ -416,9 +416,9 @@ public final class NumberCommand {
     /**
      * 将给定范围内的整数添加到已有集合中
      *
-     * @param start 开始（包含）
-     * @param stop 结束（包含）
-     * @param step 步进
+     * @param start  开始（包含）
+     * @param stop   结束（包含）
+     * @param step   步进
      * @param values 集合
      * @return 集合
      */
@@ -688,8 +688,8 @@ public final class NumberCommand {
      * 生成不重复随机数 根据给定的最小数字和最大数字，以及随机数的个数，产生指定的不重复的数组
      *
      * @param begin 最小数字（包含该数）
-     * @param end 最大数字（不包含该数）
-     * @param size 指定产生随机数的个数
+     * @param end   最大数字（不包含该数）
+     * @param size  指定产生随机数的个数
      */
     public int[] generateRandomNumber(int begin, int end, int size) {
         if (begin > end) {
@@ -725,8 +725,8 @@ public final class NumberCommand {
      * 生成不重复随机数 根据给定的最小数字和最大数字，以及随机数的个数，产生指定的不重复的数组
      *
      * @param begin 最小数字（包含该数）
-     * @param end 最大数字（不包含该数）
-     * @param size 指定产生随机数的个数
+     * @param end   最大数字（不包含该数）
+     * @param size  指定产生随机数的个数
      */
     public Integer[] generateBySet(int begin, int end, int size) {
         if (begin > end) {

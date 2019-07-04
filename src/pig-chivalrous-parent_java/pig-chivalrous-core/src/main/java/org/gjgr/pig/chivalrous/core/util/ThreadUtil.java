@@ -1,5 +1,7 @@
 package org.gjgr.pig.chivalrous.core.util;
 
+import org.gjgr.pig.chivalrous.core.thread.GlobalThreadPool;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CountDownLatch;
@@ -10,8 +12,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import org.gjgr.pig.chivalrous.core.thread.GlobalThreadPool;
 
 /**
  * 线程池工具
@@ -54,7 +54,7 @@ public final class ThreadUtil {
      * 获得一个新的线程池<br>
      * 如果maximumPoolSize > corePoolSize，在没有新任务加入的情况下，多出的线程将最多保留60s
      *
-     * @param corePoolSize 初始线程池大小
+     * @param corePoolSize    初始线程池大小
      * @param maximumPoolSize 最大线程池大小
      * @return {@link ThreadPoolExecutor}
      */
@@ -148,7 +148,7 @@ public final class ThreadUtil {
     /**
      * 挂起当前线程
      *
-     * @param timeout 挂起的时长
+     * @param timeout  挂起的时长
      * @param timeUnit 时长单位
      * @return 被中断返回false，否则true
      */

@@ -17,7 +17,7 @@ public class ValidateException extends StatefulException {
         super(msg);
     }
 
-    public ValidateException(String messageTemplate, Object...params) {
+    public ValidateException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 

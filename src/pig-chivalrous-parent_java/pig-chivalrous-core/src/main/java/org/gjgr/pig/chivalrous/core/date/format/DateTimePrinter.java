@@ -46,8 +46,8 @@ public interface DateTimePrinter extends DateTimeBasic {
      * </p>
      *
      * @param millis the millisecond value to format
-     * @param buf the buffer to format into
-     * @param <B> the Appendable class type, usually StringBuilder or StringBuffer.
+     * @param buf    the buffer to format into
+     * @param <B>    the Appendable class type, usually StringBuilder or StringBuffer.
      * @return the specified string buffer
      */
     <B extends Appendable> B format(long millis, B buf);
@@ -58,8 +58,8 @@ public interface DateTimePrinter extends DateTimeBasic {
      * </p>
      *
      * @param date the dateTime to format
-     * @param buf the buffer to format into
-     * @param <B> the Appendable class type, usually StringBuilder or StringBuffer.
+     * @param buf  the buffer to format into
+     * @param <B>  the Appendable class type, usually StringBuilder or StringBuffer.
      * @return the specified string buffer
      */
     <B extends Appendable> B format(Date date, B buf);
@@ -72,8 +72,8 @@ public interface DateTimePrinter extends DateTimeBasic {
      * construction of the Parser will determine the TimeZone used in the formatted string.
      *
      * @param calendar the calendar to format
-     * @param buf the buffer to format into
-     * @param <B> the Appendable class type, usually StringBuilder or StringBuffer.
+     * @param buf      the buffer to format into
+     * @param <B>      the Appendable class type, usually StringBuilder or StringBuffer.
      * @return the specified string buffer
      */
     <B extends Appendable> B format(Calendar calendar, B buf);

@@ -16,6 +16,16 @@
 
 package org.gjgr.pig.chivalrous.web.http;
 
+import org.gjgr.pig.chivalrous.core.kit.StrKit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,17 +42,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.servlet.http.HttpServletRequest;
-
-import org.gjgr.pig.chivalrous.core.kit.StrKit;
 
 /**
  * HttpKit
@@ -61,7 +60,7 @@ public class HttpKit {
 
     private static SSLSocketFactory initSSLSocketFactory() {
         try {
-            TrustManager[] tm = { new HttpKit().new TrustAnyTrustManager() };
+            TrustManager[] tm = {new HttpKit().new TrustAnyTrustManager()};
             SSLContext sslContext = SSLContext.getInstance("TLS", "SunJSSE");
             sslContext.init(null, tm, new java.security.SecureRandom());
             return sslContext.getSocketFactory();
@@ -228,7 +227,7 @@ public class HttpKit {
         try {
             StringBuilder result = new StringBuilder();
             br = request.getReader();
-            for (String line = null; (line = br.readLine()) != null;) {
+            for (String line = null; (line = br.readLine()) != null; ) {
                 result.append(line).append("\n");
             }
 

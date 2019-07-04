@@ -19,7 +19,7 @@ public class WatchException extends RuntimeException {
         super(message);
     }
 
-    public WatchException(String messageTemplate, Object...params) {
+    public WatchException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -27,7 +27,7 @@ public class WatchException extends RuntimeException {
         super(message, throwable);
     }
 
-    public WatchException(Throwable throwable, String messageTemplate, Object...params) {
+    public WatchException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

@@ -1,15 +1,14 @@
 package org.gjgr.pig.chivalrous.core.crypto.asymmetric;
 
-import java.security.Key;
-import java.security.interfaces.RSAKey;
-
-import javax.crypto.Cipher;
-
 import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.BCD;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
+import javax.crypto.Cipher;
+import java.security.Key;
+import java.security.interfaces.RSAKey;
 
 /**
  * RSA加密算法
@@ -35,7 +34,7 @@ public class RSA extends AsymmetricCrypto {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKeyBase64 私钥Base64
-     * @param publicKeyBase64 公钥Base64
+     * @param publicKeyBase64  公钥Base64
      */
     public RSA(String privateKeyBase64, String publicKeyBase64) {
         super(ALGORITHM_RSA, privateKeyBase64, publicKeyBase64);
@@ -47,7 +46,7 @@ public class RSA extends AsymmetricCrypto {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKey 私钥
-     * @param publicKey 公钥
+     * @param publicKey  公钥
      */
     public RSA(byte[] privateKey, byte[] publicKey) {
         super(ALGORITHM_RSA, privateKey, publicKey);
@@ -57,7 +56,7 @@ public class RSA extends AsymmetricCrypto {
     /**
      * 分组加密
      *
-     * @param data 数据
+     * @param data    数据
      * @param keyType 密钥类型
      * @return 加密后的密文
      * @throws Exception
@@ -87,7 +86,7 @@ public class RSA extends AsymmetricCrypto {
     /**
      * 分组解密
      *
-     * @param data 数据
+     * @param data    数据
      * @param keyType 密钥类型
      * @return 加密后的密文
      */

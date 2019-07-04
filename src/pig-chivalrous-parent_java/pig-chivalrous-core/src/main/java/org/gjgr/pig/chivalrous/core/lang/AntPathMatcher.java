@@ -14,7 +14,9 @@ import java.util.StringTokenizer;
 public class AntPathMatcher {
     public static final AntPathMatcher INSTANCE = new AntPathMatcher();
 
-    /** Default path separator: "/" */
+    /**
+     * Default path separator: "/"
+     */
     public static final String DEFAULT_PATH_SEPARATOR = "/";
 
     private String pathSeparator = DEFAULT_PATH_SEPARATOR;
@@ -26,9 +28,9 @@ public class AntPathMatcher {
      * characters can be used to separate tokens. A delimiter is always a single character; for multi-character
      * delimiters, consider using <code>delimitedListToStringArray</code>
      *
-     * @param str the String to tokenize
+     * @param str        the String to tokenize
      * @param delimiters the delimiter characters, assembled as String (each of those characters is individually
-     *            considered as delimiter).
+     *                   considered as delimiter).
      * @return an array of the tokens
      * @see java.util.StringTokenizer
      * @see java.lang.String#trim()
@@ -83,10 +85,10 @@ public class AntPathMatcher {
     /**
      * Actually match the given <code>path</code> against the given <code>pattern</code>.
      *
-     * @param pattern the pattern to match against
-     * @param path the path String to test
-     * @param fullMatch whether a full pattern match is required (else a pattern match as far as the given base path
-     *            goes is sufficient)
+     * @param pattern         the pattern to match against
+     * @param path            the path String to test
+     * @param fullMatch       whether a full pattern match is required (else a pattern match as far as the given base path
+     *                        goes is sufficient)
      * @param isCaseSensitive Whether or not matching should be performed case sensitively.
      * @return <code>true</code> if the supplied <code>path</code> matched, <code>false</code> if it didn't
      */
@@ -121,7 +123,7 @@ public class AntPathMatcher {
             if (pattIdxStart > pattIdxEnd) {
                 return pattern.endsWith(this.pathSeparator) ? path.endsWith(this.pathSeparator)
                         : !path
-                                .endsWith(this.pathSeparator);
+                        .endsWith(this.pathSeparator);
             }
             if (!fullMatch) {
                 return true;
@@ -185,7 +187,8 @@ public class AntPathMatcher {
             int strLength = pathIdxEnd - pathIdxStart + 1;
             int foundIdx = -1;
 
-            strLoop: for (int i = 0; i <= strLength - patLength; i++) {
+            strLoop:
+            for (int i = 0; i <= strLength - patLength; i++) {
                 for (int j = 0; j < patLength; j++) {
                     String subPat = pattDirs[pattIdxStart + j + 1];
                     String subStr = pathDirs[pathIdxStart + i + j];
@@ -219,8 +222,8 @@ public class AntPathMatcher {
      * '*' means zero or more characters<br>
      * '?' means one and only one character
      *
-     * @param pattern pattern to match against. Must not be <code>null</code>.
-     * @param str string which must be matched against the pattern. Must not be <code>null</code>.
+     * @param pattern       pattern to match against. Must not be <code>null</code>.
+     * @param str           string which must be matched against the pattern. Must not be <code>null</code>.
      * @param caseSensitive Whether or not matching should be performed case sensitively.
      * @return <code>true</code> if the string matches against the pattern, or <code>false</code> otherwise.
      */
@@ -326,7 +329,8 @@ public class AntPathMatcher {
             int patLength = patIdxTmp - patIdxStart - 1;
             int strLength = strIdxEnd - strIdxStart + 1;
             int foundIdx = -1;
-            strLoop: for (int i = 0; i <= strLength - patLength; i++) {
+            strLoop:
+            for (int i = 0; i <= strLength - patLength; i++) {
                 for (int j = 0; j < patLength; j++) {
                     ch = patArr[patIdxStart + j + 1];
                     if (ch != '?') {

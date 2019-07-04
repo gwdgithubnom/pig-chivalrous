@@ -1,17 +1,17 @@
 package org.gjgr.pig.chivalrous.db.ds.pooled;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.ds.simple.AbstractDataSource;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * 池化数据源
@@ -47,7 +47,7 @@ public class PooledDataSource extends AbstractDataSource {
      * 构造
      *
      * @param setting 数据库配置文件对象
-     * @param group 分组
+     * @param group   分组
      */
     public PooledDataSource(DbSetting setting, String group) {
         this(setting.getDbConfig(group));

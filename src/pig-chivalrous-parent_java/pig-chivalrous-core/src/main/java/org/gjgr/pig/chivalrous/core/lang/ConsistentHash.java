@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.math.HashCommand;
+
 import java.util.Collection;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.gjgr.pig.chivalrous.core.math.HashCommand;
 
 /**
  * 一致性Hash算法 算法详解：http://blog.csdn.net/sparkliang/article/details/5279393
@@ -31,7 +31,7 @@ public class ConsistentHash<T> {
      * 构造，使用Java默认的Hash算法
      *
      * @param numberOfReplicas 复制的节点个数，增加每个节点的复制节点有利于负载均衡
-     * @param nodes 节点对象
+     * @param nodes            节点对象
      */
     public ConsistentHash(int numberOfReplicas, Collection<T> nodes) {
         this.numberOfReplicas = numberOfReplicas;
@@ -52,9 +52,9 @@ public class ConsistentHash<T> {
     /**
      * 构造
      *
-     * @param hashFunc hash算法对象
+     * @param hashFunc         hash算法对象
      * @param numberOfReplicas 复制的节点个数，增加每个节点的复制节点有利于负载均衡
-     * @param nodes 节点对象
+     * @param nodes            节点对象
      */
     public ConsistentHash(HashFunc hashFunc, int numberOfReplicas, Collection<T> nodes) {
         this.numberOfReplicas = numberOfReplicas;

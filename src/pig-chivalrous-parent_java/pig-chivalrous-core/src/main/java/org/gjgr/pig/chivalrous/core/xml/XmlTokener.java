@@ -43,7 +43,7 @@ public class XmlTokener extends JsonTokener {
         char c;
         int i;
         StringBuilder sb = new StringBuilder();
-        for (;;) {
+        for (; ; ) {
             c = next();
             if (end()) {
                 throw syntaxError("Unclosed CDATA");
@@ -77,7 +77,7 @@ public class XmlTokener extends JsonTokener {
             return XmlBetweenJsonObject.LT;
         }
         sb = new StringBuilder();
-        for (;;) {
+        for (; ; ) {
             if (c == '<' || c == 0) {
                 back();
                 return sb.toString().trim();
@@ -101,7 +101,7 @@ public class XmlTokener extends JsonTokener {
      */
     public Object nextEntity(char ampersand) throws JsonException {
         StringBuilder sb = new StringBuilder();
-        for (;;) {
+        for (; ; ) {
             char c = next();
             if (Character.isLetterOrDigit(c) || c == '#') {
                 sb.append(Character.toLowerCase(c));
@@ -156,7 +156,7 @@ public class XmlTokener extends JsonTokener {
      * Returns the next XmlBetweenJsonObject meta token. This is used for skipping over <!...> and <?...?> structures.
      *
      * @return Syntax characters (<code>< > / = ! ?</code>) are returned as Character, and strings and names are
-     *         returned as Boolean. We don't care what the values actually are.
+     * returned as Boolean. We don't care what the values actually are.
      * @throws JsonException If a string is not properly closed or if the XmlBetweenJsonObject is badly structured.
      */
     public Object nextMeta() throws JsonException {
@@ -247,7 +247,7 @@ public class XmlTokener extends JsonTokener {
             default:
                 // Name
                 sb = new StringBuilder();
-                for (;;) {
+                for (; ; ) {
                     sb.append(c);
                     c = next();
                     if (Character.isWhitespace(c)) {
@@ -306,7 +306,7 @@ public class XmlTokener extends JsonTokener {
 
         /* We will loop, possibly for all of the remaining characters. */
 
-        for (;;) {
+        for (; ; ) {
             j = offset;
             b = true;
 

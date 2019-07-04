@@ -1,13 +1,6 @@
 package org.gjgr.pig.chivalrous.db.ds.druid;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.sql.DataSource;
-
+import com.alibaba.druid.pool.DruidDataSource;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
@@ -16,7 +9,12 @@ import org.gjgr.pig.chivalrous.core.setting.Setting;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
 
-import com.alibaba.druid.pool.DruidDataSource;
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Druid数据源工厂类
@@ -132,8 +130,8 @@ public class DruidDSFactory extends DSFactory {
      * 获得指定KEY对应的值，key1和key2为属性的两个名字，可以互作别名
      *
      * @param properties 属性
-     * @param key1 属性名
-     * @param key2 备用属性名
+     * @param key1       属性名
+     * @param key2       备用属性名
      * @return 值
      */
     private String getAndRemoveProperty(Properties properties, String key1, String key2) {

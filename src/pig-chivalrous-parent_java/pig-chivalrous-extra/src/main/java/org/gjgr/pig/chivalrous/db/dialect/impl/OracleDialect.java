@@ -1,9 +1,5 @@
 package org.gjgr.pig.chivalrous.db.dialect.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.DbUtil;
@@ -14,6 +10,10 @@ import org.gjgr.pig.chivalrous.db.sql.Order;
 import org.gjgr.pig.chivalrous.db.sql.Query;
 import org.gjgr.pig.chivalrous.db.sql.SqlBuilder;
 import org.gjgr.pig.chivalrous.db.sql.Wrapper;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * Oracle 方言

@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.db;
 
-import java.sql.SQLException;
-
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.sql.SQLException;
 
 public class CRUDTest {
 

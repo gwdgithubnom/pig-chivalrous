@@ -68,7 +68,7 @@ public final class BCD {
     /**
      * ASCII转BCD
      *
-     * @param ascii ASCII byte数组
+     * @param ascii     ASCII byte数组
      * @param ascLength 长度
      * @return BCD
      */

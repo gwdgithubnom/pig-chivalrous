@@ -1,14 +1,18 @@
 package org.gjgr.pig.chivalrous.redis;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-
+import org.gjgr.pig.chivalrous.log.SystemLogger;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * this is a config file about redis status value is low zero would take as @see JedisPool and big then zero would taken
@@ -28,21 +32,36 @@ public final class RedisConfig {
     /**
      * default is JedisPool
      */
-    private int status = 1;
+    private int status = 0;
 
-    private GenericObjectPoolConfig genericObjectPoolConfig = new GenericObjectPoolConfig();
+    private JedisPoolConfig genericObjectPoolConfig = new JedisPoolConfig();
 
     public int status() {
         return status;
     }
 
     public int setNoCluster() {
-        status = 0;
+        status = -1;
         genericObjectPoolConfig.setTestWhileIdle(true);
         genericObjectPoolConfig.setMinEvictableIdleTimeMillis(60000);
         genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(30000);
         genericObjectPoolConfig.setNumTestsPerEvictionRun(-1);
         genericObjectPoolConfig.setTestWhileIdle(true);
+        return status;
+    }
+
+    public RedisConfig getCluster() {
+        setCluster();
+        return this;
+    }
+
+    public RedisConfig getNoCluster() {
+        setNoCluster();
+        return this;
+    }
+
+    public int setCluster() {
+        status = 1;
         return status;
     }
 
@@ -86,21 +105,6 @@ public final class RedisConfig {
         this.status = status;
     }
 
-    public RedisConfig getCluster() {
-        setCluster();
-        return this;
-    }
-
-    public RedisConfig getNoCluster() {
-        setNoCluster();
-        return this;
-    }
-
-    public int setCluster() {
-        status = 1;
-        return status;
-    }
-
     public boolean add(HostAndPort hostAndPort) {
         status = base.size();
         return base.add(hostAndPort);
@@ -118,11 +122,11 @@ public final class RedisConfig {
         this.base = base;
     }
 
-    public GenericObjectPoolConfig getGenericObjectPoolConfig() {
+    public JedisPoolConfig getGenericObjectPoolConfig() {
         return genericObjectPoolConfig;
     }
 
-    public void setGenericObjectPoolConfig(GenericObjectPoolConfig genericObjectPoolConfig) {
+    public void setGenericObjectPoolConfig(JedisPoolConfig genericObjectPoolConfig) {
         this.genericObjectPoolConfig = genericObjectPoolConfig;
     }
 
@@ -135,7 +139,7 @@ public final class RedisConfig {
         } catch (Exception e) {
 
         }
-        return add(p, url);
+        return add(url, p);
     }
 
     public boolean put(String url, String port) {
@@ -147,12 +151,16 @@ public final class RedisConfig {
         } catch (Exception e) {
 
         }
-        return put(url, port);
+        return put(url, p);
     }
 
     public boolean add(int port, String url) {
         HostAndPort hostAndPort = new HostAndPort(url, port);
-        setCluster();
+        return add(hostAndPort);
+    }
+
+    public boolean add(String url, int port) {
+        HostAndPort hostAndPort = new HostAndPort(url, port);
         return add(hostAndPort);
     }
 
@@ -195,13 +203,25 @@ public final class RedisConfig {
     }
 
     public boolean put(String url, int port) {
-        HostAndPort hostAndPort = new HostAndPort(url, port);
-        setNoCluster();
-        return add(hostAndPort);
+        setCluster();
+        return add(url, port);
     }
 
-    public RedisClient build() {
-        return new RedisClientBuilder().redisClient();
+    public boolean put(int port, String url) {
+        setNoCluster();
+        return add(port, url);
+    }
+
+    public synchronized RedisClient build() {
+        if (RedisClient.get(hashString()) == null) {
+            return new RedisClientBuilder().redisClient();
+        } else {
+            return new RedisClient(hashString());
+        }
+    }
+
+    public RedisClient newBuild() {
+        return new RedisClientBuilder().newRedisClient();
     }
 
     public int getSoTimeout() {
@@ -215,7 +235,18 @@ public final class RedisConfig {
     @Override
     public int hashCode() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (HostAndPort hostAndPort : base) {
+        List<HostAndPort> hostAndPortList = new ArrayList<HostAndPort>(base);
+        hostAndPortList.sort(new Comparator<HostAndPort>() {
+            @Override
+            public int compare(HostAndPort o1, HostAndPort o2) {
+                if (o1.getHost().equalsIgnoreCase(o2.getHost())) {
+                    return o1.getPort() - o2.getPort();
+                } else {
+                    return o1.getHost().compareTo(o2.getHost());
+                }
+            }
+        });
+        for (HostAndPort hostAndPort : hostAndPortList) {
             stringBuffer.append(hostAndPort.getHost());
             stringBuffer.append(hostAndPort.getPort());
         }
@@ -244,7 +275,7 @@ public final class RedisConfig {
 
     private class RedisClientBuilder {
 
-        private RedisClient jedisPool(RedisClient redisClient) {
+        public synchronized JedisPool buildJedisPool(RedisClient redisClient) {
             JedisPool jedisPool = null;
             HostAndPort hostAndPort = base.iterator().next();
             if (password == null) {
@@ -254,11 +285,11 @@ public final class RedisConfig {
                 jedisPool = new JedisPool(genericObjectPoolConfig, hostAndPort.getHost(), hostAndPort.getPort(),
                         timeout);
             }
-            redisClient.put(me(), jedisPool);
-            return redisClient;
+            return jedisPool;
         }
 
-        private RedisClient jedisCluster(RedisClient redisClient) {
+
+        public synchronized JedisCluster buildJedisCluster(RedisClient redisClient) {
             JedisCluster jedisCluster = null;
             if (password == null) {
                 jedisCluster =
@@ -267,39 +298,114 @@ public final class RedisConfig {
                 jedisCluster = new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, password,
                         genericObjectPoolConfig);
             }
-            redisClient.put(me(), jedisCluster);
+            return jedisCluster;
+        }
+
+        private synchronized RedisClient newRedisClient(RedisClient redisClient, Class clazz) {
+            if (clazz.isAssignableFrom(JedisPool.class)) {
+                JedisPool jedisPool = buildJedisPool(redisClient);
+                redisClient.put(me(), jedisPool);
+            } else {
+                JedisCluster jedisCluster = buildJedisCluster(redisClient);
+                redisClient.put(me(), jedisCluster);
+            }
             return redisClient;
         }
 
-        public RedisClient redisClient(String id) {
-            RedisClient redisClient = new RedisClient(id);
-            if (status > 0) {
+        private synchronized RedisClient redisClient(RedisClient redisClient, Class clazz) {
+            if (clazz.isAssignableFrom(JedisPool.class)) {
+                JedisPool jedisPool = buildJedisPool(redisClient);
                 try {
-                    jedisCluster(redisClient);
-                } catch (Exception e) {
-                    try {
-                        jedisPool(redisClient);
-                    } catch (Exception ee) {
-                        jedisCluster(redisClient);
-                    }
+                    redisClient.add(me(), jedisPool);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             } else {
+                JedisCluster jedisCluster = buildJedisCluster(redisClient);
                 try {
-                    jedisPool(redisClient);
-                } catch (Exception e) {
-                    try {
-                        jedisCluster(redisClient);
-                    } catch (Exception ee) {
-                        jedisPool(redisClient);
-                    }
+                    redisClient.add(me(), jedisCluster);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
             return redisClient;
         }
 
-        public RedisClient redisClient() {
+
+        public synchronized RedisClient buildClusterClient(RedisClient rc) {
+            try {
+                return redisClient(rc, JedisCluster.class);
+            } catch (Exception e) {
+                SystemLogger.error("parse Cluster Client error {}", e);
+            }
+            return rc;
+        }
+
+        public synchronized RedisClient buildNoClusterClient(RedisClient rc) {
+            try {
+                return redisClient(rc, JedisPool.class);
+            } catch (Exception e) {
+                SystemLogger.error("parse NoCluster Client error {}", e);
+            }
+            return rc;
+        }
+
+        public synchronized RedisClient buildClient(RedisClient rc) {
+            try {
+                try {
+                    redisClient(rc, JedisPool.class);
+                } catch (Exception e) {
+                    try {
+                        redisClient(rc, JedisCluster.class);
+                    } catch (Exception ee) {
+                        redisClient(rc, JedisPool.class);
+                    }
+                }
+            } catch (Exception e) {
+                SystemLogger.error("parse NoCluster Client error {}", e);
+            }
+            return rc;
+        }
+
+        public synchronized RedisClient buildNewRedisClient(RedisClient rc) {
+            try {
+                try {
+                    newRedisClient(rc, JedisPool.class);
+                } catch (Exception e) {
+                    try {
+                        newRedisClient(rc, JedisCluster.class);
+                    } catch (Exception ee) {
+                        newRedisClient(rc, JedisPool.class);
+                    }
+                }
+            } catch (Exception e) {
+                SystemLogger.error("parse NoCluster Client error {}", e);
+            }
+            return rc;
+        }
+
+        public synchronized RedisClient redisClient(String id) {
+            RedisClient redisClient = new RedisClient(id);
+            if (status == 0) {
+                buildClient(redisClient);
+            } else if (status > 0) {
+                buildClusterClient(redisClient);
+            } else {
+                buildNoClusterClient(redisClient);
+            }
+            return redisClient;
+        }
+
+
+        public synchronized RedisClient redisClient() {
             String id = hashString();
             return redisClient(id);
+        }
+
+        public synchronized RedisClient newRedisClient() {
+            String id = hashString();
+            RedisClient redisClient = new RedisClient(id);
+            return buildNewRedisClient(redisClient);
         }
     }
 }

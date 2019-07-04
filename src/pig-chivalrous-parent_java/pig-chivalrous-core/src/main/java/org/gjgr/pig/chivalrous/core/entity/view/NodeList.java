@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.entity.view;
 
+import org.gjgr.pig.chivalrous.core.entity.ItemStyle;
+import org.gjgr.pig.chivalrous.core.entity.Node;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.gjgr.pig.chivalrous.core.entity.ItemStyle;
-import org.gjgr.pig.chivalrous.core.entity.Node;
 
 /**
  * Created by gwd on 11/4/2016.

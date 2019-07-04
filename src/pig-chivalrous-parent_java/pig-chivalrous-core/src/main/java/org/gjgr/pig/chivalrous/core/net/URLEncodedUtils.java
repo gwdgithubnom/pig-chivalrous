@@ -1,18 +1,5 @@
 package org.gjgr.pig.chivalrous.core.net;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URI;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Scanner;
-
 import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -25,6 +12,19 @@ import org.apache.http.message.TokenParser;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.Args;
 import org.apache.http.util.CharArrayBuffer;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * @Author gwd
@@ -158,10 +158,10 @@ public class URLEncodedUtils {
      * one for b=2, and one for c=3. By convention, {@code '&'} and {@code ';'} are accepted as parameter separators.
      * <p>
      * This is typically useful while parsing an HTTP PUT.
-     *
+     * <p>
      * This API is currently only used for testing.
      *
-     * @param uri URI to parse
+     * @param uri     URI to parse
      * @param charset Charset to use while parsing the query
      * @return a list of {@link NameValuePair} as built from the URI's query portion.
      * @since 4.5
@@ -241,8 +241,8 @@ public class URLEncodedUtils {
      * separators.
      *
      * @param parameters List to add parameters to.
-     * @param scanner Input that contains the parameters to parse.
-     * @param charset Encoding to use when decoding the parameters.
+     * @param scanner    Input that contains the parameters to parse.
+     * @param charset    Encoding to use when decoding the parameters.
      * @deprecated (4.4) use {@link #parse(String, java.nio.charset.Charset)}
      */
     @Deprecated
@@ -258,10 +258,10 @@ public class URLEncodedUtils {
      * example, a scanner containing the string {@code a=1&b=2&c=3} would add the {@link NameValuePair NameValuePairs}
      * a=1, b=2, and c=3 to the list of parameters.
      *
-     * @param parameters List to add parameters to.
-     * @param scanner Input that contains the parameters to parse.
+     * @param parameters               List to add parameters to.
+     * @param scanner                  Input that contains the parameters to parse.
      * @param parameterSepartorPattern The Pattern string for parameter separators, by convention {@code "[&;]"}
-     * @param charset Encoding to use when decoding the parameters.
+     * @param charset                  Encoding to use when decoding the parameters.
      * @deprecated (4.4) use {@link #parse(org.apache.http.util.CharArrayBuffer, java.nio.charset.Charset, char...)}
      */
     @Deprecated
@@ -291,7 +291,7 @@ public class URLEncodedUtils {
      * Returns a list of {@link NameValuePair NameValuePairs} as parsed from the given string using the given character
      * encoding. By convention, {@code '&'} and {@code ';'} are accepted as parameter separators.
      *
-     * @param s text to parse.
+     * @param s       text to parse.
      * @param charset Encoding to use when decoding the parameters.
      * @return a list of {@link NameValuePair} as built from the URI's query portion.
      * @since 4.2
@@ -309,13 +309,13 @@ public class URLEncodedUtils {
      * Returns a list of {@link NameValuePair NameValuePairs} as parsed from the given string using the given character
      * encoding.
      *
-     * @param s text to parse.
-     * @param charset Encoding to use when decoding the parameters.
+     * @param s          text to parse.
+     * @param charset    Encoding to use when decoding the parameters.
      * @param separators element separators.
      * @return a list of {@link NameValuePair} as built from the URI's query portion.
      * @since 4.3
      */
-    public static List<NameValuePair> parse(final String s, final Charset charset, final char...separators) {
+    public static List<NameValuePair> parse(final String s, final Charset charset, final char... separators) {
         if (s == null) {
             return createEmptyList();
         }
@@ -328,14 +328,14 @@ public class URLEncodedUtils {
      * Returns a list of {@link NameValuePair NameValuePairs} as parsed from the given string using the given character
      * encoding.
      *
-     * @param buf text to parse.
-     * @param charset Encoding to use when decoding the parameters.
+     * @param buf        text to parse.
+     * @param charset    Encoding to use when decoding the parameters.
      * @param separators element separators.
      * @return a list of {@link NameValuePair} as built from the URI's query portion.
      * @since 4.4
      */
     public static List<NameValuePair> parse(
-            final CharArrayBuffer buf, final Charset charset, final char...separators) {
+            final CharArrayBuffer buf, final Charset charset, final char... separators) {
         Args.notNull(buf, "Char array buffer");
         final TokenParser tokenParser = TokenParser.INSTANCE;
         final BitSet delimSet = new BitSet();
@@ -378,7 +378,7 @@ public class URLEncodedUtils {
      * an HTTP PUT or HTTP POST.
      *
      * @param parameters The parameters to include.
-     * @param charset The encoding to use.
+     * @param charset    The encoding to use.
      * @return An {@code application/x-www-form-urlencoded} string
      */
     public static String format(
@@ -409,9 +409,9 @@ public class URLEncodedUtils {
      * Returns a String that is suitable for use as an {@code application/x-www-form-urlencoded} list of parameters in
      * an HTTP PUT or HTTP POST.
      *
-     * @param parameters The parameters to include.
+     * @param parameters         The parameters to include.
      * @param parameterSeparator The parameter separator, by convention, {@code '&'} or {@code ';'}.
-     * @param charset The encoding to use.
+     * @param charset            The encoding to use.
      * @return An {@code application/x-www-form-urlencoded} string
      * @since 4.3
      */
@@ -467,7 +467,7 @@ public class URLEncodedUtils {
      * an HTTP PUT or HTTP POST.
      *
      * @param parameters The parameters to include.
-     * @param charset The encoding to use.
+     * @param charset    The encoding to use.
      * @return An {@code application/x-www-form-urlencoded} string
      * @since 4.2
      */
@@ -481,9 +481,9 @@ public class URLEncodedUtils {
      * Returns a String that is suitable for use as an {@code application/x-www-form-urlencoded} list of parameters in
      * an HTTP PUT or HTTP POST.
      *
-     * @param parameters The parameters to include.
+     * @param parameters         The parameters to include.
      * @param parameterSeparator The parameter separator, by convention, {@code '&'} or {@code ';'}.
-     * @param charset The encoding to use.
+     * @param charset            The encoding to use.
      * @return An {@code application/x-www-form-urlencoded} string
      * @since 4.3
      */
@@ -542,10 +542,10 @@ public class URLEncodedUtils {
     /**
      * Decode/unescape a portion of a URL, to use with the query part ensure {@code plusAsBlank} is true.
      *
-     * @param content the portion to decode
-     * @param charset the charset to use
+     * @param content     the portion to decode
+     * @param charset     the charset to use
      * @param plusAsBlank if {@code true}, then convert '+' to space (e.g. for www-url-form-encoded content), otherwise
-     *            leave as is.
+     *                    leave as is.
      * @return encoded string
      */
     private static String urlDecode(

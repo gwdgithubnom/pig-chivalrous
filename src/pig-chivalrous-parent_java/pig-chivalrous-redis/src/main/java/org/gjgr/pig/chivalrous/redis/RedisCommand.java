@@ -1,10 +1,15 @@
 package org.gjgr.pig.chivalrous.redis;
 
+import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
 import org.gjgr.pig.chivalrous.core.lang.NonNull;
-
+import org.gjgr.pig.chivalrous.core.net.UriBuilder;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author gwd
@@ -16,8 +21,58 @@ import redis.clients.jedis.JedisPool;
 public class RedisCommand {
 
     public static RedisClient redisClient(RedisConfig redisConfig) {
-        // todo
-        return null;
+        return redisConfig.build();
+    }
+
+    public static RedisClient redisClient(YmlNode ymlNode) {
+        RedisConfig redisConfig = redisConfig(ymlNode);
+        if (redisConfig != null) {
+            return redisClient(redisConfig);
+        } else {
+            return null;
+        }
+    }
+
+    public static RedisConfig redisConfig(YmlNode ymlNode) {
+        if (ymlNode == null) {
+            return null;
+        } else {
+            List list = ymlNode.list();
+            RedisConfig redisConfig = new RedisConfig();
+            list.forEach(l -> {
+                String s = l.toString();
+                UriBuilder uriBuilder = UriCommand.uriBuilder(s);
+                redisConfig.add(uriBuilder.getHost(), uriBuilder.getPort());
+                if (uriBuilder.getQueryParams().size() > 0) {
+                    Map params = uriBuilder.getParams();
+                    if (params.containsKey("password")) {
+                        redisConfig.setPassword(params.get("password").toString());
+                    }
+                    if (params.containsKey("type")) {
+                        try {
+                            int i = Integer.parseInt(params.get("type").toString());
+                            if (i > 0) {
+                                redisConfig.setCluster();
+                            } else {
+                                redisConfig.setNoCluster();
+                            }
+                        } catch (Exception e) {
+                            redisConfig.setCluster();
+                        }
+                    }
+                    if (params.containsKey("connectionTimeout")) {
+                        redisConfig.setConnectionTimeout(Integer.parseInt(params.get("connectionTimeout").toString()));
+                    }
+                    if (params.containsKey("maxAttempts")) {
+                        redisConfig.setMaxAttempts(Integer.parseInt(params.get("maxAttempts").toString()));
+                    }
+                    if (params.containsKey("timeout")) {
+                        redisConfig.setTimeout(Integer.parseInt(params.get("timeout").toString()));
+                    }
+                }
+            });
+            return redisConfig;
+        }
     }
 
     public static RedisConfig redisConfig(@NonNull String[] urls, String[] ports, boolean type) {
@@ -74,7 +129,7 @@ public class RedisCommand {
 
     /**
      * ip:port
-     * 
+     *
      * @param uri
      * @param type
      * @return

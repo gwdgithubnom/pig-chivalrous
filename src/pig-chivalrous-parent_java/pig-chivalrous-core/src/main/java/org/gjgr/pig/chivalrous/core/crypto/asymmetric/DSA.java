@@ -23,7 +23,7 @@ public class DSA extends AsymmetricCrypto {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKeyBase64 私钥Base64
-     * @param publicKeyBase64 公钥Base64
+     * @param publicKeyBase64  公钥Base64
      */
     public DSA(String privateKeyBase64, String publicKeyBase64) {
         super(ALGORITHM_DSA, privateKeyBase64, publicKeyBase64);
@@ -34,7 +34,7 @@ public class DSA extends AsymmetricCrypto {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKey 私钥
-     * @param publicKey 公钥
+     * @param publicKey  公钥
      */
     public DSA(byte[] privateKey, byte[] publicKey) {
         super(ALGORITHM_DSA, privateKey, publicKey);

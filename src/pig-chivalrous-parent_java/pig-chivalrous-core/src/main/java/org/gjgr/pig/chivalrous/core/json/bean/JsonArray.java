@@ -1,5 +1,11 @@
 package org.gjgr.pig.chivalrous.core.json.bean;
 
+import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+import org.gjgr.pig.chivalrous.core.json.JsonException;
+import org.gjgr.pig.chivalrous.core.json.JsonGetter;
+import org.gjgr.pig.chivalrous.core.json.JsonTokener;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -9,12 +15,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-import org.gjgr.pig.chivalrous.core.json.JsonException;
-import org.gjgr.pig.chivalrous.core.json.JsonGetter;
-import org.gjgr.pig.chivalrous.core.json.JsonTokener;
 
 /**
  * JSON数组
@@ -51,7 +51,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
         }
         if (x.nextClean() != ']') {
             x.back();
-            for (;;) {
+            for (; ; ) {
                 if (x.nextClean() == ',') {
                     x.back();
                     this.rawArrayList.add(JsonNull.NULL);

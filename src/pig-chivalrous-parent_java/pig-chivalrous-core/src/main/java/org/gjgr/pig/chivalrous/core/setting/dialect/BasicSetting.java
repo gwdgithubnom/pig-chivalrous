@@ -1,18 +1,5 @@
 package org.gjgr.pig.chivalrous.core.setting.dialect;
 
-import java.io.File;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
@@ -27,6 +14,19 @@ import org.gjgr.pig.chivalrous.core.setting.AbsSetting;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
 import org.gjgr.pig.chivalrous.core.setting.SettingLoader;
 import org.gjgr.pig.chivalrous.core.setting.SettingRuntimeException;
+
+import java.io.File;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 分组设置工具类。 用于支持设置文件<br>
@@ -83,8 +83,8 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
      * 构造，使用相对于Class文件根目录的相对路径
      *
      * @param pathBaseClassLoader 相对路径（相对于当前项目的classes路径）
-     * @param charset 字符集
-     * @param isUseVariable 是否使用变量
+     * @param charset             字符集
+     * @param isUseVariable       是否使用变量
      */
     public BasicSetting(String pathBaseClassLoader, Charset charset, boolean isUseVariable) {
         AssertCommand.notBlank(pathBaseClassLoader, "Blank setting path !");
@@ -94,8 +94,8 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
     /**
      * 构造
      *
-     * @param configFile 配置文件对象
-     * @param charset 字符集
+     * @param configFile    配置文件对象
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(File configFile, Charset charset, boolean isUseVariable) {
@@ -106,9 +106,9 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
     /**
      * 构造，相对于classes读取文件
      *
-     * @param path 相对路径
-     * @param clazz 基准类
-     * @param charset 字符集
+     * @param path          相对路径
+     * @param clazz         基准类
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(String path, Class<?> clazz, Charset charset, boolean isUseVariable) {
@@ -119,8 +119,8 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
     /**
      * 构造
      *
-     * @param url 设定文件的URL
-     * @param charset 字符集
+     * @param url           设定文件的URL
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(URL url, Charset charset, boolean isUseVariable) {
@@ -133,8 +133,8 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
     /**
      * 初始化设定文件
      *
-     * @param urlResource 设定文件的URL
-     * @param charset 字符集
+     * @param urlResource   设定文件的URL
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      * @return 成功初始化与否
      */

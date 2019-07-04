@@ -41,7 +41,7 @@ public class SimpleLunarCalendar {
      * 前12位分别表示12个农历月份的大小月，1是大月，0是小月<br>
      * 最后4位表示闰月，转为十进制后即为闰月值，例如0110，则为闰6月
      */
-    private static final int[] lunarInfo = { 0x4bd8, 0x4ae0, 0xa570, 0x54d5, 0xd260, 0xd950, 0x5554, 0x56af, 0x9ad0,
+    private static final int[] lunarInfo = {0x4bd8, 0x4ae0, 0xa570, 0x54d5, 0xd260, 0xd950, 0x5554, 0x56af, 0x9ad0,
             0x55d2, 0x4ae0, 0xa5b6, 0xa4d0, 0xd250, 0xd295, 0xb54f, 0xd6a0, 0xada2, 0x95b0,
             0x4977, 0x497f, 0xa4b0, 0xb4b5, 0x6a50, 0x6d40, 0xab54, 0x2b6f, 0x9570, 0x52f2, 0x4970, 0x6566, 0xd4a0,
             0xea50, 0x6a95, 0x5adf, 0x2b60, 0x86e3, 0x92ef, 0xc8d7, 0xc95f, 0xd4a0, 0xd8a6,
@@ -58,19 +58,19 @@ public class SimpleLunarCalendar {
             0x6b20, 0xa6c4, 0xaaef, 0x92e0, 0xd2e3, 0xc960, 0xd557, 0xd4a0, 0xda50, 0x5d55, 0x56a0, 0xa6d0, 0x55d4,
             0x52d0, 0xa9b8, 0xa950, 0xb4a0, 0xb6a6, 0xad50, 0x55a0, 0xaba4, 0xa5b0, 0x52b0,
             0xb273, 0x6930, 0x7337, 0x6aa0, 0xad50, 0x4b55, 0x4b6f, 0xa570, 0x54e4, 0xd260, 0xe968, 0xd520, 0xdaa0,
-            0x6aa6, 0x56df, 0x4ae0, 0xa9d4, 0xa4d0, 0xd150, 0xf252, 0xd520 };
+            0x6aa6, 0x56df, 0x4ae0, 0xa9d4, 0xa4d0, 0xd150, 0xf252, 0xd520};
     /**
      * 十二生肖
      */
-    private static final String[] Animals = { "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪" };
+    private static final String[] Animals = {"鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊", "猴", "鸡", "狗", "猪"};
     /**
      * 农历中文字符串一
      */
-    private static final String[] lunarString1 = { "零", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
+    private static final String[] lunarString1 = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
     /**
      * 农历中文字符串二
      */
-    private static final String[] lunarString2 = { "初", "十", "廿", "卅", "正", "腊", "冬", "闰" };
+    private static final String[] lunarString2 = {"初", "十", "廿", "卅", "正", "腊", "冬", "闰"};
     /**
      * 农历年
      */
@@ -100,11 +100,11 @@ public class SimpleLunarCalendar {
      * Description :
      *
      * @param schema： 模式名
-     * @param name： 名称
-     * @param type： 数据源类型
-     *            <p>
-     *            Description:
-     *            </p>
+     * @param name：   名称
+     * @param type：   数据源类型
+     *                <p>
+     *                Description:
+     *                </p>
      */
     public SimpleLunarCalendar() {
         // TODO Auto-generated constructor stub
@@ -184,7 +184,7 @@ public class SimpleLunarCalendar {
     /**
      * 获取某农历年某农历月份的总天数
      *
-     * @param lunarYear 农历年份
+     * @param lunarYear  农历年份
      * @param lunarMonth 农历月份
      * @return 该农历年该农历月的总天数
      */

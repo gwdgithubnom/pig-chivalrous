@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.exceptions.NotInitedException;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-
-import org.gjgr.pig.chivalrous.core.exceptions.NotInitedException;
 
 /**
  * 线程同步结束器<br>

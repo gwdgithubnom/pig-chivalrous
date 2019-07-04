@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.convert;
 
-import java.util.concurrent.TimeUnit;
-
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 类型转换工具单元测试
@@ -16,7 +16,7 @@ public class ConvertTest {
     @Test
     public void toStrTest() {
         int a = 1;
-        long[] b = { 1, 2, 3, 4, 5 };
+        long[] b = {1, 2, 3, 4, 5};
 
         String aStr = Convert.toStr(a);
         Assert.assertEquals("1", aStr);
@@ -26,38 +26,38 @@ public class ConvertTest {
 
     @Test
     public void toIntArrayTest() {
-        String[] b = { "1", "2", "3", "4" };
+        String[] b = {"1", "2", "3", "4"};
 
         Integer[] intArray = Convert.toIntArray(b);
-        Assert.assertArrayEquals(intArray, new Integer[] { 1, 2, 3, 4 });
+        Assert.assertArrayEquals(intArray, new Integer[] {1, 2, 3, 4});
 
-        long[] c = { 1L, 2L, 3L, 4L, 5L };
+        long[] c = {1L, 2L, 3L, 4L, 5L};
         Integer[] intArray2 = Convert.toIntArray(c);
-        Assert.assertArrayEquals(intArray2, new Integer[] { 1, 2, 3, 4, 5 });
+        Assert.assertArrayEquals(intArray2, new Integer[] {1, 2, 3, 4, 5});
     }
 
     @Test
     public void toLongArrayTest() {
-        String[] b = { "1", "2", "3", "4" };
+        String[] b = {"1", "2", "3", "4"};
 
         Long[] intArray = Convert.toLongArray(b);
-        Assert.assertArrayEquals(intArray, new Long[] { 1L, 2L, 3L, 4L });
+        Assert.assertArrayEquals(intArray, new Long[] {1L, 2L, 3L, 4L});
 
-        int[] c = { 1, 2, 3, 4, 5 };
+        int[] c = {1, 2, 3, 4, 5};
         Long[] intArray2 = Convert.toLongArray(c);
-        Assert.assertArrayEquals(intArray2, new Long[] { 1L, 2L, 3L, 4L, 5L });
+        Assert.assertArrayEquals(intArray2, new Long[] {1L, 2L, 3L, 4L, 5L});
     }
 
     @Test
     public void toDoubleArrayTest() {
-        String[] b = { "1", "2", "3", "4" };
+        String[] b = {"1", "2", "3", "4"};
 
         Double[] intArray = Convert.toDoubleArray(b);
-        Assert.assertArrayEquals(intArray, new Double[] { 1D, 2D, 3D, 4D });
+        Assert.assertArrayEquals(intArray, new Double[] {1D, 2D, 3D, 4D});
 
-        int[] c = { 1, 2, 3, 4, 5 };
+        int[] c = {1, 2, 3, 4, 5};
         Double[] intArray2 = Convert.toDoubleArray(c);
-        Assert.assertArrayEquals(intArray2, new Double[] { 1D, 2D, 3D, 4D, 5D });
+        Assert.assertArrayEquals(intArray2, new Double[] {1D, 2D, 3D, 4D, 5D});
     }
 
     @Test

@@ -1,5 +1,8 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.getter.BasicTypeGetter;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
@@ -7,9 +10,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.getter.BasicTypeGetter;
 
 /**
  * 1、字典对象，扩充了HashMap中的方法
@@ -62,7 +62,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
      * 转换为Bean对象
      *
      * @param <T>
-     * @param bean Bean
+     * @param bean          Bean
      * @param isToCamelCase 是否转换为驼峰模式
      * @return Bean
      */
@@ -111,7 +111,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
      * @param dict
      * @param withoutNames 不需要去除的字段名
      */
-    public <T extends Dict> void removeEqual(T dict, String...withoutNames) {
+    public <T extends Dict> void removeEqual(T dict, String... withoutNames) {
         HashSet<String> withoutSet = CollectionCommand.newHashSet(withoutNames);
         for (Entry<String, Object> entry : dict.entrySet()) {
             if (withoutSet.contains(entry.getKey())) {
@@ -130,7 +130,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     /**
      * 设置列
      *
-     * @param attr 属性
+     * @param attr  属性
      * @param value 值
      * @return 本身
      */
@@ -142,7 +142,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     /**
      * 设置列，当键或值为null时忽略
      *
-     * @param attr 属性
+     * @param attr  属性
      * @param value 值
      * @return 本身
      */
@@ -252,7 +252,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     /**
      * 获得特定类型值
      *
-     * @param attr 字段名
+     * @param attr         字段名
      * @param defaultValue 默认值
      * @return 字段值
      */

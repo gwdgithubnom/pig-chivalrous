@@ -1,5 +1,11 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import org.gjgr.pig.chivalrous.core.convert.BasicType;
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.lang.map.ConcurrentReferenceHashMap;
+
 import java.beans.Introspector;
 import java.io.Closeable;
 import java.io.Externalizable;
@@ -37,13 +43,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.gjgr.pig.chivalrous.core.convert.BasicType;
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.lang.map.ConcurrentReferenceHashMap;
-
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-
 /**
  * 类工具类 <br>
  * 1、扫描指定包下的所有类<br>
@@ -53,11 +52,17 @@ import com.google.common.base.Preconditions;
  */
 public final class ClassCommand {
 
-    /** Suffix for array class names: "[]" */
+    /**
+     * Suffix for array class names: "[]"
+     */
     public static final String ARRAY_SUFFIX = "[]";
-    /** The CGLIB class separator: "$$" */
+    /**
+     * The CGLIB class separator: "$$"
+     */
     public static final String CGLIB_CLASS_SEPARATOR = "$$";
-    /** The ".class" file suffix */
+    /**
+     * The ".class" file suffix
+     */
     public static final String CLASS_FILE_SUFFIX = ".class";
     /**
      * Pre-built FieldFilter that matches all non-static, non-final fields.
@@ -74,17 +79,27 @@ public final class ClassCommand {
      */
     public static final MethodFilter USER_DECLARED_METHODS =
             (method -> (!method.isBridge() && method.getDeclaringClass() != Object.class));
-    /** Prefix for internal array class names: "[" */
+    /**
+     * Prefix for internal array class names: "["
+     */
     private static final String INTERNAL_ARRAY_PREFIX = "[";
-    /** Prefix for internal non-primitive array class names: "[L" */
+    /**
+     * Prefix for internal non-primitive array class names: "[L"
+     */
     private static final String NON_PRIMITIVE_ARRAY_PREFIX = "[L";
 
     // ----------------------------------------------------------------------------------------- Scan classes
-    /** The package separator character: '.' */
+    /**
+     * The package separator character: '.'
+     */
     private static final char PACKAGE_SEPARATOR = '.';
-    /** The path separator character: '/' */
+    /**
+     * The path separator character: '/'
+     */
     private static final char PATH_SEPARATOR = '/';
-    /** The inner class separator character: '$' */
+    /**
+     * The inner class separator character: '$'
+     */
     private static final char INNER_CLASS_SEPARATOR = '$';
     /**
      * Map with primitive wrapper type as key and corresponding primitive type as value, for example: Integer.class ->
@@ -162,8 +177,8 @@ public final class ClassCommand {
         registerCommonClasses(Enum.class, Iterable.class, Iterator.class, Enumeration.class,
                 Collection.class, List.class, Set.class, Map.class, Map.Entry.class, Optional.class);
 
-        Class<?>[] javaLanguageInterfaceArray = { Serializable.class, Externalizable.class,
-                Closeable.class, AutoCloseable.class, Cloneable.class, Comparable.class };
+        Class<?>[] javaLanguageInterfaceArray = {Serializable.class, Externalizable.class,
+                Closeable.class, AutoCloseable.class, Cloneable.class, Comparable.class};
         registerCommonClasses(javaLanguageInterfaceArray);
         javaLanguageInterfaces = new HashSet<>(Arrays.asList(javaLanguageInterfaceArray));
     }
@@ -177,7 +192,7 @@ public final class ClassCommand {
      * @param objects 对象数组
      * @return 类数组
      */
-    public static Class<?>[] getClasses(Object...objects) {
+    public static Class<?>[] getClasses(Object... objects) {
         Class<?>[] classes = new Class<?>[objects.length];
         for (int i = 0; i < objects.length; i++) {
             classes[i] = objects[i].getClass();
@@ -278,13 +293,13 @@ public final class ClassCommand {
     /**
      * 扫描指定包路径下所有包含指定注解的类
      *
-     * @param packageName 包路径
+     * @param packageName     包路径
      * @param annotationClass 注解类
      * @return 类集合
      * @see ClassScaner#scanPackageByAnnotation(String, Class)
      */
     public static Set<Class<?>> scanPackageByAnnotation(String packageName,
-            final Class<? extends Annotation> annotationClass) {
+                                                        final Class<? extends Annotation> annotationClass) {
         return ClassScaner.scanPackageByAnnotation(packageName, annotationClass);
     }
 
@@ -292,7 +307,7 @@ public final class ClassCommand {
      * 扫描指定包路径下所有指定类或接口的子类或实现类
      *
      * @param packageName 包路径
-     * @param superClass 父类或接口
+     * @param superClass  父类或接口
      * @return 类集合
      * @see ClassScaner#scanPackageBySuper(String, Class)
      */
@@ -363,7 +378,7 @@ public final class ClassCommand {
     /**
      * 获得指定类过滤后的Public方法列表
      *
-     * @param clazz 查找方法的类
+     * @param clazz  查找方法的类
      * @param filter 过滤器
      * @return 过滤后的方法列表
      */
@@ -390,11 +405,11 @@ public final class ClassCommand {
     /**
      * 获得指定类过滤后的Public方法列表
      *
-     * @param clazz 查找方法的类
+     * @param clazz          查找方法的类
      * @param excludeMethods 不包括的方法
      * @return 过滤后的方法列表
      */
-    public static List<Method> getPublicMethods(Class<?> clazz, Method...excludeMethods) {
+    public static List<Method> getPublicMethods(Class<?> clazz, Method... excludeMethods) {
         final HashSet<Method> excludeMethodSet = CollectionCommand.newHashSet(excludeMethods);
         return getPublicMethods(clazz, new Filter<Method>() {
             @Override
@@ -407,11 +422,11 @@ public final class ClassCommand {
     /**
      * 获得指定类过滤后的Public方法列表
      *
-     * @param clazz 查找方法的类
+     * @param clazz              查找方法的类
      * @param excludeMethodNames 不包括的方法名列表
      * @return 过滤后的方法列表
      */
-    public static List<Method> getPublicMethods(Class<?> clazz, String...excludeMethodNames) {
+    public static List<Method> getPublicMethods(Class<?> clazz, String... excludeMethodNames) {
         final HashSet<String> excludeMethodNameSet = CollectionCommand.newHashSet(excludeMethodNames);
         return getPublicMethods(clazz, new Filter<Method>() {
             @Override
@@ -424,14 +439,14 @@ public final class ClassCommand {
     /**
      * 查找指定Public方法
      *
-     * @param clazz 类
+     * @param clazz      类
      * @param methodName 方法名
      * @param paramTypes 参数类型
      * @return 方法
      * @throws SecurityException
      * @throws NoSuchMethodException
      */
-    public static Method getPublicMethod(Class<?> clazz, String methodName, Class<?>...paramTypes)
+    public static Method getPublicMethod(Class<?> clazz, String methodName, Class<?>... paramTypes)
             throws NoSuchMethodException, SecurityException {
         try {
             return clazz.getMethod(methodName, paramTypes);
@@ -479,14 +494,14 @@ public final class ClassCommand {
     /**
      * 查找指定对象中的所有方法（包括非public方法），也包括父对象和Object类的方法
      *
-     * @param obj 被查找的对象
+     * @param obj        被查找的对象
      * @param methodName 方法名
-     * @param args 参数
+     * @param args       参数
      * @return 方法
      * @throws NoSuchMethodException 无此方法
      * @throws SecurityException
      */
-    public static Method getDeclaredMethodOfObj(Object obj, String methodName, Object...args)
+    public static Method getDeclaredMethodOfObj(Object obj, String methodName, Object... args)
             throws NoSuchMethodException, SecurityException {
         return getDeclaredMethod(obj.getClass(), methodName, getClasses(args));
     }
@@ -494,14 +509,14 @@ public final class ClassCommand {
     /**
      * 查找指定类中的所有方法（包括非public方法），也包括父类和Object类的方法
      *
-     * @param clazz 被查找的类
-     * @param methodName 方法名
+     * @param clazz          被查找的类
+     * @param methodName     方法名
      * @param parameterTypes 参数类型
      * @return 方法
      * @throws NoSuchMethodException 无此方法
      * @throws SecurityException
      */
-    public static Method getDeclaredMethod(Class<?> clazz, String methodName, Class<?>...parameterTypes)
+    public static Method getDeclaredMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes)
             throws NoSuchMethodException, SecurityException {
         Method method = null;
         for (; null != clazz; clazz = clazz.getSuperclass()) {
@@ -675,7 +690,7 @@ public final class ClassCommand {
      * @param clazz 类
      * @return 对象
      */
-    public static <T> T newInstance(Class<T> clazz, Object...params) {
+    public static <T> T newInstance(Class<T> clazz, Object... params) {
         if (ArrayCommand.isEmpty(params)) {
             return newInstance(clazz);
         }
@@ -683,7 +698,7 @@ public final class ClassCommand {
         final Class<?>[] paramTypes = getClasses(params);
         final Constructor<?> constructor = getConstructor(clazz, getClasses(params));
         if (null == constructor) {
-            throw new UtilException("No Constructor matched for parameter types: [{}]", new Object[] { paramTypes });
+            throw new UtilException("No Constructor matched for parameter types: [{}]", new Object[] {paramTypes});
         }
         try {
             return getConstructor(clazz, paramTypes).newInstance(params);
@@ -696,12 +711,12 @@ public final class ClassCommand {
      * 查找类中的指定参数的构造方法
      *
      * @param <T>
-     * @param clazz 类
+     * @param clazz          类
      * @param parameterTypes 参数类型，只要任何一个参数是指定参数的父类或接口或相等即可
      * @return 构造方法，如果未找到返回null
      */
     // @SuppressWarnings("unchecked")
-    public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>...parameterTypes) {
+    public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes) {
         if (null == clazz) {
             return null;
         }
@@ -743,7 +758,7 @@ public final class ClassCommand {
      * 加载类
      *
      * @param <T>
-     * @param className 类名
+     * @param className     类名
      * @param isInitialized 是否初始化
      * @return 类
      */
@@ -777,7 +792,7 @@ public final class ClassCommand {
      *
      * @param <T>
      * @param classNameDotMethodName 类名和方法名表达式，例如：org.gjgr.tools.StringCommand.isEmpty
-     * @param args 参数，必须严格对应指定方法的参数类型和数量
+     * @param args                   参数，必须严格对应指定方法的参数类型和数量
      * @return 返回结果
      */
     public static <T> T invoke(String classNameDotMethodName, Object[] args) {
@@ -790,10 +805,9 @@ public final class ClassCommand {
      * 执行非static方法时，必须满足对象有默认构造方法<br>
      *
      * @param <T>
-     * @param classNameWithMethodName
-     *            类名和方法名表达式，例如：org.gjgr.tools.StringCommand#isEmpty或org.gjgr.tools.StringCommand.isEmpty
-     * @param isSingleton 是否为单例对象，如果此参数为false，每次执行方法时创建一个新对象
-     * @param args 参数，必须严格对应指定方法的参数类型和数量
+     * @param classNameWithMethodName 类名和方法名表达式，例如：org.gjgr.tools.StringCommand#isEmpty或org.gjgr.tools.StringCommand.isEmpty
+     * @param isSingleton             是否为单例对象，如果此参数为false，每次执行方法时创建一个新对象
+     * @param args                    参数，必须严格对应指定方法的参数类型和数量
      * @return 返回结果
      */
     public static <T> T invoke(String classNameWithMethodName, boolean isSingleton, Object[] args) {
@@ -822,9 +836,9 @@ public final class ClassCommand {
      * 非单例模式，如果是非静态方法，每次创建一个新对象
      *
      * @param <T>
-     * @param className 类名，完整类路径
+     * @param className  类名，完整类路径
      * @param methodName 方法名
-     * @param args 参数，必须严格对应指定方法的参数类型和数量
+     * @param args       参数，必须严格对应指定方法的参数类型和数量
      * @return 返回结果
      */
     public static <T> T invoke(String className, String methodName, Object[] args) {
@@ -837,10 +851,10 @@ public final class ClassCommand {
      * 执行非static方法时，必须满足对象有默认构造方法<br>
      *
      * @param <T>
-     * @param className 类名，完整类路径
-     * @param methodName 方法名
+     * @param className   类名，完整类路径
+     * @param methodName  方法名
      * @param isSingleton 是否为单例对象，如果此参数为false，每次执行方法时创建一个新对象
-     * @param args 参数，必须严格对应指定方法的参数类型和数量
+     * @param args        参数，必须严格对应指定方法的参数类型和数量
      * @return 返回结果
      */
     public static <T> T invoke(String className, String methodName, boolean isSingleton, Object[] args) {
@@ -865,9 +879,9 @@ public final class ClassCommand {
      * 可执行Private方法，也可执行static方法<br>
      *
      * @param <T>
-     * @param obj 对象
+     * @param obj        对象
      * @param methodName 方法名
-     * @param args 参数，必须严格对应指定方法的参数类型和数量
+     * @param args       参数，必须严格对应指定方法的参数类型和数量
      * @return 返回结果
      */
     public static <T> T invoke(Object obj, String methodName, Object[] args) {
@@ -886,11 +900,11 @@ public final class ClassCommand {
      * 执行静态方法
      *
      * @param method 方法（对象方法或static方法都可）
-     * @param args 参数对象
+     * @param args   参数对象
      * @return 结果
-     * @throws UtilException IllegalAccessException and IllegalArgumentException
+     * @throws UtilException             IllegalAccessException and IllegalArgumentException
      * @throws InvocationTargetException 目标方法执行异常
-     * @throws IllegalArgumentException 参数异常
+     * @throws IllegalArgumentException  参数异常
      */
     public static <T> T invokeStatic(Method method, Object[] args)
             throws InvocationTargetException, IllegalArgumentException {
@@ -900,13 +914,13 @@ public final class ClassCommand {
     /**
      * 执行方法
      *
-     * @param obj 对象，如果执行静态方法，此值为<code>null</code>
+     * @param obj    对象，如果执行静态方法，此值为<code>null</code>
      * @param method 方法（对象方法或static方法都可）
-     * @param args 参数对象
+     * @param args   参数对象
      * @return 结果
-     * @throws UtilException IllegalAccessException and IllegalArgumentException
+     * @throws UtilException             IllegalAccessException and IllegalArgumentException
      * @throws InvocationTargetException 目标方法执行异常
-     * @throws IllegalArgumentException 参数异常
+     * @throws IllegalArgumentException  参数异常
      */
     @SuppressWarnings("unchecked")
     public static <T> T invoke(Object obj, Method method, Object[] args)
@@ -971,7 +985,7 @@ public final class ClassCommand {
     public static boolean isSimpleValueType(Class<?> clazz) {
         return isBasicType(clazz) || clazz.isEnum() || CharSequence.class.isAssignableFrom(clazz)
                 || Number.class.isAssignableFrom(clazz) || Date.class.isAssignableFrom(clazz) || clazz
-                        .equals(URI.class)
+                .equals(URI.class)
                 || clazz.equals(URL.class) || clazz.equals(Locale.class) || clazz.equals(Class.class);
     }
 
@@ -1103,7 +1117,7 @@ public final class ClassCommand {
     public static boolean isNormalClass(Class<?> clazz) {
         return null != clazz && false == clazz.isInterface() && false == isAbstract(clazz) && false == clazz.isEnum()
                 && false == clazz.isArray() && false == clazz.isAnnotation() && false == clazz
-                        .isSynthetic()
+                .isSynthetic()
                 && false == clazz.isPrimitive();
     }
 
@@ -1174,7 +1188,7 @@ public final class ClassCommand {
     /**
      * Register the given common classes with the ClassUtils cache.
      */
-    private static void registerCommonClasses(Class<?>...commonClasses) {
+    private static void registerCommonClasses(Class<?>... commonClasses) {
         for (Class<?> clazz : commonClasses) {
             commonClassCache.put(clazz.getName(), clazz);
         }
@@ -1239,11 +1253,11 @@ public final class ClassCommand {
      * class names (e.g. "String[]"). Furthermore, it is also capable of resolving inner class names in Java source
      * style (e.g. "java.lang.Thread.State" instead of "java.lang.Thread$State").
      *
-     * @param name the name of the Class
+     * @param name        the name of the Class
      * @param classLoader the class loader to use (may be {@code null}, which indicates the default class loader)
      * @return Class instance for the supplied name
      * @throws ClassNotFoundException if the class was not found
-     * @throws LinkageError if the class file could not be loaded
+     * @throws LinkageError           if the class file could not be loaded
      * @see Class#forName(String, boolean, ClassLoader)
      */
     public static Class<?> forName(String name, @Nullable ClassLoader classLoader)
@@ -1308,11 +1322,11 @@ public final class ClassCommand {
      * This is effectively equivalent to the {@code forName} method with the same arguments, with the only difference
      * being the exceptions thrown in case of class loading failure.
      *
-     * @param className the name of the Class
+     * @param className   the name of the Class
      * @param classLoader the class loader to use (may be {@code null}, which indicates the default class loader)
      * @return Class instance for the supplied name
      * @throws IllegalArgumentException if the class name was not resolvable (that is, the class could not be found or
-     *             the class file could not be loaded)
+     *                                  the class file could not be loaded)
      * @see #forName(String, ClassLoader)
      */
     public static Class<?> resolveClassName(String className, @Nullable ClassLoader classLoader)
@@ -1331,7 +1345,7 @@ public final class ClassCommand {
      * Determine whether the {@link Class} identified by the supplied name is present and can be loaded. Will return
      * {@code false} if either the class or one of its dependencies is not present or cannot be loaded.
      *
-     * @param className the name of the class to check
+     * @param className   the name of the class to check
      * @param classLoader the class loader to use (may be {@code null} which indicates the default class loader)
      * @return whether the specified class is present
      */
@@ -1348,9 +1362,9 @@ public final class ClassCommand {
     /**
      * Check whether the given class is visible in the given ClassLoader.
      *
-     * @param clazz the class to check (typically an interface)
+     * @param clazz       the class to check (typically an interface)
      * @param classLoader the ClassLoader to check against (may be {@code null} in which case this method will always
-     *            return {@code true})
+     *                    return {@code true})
      */
     public static boolean isVisible(Class<?> clazz, @Nullable ClassLoader classLoader) {
         if (classLoader == null) {
@@ -1372,9 +1386,9 @@ public final class ClassCommand {
      * Check whether the given class is cache-safe in the given context, i.e. whether it is loaded by the given
      * ClassLoader or a parent of it.
      *
-     * @param clazz the class to analyze
+     * @param clazz       the class to analyze
      * @param classLoader the ClassLoader to potentially cache metadata in (may be {@code null} which indicates the
-     *            system class loader)
+     *                    system class loader)
      */
     public static boolean isCacheSafe(Class<?> clazz, @Nullable ClassLoader classLoader) {
         AssertCommand.notNull(clazz, "Class must not be null");
@@ -1414,7 +1428,7 @@ public final class ClassCommand {
     /**
      * Check whether the given class is loadable in the given ClassLoader.
      *
-     * @param clazz the class to check (typically an interface)
+     * @param clazz       the class to check (typically an interface)
      * @param classLoader the ClassLoader to check against
      * @since 5.0.6
      */
@@ -1437,7 +1451,7 @@ public final class ClassCommand {
      *
      * @param name the name of the potentially primitive class
      * @return the primitive class, or {@code null} if the name does not denote a primitive class or primitive array
-     *         class
+     * class
      */
     @Nullable
     public static Class<?> resolvePrimitiveClassName(@Nullable String name) {
@@ -1502,7 +1516,7 @@ public final class ClassCommand {
      * Determine if the given type is assignable from the given value, assuming setting by reflection. Considers
      * primitive wrapper classes as assignable to the corresponding primitive types.
      *
-     * @param type the target type
+     * @param type  the target type
      * @param value the value that should be assigned to the type
      * @return if the type is assignable from the value
      */
@@ -1542,7 +1556,7 @@ public final class ClassCommand {
      * package as a class file, although {@links org.springframework.core.io.ClassPathResource} is usually even more
      * convenient.
      *
-     * @param clazz the Class whose package will be used as the base
+     * @param clazz        the Class whose package will be used as the base
      * @param resourceName the resource name to append. A leading slash is optional.
      * @return the built-up resource path
      * @see ClassLoader#getResource
@@ -1564,7 +1578,7 @@ public final class ClassCommand {
      * returned value.
      *
      * @param clazz the input class. A {@code null} value or the default (empty) package will result in an empty string
-     *            ("") being returned.
+     *              ("") being returned.
      * @return a path which represents the package name
      * @see ClassLoader#getResource
      * @see Class#getResource
@@ -1592,7 +1606,7 @@ public final class ClassCommand {
      * @return a String of form "[com.foo.Bar, com.foo.Baz]"
      * @see java.util.AbstractCollection#toString()
      */
-    public static String classNamesToString(Class<?>...classes) {
+    public static String classNamesToString(Class<?>... classes) {
         return classNamesToString(Arrays.asList(classes));
     }
 
@@ -1611,7 +1625,7 @@ public final class ClassCommand {
             return "[]";
         }
         StringBuilder sb = new StringBuilder("[");
-        for (Iterator<Class<?>> it = classes.iterator(); it.hasNext();) {
+        for (Iterator<Class<?>> it = classes.iterator(); it.hasNext(); ) {
             Class<?> clazz = it.next();
             sb.append(clazz.getName());
             if (it.hasNext()) {
@@ -1629,8 +1643,8 @@ public final class ClassCommand {
      *
      * @param collection the {@code Collection} to copy
      * @return the {@code Class} array
-     * @since 3.1
      * @sees StringUtils#toStringArray
+     * @since 3.1
      */
     public static Class<?>[] toClassArray(Collection<Class<?>> collection) {
         return collection.toArray(new Class<?>[0]);
@@ -1664,9 +1678,9 @@ public final class ClassCommand {
      * <p>
      * If the class itself is an interface, it gets returned as sole interface.
      *
-     * @param clazz the class to analyze for interfaces
+     * @param clazz       the class to analyze for interfaces
      * @param classLoader the ClassLoader that the interfaces need to be visible in (may be {@code null} when accepting
-     *            all declared interfaces)
+     *                    all declared interfaces)
      * @return all interfaces that the given object implements as an array
      */
     public static Class<?>[] getAllInterfacesForClass(Class<?> clazz, @Nullable ClassLoader classLoader) {
@@ -1701,9 +1715,9 @@ public final class ClassCommand {
      * <p>
      * If the class itself is an interface, it gets returned as sole interface.
      *
-     * @param clazz the class to analyze for interfaces
+     * @param clazz       the class to analyze for interfaces
      * @param classLoader the ClassLoader that the interfaces need to be visible in (may be {@code null} when accepting
-     *            all declared interfaces)
+     *                    all declared interfaces)
      * @return all interfaces that the given object implements as a Set
      */
     public static Set<Class<?>> getAllInterfacesForClassAsSet(Class<?> clazz, @Nullable ClassLoader classLoader) {
@@ -1731,7 +1745,7 @@ public final class ClassCommand {
      * <p>
      * This implementation builds a JDK proxy class for the given interfaces.
      *
-     * @param interfaces the interfaces to merge
+     * @param interfaces  the interfaces to merge
      * @param classLoader the ClassLoader to create the composite Class in
      * @return the merged interface as Class
      * @see java.lang.reflect.Proxy#getProxyClass
@@ -1748,7 +1762,7 @@ public final class ClassCommand {
      * @param clazz1 the class to introspect
      * @param clazz2 the other class to introspect
      * @return the common ancestor (i.e. common superclass, one interface extending the other), or {@code null} if none
-     *         found. If any of the given classes is {@code null}, the other class will be returned.
+     * found. If any of the given classes is {@code null}, the other class will be returned.
      * @since 3.2.6
      */
     @Nullable
@@ -1792,8 +1806,8 @@ public final class ClassCommand {
      * Determine if the supplied class is an <em>inner class</em>, i.e. a non-static member of an enclosing class.
      *
      * @return {@code true} if the supplied class is an inner class
-     * @since 5.0.5
      * @see Class#isMemberClass()
+     * @since 5.0.5
      */
     public static boolean isInnerClass(Class<?> clazz) {
         return (clazz.isMemberClass() && !Modifier.isStatic(clazz.getModifiers()));
@@ -1803,8 +1817,8 @@ public final class ClassCommand {
      * Check whether the given object is a CGLIB proxy.
      *
      * @param object the object to check
-     * @see #isCglibProxyClass(Class)
      * @sees org.springframework.aop.support.AopUtils#isCglibProxy(Object)
+     * @see #isCglibProxyClass(Class)
      */
     public static boolean isCglibProxy(Object object) {
         return isCglibProxyClass(object.getClass());
@@ -1890,7 +1904,7 @@ public final class ClassCommand {
     /**
      * Check whether the given class matches the user-specified type name.
      *
-     * @param clazz the class to check
+     * @param clazz    the class to check
      * @param typeName the type name to match
      */
     public static boolean matchesTypeName(Class<?> clazz, @Nullable String typeName) {
@@ -2007,8 +2021,8 @@ public final class ClassCommand {
      * name.
      *
      * @param method the method
-     * @param clazz the clazz that the method is being invoked on (may be {@code null} to indicate the method's
-     *            declaring class)
+     * @param clazz  the clazz that the method is being invoked on (may be {@code null} to indicate the method's
+     *               declaring class)
      * @return the qualified name of the method
      * @since 4.3.4
      */
@@ -2022,12 +2036,12 @@ public final class ClassCommand {
      * <p>
      * Essentially translates {@code NoSuchMethodException} to "false".
      *
-     * @param clazz the clazz to analyze
+     * @param clazz      the clazz to analyze
      * @param paramTypes the parameter types of the method
      * @return whether the class has a corresponding constructor
      * @see Class#getMethod
      */
-    public static boolean hasConstructor(Class<?> clazz, Class<?>...paramTypes) {
+    public static boolean hasConstructor(Class<?> clazz, Class<?>... paramTypes) {
         return (getConstructorIfAvailable(clazz, paramTypes) != null);
     }
 
@@ -2037,13 +2051,13 @@ public final class ClassCommand {
      * <p>
      * Essentially translates {@code NoSuchMethodException} to {@code null}.
      *
-     * @param clazz the clazz to analyze
+     * @param clazz      the clazz to analyze
      * @param paramTypes the parameter types of the method
      * @return the constructor, or {@code null} if not found
      * @see Class#getConstructor
      */
     @Nullable
-    public static <T> Constructor<T> getConstructorIfAvailable(Class<T> clazz, Class<?>...paramTypes) {
+    public static <T> Constructor<T> getConstructorIfAvailable(Class<T> clazz, Class<?>... paramTypes) {
         AssertCommand.notNull(clazz, "Class must not be null");
         try {
             return clazz.getConstructor(paramTypes);
@@ -2057,13 +2071,13 @@ public final class ClassCommand {
      * <p>
      * Essentially translates {@code NoSuchMethodException} to "false".
      *
-     * @param clazz the clazz to analyze
+     * @param clazz      the clazz to analyze
      * @param methodName the name of the method
      * @param paramTypes the parameter types of the method
      * @return whether the class has a corresponding method
      * @see Class#getMethod
      */
-    public static boolean hasMethod(Class<?> clazz, String methodName, Class<?>...paramTypes) {
+    public static boolean hasMethod(Class<?> clazz, String methodName, Class<?>... paramTypes) {
         return (getMethodIfAvailable(clazz, methodName, paramTypes) != null);
     }
 
@@ -2076,14 +2090,14 @@ public final class ClassCommand {
      * <p>
      * Essentially translates {@code NoSuchMethodException} to {@code IllegalStateException}.
      *
-     * @param clazz the clazz to analyze
+     * @param clazz      the clazz to analyze
      * @param methodName the name of the method
      * @param paramTypes the parameter types of the method (may be {@code null} to indicate any signature)
      * @return the method (never {@code null})
      * @throws IllegalStateException if the method has not been found
      * @see Class#getMethod
      */
-    public static Method getMethod(Class<?> clazz, String methodName, @Nullable Class<?>...paramTypes) {
+    public static Method getMethod(Class<?> clazz, String methodName, @Nullable Class<?>... paramTypes) {
         AssertCommand.notNull(clazz, "Class must not be null");
         AssertCommand.notNull(methodName, "Method name must not be null");
         if (paramTypes != null) {
@@ -2119,14 +2133,14 @@ public final class ClassCommand {
      * <p>
      * Essentially translates {@code NoSuchMethodException} to {@code null}.
      *
-     * @param clazz the clazz to analyze
+     * @param clazz      the clazz to analyze
      * @param methodName the name of the method
      * @param paramTypes the parameter types of the method (may be {@code null} to indicate any signature)
      * @return the method, or {@code null} if not found
      * @see Class#getMethod
      */
     @Nullable
-    public static Method getMethodIfAvailable(Class<?> clazz, String methodName, @Nullable Class<?>...paramTypes) {
+    public static Method getMethodIfAvailable(Class<?> clazz, String methodName, @Nullable Class<?>... paramTypes) {
         AssertCommand.notNull(clazz, "Class must not be null");
         AssertCommand.notNull(methodName, "Method name must not be null");
         if (paramTypes != null) {
@@ -2154,7 +2168,7 @@ public final class ClassCommand {
      * Return the number of methods with a given name (with any argument types), for the given class and/or its
      * superclasses. Includes non-public methods.
      *
-     * @param clazz the clazz to check
+     * @param clazz      the clazz to check
      * @param methodName the name of the method
      * @return the number of methods with the given name
      */
@@ -2182,7 +2196,7 @@ public final class ClassCommand {
      * Does the given class or one of its superclasses at least have one or more methods with the supplied name (with
      * any argument types)? Includes non-public methods.
      *
-     * @param clazz the clazz to check
+     * @param clazz      the clazz to check
      * @param methodName the name of the method
      * @return whether there is at least one method with the given name
      */
@@ -2219,11 +2233,11 @@ public final class ClassCommand {
      * {@code Class#getDeclaredMethods} etc, this implementation will fall back to returning the originally provided
      * method.
      *
-     * @param method the method to be invoked, which may come from an interface
+     * @param method      the method to be invoked, which may come from an interface
      * @param targetClass the target class for the current invocation. May be {@code null} or may not even implement the
-     *            method.
+     *                    method.
      * @return the specific target method, or the original method if the {@code targetClass} doesn't implement it or is
-     *         {@code null}
+     * {@code null}
      */
     public static Method getMostSpecificMethod(Method method, @Nullable Class<?> targetClass) {
         if (targetClass != null && targetClass != method.getDeclaringClass() && isOverridable(method, targetClass)) {
@@ -2251,7 +2265,7 @@ public final class ClassCommand {
      * superclasses up to {@link Object}.
      *
      * @param clazz the class to introspect
-     * @param name the name of the field
+     * @param name  the name of the field
      * @return the corresponding Field object, or {@code null} if not found
      */
     @Nullable
@@ -2264,8 +2278,8 @@ public final class ClassCommand {
      * {@link Class type}. Searches all superclasses up to {@link Object}.
      *
      * @param clazz the class to introspect
-     * @param name the name of the field (may be {@code null} if type is specified)
-     * @param type the type of the field (may be {@code null} if name is specified)
+     * @param name  the name of the field (may be {@code null} if type is specified)
+     * @param type  the type of the field (may be {@code null} if name is specified)
      * @return the corresponding Field object, or {@code null} if not found
      */
     @Nullable
@@ -2293,9 +2307,9 @@ public final class ClassCommand {
      * <p>
      * Thrown exceptions are handled via a call to {@link #handleReflectionException(Exception)}.
      *
-     * @param field the field to set
+     * @param field  the field to set
      * @param target the target object on which to set the field
-     * @param value the value to set (may be {@code null})
+     * @param value  the value to set (may be {@code null})
      */
     public static void setField(Field field, @Nullable Object target, @Nullable Object value) {
         try {
@@ -2314,7 +2328,7 @@ public final class ClassCommand {
      * <p>
      * Thrown exceptions are handled via a call to {@link #handleReflectionException(Exception)}.
      *
-     * @param field the field to get
+     * @param field  the field to get
      * @param target the target object from which to get the field
      * @return the field's current value
      */
@@ -2336,7 +2350,7 @@ public final class ClassCommand {
      * Returns {@code null} if no {@link Method} can be found.
      *
      * @param clazz the class to introspect
-     * @param name the name of the method
+     * @param name  the name of the method
      * @return the Method object, or {@code null} if none found
      */
     @Nullable
@@ -2350,13 +2364,13 @@ public final class ClassCommand {
      * <p>
      * Returns {@code null} if no {@link Method} can be found.
      *
-     * @param clazz the class to introspect
-     * @param name the name of the method
+     * @param clazz      the class to introspect
+     * @param name       the name of the method
      * @param paramTypes the parameter types of the method (may be {@code null} to indicate any signature)
      * @return the Method object, or {@code null} if none found
      */
     @Nullable
-    public static Method findMethod(Class<?> clazz, String name, @Nullable Class<?>...paramTypes) {
+    public static Method findMethod(Class<?> clazz, String name, @Nullable Class<?>... paramTypes) {
         AssertCommand.notNull(clazz, "Class must not be null");
         AssertCommand.notNull(name, "Method name must not be null");
         Class<?> searchType = clazz;
@@ -2397,11 +2411,11 @@ public final class ClassCommand {
      *
      * @param method the method to invoke
      * @param target the target object to invoke the method on
-     * @param args the invocation arguments (may be {@code null})
+     * @param args   the invocation arguments (may be {@code null})
      * @return the invocation result, if any
      */
     @Nullable
-    public static Object invokeMethod(Method method, @Nullable Object target, @Nullable Object...args) {
+    public static Object invokeMethod(Method method, @Nullable Object target, @Nullable Object... args) {
         try {
             return method.invoke(target, args);
         } catch (Exception ex) {
@@ -2429,13 +2443,13 @@ public final class ClassCommand {
      *
      * @param method the method to invoke
      * @param target the target object to invoke the method on
-     * @param args the invocation arguments (may be {@code null})
+     * @param args   the invocation arguments (may be {@code null})
      * @return the invocation result, if any
      * @throwss SQLException the JDBC API SQLException to rethrow (if any)
      * @see #invokeMethod(java.lang.reflect.Method, Object, Object[])
      */
     @Nullable
-    public static Object invokeJdbcMethod(Method method, @Nullable Object target, @Nullable Object...args)
+    public static Object invokeJdbcMethod(Method method, @Nullable Object target, @Nullable Object... args)
             throws SQLException {
         try {
             return method.invoke(target, args);
@@ -2534,7 +2548,7 @@ public final class ClassCommand {
      * Determine whether the given method explicitly declares the given exception or one of its superclasses, which
      * means that an exception of that type can be propagated as-is within a reflective invocation.
      *
-     * @param method the declaring method
+     * @param method        the declaring method
      * @param exceptionType the exception to throw
      * @return {@code true} if the exception can be thrown as-is; {@code false} if it needs to be wrapped
      */
@@ -2645,13 +2659,13 @@ public final class ClassCommand {
     /**
      * Obtain an accessible constructor for the given class and parameters.
      *
-     * @param clazz the clazz to check
+     * @param clazz          the clazz to check
      * @param parameterTypes the parameter types of the desired constructor
      * @return the constructor reference
      * @throws NoSuchMethodException if no such constructor exists
      * @since 5.0
      */
-    public static <T> Constructor<T> accessibleConstructor(Class<T> clazz, Class<?>...parameterTypes)
+    public static <T> Constructor<T> accessibleConstructor(Class<T> clazz, Class<?>... parameterTypes)
             throws NoSuchMethodException {
 
         Constructor<T> ctor = clazz.getDeclaredConstructor(parameterTypes);
@@ -2664,10 +2678,10 @@ public final class ClassCommand {
      * equivalent thereof (such as default methods on Java 8 based interfaces that the given class implements).
      *
      * @param clazz the class to introspect
-     * @param mc the callback to invoke for each method
-     * @since 4.2
+     * @param mc    the callback to invoke for each method
      * @throws IllegalStateException if introspection fails
      * @see #doWithMethods
+     * @since 4.2
      */
     public static void doWithLocalMethods(Class<?> clazz, MethodCallback mc) {
         Method[] methods = getDeclaredMethods(clazz);
@@ -2687,7 +2701,7 @@ public final class ClassCommand {
      * {@link MethodFilter}.
      *
      * @param clazz the class to introspect
-     * @param mc the callback to invoke for each method
+     * @param mc    the callback to invoke for each method
      * @throws IllegalStateException if introspection fails
      * @see #doWithMethods(Class, MethodCallback, MethodFilter)
      */
@@ -2703,8 +2717,8 @@ public final class ClassCommand {
      * {@link MethodFilter}.
      *
      * @param clazz the class to introspect
-     * @param mc the callback to invoke for each method
-     * @param mf the filter that determines the methods to apply the callback to
+     * @param mc    the callback to invoke for each method
+     * @param mf    the filter that determines the methods to apply the callback to
      * @throws IllegalStateException if introspection fails
      */
     public static void doWithMethods(Class<?> clazz, MethodCallback mc, @Nullable MethodFilter mf) {
@@ -2797,10 +2811,10 @@ public final class ClassCommand {
      * Invoke the given callback on all locally declared fields in the given class.
      *
      * @param clazz the target class to analyze
-     * @param fc the callback to invoke for each field
-     * @since 4.2
+     * @param fc    the callback to invoke for each field
      * @throws IllegalStateException if introspection fails
      * @see #doWithFields
+     * @since 4.2
      */
     public static void doWithLocalFields(Class<?> clazz, FieldCallback fc) {
         for (Field field : getDeclaredFields(clazz)) {
@@ -2817,7 +2831,7 @@ public final class ClassCommand {
      * fields.
      *
      * @param clazz the target class to analyze
-     * @param fc the callback to invoke for each field
+     * @param fc    the callback to invoke for each field
      * @throws IllegalStateException if introspection fails
      */
     public static void doWithFields(Class<?> clazz, FieldCallback fc) {
@@ -2829,8 +2843,8 @@ public final class ClassCommand {
      * fields.
      *
      * @param clazz the target class to analyze
-     * @param fc the callback to invoke for each field
-     * @param ff the filter that determines the fields to apply the callback to
+     * @param fc    the callback to invoke for each field
+     * @param ff    the filter that determines the fields to apply the callback to
      * @throws IllegalStateException if introspection fails
      */
     public static void doWithFields(Class<?> clazz, FieldCallback fc, @Nullable FieldFilter ff) {
@@ -2929,7 +2943,7 @@ public final class ClassCommand {
     /**
      * Determine whether the given method is overridable in the given target class.
      *
-     * @param method the method to check
+     * @param method      the method to check
      * @param targetClass the target class to check against
      */
     private static boolean isOverridable(Method method, @Nullable Class<?> targetClass) {
@@ -2946,14 +2960,14 @@ public final class ClassCommand {
     /**
      * Return a public static method of a class.
      *
-     * @param clazz the class which defines the method
+     * @param clazz      the class which defines the method
      * @param methodName the static method name
-     * @param args the parameter types to the method
+     * @param args       the parameter types to the method
      * @return the static method, or {@code null} if no static method was found
      * @throws IllegalArgumentException if the method name is blank or the clazz is null
      */
     @Nullable
-    public static Method getStaticMethod(Class<?> clazz, String methodName, Class<?>...args) {
+    public static Method getStaticMethod(Class<?> clazz, String methodName, Class<?>... args) {
         AssertCommand.notNull(clazz, "Class must not be null");
         AssertCommand.notNull(methodName, "Method name must not be null");
         try {
@@ -2962,6 +2976,61 @@ public final class ClassCommand {
         } catch (NoSuchMethodException ex) {
             return null;
         }
+    }
+
+    /**
+     * this method would token the thread stack trace
+     *
+     * @param thread
+     * @return Array of stack trace element.
+     */
+    public static StackTraceElement[] watchClass(Thread thread) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        return stackTrace;
+    }
+
+    /**
+     * token the recently call method class stack info
+     *
+     * @param thread
+     * @return recent stack trace element
+     */
+    public static StackTraceElement watchThread(Thread thread) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        return stackTrace[2];
+    }
+
+    /**
+     * return the near stack trace class name info
+     *
+     * @param thread
+     * @return class name about stack trace record.
+     */
+    public static String watchThreadClass(Thread thread) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        return stackTrace[2].getClassName();
+    }
+
+    /**
+     * return the method class thread trace info
+     *
+     * @param thread
+     * @return method with class info about stack trace.
+     */
+    public static String watchThreadClassMethod(Thread thread) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        return stackTrace[2].getClassName() + "." + stackTrace[2].getMethodName();
+    }
+
+    /**
+     * return the method with class and line info
+     *
+     * @param thread
+     * @return infomation about thread running class and method, line info.
+     */
+    public static String watchThreadClassMethodLine(Thread thread) {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        return stackTrace[2].getClassName() + "." + stackTrace[2].getMethodName() + ":" + stackTrace[2].getLineNumber();
     }
 
     /**

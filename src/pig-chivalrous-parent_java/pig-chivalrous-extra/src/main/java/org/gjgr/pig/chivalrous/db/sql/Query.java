@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-import java.sql.SQLException;
-import java.util.Collection;
-
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.db.Page;
+
+import java.sql.SQLException;
+import java.util.Collection;
 
 /**
  * 查询对象，用于传递查询所需的字段值<br>
@@ -40,7 +40,7 @@ public class Query {
      *
      * @param tableNames 表名
      */
-    public Query(String...tableNames) {
+    public Query(String... tableNames) {
         this(null, tableNames);
         this.tableNames = tableNames;
     }
@@ -48,10 +48,10 @@ public class Query {
     /**
      * 构造
      *
-     * @param where 条件语句
+     * @param where      条件语句
      * @param tableNames 表名
      */
-    public Query(Condition[] where, String...tableNames) {
+    public Query(Condition[] where, String... tableNames) {
         this(where, null, tableNames);
     }
 
@@ -59,20 +59,20 @@ public class Query {
      * 构造
      *
      * @param tableNames 表名
-     * @param where 条件语句
-     * @param page 分页
+     * @param where      条件语句
+     * @param page       分页
      */
-    public Query(Condition[] where, Page page, String...tableNames) {
+    public Query(Condition[] where, Page page, String... tableNames) {
         this(null, tableNames, where, page);
     }
 
     /**
      * 构造
      *
-     * @param fields 字段
+     * @param fields     字段
      * @param tableNames 表名
-     * @param where 条件
-     * @param page 分页
+     * @param where      条件
+     * @param page       分页
      */
     public Query(Collection<String> fields, String[] tableNames, Condition[] where, Page page) {
         this.fields = fields;
@@ -99,7 +99,7 @@ public class Query {
      * @param fields 查询的字段名列表
      * @return this
      */
-    public Query setFields(String...fields) {
+    public Query setFields(String... fields) {
         this.fields = CollectionCommand.newArrayList(fields);
         return this;
     }
@@ -130,7 +130,7 @@ public class Query {
      * @param tableNames 表名
      * @return this
      */
-    public Query setTableNames(String...tableNames) {
+    public Query setTableNames(String... tableNames) {
         this.tableNames = tableNames;
         return this;
     }
@@ -150,7 +150,7 @@ public class Query {
      * @param where 条件语句
      * @return this
      */
-    public Query setWhere(Condition...where) {
+    public Query setWhere(Condition... where) {
         this.where = where;
         return this;
     }

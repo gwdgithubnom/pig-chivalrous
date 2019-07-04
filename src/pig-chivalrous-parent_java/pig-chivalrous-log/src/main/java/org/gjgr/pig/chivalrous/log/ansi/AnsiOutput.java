@@ -16,9 +16,9 @@
 
 package org.gjgr.pig.chivalrous.log.ansi;
 
-import java.util.Locale;
-
 import org.apache.logging.log4j.core.util.Assert;
+
+import java.util.Locale;
 
 /**
  * Generates ANSI encoded output, automatically attempting to detect if the terminal supports ANSI.
@@ -69,7 +69,7 @@ public abstract class AnsiOutput {
      * @param elements the elements to encode
      * @return a string of the encoded elements
      */
-    public static String toString(Object...elements) {
+    public static String toString(Object... elements) {
         StringBuilder sb = new StringBuilder();
         if (isEnabled()) {
             buildEnabled(sb, elements);

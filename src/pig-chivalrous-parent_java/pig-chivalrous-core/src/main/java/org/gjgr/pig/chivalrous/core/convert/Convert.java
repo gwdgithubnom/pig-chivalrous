@@ -1,15 +1,15 @@
 package org.gjgr.pig.chivalrous.core.convert;
 
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.math.HexCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 类型转换器
@@ -26,7 +26,7 @@ public final class Convert {
      * 如果给定的值为null，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -51,7 +51,7 @@ public final class Convert {
      * 如果给定的值为null，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -76,7 +76,7 @@ public final class Convert {
      * 如果给定的值为<code>null</code>，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -101,7 +101,7 @@ public final class Convert {
      * 如果给定的值为<code>null</code>，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -126,7 +126,7 @@ public final class Convert {
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -151,7 +151,7 @@ public final class Convert {
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -186,7 +186,7 @@ public final class Convert {
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -221,7 +221,7 @@ public final class Convert {
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -256,7 +256,7 @@ public final class Convert {
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -291,7 +291,7 @@ public final class Convert {
      * String支持的值为：true、false、yes、ok、no，1,0 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -326,7 +326,7 @@ public final class Convert {
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -351,7 +351,7 @@ public final class Convert {
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      * 转换失败不会报错
      *
-     * @param value 被转换的值
+     * @param value        被转换的值
      * @param defaultValue 转换错误时的默认值
      * @return 结果
      */
@@ -375,8 +375,8 @@ public final class Convert {
      * 转换为Enum对象<br>
      * 如果给定的值为空，或者转换失败，返回默认值<br>
      *
-     * @param clazz Enum的Class
-     * @param value 值
+     * @param clazz        Enum的Class
+     * @param value        值
      * @param defaultValue 默认值
      * @return Enum
      */
@@ -415,7 +415,7 @@ public final class Convert {
     /**
      * 转换值为指定类型
      *
-     * @param type 类型
+     * @param type  类型
      * @param value 值
      * @return 转换后的值
      */
@@ -426,8 +426,8 @@ public final class Convert {
     /**
      * 转换值为指定类型
      *
-     * @param type 类型
-     * @param value 值
+     * @param type         类型
+     * @param value        值
      * @param defaultValue 默认值
      * @return 转换后的值
      * @throws ConvertException 转换器不存在
@@ -451,7 +451,7 @@ public final class Convert {
     /**
      * 半角转全角
      *
-     * @param input String
+     * @param input         String
      * @param notConvertSet 不替换的字符集合
      * @return 全角字符串.
      */
@@ -486,7 +486,7 @@ public final class Convert {
     /**
      * 替换全角为半角
      *
-     * @param text 文本
+     * @param text          文本
      * @param notConvertSet 不替换的字符集合
      * @return 替换后的字符
      */
@@ -514,7 +514,7 @@ public final class Convert {
     /**
      * 字符串转换成十六进制字符串
      *
-     * @param str 待转换的ASCII字符串
+     * @param str     待转换的ASCII字符串
      * @param charset 编码
      * @return 16进制字符串
      */
@@ -545,7 +545,7 @@ public final class Convert {
     /**
      * 十六进制转换字符串
      *
-     * @param hexStr Byte字符串(Byte之间无分隔符 如:[616C6B])
+     * @param hexStr  Byte字符串(Byte之间无分隔符 如:[616C6B])
      * @param charset 编码 {@link Charset}
      * @return 对应的字符串
      */
@@ -606,9 +606,9 @@ public final class Convert {
      * 给定字符串转换字符编码<br/>
      * 如果参数为空，则返回原字符串，不报错。
      *
-     * @param str 被转码的字符串
+     * @param str           被转码的字符串
      * @param sourceCharset 原字符集
-     * @param destCharset 目标字符集
+     * @param destCharset   目标字符集
      * @return 转换后的字符串
      */
     public static String convertCharset(String str, String sourceCharset, String destCharset) {
@@ -623,8 +623,8 @@ public final class Convert {
      * 转换时间单位
      *
      * @param sourceDuration 时长
-     * @param sourceUnit 源单位
-     * @param destUnit 目标单位
+     * @param sourceUnit     源单位
+     * @param destUnit       目标单位
      * @return 目标单位的时长
      */
     public static long convertTime(long sourceDuration, TimeUnit sourceUnit, TimeUnit destUnit) {
@@ -640,9 +640,9 @@ public final class Convert {
      * @return 中文大写数字
      */
     public static String digitUppercase(double n) {
-        String[] fraction = { "角", "分" };
-        String[] digit = { "零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖" };
-        String[][] unit = { { "元", "万", "亿" }, { "", "拾", "佰", "仟" } };
+        String[] fraction = {"角", "分"};
+        String[] digit = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
+        String[][] unit = {{"元", "万", "亿"}, {"", "拾", "佰", "仟"}};
 
         String head = n < 0 ? "负" : "";
         n = Math.abs(n);

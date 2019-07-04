@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.log;
 
-import java.io.Serializable;
-
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.level.Level;
+
+import java.io.Serializable;
 
 /**
  * 抽象日志类<br>

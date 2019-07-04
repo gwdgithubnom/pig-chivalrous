@@ -1,16 +1,15 @@
 package org.gjgr.pig.chivalrous.web.http.ssl;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
-
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * SSLSocketFactory构建器
@@ -51,7 +50,7 @@ public class SSLSocketFactoryBuilder {
 
     private String protocol = TLS;
     private KeyManager[] keyManagers;
-    private TrustManager[] trustManagers = { new DefaultTrustManager() };
+    private TrustManager[] trustManagers = {new DefaultTrustManager()};
     private SecureRandom secureRandom = new SecureRandom();
 
     /**
@@ -82,7 +81,7 @@ public class SSLSocketFactoryBuilder {
      * @param trustManagers TrustManager列表
      * @return 自身
      */
-    public SSLSocketFactoryBuilder setTrustManagers(TrustManager...trustManagers) {
+    public SSLSocketFactoryBuilder setTrustManagers(TrustManager... trustManagers) {
         if (ArrayCommand.isNotEmpty(trustManagers)) {
             this.trustManagers = trustManagers;
         }
@@ -95,7 +94,7 @@ public class SSLSocketFactoryBuilder {
      * @param keyManagers JSSE key managers
      * @return 自身
      */
-    public SSLSocketFactoryBuilder setKeyManagers(KeyManager...keyManagers) {
+    public SSLSocketFactoryBuilder setKeyManagers(KeyManager... keyManagers) {
         if (ArrayCommand.isNotEmpty(keyManagers)) {
             this.keyManagers = keyManagers;
         }

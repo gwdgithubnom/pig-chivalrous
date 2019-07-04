@@ -1,5 +1,37 @@
 package org.gjgr.pig.chivalrous.core.xml;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.core.util.QuickWriter;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
+import com.thoughtworks.xstream.mapper.MapperWrapper;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
@@ -23,40 +55,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.core.util.QuickWriter;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
-import com.thoughtworks.xstream.mapper.MapperWrapper;
 
 public class XmlCommand {
 
@@ -146,7 +144,7 @@ public class XmlCommand {
      * 将XML文档转换为String<br>
      * 此方法会修改Document中的字符集
      *
-     * @param doc XML文档
+     * @param doc     XML文档
      * @param charset 自定义XML的字符集
      * @return XML字符串
      */
@@ -169,7 +167,7 @@ public class XmlCommand {
      * 将XML文档写入到文件<br>
      * 使用Document中的编码
      *
-     * @param doc XML文档
+     * @param doc          XML文档
      * @param absolutePath 文件绝对路径，不存在会自动创建
      */
     public static void toFile(org.w3c.dom.Document doc, String absolutePath) {
@@ -179,9 +177,9 @@ public class XmlCommand {
     /**
      * 将XML文档写入到文件<br>
      *
-     * @param doc XML文档
+     * @param doc          XML文档
      * @param absolutePath 文件绝对路径，不存在会自动创建
-     * @param charset 自定义XML文件的编码
+     * @param charset      自定义XML文件的编码
      */
     public static void toFile(org.w3c.dom.Document doc, String absolutePath, String charset) {
         if (StringCommand.isBlank(charset)) {
@@ -316,7 +314,7 @@ public class XmlCommand {
      * 将NodeList转换为Element列表
      *
      * @param parentEle 父节点，如果指定将返回此节点的所有直接子节点，nul返回所有就节点
-     * @param nodeList NodeList
+     * @param nodeList  NodeList
      * @return Element列表
      */
     public static List<org.w3c.dom.Element> transElements(org.w3c.dom.Element parentEle, NodeList nodeList) {
@@ -338,7 +336,7 @@ public class XmlCommand {
      *
      * @param <T>
      * @param dest 目标文件
-     * @param t 对象
+     * @param t    对象
      * @throws IOException
      */
     public static <T> void writeObjectAsXml(File dest, T t) throws IOException {
@@ -572,7 +570,7 @@ public class XmlCommand {
     /**
      * 获取xml一级节点文本值，不区分元素名称大小写
      *
-     * @param xml type:String
+     * @param xml         type:String
      * @param elementName type:String
      * @return
      */
@@ -583,7 +581,7 @@ public class XmlCommand {
         try {
             Document doc = DocumentHelper.parseText(xml);
             Element root = doc.getRootElement();
-            for (Iterator iterTemp = root.elementIterator(); iterTemp.hasNext();) {
+            for (Iterator iterTemp = root.elementIterator(); iterTemp.hasNext(); ) {
                 Element element = (Element) iterTemp.next();
                 if (element.getName().toLowerCase().equals(elementName)) {
                     result = element.getText();

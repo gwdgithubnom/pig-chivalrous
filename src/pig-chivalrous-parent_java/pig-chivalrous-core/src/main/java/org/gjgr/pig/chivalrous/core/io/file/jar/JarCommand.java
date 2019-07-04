@@ -86,7 +86,7 @@ public final class JarCommand {
     }
 
     private static void readStream(InputStream jarFileInputStream, String name, int i, String[] paths,
-            InputStreamCallback callback)
+                                   InputStreamCallback callback)
             throws IOException {
         if (i == paths.length) {
             callback.onFile(name, jarFileInputStream);

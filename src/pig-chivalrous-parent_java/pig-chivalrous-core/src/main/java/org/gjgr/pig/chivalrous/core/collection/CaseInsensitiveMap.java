@@ -26,7 +26,7 @@ public class CaseInsensitiveMap<K, V> extends HashMap<K, V> {
      * 构造
      *
      * @param initialCapacity 初始大小
-     * @param loadFactor 加载因子
+     * @param loadFactor      加载因子
      */
     public CaseInsensitiveMap(int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor);

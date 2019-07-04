@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.cache.file;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.gjgr.pig.chivalrous.core.cache.Cache;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 文件缓存，以解决频繁读取文件引起的性能问题
@@ -38,9 +38,9 @@ public abstract class FileCache {
     /**
      * 构造
      *
-     * @param capacity 缓存容量
+     * @param capacity    缓存容量
      * @param maxFileSize 文件最大大小
-     * @param timeout 默认超时时间，0表示无默认超时
+     * @param timeout     默认超时时间，0表示无默认超时
      */
     public FileCache(int capacity, int maxFileSize, long timeout) {
         this.capacity = capacity;

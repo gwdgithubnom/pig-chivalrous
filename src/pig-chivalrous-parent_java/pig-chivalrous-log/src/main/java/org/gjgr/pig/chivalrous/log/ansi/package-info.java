@@ -19,4 +19,5 @@
  *
  * @see org.springframework.boot.ansi.AnsiOutput
  */
+
 package org.gjgr.pig.chivalrous.log.ansi;

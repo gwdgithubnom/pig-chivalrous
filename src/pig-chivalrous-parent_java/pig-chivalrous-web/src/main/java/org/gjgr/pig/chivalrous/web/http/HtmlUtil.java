@@ -16,7 +16,7 @@ public final class HtmlUtil {
 
     static {
         for (int i = 0; i < 64; i++) {
-            TEXT[i] = new char[] { (char) i };
+            TEXT[i] = new char[] {(char) i};
         }
 
         // special HTML characters
@@ -82,11 +82,11 @@ public final class HtmlUtil {
      * 清除指定HTML标签和被标签包围的内容<br>
      * 不区分大小写
      *
-     * @param content 文本
+     * @param content  文本
      * @param tagNames 要清除的标签
      * @return 去除标签后的文本
      */
-    public static String removeHtmlTag(String content, String...tagNames) {
+    public static String removeHtmlTag(String content, String... tagNames) {
         return removeHtmlTag(content, true, tagNames);
     }
 
@@ -94,11 +94,11 @@ public final class HtmlUtil {
      * 清除指定HTML标签，不包括内容<br>
      * 不区分大小写
      *
-     * @param content 文本
+     * @param content  文本
      * @param tagNames 要清除的标签
      * @return 去除标签后的文本
      */
-    public static String unwrapHtmlTag(String content, String...tagNames) {
+    public static String unwrapHtmlTag(String content, String... tagNames) {
         return removeHtmlTag(content, false, tagNames);
     }
 
@@ -106,12 +106,12 @@ public final class HtmlUtil {
      * 清除指定HTML标签<br>
      * 不区分大小写
      *
-     * @param content 文本
+     * @param content        文本
      * @param withTagContent 是否去掉被包含在标签中的内容
-     * @param tagNames 要清除的标签
+     * @param tagNames       要清除的标签
      * @return 去除标签后的文本
      */
-    public static String removeHtmlTag(String content, boolean withTagContent, String...tagNames) {
+    public static String removeHtmlTag(String content, boolean withTagContent, String... tagNames) {
         String regex1 = null;
         String regex2 = null;
         for (String tagName : tagNames) {
@@ -140,10 +140,10 @@ public final class HtmlUtil {
      * 去除HTML标签中的属性
      *
      * @param content 文本
-     * @param attrs 属性名（不区分大小写）
+     * @param attrs   属性名（不区分大小写）
      * @return 处理后的文本
      */
-    public static String removeHtmlAttr(String content, String...attrs) {
+    public static String removeHtmlAttr(String content, String... attrs) {
         String regex = null;
         for (String attr : attrs) {
             regex = StringCommand.format("(?i)\\s*{}=([\"']).*?\\1", attr);
@@ -155,11 +155,11 @@ public final class HtmlUtil {
     /**
      * 去除指定标签的所有属性
      *
-     * @param content 内容
+     * @param content  内容
      * @param tagNames 指定标签
      * @return 处理后的文本
      */
-    public static String removeAllHtmlAttr(String content, String...tagNames) {
+    public static String removeAllHtmlAttr(String content, String... tagNames) {
         String regex = null;
         for (String tagName : tagNames) {
             regex = StringCommand.format("(?i)<{}[^>]*?>", tagName);
@@ -171,7 +171,7 @@ public final class HtmlUtil {
     /**
      * Encoder
      *
-     * @param text 被编码的文本
+     * @param text  被编码的文本
      * @param array 特殊字符集合
      * @return 编码后的字符
      */

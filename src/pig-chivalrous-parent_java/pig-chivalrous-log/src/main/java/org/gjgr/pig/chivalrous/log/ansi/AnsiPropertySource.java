@@ -49,8 +49,8 @@ public class AnsiPropertySource {
 
     /**
      * Create a new {@link AnsiPropertySource} instance.
-     * 
-     * @param name the name of the property source
+     *
+     * @param name   the name of the property source
      * @param encode if the output should be encoded
      */
     public AnsiPropertySource(String name, boolean encode) {

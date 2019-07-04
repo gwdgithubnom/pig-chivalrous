@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.cron;
 
+import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
 
 public class TaskLauncherManager {
 

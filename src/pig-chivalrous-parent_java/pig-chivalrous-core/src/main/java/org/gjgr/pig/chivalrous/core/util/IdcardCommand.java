@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.core.util;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.gjgr.pig.chivalrous.core.date.DateTime;
 import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.lang.Validator;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 身份证相关工具类<br>
@@ -29,7 +29,7 @@ public class IdcardCommand {
     /**
      * 每位加权因子
      */
-    private static final int[] power = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+    private static final int[] power = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
     /**
      * 省市代码表
      */
@@ -257,9 +257,9 @@ public class IdcardCommand {
      *
      * @param idCard 身份编码
      * @return 身份证信息数组
-     *         <p>
-     *         [0] - 台湾、澳门、香港 [1] - 性别(男M,女F,未知N) [2] - 是否合法(合法true,不合法false) 若不是身份证件号码则返回null
-     *         </p>
+     * <p>
+     * [0] - 台湾、澳门、香港 [1] - 性别(男M,女F,未知N) [2] - 是否合法(合法true,不合法false) 若不是身份证件号码则返回null
+     * </p>
      */
     public static String[] isValidCard10(String idCard) {
         String[] info = new String[3];
@@ -385,7 +385,7 @@ public class IdcardCommand {
     /**
      * 根据身份编号获取指定日期当时的年龄年龄
      *
-     * @param idCard 身份编号
+     * @param idCard        身份编号
      * @param dateToCompare 以此日期为界，计算年龄。
      * @return 年龄
      */

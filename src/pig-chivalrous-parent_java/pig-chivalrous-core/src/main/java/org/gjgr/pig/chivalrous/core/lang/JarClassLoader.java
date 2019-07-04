@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -8,10 +12,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
-
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 
 /**
  * 外部Jar的类加载器
@@ -57,7 +57,7 @@ public class JarClassLoader extends URLClassLoader {
     /**
      * 加载Jar文件到指定loader中
      *
-     * @param loader {@link URLClassLoader}
+     * @param loader  {@link URLClassLoader}
      * @param jarFile 被加载的jar
      */
     public static void loadJar(URLClassLoader loader, File jarFile) {
@@ -67,7 +67,7 @@ public class JarClassLoader extends URLClassLoader {
                 method.setAccessible(true);
                 final List<File> jars = loopJar(jarFile);
                 for (File jar : jars) {
-                    ClassCommand.invoke(loader, method, new Object[] { jar.toURI().toURL() });
+                    ClassCommand.invoke(loader, method, new Object[] {jar.toURI().toURL()});
                 }
             }
         } catch (IOException | ReflectiveOperationException e) {

@@ -69,7 +69,7 @@ public final class CronUtil {
      * 加入定时任务
      *
      * @param schedulingPattern 定时任务执行时间的crontab表达式
-     * @param task 任务
+     * @param task              任务
      * @return 定时任务ID
      */
     public static String schedule(String schedulingPattern, Task task) {
@@ -80,7 +80,7 @@ public final class CronUtil {
      * 加入定时任务
      *
      * @param schedulingPattern 定时任务执行时间的crontab表达式
-     * @param task 任务
+     * @param task              任务
      * @return 定时任务ID
      */
     public static String schedule(String schedulingPattern, Runnable task) {

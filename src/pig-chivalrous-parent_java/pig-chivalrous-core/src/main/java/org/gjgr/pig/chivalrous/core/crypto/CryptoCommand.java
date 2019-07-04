@@ -1,5 +1,28 @@
 package org.gjgr.pig.chivalrous.core.crypto;
 
+import org.apache.commons.codec.binary.Hex;
+import org.gjgr.pig.chivalrous.core.crypto.asymmetric.AsymmetricType;
+import org.gjgr.pig.chivalrous.core.crypto.asymmetric.DSA;
+import org.gjgr.pig.chivalrous.core.crypto.asymmetric.RSA;
+import org.gjgr.pig.chivalrous.core.crypto.digest.DigestType;
+import org.gjgr.pig.chivalrous.core.crypto.digest.Digester;
+import org.gjgr.pig.chivalrous.core.crypto.digest.HMac;
+import org.gjgr.pig.chivalrous.core.crypto.digest.HmacAlgorithm;
+import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricAlgorithm;
+import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricCrypto;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.Base64;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.gjgr.pig.chivalrous.core.util.RandomCommand;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -21,30 +44,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.UUID;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
-import org.gjgr.pig.chivalrous.core.crypto.asymmetric.AsymmetricType;
-import org.gjgr.pig.chivalrous.core.crypto.asymmetric.DSA;
-import org.gjgr.pig.chivalrous.core.crypto.asymmetric.RSA;
-import org.gjgr.pig.chivalrous.core.crypto.digest.DigestType;
-import org.gjgr.pig.chivalrous.core.crypto.digest.Digester;
-import org.gjgr.pig.chivalrous.core.crypto.digest.HMac;
-import org.gjgr.pig.chivalrous.core.crypto.digest.HmacAlgorithm;
-import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricAlgorithm;
-import org.gjgr.pig.chivalrous.core.crypto.symmetric.SymmetricCrypto;
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.Base64;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-import org.gjgr.pig.chivalrous.core.util.RandomCommand;
-
 /**
  * 安全相关工具类<br>
  * 加密分为三种：<br>
@@ -59,7 +58,7 @@ public final class CryptoCommand {
     /**
      * 默认密钥字节数
      * <p>
-     * 
+     *
      * <pre>
      * RSA/DSA
      * Default Keysize 1024
@@ -91,7 +90,7 @@ public final class CryptoCommand {
      * 生成 {@link SecretKey}，仅用于对称加密和摘要算法密钥生成
      *
      * @param algorithm 算法
-     * @param key 密钥
+     * @param key       密钥
      * @return {@link SecretKey}
      */
     public static SecretKey secretKey(String algorithm, byte[] key) {
@@ -115,7 +114,7 @@ public final class CryptoCommand {
      * 生成 {@link SecretKey}
      *
      * @param algorithm DES算法，包括DES、DESede等
-     * @param key 密钥
+     * @param key       密钥
      * @return {@link SecretKey}
      */
     public static SecretKey secretKeyUsingDES(String algorithm, byte[] key) {
@@ -142,7 +141,7 @@ public final class CryptoCommand {
      * 生成PBE {@link SecretKey}
      *
      * @param algorithm PBE算法，包括：PBEWithMD5AndDES、PBEWithSHA1AndDESede、PBEWithSHA1AndRC2_40等
-     * @param key 密钥
+     * @param key       密钥
      * @return {@link SecretKey}
      */
     public static SecretKey secretKeyUsingPBE(String algorithm, char[] key) {
@@ -161,7 +160,7 @@ public final class CryptoCommand {
      * 生成 {@link SecretKey}，仅用于对称加密和摘要算法
      *
      * @param algorithm 算法
-     * @param keySpec {@link KeySpec}
+     * @param keySpec   {@link KeySpec}
      * @return {@link SecretKey}
      */
     public static SecretKey secretKey(String algorithm, KeySpec keySpec) {
@@ -177,7 +176,7 @@ public final class CryptoCommand {
      * 生成私钥，仅用于非对称加密
      *
      * @param algorithm 算法
-     * @param key 密钥
+     * @param key       密钥
      * @return 私钥 {@link PrivateKey}
      */
     public static PrivateKey privateKey(String algorithm, byte[] key) {
@@ -193,7 +192,7 @@ public final class CryptoCommand {
      * 生成私钥，仅用于非对称加密
      *
      * @param keyStore {@link KeyStore}
-     * @param alias 别名
+     * @param alias    别名
      * @param password 密码
      * @return 私钥 {@link PrivateKey}
      */
@@ -209,7 +208,7 @@ public final class CryptoCommand {
      * 生成公钥，仅用于非对称加密
      *
      * @param algorithm 算法
-     * @param key 密钥
+     * @param key       密钥
      * @return 公钥 {@link PublicKey}
      */
     public static PublicKey publicKey(String algorithm, byte[] key) {
@@ -235,7 +234,7 @@ public final class CryptoCommand {
      * 生成用于非对称加密的公钥和私钥
      *
      * @param algorithm 非对称加密算法
-     * @param keySize 密钥模（modulus ）长度
+     * @param keySize   密钥模（modulus ）长度
      * @return {@link KeyPair}
      */
     public static KeyPair keyPair(String algorithm, int keySize) {
@@ -246,8 +245,8 @@ public final class CryptoCommand {
      * 生成用于非对称加密的公钥和私钥
      *
      * @param algorithm 非对称加密算法
-     * @param keySize 密钥模（modulus ）长度
-     * @param seed 种子
+     * @param keySize   密钥模（modulus ）长度
+     * @param seed      种子
      * @return {@link KeyPair}
      */
     public static KeyPair keyPair(String algorithm, int keySize, byte[] seed) {
@@ -274,7 +273,7 @@ public final class CryptoCommand {
      * 生成签名对象，仅用于非对称加密
      *
      * @param asymmetricType {@link AsymmetricType} 非对称加密算法
-     * @param digestType {@link DigestType} 摘要算法
+     * @param digestType     {@link DigestType} 摘要算法
      * @return {@link Signature}
      */
     public static Signature signature(AsymmetricType asymmetricType, DigestType digestType) {
@@ -292,7 +291,7 @@ public final class CryptoCommand {
      * KeyStore文件用于数字证书的密钥对保存<br>
      * see: http://snowolf.iteye.com/blog/391931
      *
-     * @param in {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
+     * @param in       {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -305,8 +304,8 @@ public final class CryptoCommand {
      * KeyStore文件用于数字证书的密钥对保存<br>
      * see: http://snowolf.iteye.com/blog/391931
      *
-     * @param type 类型
-     * @param in {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
+     * @param type     类型
+     * @param in       {@link InputStream} 如果想从文件读取.keystore文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -326,7 +325,7 @@ public final class CryptoCommand {
      * Certification为证书文件<br>
      * see: http://snowolf.iteye.com/blog/391931
      *
-     * @param in {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
+     * @param in       {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -339,8 +338,8 @@ public final class CryptoCommand {
      * Certification为证书文件<br>
      * see: http://snowolf.iteye.com/blog/391931
      *
-     * @param type 类型
-     * @param in {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
+     * @param type     类型
+     * @param in       {@link InputStream} 如果想从文件读取.cer文件，使用 {@link FileCommand#bufferedInputStream(java.io.File)} 读取
      * @param password 密码
      * @return {@link KeyStore}
      */
@@ -358,7 +357,7 @@ public final class CryptoCommand {
      * 获得 Certification
      *
      * @param keyStore {@link KeyStore}
-     * @param alias 别名
+     * @param alias    别名
      * @return {@link Certificate}
      */
     public static Certificate certificate(KeyStore keyStore, String alias) {
@@ -544,7 +543,7 @@ public final class CryptoCommand {
      * 创建HMac对象，调用digest方法可获得hmac值
      *
      * @param algorithm {@link HmacAlgorithm}
-     * @param key 密钥，如果为<code>null</code>生成随机密钥
+     * @param key       密钥，如果为<code>null</code>生成随机密钥
      * @return {@link HMac}
      * @since 3.0.3
      */
@@ -556,7 +555,7 @@ public final class CryptoCommand {
      * 创建HMac对象，调用digest方法可获得hmac值
      *
      * @param algorithm {@link HmacAlgorithm}
-     * @param key 密钥{@link SecretKey}，如果为<code>null</code>生成随机密钥
+     * @param key       密钥{@link SecretKey}，如果为<code>null</code>生成随机密钥
      * @return {@link HMac}
      * @since 3.0.3
      */
@@ -633,7 +632,7 @@ public final class CryptoCommand {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKeyBase64 私钥Base64
-     * @param publicKeyBase64 公钥Base64
+     * @param publicKeyBase64  公钥Base64
      * @since 3.0.5
      */
     public static RSA rsa(String privateKeyBase64, String publicKeyBase64) {
@@ -646,7 +645,7 @@ public final class CryptoCommand {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKey 私钥
-     * @param publicKey 公钥
+     * @param publicKey  公钥
      * @since 3.0.5
      */
     public static RSA rsa(byte[] privateKey, byte[] publicKey) {
@@ -670,7 +669,7 @@ public final class CryptoCommand {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKeyBase64 私钥Base64
-     * @param publicKeyBase64 公钥Base64
+     * @param publicKeyBase64  公钥Base64
      * @since 3.0.5
      */
     public static DSA dsa(String privateKeyBase64, String publicKeyBase64) {
@@ -683,7 +682,7 @@ public final class CryptoCommand {
      * 私钥和公钥可以单独传入一个，如此则只能使用此钥匙来做加密或者解密
      *
      * @param privateKey 私钥
-     * @param publicKey 公钥
+     * @param publicKey  公钥
      * @since 3.0.5
      */
     public static DSA dsa(byte[] privateKey, byte[] publicKey) {
@@ -730,7 +729,6 @@ public final class CryptoCommand {
     }
 
     /**
-     *
      * 字符串连接方式生成id
      *
      * @param prefix 前缀

@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db.handler;
 
+import org.gjgr.pig.chivalrous.db.Entity;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
-
-import org.gjgr.pig.chivalrous.db.Entity;
 
 /**
  * 结果集处理类 ，处理出的结果为Entity列表

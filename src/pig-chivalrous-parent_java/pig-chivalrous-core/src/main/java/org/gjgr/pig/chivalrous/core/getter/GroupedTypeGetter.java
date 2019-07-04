@@ -14,7 +14,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取字符串型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -23,7 +23,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取int型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -32,7 +32,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取short型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -41,7 +41,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取boolean型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -50,7 +50,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取Long型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -59,7 +59,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取char型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -68,7 +68,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取double型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -77,7 +77,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取byte型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -86,7 +86,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取BigDecimal型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */
@@ -95,7 +95,7 @@ public interface GroupedTypeGetter {
     /**
      * 获取BigInteger型属性值<br>
      *
-     * @param key 属性名
+     * @param key   属性名
      * @param group 分组
      * @return 属性值
      */

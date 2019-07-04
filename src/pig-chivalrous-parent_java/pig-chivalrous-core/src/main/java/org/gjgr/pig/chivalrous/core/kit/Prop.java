@@ -16,14 +16,14 @@
 
 package org.gjgr.pig.chivalrous.core.kit;
 
+import org.gjgr.pig.chivalrous.core.lang.ConstEnumStringValue;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Properties;
-
-import org.gjgr.pig.chivalrous.core.lang.ConstEnumStringValue;
 
 /**
  * Prop. Prop can load properties file from CLASSPATH or File object.
@@ -93,7 +93,7 @@ public class Prop {
      * Prop prop = new Prop(new File("/var/config/my_config.txt"), "UTF-8");<br>
      * String userName = prop.get("userName");
      *
-     * @param file the properties File object
+     * @param file     the properties File object
      * @param encoding the encoding
      */
     public Prop(File file, String encoding) {

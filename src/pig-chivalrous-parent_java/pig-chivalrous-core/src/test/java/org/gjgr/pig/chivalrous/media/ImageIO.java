@@ -1,19 +1,7 @@
 package org.gjgr.pig.chivalrous.media;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FilePermission;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.security.AccessController;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import sun.awt.AppContext;
+import sun.security.action.GetPropertyAction;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageReadParam;
@@ -31,14 +19,24 @@ import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.spi.ServiceRegistry;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
-
-import sun.awt.AppContext;
-import sun.security.action.GetPropertyAction;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FilePermission;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.security.AccessController;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * A class containing static convenience methods for locating <code>ImageReader</code>s and <code>ImageWriter</code>s,
  * and performing simple encoding and decoding.
- *
  */
 public final class ImageIO {
 
@@ -187,8 +185,7 @@ public final class ImageIO {
      * made.
      *
      * @return true if a disk-based cache may be used for <code>ImageInputStream</code>s and
-     *         <code>ImageOutputStream</code>s.
-     *
+     * <code>ImageOutputStream</code>s.
      * @see #setUseCache
      */
     public static boolean getUseCache() {
@@ -214,8 +211,7 @@ public final class ImageIO {
      * On startup, the value is set to <code>true</code>.
      *
      * @param useCache a <code>boolean</code> indicating whether a cache file should be used, in cases where it is
-     *            optional.
-     *
+     *                 optional.
      * @see #getUseCache
      */
     public static void setUseCache(boolean useCache) {
@@ -229,8 +225,7 @@ public final class ImageIO {
      * been made.
      *
      * @return a <code>File</code> indicating the directory where cache files will be created, or <code>null</code> to
-     *         indicate the system-dependent default temporary-file directory.
-     *
+     * indicate the system-dependent default temporary-file directory.
      * @see #setCacheDirectory
      */
     public static File getCacheDirectory() {
@@ -243,12 +238,9 @@ public final class ImageIO {
      * value is ignored.
      *
      * @param cacheDirectory a <code>File</code> specifying a directory.
-     *
+     * @throws SecurityException        if the security manager denies access to the directory.
+     * @throws IllegalArgumentException if <code>cacheDir</code> is non-<code>null</code> but is not a directory.
      * @see File#createTempFile(String, String, File)
-     *
-     * @exception SecurityException if the security manager denies access to the directory.
-     * @exception IllegalArgumentException if <code>cacheDir</code> is non-<code>null</code> but is not a directory.
-     *
      * @see #getCacheDirectory
      */
     public static void setCacheDirectory(File cacheDirectory) {
@@ -270,13 +262,10 @@ public final class ImageIO {
      * control caching.
      *
      * @param input an <code>Object</code> to be used as an input source, such as a <code>File</code>, readable
-     *            <code>RandomAccessFile</code>, or <code>InputStream</code>.
-     *
+     *              <code>RandomAccessFile</code>, or <code>InputStream</code>.
      * @return an <code>ImageInputStream</code>, or <code>null</code>.
-     *
-     * @exception IllegalArgumentException if <code>input</code> is <code>null</code>.
-     * @exception IOException if a cache file is needed but cannot be created.
-     *
+     * @throws IllegalArgumentException if <code>input</code> is <code>null</code>.
+     * @throws IOException              if a cache file is needed but cannot be created.
      * @see javax.imageio.spi.ImageInputStreamSpi
      */
     public static ImageInputStream createImageInputStream(Object input)
@@ -324,13 +313,10 @@ public final class ImageIO {
      * control caching.
      *
      * @param output an <code>Object</code> to be used as an output destination, such as a <code>File</code>, writable
-     *            <code>RandomAccessFile</code>, or <code>OutputStream</code>.
-     *
+     *               <code>RandomAccessFile</code>, or <code>OutputStream</code>.
      * @return an <code>ImageOutputStream</code>, or <code>null</code>.
-     *
-     * @exception IllegalArgumentException if <code>output</code> is <code>null</code>.
-     * @exception IOException if a cache file is needed but cannot be created.
-     *
+     * @throws IllegalArgumentException if <code>output</code> is <code>null</code>.
+     * @throws IOException              if a cache file is needed but cannot be created.
      * @see javax.imageio.spi.ImageOutputStreamSpi
      */
     public static ImageOutputStream createImageOutputStream(Object output)
@@ -367,7 +353,7 @@ public final class ImageIO {
     }
 
     private static <S extends ImageReaderWriterSpi> String[] getReaderWriterInfo(Class<S> spiClass,
-            SpiInfo spiInfo) {
+                                                                                 SpiInfo spiInfo) {
         // Ensure category is present
         Iterator<S> iter;
         try {
@@ -427,11 +413,8 @@ public final class ImageIO {
      * The stream position is left at its prior position upon exit from this method.
      *
      * @param input an <code>ImageInputStream</code> or other <code>Object</code> containing encoded image data.
-     *
      * @return an <code>Iterator</code> containing <code>ImageReader</code>s.
-     *
-     * @exception IllegalArgumentException if <code>input</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>input</code> is <code>null</code>.
      * @see javax.imageio.spi.ImageReaderSpi#canDecodeInput
      */
     public static Iterator<ImageReader> getImageReaders(Object input) {
@@ -456,11 +439,8 @@ public final class ImageIO {
      * able to decode the named format.
      *
      * @param formatName a <code>String</code> containing the informal name of a format (<i>e.g.</i>, "jpeg" or "tiff".
-     *
      * @return an <code>Iterator</code> containing <code>ImageReader</code>s.
-     *
-     * @exception IllegalArgumentException if <code>formatName</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>formatName</code> is <code>null</code>.
      * @see javax.imageio.spi.ImageReaderSpi#getFormatNames
      */
     public static Iterator<ImageReader> getImageReadersByFormatName(String formatName) {
@@ -485,11 +465,8 @@ public final class ImageIO {
      * able to decode files with the given suffix.
      *
      * @param fileSuffix a <code>String</code> containing a file suffix (<i>e.g.</i>, "jpg" or "tiff").
-     *
      * @return an <code>Iterator</code> containing <code>ImageReader</code>s.
-     *
-     * @exception IllegalArgumentException if <code>fileSuffix</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>fileSuffix</code> is <code>null</code>.
      * @see javax.imageio.spi.ImageReaderSpi#getFileSuffixes
      */
     public static Iterator<ImageReader> getImageReadersBySuffix(String fileSuffix) {
@@ -514,11 +491,8 @@ public final class ImageIO {
      * able to decode files with the given MIME type.
      *
      * @param MIMEType a <code>String</code> containing a file suffix (<i>e.g.</i>, "image/jpeg" or "image/x-bmp").
-     *
      * @return an <code>Iterator</code> containing <code>ImageReader</code>s.
-     *
-     * @exception IllegalArgumentException if <code>MIMEType</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>MIMEType</code> is <code>null</code>.
      * @see javax.imageio.spi.ImageReaderSpi#getMIMETypes
      */
     public static Iterator<ImageReader> getImageReadersByMIMEType(String MIMEType) {
@@ -587,11 +561,8 @@ public final class ImageIO {
      * able to encode the named format.
      *
      * @param formatName a <code>String</code> containing the informal name of a format (<i>e.g.</i>, "jpeg" or "tiff".
-     *
      * @return an <code>Iterator</code> containing <code>ImageWriter</code>s.
-     *
-     * @exception IllegalArgumentException if <code>formatName</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>formatName</code> is <code>null</code>.
      * @see javax.imageio.spi.ImageWriterSpi#getFormatNames
      */
     public static Iterator<ImageWriter> getImageWritersByFormatName(String formatName) {
@@ -616,11 +587,8 @@ public final class ImageIO {
      * able to encode files with the given suffix.
      *
      * @param fileSuffix a <code>String</code> containing a file suffix (<i>e.g.</i>, "jpg" or "tiff").
-     *
      * @return an <code>Iterator</code> containing <code>ImageWriter</code>s.
-     *
-     * @exception IllegalArgumentException if <code>fileSuffix</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>fileSuffix</code> is <code>null</code>.
      * @see javax.imageio.spi.ImageWriterSpi#getFileSuffixes
      */
     public static Iterator<ImageWriter> getImageWritersBySuffix(String fileSuffix) {
@@ -647,11 +615,8 @@ public final class ImageIO {
      * able to encode files with the given MIME type.
      *
      * @param MIMEType a <code>String</code> containing a file suffix (<i>e.g.</i>, "image/jpeg" or "image/x-bmp").
-     *
      * @return an <code>Iterator</code> containing <code>ImageWriter</code>s.
-     *
-     * @exception IllegalArgumentException if <code>MIMEType</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>MIMEType</code> is <code>null</code>.
      * @see javax.imageio.spi.ImageWriterSpi#getMIMETypes
      */
     public static Iterator<ImageWriter> getImageWritersByMIMEType(String MIMEType) {
@@ -684,11 +649,8 @@ public final class ImageIO {
      * <code>javax.imageio.spi.ImageReaderSpi.getImageWriterSpiNames()</code>.
      *
      * @param reader an instance of a registered <code>ImageReader</code>.
-     *
      * @return an <code>ImageWriter</code>, or null.
-     *
-     * @exception IllegalArgumentException if <code>reader</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>reader</code> is <code>null</code>.
      * @see #getImageReader(ImageWriter)
      * @see javax.imageio.spi.ImageReaderSpi#getImageWriterSpiNames()
      */
@@ -758,11 +720,8 @@ public final class ImageIO {
      * javax.imageio.spi.ImageWriterSpi.<code>getImageReaderSpiNames()</code>.
      *
      * @param writer an instance of a registered <code>ImageWriter</code>.
-     *
      * @return an <code>ImageReader</code>, or null.
-     *
-     * @exception IllegalArgumentException if <code>writer</code> is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if <code>writer</code> is <code>null</code>.
      * @see #getImageWriter(ImageReader)
      * @see javax.imageio.spi.ImageWriterSpi#getImageReaderSpiNames()
      */
@@ -828,13 +787,10 @@ public final class ImageIO {
      * able to encode images of the given layout (specified using an <code>ImageTypeSpecifier</code>) in the given
      * format.
      *
-     * @param type an <code>ImageTypeSpecifier</code> indicating the layout of the image to be written.
+     * @param type       an <code>ImageTypeSpecifier</code> indicating the layout of the image to be written.
      * @param formatName the informal name of the <code>format</code>.
-     *
      * @return an <code>Iterator</code> containing <code>ImageWriter</code>s.
-     *
-     * @exception IllegalArgumentException if any parameter is <code>null</code>.
-     *
+     * @throws IllegalArgumentException if any parameter is <code>null</code>.
      * @see javax.imageio.spi.ImageWriterSpi#canEncodeImage(ImageTypeSpecifier)
      */
     public static Iterator<ImageWriter> getImageWriters(ImageTypeSpecifier type, String formatName) {
@@ -865,10 +821,8 @@ public final class ImageIO {
      *
      * @param reader an <code>ImageReader</code>.
      * @param writer an <code>ImageWriter</code>.
-     *
      * @return an <code>Iterator</code> containing <code>ImageTranscoder</code>s.
-     *
-     * @exception IllegalArgumentException if <code>reader</code> or <code>writer</code> is <code>null</code>.
+     * @throws IllegalArgumentException if <code>reader</code> or <code>writer</code> is <code>null</code>.
      */
     public static Iterator<ImageTranscoder> getImageTranscoders(ImageReader reader, ImageWriter writer) {
         if (reader == null) {
@@ -912,11 +866,9 @@ public final class ImageIO {
      * that may be accomplished using <code>IIORegistry</code> and <code>ImageReaderSpi</code>.
      *
      * @param input a <code>File</code> to read from.
-     *
      * @return a <code>BufferedImage</code> containing the decoded contents of the input, or <code>null</code>.
-     *
-     * @exception IllegalArgumentException if <code>input</code> is <code>null</code>.
-     * @exception IOException if an error occurs during reading.
+     * @throws IllegalArgumentException if <code>input</code> is <code>null</code>.
+     * @throws IOException              if an error occurs during reading.
      */
     public static BufferedImage read(File input) throws IOException {
         if (input == null) {
@@ -957,11 +909,9 @@ public final class ImageIO {
      * it is the responsibility of the caller to close the stream, if desired.
      *
      * @param input an <code>InputStream</code> to read from.
-     *
      * @return a <code>BufferedImage</code> containing the decoded contents of the input, or <code>null</code>.
-     *
-     * @exception IllegalArgumentException if <code>input</code> is <code>null</code>.
-     * @exception IOException if an error occurs during reading.
+     * @throws IllegalArgumentException if <code>input</code> is <code>null</code>.
+     * @throws IOException              if an error occurs during reading.
      */
     public static BufferedImage read(InputStream input) throws IOException {
         if (input == null) {
@@ -991,11 +941,9 @@ public final class ImageIO {
      * that may be accomplished using <code>IIORegistry</code> and <code>ImageReaderSpi</code>.
      *
      * @param input a <code>URL</code> to read from.
-     *
      * @return a <code>BufferedImage</code> containing the decoded contents of the input, or <code>null</code>.
-     *
-     * @exception IllegalArgumentException if <code>input</code> is <code>null</code>.
-     * @exception IOException if an error occurs during reading.
+     * @throws IllegalArgumentException if <code>input</code> is <code>null</code>.
+     * @throws IOException              if an error occurs during reading.
      */
     public static BufferedImage read(URL input) throws IOException {
         if (input == null) {
@@ -1029,11 +977,9 @@ public final class ImageIO {
      * which case this method <em>does not</em> close the stream.
      *
      * @param stream an <code>ImageInputStream</code> to read from.
-     *
      * @return a <code>BufferedImage</code> containing the decoded contents of the input, or <code>null</code>.
-     *
-     * @exception IllegalArgumentException if <code>stream</code> is <code>null</code>.
-     * @exception IOException if an error occurs during reading.
+     * @throws IllegalArgumentException if <code>stream</code> is <code>null</code>.
+     * @throws IOException              if an error occurs during reading.
      */
     public static BufferedImage read(ImageInputStream stream)
             throws IOException {
@@ -1068,18 +1014,16 @@ public final class ImageIO {
      * This method <em>does not</em> close the provided <code>ImageOutputStream</code> after the write operation has
      * completed; it is the responsibility of the caller to close the stream, if desired.
      *
-     * @param im a <code>RenderedImage</code> to be written.
+     * @param im         a <code>RenderedImage</code> to be written.
      * @param formatName a <code>String</code> containing the informal name of the format.
-     * @param output an <code>ImageOutputStream</code> to be written to.
-     *
+     * @param output     an <code>ImageOutputStream</code> to be written to.
      * @return <code>false</code> if no appropriate writer is found.
-     *
-     * @exception IllegalArgumentException if any parameter is <code>null</code>.
-     * @exception IOException if an error occurs during writing.
+     * @throws IllegalArgumentException if any parameter is <code>null</code>.
+     * @throws IOException              if an error occurs during writing.
      */
     public static boolean write(RenderedImage im,
-            String formatName,
-            ImageOutputStream output) throws IOException {
+                                String formatName,
+                                ImageOutputStream output) throws IOException {
         if (im == null) {
             throw new IllegalArgumentException("im == null!");
         }
@@ -1097,18 +1041,16 @@ public final class ImageIO {
      * Writes an image using an arbitrary <code>ImageWriter</code> that supports the given format to a
      * <code>File</code>. If there is already a <code>File</code> present, its contents are discarded.
      *
-     * @param im a <code>RenderedImage</code> to be written.
+     * @param im         a <code>RenderedImage</code> to be written.
      * @param formatName a <code>String</code> containing the informal name of the format.
-     * @param output a <code>File</code> to be written to.
-     *
+     * @param output     a <code>File</code> to be written to.
      * @return <code>false</code> if no appropriate writer is found.
-     *
-     * @exception IllegalArgumentException if any parameter is <code>null</code>.
-     * @exception IOException if an error occurs during writing.
+     * @throws IllegalArgumentException if any parameter is <code>null</code>.
+     * @throws IOException              if an error occurs during writing.
      */
     public static boolean write(RenderedImage im,
-            String formatName,
-            File output) throws IOException {
+                                String formatName,
+                                File output) throws IOException {
         if (output == null) {
             throw new IllegalArgumentException("output == null!");
         }
@@ -1148,18 +1090,16 @@ public final class ImageIO {
      * The current cache settings from <code>getUseCache</code>and <code>getCacheDirectory</code> will be used to
      * control caching.
      *
-     * @param im a <code>RenderedImage</code> to be written.
+     * @param im         a <code>RenderedImage</code> to be written.
      * @param formatName a <code>String</code> containing the informal name of the format.
-     * @param output an <code>OutputStream</code> to be written to.
-     *
+     * @param output     an <code>OutputStream</code> to be written to.
      * @return <code>false</code> if no appropriate writer is found.
-     *
-     * @exception IllegalArgumentException if any parameter is <code>null</code>.
-     * @exception IOException if an error occurs during writing.
+     * @throws IllegalArgumentException if any parameter is <code>null</code>.
+     * @throws IOException              if an error occurs during writing.
      */
     public static boolean write(RenderedImage im,
-            String formatName,
-            OutputStream output) throws IOException {
+                                String formatName,
+                                OutputStream output) throws IOException {
         if (output == null) {
             throw new IllegalArgumentException("output == null!");
         }
@@ -1182,7 +1122,7 @@ public final class ImageIO {
      * if there is no appropriate writer.
      */
     private static ImageWriter getWriter(RenderedImage im,
-            String formatName) {
+                                         String formatName) {
         ImageTypeSpecifier type =
                 ImageTypeSpecifier.createFromRenderedImage(im);
         Iterator<ImageWriter> iter = getImageWriters(type, formatName);
@@ -1198,7 +1138,7 @@ public final class ImageIO {
      * Writes image to output stream using given image writer.
      */
     private static boolean doWrite(RenderedImage im, ImageWriter writer,
-            ImageOutputStream output) throws IOException {
+                                   ImageOutputStream output) throws IOException {
         if (writer == null) {
             return false;
         }
@@ -1347,7 +1287,7 @@ public final class ImageIO {
         String formatName;
 
         public CanEncodeImageAndFormatFilter(ImageTypeSpecifier type,
-                String formatName) {
+                                             String formatName) {
             this.type = type;
             this.formatName = formatName;
         }
@@ -1367,7 +1307,7 @@ public final class ImageIO {
 
         // method returns an array of Strings
         public ContainsFilter(Method method,
-                String name) {
+                              String name) {
             this.method = method;
             this.name = name;
         }
@@ -1441,7 +1381,7 @@ public final class ImageIO {
         String writerSpiName;
 
         public TranscoderFilter(ImageReaderSpi readerSpi,
-                ImageWriterSpi writerSpi) {
+                                ImageWriterSpi writerSpi) {
             this.readerSpiName = readerSpi.getClass().getName();
             this.writerSpiName = writerSpi.getClass().getName();
         }

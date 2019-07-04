@@ -1,17 +1,17 @@
 package org.gjgr.pig.chivalrous.db.ds.simple;
 
+import org.gjgr.pig.chivalrous.core.setting.Setting;
+import org.gjgr.pig.chivalrous.db.DbRuntimeException;
+import org.gjgr.pig.chivalrous.db.DbUtil;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.db.DbRuntimeException;
-import org.gjgr.pig.chivalrous.db.DbUtil;
-
 /***
  * 简易数据源，没有使用连接池，仅供测试或打开关闭连接非常少的场合使用！
- * 
+ *
  * @author loolly
  *
  */
@@ -51,7 +51,7 @@ public class SimpleDataSource extends AbstractDataSource {
      * 构造
      *
      * @param setting 数据库配置
-     * @param group 数据库配置文件中的分组
+     * @param group   数据库配置文件中的分组
      */
     public SimpleDataSource(Setting setting, String group) {
         if (null == setting) {
@@ -66,7 +66,7 @@ public class SimpleDataSource extends AbstractDataSource {
     /**
      * 构造
      *
-     * @param url jdbc url
+     * @param url  jdbc url
      * @param user 用户名
      * @param pass 密码
      */
@@ -94,7 +94,7 @@ public class SimpleDataSource extends AbstractDataSource {
     /**
      * 初始化
      *
-     * @param url jdbc url
+     * @param url  jdbc url
      * @param user 用户名
      * @param pass 密码
      */

@@ -1,7 +1,5 @@
 package org.gjgr.pig.chivalrous.crypto.test;
 
-import java.security.KeyPair;
-
 import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
 import org.gjgr.pig.chivalrous.core.crypto.asymmetric.KeyType;
 import org.gjgr.pig.chivalrous.core.crypto.asymmetric.RSA;
@@ -10,6 +8,8 @@ import org.gjgr.pig.chivalrous.core.math.HexCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.security.KeyPair;
 
 /**
  * RSA算法单元测试

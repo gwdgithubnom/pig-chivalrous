@@ -1,12 +1,11 @@
 package org.gjgr.pig.chivalrous.db;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import org.gjgr.pig.chivalrous.db.dialect.Dialect;
 import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * SQL执行类<br>
@@ -30,7 +29,7 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 构造
      *
-     * @param ds 数据源
+     * @param ds      数据源
      * @param dialect 方言
      */
     public SqlRunner(DataSource ds, Dialect dialect) {
@@ -41,7 +40,7 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 构造
      *
-     * @param ds 数据源
+     * @param ds              数据源
      * @param driverClassName 数据库连接驱动类名，用于识别方言
      */
     public SqlRunner(DataSource ds, String driverClassName) {
@@ -65,7 +64,7 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 创建SqlRunner
      *
-     * @param ds 数据源
+     * @param ds      数据源
      * @param dialect 方言
      * @return SqlRunner
      */
@@ -76,7 +75,7 @@ public class SqlRunner extends AbstractSqlRunner {
     /**
      * 创建SqlRunner
      *
-     * @param ds 数据源
+     * @param ds              数据源
      * @param driverClassName 数据库连接驱动类名
      * @return SqlRunner
      */

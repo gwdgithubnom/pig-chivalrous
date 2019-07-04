@@ -24,7 +24,7 @@ public interface Cache<K, V> {
     /**
      * 将对象加入到缓存，使用默认失效时长
      *
-     * @param key 键
+     * @param key    键
      * @param object 缓存的对象
      * @see Cache#put(Object, Object, long)
      */
@@ -34,8 +34,8 @@ public interface Cache<K, V> {
      * 将对象加入到缓存，使用指定失效时长<br>
      * 如果缓存空间满了，{@link #prune()} 将被调用以获得空间来存放新对象
      *
-     * @param key 键
-     * @param object 缓存的对象
+     * @param key     键
+     * @param object  缓存的对象
      * @param timeout 失效时长
      * @see Cache#put(Object, Object, long)
      */

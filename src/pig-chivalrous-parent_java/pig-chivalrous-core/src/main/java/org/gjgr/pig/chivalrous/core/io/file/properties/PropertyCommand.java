@@ -1,5 +1,13 @@
 package org.gjgr.pig.chivalrous.core.io.file.properties;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,14 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @Author gwd
  * @Time 10-29-2018 Monday
@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public class PropertyCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertyCommand.class);
 
-    public static Map<String, String> loadProperties(String...paths) {
+    public static Map<String, String> loadProperties(String... paths) {
         Map<String, String> propertiesHolder = new HashMap<>();
         for (Map.Entry<Object, Object> entry : readProperties(paths).entrySet()) {
             propertiesHolder.put((String) entry.getKey(), (String) entry.getValue());
@@ -38,7 +38,7 @@ public class PropertyCommand {
         return propertiesHolder;
     }
 
-    public static Properties readProperties(String...paths) {
+    public static Properties readProperties(String... paths) {
         Properties p = new Properties();
         for (String path : paths) {
             try {
@@ -53,9 +53,9 @@ public class PropertyCommand {
     /**
      * 比较两个properties文件是否不同
      *
-     * @param first 第一个properties文件
-     * @param firstName 第一个properties文件名
-     * @param second 第二个properties文件
+     * @param first      第一个properties文件
+     * @param firstName  第一个properties文件名
+     * @param second     第二个properties文件
      * @param secondName 第二个properties文件名
      * @return 不同返回true，相同返回false
      */
@@ -83,7 +83,7 @@ public class PropertyCommand {
     /**
      * Load Properties from resource specified by {@ pathInResource}, and put all of them to system properties.
      *
-     * @param clazz class to load resource.
+     * @param clazz          class to load resource.
      * @param pathInResource path of the property file in resource. see {@link Class#getResourceAsStream(String)}
      * @return true if load successfully. otherwise false.
      */
@@ -94,7 +94,7 @@ public class PropertyCommand {
     /**
      * Get Properties from resource specified by {@ pathInResource}.
      *
-     * @param clazz class to load resource.
+     * @param clazz          class to load resource.
      * @param pathInResource path of the property file in resource. see {@link Class#getResourceAsStream(String)}
      * @return the properties instance or null if load failed.
      */

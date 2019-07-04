@@ -16,6 +16,8 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,18 +34,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-
 /**
  * {@link Resource} implementation for {@code java.nio.file.Path} handles. Supports resolution as File, and also as URL.
  * Implements the extended {@link WritableResource} interface.
  *
  * @author Philippe Marschall
  * @author Juergen Hoeller
- * @since 4.0
  * @see FileSystemResource
  * @see Path
  * @see Files
+ * @since 4.0
  */
 public class PathResource extends AbstractResource implements WritableResource {
 
@@ -55,7 +55,7 @@ public class PathResource extends AbstractResource implements WritableResource {
      * Note: Unlike {@link FileSystemResource}, when building relative resources via {@link #createRelative}, the
      * relative path will be built <i>underneath</i> the given root: e.g. Paths.get("C:/dir1/"), relative path "dir2" ->
      * "C:/dir1/dir2"!
-     * 
+     *
      * @param path a Path handle
      */
     public PathResource(Path path) {
@@ -69,7 +69,7 @@ public class PathResource extends AbstractResource implements WritableResource {
      * Note: Unlike {@link FileSystemResource}, when building relative resources via {@link #createRelative}, the
      * relative path will be built <i>underneath</i> the given root: e.g. Paths.get("C:/dir1/"), relative path "dir2" ->
      * "C:/dir1/dir2"!
-     * 
+     *
      * @param path a path
      * @see Paths#get(String, String...)
      */
@@ -84,9 +84,9 @@ public class PathResource extends AbstractResource implements WritableResource {
      * Note: Unlike {@link FileSystemResource}, when building relative resources via {@link #createRelative}, the
      * relative path will be built <i>underneath</i> the given root: e.g. Paths.get("C:/dir1/"), relative path "dir2" ->
      * "C:/dir1/dir2"!
-     * 
-     * @see Paths#get(URI)
+     *
      * @param uri a path URI
+     * @see Paths#get(URI)
      */
     public PathResource(URI uri) {
         AssertCommand.notNull(uri, "URI must not be null");
@@ -102,7 +102,7 @@ public class PathResource extends AbstractResource implements WritableResource {
 
     /**
      * This implementation returns whether the underlying file exists.
-     * 
+     *
      * @sees org.springframework.core.io.PathResource#exists()
      */
     @Override
@@ -113,7 +113,7 @@ public class PathResource extends AbstractResource implements WritableResource {
     /**
      * This implementation checks whether the underlying file is marked as readable (and corresponds to an actual file
      * with content, not to a directory).
-     * 
+     *
      * @see Files#isReadable(Path)
      * @see Files#isDirectory(Path, java.nio.file.LinkOption...)
      */

@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.getter;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-import org.gjgr.pig.chivalrous.core.convert.Convert;
 
 /**
  * 基本类型的getter接口抽象实现，所有类型的值获取都是通过将String转换而来<br>

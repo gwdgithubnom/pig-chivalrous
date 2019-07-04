@@ -114,7 +114,7 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
     /**
      * This implementation returns a File reference for the underlying class path resource, provided that it refers to a
      * file in the file system.
-     * 
+     *
      * @sees org.springframework.util.ResourceUtils#getFile(URL, String)
      */
     @Override
@@ -130,8 +130,8 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
      * This implementation returns a FileChannel for the given URI-identified resource, provided that it refers to a
      * file in the file system.
      *
-     * @since 5.0
      * @see #getFile()
+     * @since 5.0
      */
     @Override
     public ReadableByteChannel readableChannel() throws IOException {
@@ -196,8 +196,8 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
      * This implementation returns a File reference for the given URI-identified resource, provided that it refers to a
      * file in the file system.
      *
-     * @since 5.0
      * @see #getFile(URI)
+     * @since 5.0
      */
     protected boolean isFile(URI uri) {
         try {
@@ -229,7 +229,7 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
      * <p>
      * Calls {@links ResourceUtils#useCachesIfNecessary(URLConnection)} and delegates to
      * {@link #customizeConnection(HttpURLConnection)} if possible. Can be overridden in subclasses.
-     * 
+     *
      * @param con the URLConnection to customize
      * @throws IOException if thrown from URLConnection methods
      */
@@ -245,7 +245,7 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
      * {@link #contentLength()} or {@link #lastModified()} call.
      * <p>
      * Sets request method "HEAD" by default. Can be overridden in subclasses.
-     * 
+     *
      * @param con the HttpURLConnection to customize
      * @throws IOException if thrown from HttpURLConnection methods
      */

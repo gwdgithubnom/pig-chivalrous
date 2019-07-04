@@ -18,7 +18,7 @@ public class HttpException extends RuntimeException {
         super(message);
     }
 
-    public HttpException(String messageTemplate, Object...params) {
+    public HttpException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -26,7 +26,7 @@ public class HttpException extends RuntimeException {
         super(message, throwable);
     }
 
-    public HttpException(Throwable throwable, String messageTemplate, Object...params) {
+    public HttpException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

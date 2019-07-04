@@ -20,7 +20,7 @@ public class StatefulException extends Exception {
         super(msg);
     }
 
-    public StatefulException(String messageTemplate, Object...params) {
+    public StatefulException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 

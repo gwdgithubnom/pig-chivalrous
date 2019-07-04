@@ -29,7 +29,7 @@ public class DbConfig {
     /**
      * 构造
      *
-     * @param url jdbc url
+     * @param url  jdbc url
      * @param user 用户名
      * @param pass 密码
      */
@@ -41,7 +41,7 @@ public class DbConfig {
     /**
      * 初始化
      *
-     * @param url jdbc url
+     * @param url  jdbc url
      * @param user 用户名
      * @param pass 密码
      */

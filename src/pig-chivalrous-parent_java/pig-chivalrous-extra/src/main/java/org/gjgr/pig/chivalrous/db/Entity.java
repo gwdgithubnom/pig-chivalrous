@@ -1,5 +1,13 @@
 package org.gjgr.pig.chivalrous.db;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.Dict;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.Clob;
@@ -11,14 +19,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.Dict;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 /**
  * 数据实体对象<br>
@@ -116,7 +116,7 @@ public class Entity extends Dict {
      * @param fieldNames 字段列表
      * @return 自身
      */
-    public Entity setFieldNames(String...fieldNames) {
+    public Entity setFieldNames(String... fieldNames) {
         if (ArrayCommand.isNotEmpty(fieldNames)) {
             this.fieldNames = CollectionCommand.newHashSet(fieldNames);
         }
@@ -142,7 +142,7 @@ public class Entity extends Dict {
      * @param fieldNames 字段列表
      * @return 自身
      */
-    public Entity addFieldNames(String...fieldNames) {
+    public Entity addFieldNames(String... fieldNames) {
         if (ArrayCommand.isNotEmpty(fieldNames)) {
             if (null == this.fieldNames) {
                 return setFieldNames(fieldNames);
@@ -264,7 +264,7 @@ public class Entity extends Dict {
     /**
      * PUT方法做了过滤限制，如果此实体限制了属性名，则忽略限制名列表外的字段名
      *
-     * @param key 名
+     * @param key   名
      * @param value 值
      */
     @Override

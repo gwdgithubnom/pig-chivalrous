@@ -1,15 +1,5 @@
 package org.gjgr.pig.chivalrous.core.setting;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.HashSet;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
@@ -19,6 +9,16 @@ import org.gjgr.pig.chivalrous.core.log.LogFactory;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.gjgr.pig.chivalrous.core.setting.dialect.BasicSetting;
 import org.gjgr.pig.chivalrous.core.util.RegexCommand;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Setting文件加载器
@@ -37,7 +37,7 @@ public class SettingLoader {
     /**
      * 分组行识别的环绕标记
      */
-    private static final char[] GROUP_SURROUND = { '[', ']' };
+    private static final char[] GROUP_SURROUND = {'[', ']'};
     private static Log log = LogFactory.get();
     /**
      * 变量名称的正则

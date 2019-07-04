@@ -1,13 +1,13 @@
 package org.gjgr.pig.chivalrous.core.system;
 
-import java.io.PrintWriter;
-import java.lang.management.ManagementFactory;
-import java.util.Properties;
-
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.gjgr.pig.chivalrous.core.lang.Singleton;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
+import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
+import java.util.Properties;
 
 /**
  * Java的System类封装工具类。
@@ -90,7 +90,7 @@ public final class JavaSystemCommand {
     /**
      * 取得系统属性，如果因为Java安全的限制而失败，则将错误打在Log中，然后返回 <code>null</code>。
      *
-     * @param name 属性名
+     * @param name         属性名
      * @param defaultValue 默认值
      * @return 属性值或<code>null</code>
      */
@@ -101,7 +101,7 @@ public final class JavaSystemCommand {
     /**
      * 取得系统属性，如果因为Java安全的限制而失败，则将错误打在Log中，然后返回 <code>null</code>。
      *
-     * @param name 属性名
+     * @param name  属性名
      * @param quiet 安静模式，不将出错信息打在<code>System.err</code>中
      * @return 属性值或<code>null</code>
      */
@@ -131,7 +131,7 @@ public final class JavaSystemCommand {
     /**
      * 获得boolean类型值
      *
-     * @param key 键
+     * @param key          键
      * @param defaultValue 默认值
      * @return 值
      */
@@ -160,7 +160,7 @@ public final class JavaSystemCommand {
     /**
      * 获得int类型值
      *
-     * @param key 键
+     * @param key          键
      * @param defaultValue 默认值
      * @return 值
      */
@@ -171,7 +171,7 @@ public final class JavaSystemCommand {
     /**
      * 获得long类型值
      *
-     * @param key 键
+     * @param key          键
      * @param defaultValue 默认值
      * @return 值
      */
@@ -319,7 +319,7 @@ public final class JavaSystemCommand {
      *
      * @param builder <code>StringBuilder</code>对象
      * @param caption 标题
-     * @param value 值
+     * @param value   值
      */
     protected static void append(StringBuilder builder, String caption, Object value) {
         builder.append(caption).append(StringCommand.nullToDefault(Convert.toStr(value), "[n/a]")).append("\n");

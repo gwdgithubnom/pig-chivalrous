@@ -1,12 +1,11 @@
 package org.gjgr.pig.chivalrous.db.ds;
 
-import java.io.Closeable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoClientOptions.Builder;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.gjgr.pig.chivalrous.core.exceptions.NotInitedException;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
@@ -18,12 +17,12 @@ import org.gjgr.pig.chivalrous.core.net.NetworkCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientOptions.Builder;
-import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import java.io.Closeable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MongoDB工具类
@@ -84,8 +83,8 @@ public class MongoDS implements Closeable {
      * 调用者必须持有MongoDS实例，否则会被垃圾回收导致写入失败！
      *
      * @param mongoSetting MongoDB的配置文件，如果是null则读取默认配置文件或者使用MongoDB默认客户端配置
-     * @param host 主机（域名或者IP）
-     * @param port 端口
+     * @param host         主机（域名或者IP）
+     * @param port         端口
      */
     public MongoDS(Setting mongoSetting, String host, int port) {
         this.setting = mongoSetting;
@@ -100,7 +99,7 @@ public class MongoDS implements Closeable {
      *
      * @param groups 分组列表，当为null或空时使用无分组配置，一个分组使用单一模式，否则使用副本集模式
      */
-    public MongoDS(String...groups) {
+    public MongoDS(String... groups) {
         this.groups = groups;
         init();
     }
@@ -112,9 +111,9 @@ public class MongoDS implements Closeable {
      * 官方文档： http://docs.mongodb.org/manual/administration/replica-sets/
      *
      * @param mongoSetting MongoDB的配置文件，必须有
-     * @param groups 分组列表，当为null或空时使用无分组配置，一个分组使用单一模式，否则使用副本集模式
+     * @param groups       分组列表，当为null或空时使用无分组配置，一个分组使用单一模式，否则使用副本集模式
      */
-    public MongoDS(Setting mongoSetting, String...groups) {
+    public MongoDS(Setting mongoSetting, String... groups) {
         if (mongoSetting == null) {
             throw new DbRuntimeException("Mongo setting is null!");
         }
@@ -149,7 +148,7 @@ public class MongoDS implements Closeable {
      * @param groups 分组列表
      * @return MongoDB连接
      */
-    public static MongoDS getDS(String...groups) {
+    public static MongoDS getDS(String... groups) {
         final String key = ArrayCommand.join(groups, GROUP_SEPRATER);
         MongoDS ds = dsMap.get(key);
         if (null == ds) {
@@ -177,10 +176,10 @@ public class MongoDS implements Closeable {
      * 获取MongoDB数据源<br>
      *
      * @param setting 设定文件
-     * @param groups 分组列表
+     * @param groups  分组列表
      * @return MongoDB连接
      */
-    public static MongoDS getDS(Setting setting, String...groups) {
+    public static MongoDS getDS(Setting setting, String... groups) {
         final String key = setting.getSettingPath() + GROUP_SEPRATER + ArrayCommand.join(groups, GROUP_SEPRATER);
         MongoDS ds = dsMap.get(key);
         if (null == ds) {
@@ -315,7 +314,7 @@ public class MongoDS implements Closeable {
     /**
      * 获得MongoDB中指定集合对象
      *
-     * @param dbName 库名
+     * @param dbName         库名
      * @param collectionName 集合名
      * @return DBCollection
      */

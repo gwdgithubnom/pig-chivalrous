@@ -1,7 +1,5 @@
 package org.gjgr.pig.chivalrous.core.script;
 
-import java.io.Reader;
-
 import javax.script.Bindings;
 import javax.script.Compilable;
 import javax.script.CompiledScript;
@@ -11,6 +9,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.Reader;
 
 /**
  * Javascript引擎类
@@ -36,12 +35,12 @@ public class JavaScriptEngine extends FullSupportScriptEngine {
 
     // ----------------------------------------------------------------------------------------------- Invocable
     @Override
-    public Object invokeMethod(Object thiz, String name, Object...args) throws ScriptException, NoSuchMethodException {
+    public Object invokeMethod(Object thiz, String name, Object... args) throws ScriptException, NoSuchMethodException {
         return ((Invocable) engine).invokeMethod(thiz, name, args);
     }
 
     @Override
-    public Object invokeFunction(String name, Object...args) throws ScriptException, NoSuchMethodException {
+    public Object invokeFunction(String name, Object... args) throws ScriptException, NoSuchMethodException {
         return ((Invocable) engine).invokeFunction(name, args);
     }
 

@@ -61,7 +61,7 @@ public class StrKit {
         return str == null || "".equals(str.trim()) ? false : true;
     }
 
-    public static boolean notBlank(String...strings) {
+    public static boolean notBlank(String... strings) {
         if (strings == null) {
             return false;
         }
@@ -73,7 +73,7 @@ public class StrKit {
         return true;
     }
 
-    public static boolean notNull(Object...paras) {
+    public static boolean notNull(Object... paras) {
         if (paras == null) {
             return false;
         }

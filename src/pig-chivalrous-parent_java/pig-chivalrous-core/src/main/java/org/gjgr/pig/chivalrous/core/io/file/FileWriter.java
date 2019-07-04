@@ -1,5 +1,10 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,11 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-
 /**
  * 文件写入器
  *
@@ -27,7 +27,7 @@ public class FileWriter extends FileWrapper {
     /**
      * 构造
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 编码，使用 {@link CharsetCommand}
      */
     public FileWriter(File file, Charset charset) {
@@ -38,7 +38,7 @@ public class FileWriter extends FileWrapper {
     /**
      * 构造
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileWriter(File file, String charset) {
@@ -51,7 +51,7 @@ public class FileWriter extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetCommand}
+     * @param charset  编码，使用 {@link CharsetCommand}
      */
     public FileWriter(String filePath, Charset charset) {
         this(FileCommand.file(filePath), charset);
@@ -61,7 +61,7 @@ public class FileWriter extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetCommand#charset(String)}
+     * @param charset  编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileWriter(String filePath, String charset) {
         this(FileCommand.file(filePath), CharsetCommand.charset(charset));
@@ -90,7 +90,7 @@ public class FileWriter extends FileWrapper {
     /**
      * 创建 FileWriter
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 编码，使用 {@link CharsetCommand}
      * @return {@link FileWriter}
      */
@@ -112,7 +112,7 @@ public class FileWriter extends FileWrapper {
     /**
      * 将String写入文件
      *
-     * @param content 写入的内容
+     * @param content  写入的内容
      * @param isAppend 是否追加
      * @throws IORuntimeException
      */
@@ -189,7 +189,7 @@ public class FileWriter extends FileWrapper {
     /**
      * 将列表写入文件
      *
-     * @param list 列表
+     * @param list     列表
      * @param isAppend 是否追加
      * @return File
      * @throws IORuntimeException
@@ -216,8 +216,8 @@ public class FileWriter extends FileWrapper {
      * 写入数据到文件
      *
      * @param data 数据
-     * @param off 数据开始位置
-     * @param len 数据长度
+     * @param off  数据开始位置
+     * @param len  数据长度
      * @return File
      * @throws IORuntimeException
      */
@@ -229,8 +229,8 @@ public class FileWriter extends FileWrapper {
      * 追加数据到文件
      *
      * @param data 数据
-     * @param off 数据开始位置
-     * @param len 数据长度
+     * @param off  数据开始位置
+     * @param len  数据长度
      * @return File
      * @throws IORuntimeException
      */
@@ -241,9 +241,9 @@ public class FileWriter extends FileWrapper {
     /**
      * 写入数据到文件
      *
-     * @param data 数据
-     * @param off 数据开始位置
-     * @param len 数据长度
+     * @param data     数据
+     * @param off      数据开始位置
+     * @param len      数据长度
      * @param isAppend 是否追加模式
      * @return File
      * @throws IORuntimeException

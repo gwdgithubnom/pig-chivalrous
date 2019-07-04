@@ -27,7 +27,7 @@ public class CookiePool {
     /**
      * 将某个网站的Cookie放入Cookie池
      *
-     * @param host 网站Host
+     * @param host   网站Host
      * @param cookie Cookie字符串
      */
     public static void put(String host, String cookie) {

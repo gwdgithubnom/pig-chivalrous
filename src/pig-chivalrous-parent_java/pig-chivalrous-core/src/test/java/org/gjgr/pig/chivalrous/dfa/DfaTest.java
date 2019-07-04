@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.dfa;
 
-import java.util.List;
-
 import org.gjgr.pig.chivalrous.core.dfa.WordTree;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * DFA单元测试

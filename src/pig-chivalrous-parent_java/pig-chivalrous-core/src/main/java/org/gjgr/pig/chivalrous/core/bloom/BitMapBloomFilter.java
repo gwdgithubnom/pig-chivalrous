@@ -40,10 +40,10 @@ public class BitMapBloomFilter implements BloomFilter {
     /**
      * 使用自定的多个过滤器建立BloomFilter
      *
-     * @param m M值决定BitMap的大小
+     * @param m       M值决定BitMap的大小
      * @param filters Bloom过滤器列表
      */
-    public BitMapBloomFilter(int m, BloomFilter...filters) {
+    public BitMapBloomFilter(int m, BloomFilter... filters) {
         this.filters = filters;
     }
 

@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.log;
 
-import java.util.HashMap;
-
 import org.gjgr.pig.chivalrous.log.appender.MessageLogAppender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
 
 /**
  * @Author gwd

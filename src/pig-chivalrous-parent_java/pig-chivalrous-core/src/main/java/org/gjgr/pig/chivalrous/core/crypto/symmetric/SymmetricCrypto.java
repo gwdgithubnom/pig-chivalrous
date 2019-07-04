@@ -1,16 +1,5 @@
 package org.gjgr.pig.chivalrous.core.crypto.symmetric;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.security.spec.AlgorithmParameterSpec;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.PBEParameterSpec;
-
 import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
 import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
@@ -18,6 +7,16 @@ import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.math.HexCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.gjgr.pig.chivalrous.core.util.RandomCommand;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.PBEParameterSpec;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.security.spec.AlgorithmParameterSpec;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 对称加密算法<br>
@@ -64,7 +63,7 @@ public class SymmetricCrypto {
      * 构造
      *
      * @param algorithm 算法 {@link SymmetricAlgorithm}
-     * @param key 自定义KEY
+     * @param key       自定义KEY
      */
     public SymmetricCrypto(SymmetricAlgorithm algorithm, byte[] key) {
         this(algorithm.getValue(), key);
@@ -74,7 +73,7 @@ public class SymmetricCrypto {
      * 构造
      *
      * @param algorithm 算法
-     * @param key 密钥
+     * @param key       密钥
      */
     public SymmetricCrypto(String algorithm, byte[] key) {
         init(algorithm, key);
@@ -85,7 +84,7 @@ public class SymmetricCrypto {
      * 初始化
      *
      * @param algorithm 算法
-     * @param key 密钥，如果为<code>null</code>自动生成一个key
+     * @param key       密钥，如果为<code>null</code>自动生成一个key
      * @return {@link SymmetricCrypto}
      */
     public SymmetricCrypto init(String algorithm, byte[] key) {
@@ -96,7 +95,7 @@ public class SymmetricCrypto {
      * 初始化
      *
      * @param algorithm 算法
-     * @param key 密钥，如果为<code>null</code>自动生成一个key
+     * @param key       密钥，如果为<code>null</code>自动生成一个key
      * @return {@link SymmetricCrypto}
      */
     public SymmetricCrypto init(String algorithm, SecretKey key) {
@@ -150,7 +149,7 @@ public class SymmetricCrypto {
     /**
      * 加密
      *
-     * @param data 被加密的字符串
+     * @param data    被加密的字符串
      * @param charset 编码
      * @return 加密后的bytes
      */
@@ -161,7 +160,7 @@ public class SymmetricCrypto {
     /**
      * 加密
      *
-     * @param data 被加密的字符串
+     * @param data    被加密的字符串
      * @param charset 编码
      * @return 加密后的Hex
      */
@@ -239,7 +238,7 @@ public class SymmetricCrypto {
     /**
      * 解密
      *
-     * @param bytes 被解密的bytes
+     * @param bytes   被解密的bytes
      * @param charset 解密后的charset
      * @return 解密后的String
      */
@@ -270,7 +269,7 @@ public class SymmetricCrypto {
     /**
      * 解密
      *
-     * @param data 被解密的String
+     * @param data    被解密的String
      * @param charset 解密后的charset
      * @return 解密后的String
      */
@@ -305,7 +304,7 @@ public class SymmetricCrypto {
     /**
      * 解密
      *
-     * @param data 被解密的InputStream
+     * @param data    被解密的InputStream
      * @param charset 解密后的charset
      * @return 解密后的String
      */

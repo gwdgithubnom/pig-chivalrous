@@ -14,7 +14,7 @@ public final class HashCommand {
     /**
      * 加法hash
      *
-     * @param key 字符串
+     * @param key   字符串
      * @param prime 一个质数
      * @return hash结果
      */
@@ -30,7 +30,7 @@ public final class HashCommand {
     /**
      * 旋转hash
      *
-     * @param key 输入字符串
+     * @param key   输入字符串
      * @param prime 质数
      * @return hash值
      */
@@ -86,9 +86,9 @@ public final class HashCommand {
     /**
      * Universal Hashing
      *
-     * @param key 字节数组
+     * @param key  字节数组
      * @param mask 掩码
-     * @param tab tab
+     * @param tab  tab
      * @return hash值
      */
     public static int universal(char[] key, int mask, int[] tab) {
@@ -128,9 +128,9 @@ public final class HashCommand {
     /**
      * Zobrist Hashing
      *
-     * @param key 字节数组
+     * @param key  字节数组
      * @param mask 掩码
-     * @param tab tab
+     * @param tab  tab
      * @return hash值
      */
     public static int zobrist(char[] key, int mask, int[][] tab) {

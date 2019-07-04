@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.apache.commons.lang3.Validate;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-
-import org.apache.commons.lang3.Validate;
 
 /**
  * @Author gwd
@@ -139,6 +139,9 @@ public class EnumCommand {
     }
 
     /**
+     * About Above Across After Against Along Amidst Among Around As At Before Behind Below Beneath Beside Besides
+     * Between Beyond But By Concerning Despite Down During Except Excepting For From In Inside Into Like Near Of Off On
+     * Onto Out of Outside Over Past Round Since Than Through Till To Toward Under Until Up Upon With Within Without
      * Command used enum about String value
      */
     public enum StringEnum {

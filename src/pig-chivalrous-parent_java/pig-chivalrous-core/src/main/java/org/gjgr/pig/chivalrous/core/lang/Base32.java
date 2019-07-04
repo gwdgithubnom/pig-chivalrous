@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import java.nio.charset.Charset;
-
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
+import java.nio.charset.Charset;
 
 /**
  * Base32 - encodes and decodes RFC3548 Base32 (see http://www.faqs.org/rfcs/rfc3548.html )<br>
@@ -88,7 +88,7 @@ public final class Base32 {
     /**
      * base32编码
      *
-     * @param source 被编码的base32字符串
+     * @param source  被编码的base32字符串
      * @param charset 字符集
      * @return 被加密后的字符串
      */
@@ -99,7 +99,7 @@ public final class Base32 {
     /**
      * base32编码
      *
-     * @param source 被编码的base32字符串
+     * @param source  被编码的base32字符串
      * @param charset 字符集
      * @return 被加密后的字符串
      */
@@ -176,7 +176,7 @@ public final class Base32 {
     /**
      * base32解码
      *
-     * @param source 被解码的base32字符串
+     * @param source  被解码的base32字符串
      * @param charset 字符集
      * @return 被加密后的字符串
      */
@@ -187,7 +187,7 @@ public final class Base32 {
     /**
      * base32解码
      *
-     * @param source 被解码的base32字符串
+     * @param source  被解码的base32字符串
      * @param charset 字符集
      * @return 被加密后的字符串
      */

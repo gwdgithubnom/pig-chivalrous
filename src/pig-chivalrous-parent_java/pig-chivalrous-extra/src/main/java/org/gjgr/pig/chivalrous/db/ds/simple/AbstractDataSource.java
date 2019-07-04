@@ -1,13 +1,12 @@
 package org.gjgr.pig.chivalrous.db.ds.simple;
 
+import javax.sql.DataSource;
 import java.io.Closeable;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
-
-import javax.sql.DataSource;
 
 /**
  * 数据源抽象实现

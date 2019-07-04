@@ -1,14 +1,14 @@
 package org.gjgr.pig.chivalrous.core.exceptions;
 
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 异常工具类
@@ -88,7 +88,7 @@ public final class ExceptionUtil {
      * 堆栈转为单行完整字符串
      *
      * @param throwable 异常对象
-     * @param limit 限制最大长度
+     * @param limit     限制最大长度
      * @return 堆栈转为的字符串
      */
     public static String stacktraceToOneLineString(Throwable throwable, int limit) {
@@ -114,7 +114,7 @@ public final class ExceptionUtil {
      * 堆栈转为完整字符串
      *
      * @param throwable 异常对象
-     * @param limit 限制最大长度
+     * @param limit     限制最大长度
      * @return 堆栈转为的字符串
      */
     public static String stacktraceToString(Throwable throwable, int limit) {
@@ -124,13 +124,13 @@ public final class ExceptionUtil {
     /**
      * 堆栈转为完整字符串
      *
-     * @param throwable 异常对象
-     * @param limit 限制最大长度
+     * @param throwable           异常对象
+     * @param limit               限制最大长度
      * @param replaceCharToStrMap 替换字符为指定字符串
      * @return 堆栈转为的字符串
      */
     public static String stacktraceToString(Throwable throwable, int limit,
-            Map<Character, String> replaceCharToStrMap) {
+                                            Map<Character, String> replaceCharToStrMap) {
         final FastByteArrayOutputStream baos = new FastByteArrayOutputStream();
         throwable.printStackTrace(new PrintStream(baos));
         String exceptionStr = baos.toString();

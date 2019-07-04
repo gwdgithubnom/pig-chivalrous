@@ -18,7 +18,7 @@ public final class PageUtil {
      * 页码：2，每页10 -> [10, 20]<br>
      * 。。。<br>
      *
-     * @param pageNo 页码（从1计数）
+     * @param pageNo       页码（从1计数）
      * @param countPerPage 每页条目数
      * @return 第一个数为开始位置，第二个数为结束位置
      */
@@ -34,7 +34,7 @@ public final class PageUtil {
         int start = (pageNo - 1) * countPerPage;
         int end = start + countPerPage;
 
-        return new int[] { start, end };
+        return new int[] {start, end};
     }
 
     /**

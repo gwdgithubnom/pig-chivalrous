@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.setting;
 
+import org.gjgr.pig.chivalrous.core.setting.dialect.BasicSetting;
+
 import java.io.File;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import org.gjgr.pig.chivalrous.core.setting.dialect.BasicSetting;
 
 /**
  * 设置工具类。 用于支持设置文件<br>
@@ -27,8 +27,8 @@ public class Setting extends BasicSetting {
      * 构造，使用相对于Class文件根目录的相对路径
      *
      * @param pathBaseClassLoader 相对路径（相对于当前项目的classes路径）
-     * @param charset 字符集
-     * @param isUseVariable 是否使用变量
+     * @param charset             字符集
+     * @param isUseVariable       是否使用变量
      */
     public Setting(String pathBaseClassLoader, Charset charset, boolean isUseVariable) {
         super(pathBaseClassLoader, charset, isUseVariable);
@@ -38,7 +38,7 @@ public class Setting extends BasicSetting {
      * 构造，使用相对于Class文件根目录的相对路径
      *
      * @param pathBaseClassLoader 相对路径（相对于当前项目的classes路径）
-     * @param isUseVariable 是否使用变量
+     * @param isUseVariable       是否使用变量
      */
     public Setting(String pathBaseClassLoader, boolean isUseVariable) {
         super(pathBaseClassLoader, DEFAULT_CHARSET, isUseVariable);
@@ -47,8 +47,8 @@ public class Setting extends BasicSetting {
     /**
      * 构造
      *
-     * @param configFile 配置文件对象
-     * @param charset 字符集
+     * @param configFile    配置文件对象
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public Setting(File configFile, Charset charset, boolean isUseVariable) {
@@ -58,9 +58,9 @@ public class Setting extends BasicSetting {
     /**
      * 构造，相对于classes读取文件
      *
-     * @param path 相对路径
-     * @param clazz 基准类
-     * @param charset 字符集
+     * @param path          相对路径
+     * @param clazz         基准类
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public Setting(String path, Class<?> clazz, Charset charset, boolean isUseVariable) {
@@ -70,8 +70,8 @@ public class Setting extends BasicSetting {
     /**
      * 构造
      *
-     * @param url 设定文件的URL
-     * @param charset 字符集
+     * @param url           设定文件的URL
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public Setting(URL url, Charset charset, boolean isUseVariable) {

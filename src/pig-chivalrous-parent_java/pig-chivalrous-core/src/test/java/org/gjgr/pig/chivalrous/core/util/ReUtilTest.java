@@ -1,12 +1,12 @@
 package org.gjgr.pig.chivalrous.core.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.regex.ReUtil;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReUtilTest {
     final String content = "ZZZaaabbbccc中文1234";

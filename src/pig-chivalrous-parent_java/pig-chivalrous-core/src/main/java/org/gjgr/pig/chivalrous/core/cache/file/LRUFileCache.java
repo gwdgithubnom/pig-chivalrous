@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.core.cache.file;
 
-import java.io.File;
-
 import org.gjgr.pig.chivalrous.core.cache.Cache;
 import org.gjgr.pig.chivalrous.core.cache.impl.LRUCache;
+
+import java.io.File;
 
 /**
  * 使用LRU缓存文件，以解决频繁读取文件引起的性能问题
@@ -27,7 +27,7 @@ public class LRUFileCache extends FileCache {
      * 构造<br>
      * 默认无超时
      *
-     * @param capacity 缓存容量
+     * @param capacity    缓存容量
      * @param maxFileSize 最大文件大小
      */
     public LRUFileCache(int capacity, int maxFileSize) {
@@ -37,9 +37,9 @@ public class LRUFileCache extends FileCache {
     /**
      * 构造
      *
-     * @param capacity 缓存容量
+     * @param capacity    缓存容量
      * @param maxFileSize 文件最大大小
-     * @param timeout 默认超时时间，0表示无默认超时
+     * @param timeout     默认超时时间，0表示无默认超时
      */
     public LRUFileCache(int capacity, int maxFileSize, long timeout) {
         super(capacity, maxFileSize, timeout);

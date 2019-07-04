@@ -18,7 +18,7 @@ public class SettingException extends Exception {
         super(message);
     }
 
-    public SettingException(String messageTemplate, Object...params) {
+    public SettingException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -26,7 +26,7 @@ public class SettingException extends Exception {
         super(message, throwable);
     }
 
-    public SettingException(Throwable throwable, String messageTemplate, Object...params) {
+    public SettingException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

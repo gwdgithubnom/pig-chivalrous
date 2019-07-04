@@ -21,17 +21,17 @@ public interface ErrorLog {
     /**
      * 打印 ERROR 等级的日志
      *
-     * @param format 消息模板
+     * @param format    消息模板
      * @param arguments 参数
      */
-    void error(String format, Object...arguments);
+    void error(String format, Object... arguments);
 
     /**
      * 打印 ERROR 等级的日志
      *
-     * @param t 错误对象
-     * @param format 消息模板
+     * @param t         错误对象
+     * @param format    消息模板
      * @param arguments 参数
      */
-    void error(Throwable t, String format, Object...arguments);
+    void error(Throwable t, String format, Object... arguments);
 }

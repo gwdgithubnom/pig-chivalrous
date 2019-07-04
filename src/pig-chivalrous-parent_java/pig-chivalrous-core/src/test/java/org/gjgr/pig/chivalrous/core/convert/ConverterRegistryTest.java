@@ -13,10 +13,10 @@ public class ConverterRegistryTest {
 
     @Test
     public void convertTest() {
-        int[] a = new int[] { 1, 2, 3, 4 };
+        int[] a = new int[] {1, 2, 3, 4};
         ConverterRegistry converterRegistry = ConverterRegistry.getInstance();
         long[] result = converterRegistry.convert(long[].class, a);
-        Assert.assertArrayEquals(new long[] { 1L, 2L, 3L, 4L }, result);
+        Assert.assertArrayEquals(new long[] {1L, 2L, 3L, 4L}, result);
     }
 
     @Test
@@ -26,12 +26,12 @@ public class ConverterRegistryTest {
         // 获取Converter类的方法1，从ConverterRegistry单例对象中查找
         Converter<Integer[]> c = ConverterRegistry.getInstance().getDefaultConverter(Integer[].class);
         Integer[] result = c.convert(arrayStr, null);
-        Assert.assertArrayEquals(new Integer[] { 1, 2, 3, 4, 5 }, result);
+        Assert.assertArrayEquals(new Integer[] {1, 2, 3, 4, 5}, result);
 
         // 获取Converter类的方法2，自己实例化相应Converter对象
         ArrayConverter<Integer> c2 = new ArrayConverter<>(Integer.class);
         Integer[] result2 = c2.convert(arrayStr, null);
-        Assert.assertArrayEquals(new Integer[] { 1, 2, 3, 4, 5 }, result2);
+        Assert.assertArrayEquals(new Integer[] {1, 2, 3, 4, 5}, result2);
     }
 
     @Test

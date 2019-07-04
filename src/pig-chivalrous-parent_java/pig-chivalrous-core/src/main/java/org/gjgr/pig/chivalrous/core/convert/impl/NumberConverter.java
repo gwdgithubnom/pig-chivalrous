@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
+import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
-
-import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 数字转换器<br>

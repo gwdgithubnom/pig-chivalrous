@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,10 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-
 /**
  * 文件读取器
  *
@@ -25,7 +25,7 @@ public class FileReader extends FileWrapper {
     /**
      * 构造
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 编码，使用 {@link CharsetCommand}
      */
     public FileReader(File file, Charset charset) {
@@ -36,7 +36,7 @@ public class FileReader extends FileWrapper {
     /**
      * 构造
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileReader(File file, String charset) {
@@ -49,7 +49,7 @@ public class FileReader extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetCommand}
+     * @param charset  编码，使用 {@link CharsetCommand}
      */
     public FileReader(String filePath, Charset charset) {
         this(FileCommand.file(filePath), charset);
@@ -59,7 +59,7 @@ public class FileReader extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetCommand#charset(String)}
+     * @param charset  编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileReader(String filePath, String charset) {
         this(FileCommand.file(filePath), CharsetCommand.charset(charset));
@@ -88,7 +88,7 @@ public class FileReader extends FileWrapper {
     /**
      * 创建 FileReader
      *
-     * @param file 文件
+     * @param file    文件
      * @param charset 编码，使用 {@link CharsetCommand}
      * @return {@link FileReader}
      */

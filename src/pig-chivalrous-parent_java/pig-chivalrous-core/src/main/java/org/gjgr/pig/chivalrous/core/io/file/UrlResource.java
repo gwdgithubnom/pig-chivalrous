@@ -16,6 +16,10 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,17 +30,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
-
 /**
  * {@link Resource} implementation for {@code java.net.URL} locators. Supports resolution as a {@code URL} and also as a
  * {@code File} in case of the {@code "file:"} protocol.
  *
  * @author Juergen Hoeller
- * @since 28.12.2003
  * @see URL
+ * @since 28.12.2003
  */
 public class UrlResource extends AbstractFileResolvingResource {
 
@@ -58,7 +58,7 @@ public class UrlResource extends AbstractFileResolvingResource {
 
     /**
      * Create a new {@code UrlResource} based on the given URI object.
-     * 
+     *
      * @param uri a URI
      * @throws MalformedURLException if the given URL path is not valid
      * @since 2.5
@@ -72,7 +72,7 @@ public class UrlResource extends AbstractFileResolvingResource {
 
     /**
      * Create a new {@code UrlResource} based on the given URL object.
-     * 
+     *
      * @param url a URL
      */
     public UrlResource(URL url) {
@@ -86,7 +86,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * Create a new {@code UrlResource} based on a URL path.
      * <p>
      * Note: The given path needs to be pre-encoded if necessary.
-     * 
+     *
      * @param path a URL path
      * @throws MalformedURLException if the given URL path is not valid
      * @see URL#URL(String)
@@ -102,7 +102,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * Create a new {@code UrlResource} based on a URI specification.
      * <p>
      * The given parts will automatically get encoded if necessary.
-     * 
+     *
      * @param protocol the URL protocol to use (e.g. "jar" or "file" - without colon); also known as "scheme"
      * @param location the location (e.g. the file path within that protocol); also known as "scheme-specific part"
      * @throws MalformedURLException if the given URL specification is not valid
@@ -116,11 +116,11 @@ public class UrlResource extends AbstractFileResolvingResource {
      * Create a new {@code UrlResource} based on a URI specification.
      * <p>
      * The given parts will automatically get encoded if necessary.
-     * 
+     *
      * @param protocol the URL protocol to use (e.g. "jar" or "file" - without colon); also known as "scheme"
      * @param location the location (e.g. the file path within that protocol); also known as "scheme-specific part"
      * @param fragment the fragment within that location (e.g. anchor on an HTML page, as following after a "#"
-     *            separator)
+     *                 separator)
      * @throws MalformedURLException if the given URL specification is not valid
      * @see URI#URI(String, String, String)
      */
@@ -138,8 +138,8 @@ public class UrlResource extends AbstractFileResolvingResource {
 
     /**
      * Determine a cleaned URL for the given original URL.
-     * 
-     * @param originalUrl the original URL
+     *
+     * @param originalUrl  the original URL
      * @param originalPath the original URL path
      * @return the cleaned URL
      * @sees org.springframework.util.StringUtils#cleanPath
@@ -158,7 +158,7 @@ public class UrlResource extends AbstractFileResolvingResource {
      * This implementation opens an InputStream for the given URL.
      * <p>
      * It sets the {@code useCaches} flag to {@code false}, mainly to avoid jar file locking on Windows.
-     * 
+     *
      * @see URL#openConnection()
      * @see URLConnection#setUseCaches(boolean)
      * @see URLConnection#getInputStream()

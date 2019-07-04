@@ -1,5 +1,17 @@
 package org.gjgr.pig.chivalrous.web.http;
 
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
+import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
+import org.gjgr.pig.chivalrous.core.io.stream.StreamProgress;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.StaticLog;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.gjgr.pig.chivalrous.core.regex.ReUtil;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -19,18 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
-
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
-import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
-import org.gjgr.pig.chivalrous.core.io.stream.StreamProgress;
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-import org.gjgr.pig.chivalrous.core.regex.ReUtil;
 
 /**
  * Http请求工具类
@@ -58,7 +58,7 @@ public final class HttpUtil {
     /**
      * 编码字符为 application/x-www-form-urlencoded
      *
-     * @param content 被编码内容
+     * @param content    被编码内容
      * @param charsetStr 编码
      * @return 编码后的字符
      */
@@ -90,7 +90,7 @@ public final class HttpUtil {
     /**
      * 解码application/x-www-form-urlencoded字符
      *
-     * @param content 被解码内容
+     * @param content    被解码内容
      * @param charsetStr 编码
      * @return 编码后的字符
      */
@@ -116,13 +116,13 @@ public final class HttpUtil {
      * 4、WL-Proxy-Client-IP<br>
      * otherHeaderNames参数用于自定义检测的Header
      *
-     * @param request 请求对象
+     * @param request          请求对象
      * @param otherHeaderNames 其他自定义头文件
      * @return IP地址
      */
-    public static String getClientIP(javax.servlet.http.HttpServletRequest request, String...otherHeaderNames) {
-        String[] headers = { "X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP",
-                "HTTP_X_FORWARDED_FOR" };
+    public static String getClientIP(javax.servlet.http.HttpServletRequest request, String... otherHeaderNames) {
+        String[] headers = {"X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP",
+                "HTTP_X_FORWARDED_FOR"};
         if (ArrayCommand.isNotEmpty(otherHeaderNames)) {
             headers = ArrayCommand.addAll(headers, otherHeaderNames);
         }
@@ -152,7 +152,7 @@ public final class HttpUtil {
     /**
      * 发送get请求
      *
-     * @param urlString 网址
+     * @param urlString     网址
      * @param customCharset 自定义请求字符集，如果字符集获取不到，使用此字符集
      * @return 返回内容，如果只检查状态码，正常只返回 ""，不正常返回 null
      * @throws IOException
@@ -176,7 +176,7 @@ public final class HttpUtil {
      * 发送get请求
      *
      * @param urlString 网址
-     * @param paramMap post表单数据
+     * @param paramMap  post表单数据
      * @return 返回数据
      * @throws IOException
      */
@@ -188,7 +188,7 @@ public final class HttpUtil {
      * 发送post请求
      *
      * @param urlString 网址
-     * @param paramMap post表单数据
+     * @param paramMap  post表单数据
      * @return 返回数据
      * @throws IOException
      */
@@ -200,7 +200,7 @@ public final class HttpUtil {
      * 发送post请求
      *
      * @param urlString 网址
-     * @param params post表单数据
+     * @param params    post表单数据
      * @return 返回数据
      * @throws IOException
      */
@@ -213,7 +213,7 @@ public final class HttpUtil {
     /**
      * 下载远程文本
      *
-     * @param url 请求的url
+     * @param url               请求的url
      * @param customCharsetName 自定义的字符集
      * @return 文本
      * @throws IOException
@@ -225,7 +225,7 @@ public final class HttpUtil {
     /**
      * 下载远程文本
      *
-     * @param url 请求的url
+     * @param url           请求的url
      * @param customCharset 自定义的字符集，可以使用{@link CharsetCommand#charset} 方法转换
      * @return 文本
      * @throws IOException
@@ -237,9 +237,9 @@ public final class HttpUtil {
     /**
      * 下载远程文本
      *
-     * @param url 请求的url
+     * @param url           请求的url
      * @param customCharset 自定义的字符集，可以使用{@link CharsetCommand#charset} 方法转换
-     * @param streamPress 进度条 {@link StreamProgress}
+     * @param streamPress   进度条 {@link StreamProgress}
      * @return 文本
      * @throws IOException
      */
@@ -256,7 +256,7 @@ public final class HttpUtil {
     /**
      * 下载远程文件
      *
-     * @param url 请求的url
+     * @param url  请求的url
      * @param dest 目标文件或目录，当为目录时，取URL中的文件名，取不到使用编码后的URL做为文件名
      * @return 文件大小
      * @throws IOException
@@ -268,7 +268,7 @@ public final class HttpUtil {
     /**
      * 下载远程文件
      *
-     * @param url 请求的url
+     * @param url      请求的url
      * @param destFile 目标文件或目录，当为目录时，取URL中的文件名，取不到使用编码后的URL做为文件名
      * @return 文件大小
      * @throws IOException
@@ -280,8 +280,8 @@ public final class HttpUtil {
     /**
      * 下载远程文件
      *
-     * @param url 请求的url
-     * @param destFile 目标文件或目录，当为目录时，取URL中的文件名，取不到使用编码后的URL做为文件名
+     * @param url            请求的url
+     * @param destFile       目标文件或目录，当为目录时，取URL中的文件名，取不到使用编码后的URL做为文件名
      * @param streamProgress 进度条
      * @return 文件大小
      * @throws IOException
@@ -314,8 +314,8 @@ public final class HttpUtil {
     /**
      * 下载远程文件
      *
-     * @param url 请求的url
-     * @param out 将下载内容写到输出流中 {@link OutputStream}
+     * @param url        请求的url
+     * @param out        将下载内容写到输出流中 {@link OutputStream}
      * @param isCloseOut 是否关闭输出流
      * @return 文件大小
      * @throws IOException
@@ -327,9 +327,9 @@ public final class HttpUtil {
     /**
      * 下载远程文件
      *
-     * @param url 请求的url
-     * @param out 将下载内容写到输出流中 {@link OutputStream}
-     * @param isCloseOut 是否关闭输出流
+     * @param url            请求的url
+     * @param out            将下载内容写到输出流中 {@link OutputStream}
+     * @param isCloseOut     是否关闭输出流
      * @param streamProgress 进度条
      * @return 文件大小
      * @throws IOException
@@ -370,7 +370,7 @@ public final class HttpUtil {
      * 将Map形式的Form表单数据转换为Url参数形式<br>
      * 编码键和值对
      *
-     * @param paramMap 表单数据
+     * @param paramMap    表单数据
      * @param charsetName 编码
      * @return url参数
      */
@@ -383,7 +383,7 @@ public final class HttpUtil {
      * 编码键和值对
      *
      * @param paramMap 表单数据
-     * @param charset 编码
+     * @param charset  编码
      * @return url参数
      */
     public static String toParams(Map<String, Object> paramMap, Charset charset) {
@@ -413,7 +413,7 @@ public final class HttpUtil {
      * 将URL参数解析为Map（也可以解析Post中的键值对参数）
      *
      * @param paramsStr 参数字符串（或者带参数的Path）
-     * @param charset 字符集
+     * @param charset   字符集
      * @return 参数Map
      */
     public static Map<String, List<String>> decodeParams(String paramsStr, String charset) {
@@ -468,7 +468,7 @@ public final class HttpUtil {
     /**
      * 将表单数据加到URL中（用于GET表单提交）
      *
-     * @param url URL
+     * @param url  URL
      * @param form 表单数据
      * @return 合成后的URL
      */
@@ -480,7 +480,7 @@ public final class HttpUtil {
     /**
      * 将表单数据字符串加到URL中（用于GET表单提交）
      *
-     * @param url URL
+     * @param url         URL
      * @param queryString 表单数据字符串
      * @return 拼接后的字符串
      */
@@ -545,7 +545,7 @@ public final class HttpUtil {
     /**
      * 从流中读取内容
      *
-     * @param in 输入流
+     * @param in      输入流
      * @param charset 字符集
      * @return 内容
      * @throws IOException
@@ -595,8 +595,8 @@ public final class HttpUtil {
      * 将键值对加入到值为List类型的Map中
      *
      * @param params 参数
-     * @param name key
-     * @param value value
+     * @param name   key
+     * @param value  value
      * @return 是否成功
      */
     private static boolean addParam(Map<String, List<String>> params, String name, String value) {

@@ -1,5 +1,9 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import org.gjgr.pig.chivalrous.core.collection.CaseInsensitiveMap;
+import org.gjgr.pig.chivalrous.core.convert.Convert;
+import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -10,10 +14,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.gjgr.pig.chivalrous.core.collection.CaseInsensitiveMap;
-import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
 
 /**
  * Bean工具类
@@ -73,7 +73,7 @@ public final class BeanUtil {
     /**
      * 获得字段名和字段描述Map
      *
-     * @param clazz Bean类
+     * @param clazz      Bean类
      * @param ignoreCase 是否忽略大小写
      * @return 字段名和字段描述Map
      * @throws IntrospectionException
@@ -94,7 +94,7 @@ public final class BeanUtil {
     /**
      * 获得Bean类属性描述
      *
-     * @param clazz Bean类
+     * @param clazz     Bean类
      * @param fieldName 字段名
      * @return PropertyDescriptor
      * @throws IntrospectionException
@@ -115,8 +115,8 @@ public final class BeanUtil {
     /**
      * Map转换为Bean对象
      *
-     * @param map {@link Map}
-     * @param beanClass Bean Class
+     * @param map           {@link Map}
+     * @param beanClass     Bean Class
      * @param isIgnoreError 是否忽略注入错误
      * @return Bean
      */
@@ -128,8 +128,8 @@ public final class BeanUtil {
      * Map转换为Bean对象<br>
      * 忽略大小写
      *
-     * @param map Map
-     * @param beanClass Bean Class
+     * @param map           Map
+     * @param beanClass     Bean Class
      * @param isIgnoreError 是否忽略注入错误
      * @return Bean
      */
@@ -142,8 +142,8 @@ public final class BeanUtil {
     /**
      * 使用Map填充Bean对象
      *
-     * @param map Map
-     * @param bean Bean
+     * @param map         Map
+     * @param bean        Bean
      * @param copyOptions 属性复制选项 {@link CopyOptions}
      * @return Bean
      */
@@ -164,8 +164,8 @@ public final class BeanUtil {
     /**
      * 使用Map填充Bean对象
      *
-     * @param map Map
-     * @param bean Bean
+     * @param map           Map
+     * @param bean          Bean
      * @param isIgnoreError 是否忽略注入错误
      * @return Bean
      */
@@ -176,8 +176,8 @@ public final class BeanUtil {
     /**
      * 使用Map填充Bean对象，可配置将下划线转换为驼峰
      *
-     * @param map Map
-     * @param bean Bean
+     * @param map           Map
+     * @param bean          Bean
      * @param isToCamelCase 是否将下划线模式转换为驼峰模式
      * @param isIgnoreError 是否忽略注入错误
      * @return Bean
@@ -203,8 +203,8 @@ public final class BeanUtil {
     /**
      * 使用Map填充Bean对象，忽略大小写
      *
-     * @param map Map
-     * @param bean Bean
+     * @param map           Map
+     * @param bean          Bean
      * @param isIgnoreError 是否忽略注入错误
      * @return Bean
      */
@@ -216,9 +216,9 @@ public final class BeanUtil {
      * ServletRequest 参数转Bean
      *
      * @param <T>
-     * @param beanClass Bean Class
+     * @param beanClass     Bean Class
      * @param valueProvider 值提供者
-     * @param copyOptions 拷贝选项，见 {@link CopyOptions}
+     * @param copyOptions   拷贝选项，见 {@link CopyOptions}
      * @return Bean
      */
     public static <T> T toBean(Class<T> beanClass, ValueProvider<String> valueProvider, CopyOptions copyOptions) {
@@ -228,10 +228,10 @@ public final class BeanUtil {
     /**
      * 填充Bean的核心方法
      *
-     * @param <T> Bean类型
-     * @param bean Bean
+     * @param <T>           Bean类型
+     * @param bean          Bean
      * @param valueProvider 值提供者
-     * @param copyOptions 拷贝选项，见 {@link CopyOptions}
+     * @param copyOptions   拷贝选项，见 {@link CopyOptions}
      * @return Bean
      */
     public static <T> T fillBean(T bean, ValueProvider<String> valueProvider, CopyOptions copyOptions) {
@@ -311,9 +311,9 @@ public final class BeanUtil {
     /**
      * 对象转Map
      *
-     * @param bean bean对象
+     * @param bean              bean对象
      * @param isToUnderlineCase 是否转换为下划线模式
-     * @param ignoreNullValue 是否忽略值为空的字段
+     * @param ignoreNullValue   是否忽略值为空的字段
      * @return Map
      */
     public static <T> Map<String, Object> beanToMap(T bean, boolean isToUnderlineCase, boolean ignoreNullValue) {
@@ -358,11 +358,11 @@ public final class BeanUtil {
      * 复制Bean对象属性<br>
      * 限制类用于限制拷贝的属性，例如一个类我只想复制其父类的一些属性，就可以将editable设置为父类
      *
-     * @param source 源Bean对象
-     * @param target 目标Bean对象
+     * @param source           源Bean对象
+     * @param target           目标Bean对象
      * @param ignoreProperties 不拷贝的的属性列表
      */
-    public static void copyProperties(Object source, Object target, String...ignoreProperties) {
+    public static void copyProperties(Object source, Object target, String... ignoreProperties) {
         copyProperties(source, target, CopyOptions.create().setIgnoreProperties(ignoreProperties));
     }
 
@@ -370,8 +370,8 @@ public final class BeanUtil {
      * 复制Bean对象属性<br>
      * 限制类用于限制拷贝的属性，例如一个类我只想复制其父类的一些属性，就可以将editable设置为父类
      *
-     * @param source 源Bean对象
-     * @param target 目标Bean对象
+     * @param source      源Bean对象
+     * @param target      目标Bean对象
      * @param copyOptions 拷贝选项，见 {@link CopyOptions}
      */
     public static void copyProperties(final Object source, Object target, CopyOptions copyOptions) {
@@ -382,9 +382,9 @@ public final class BeanUtil {
      * 复制Bean对象属性<br>
      * 限制类用于限制拷贝的属性，例如一个类我只想复制其父类的一些属性，就可以将editable设置为父类
      *
-     * @param source 源Bean对象
-     * @param target 目标Bean对象
-     * @param ignoreCase 是否忽略大小写
+     * @param source      源Bean对象
+     * @param target      目标Bean对象
+     * @param ignoreCase  是否忽略大小写
      * @param copyOptions 拷贝选项，见 {@link CopyOptions}
      */
     public static void copyProperties(final Object source, Object target, boolean ignoreCase, CopyOptions copyOptions) {
@@ -438,7 +438,7 @@ public final class BeanUtil {
          * 获取值<br>
          * 返回值一般需要匹配被注入类型，如果不匹配会调用默认转换 {@link Convert#convert(Class, Object)}实现转换
          *
-         * @param key Bean对象中参数名
+         * @param key       Bean对象中参数名
          * @param valueType 被注入的值得类型
          * @return 对应参数名的值
          */
@@ -491,11 +491,11 @@ public final class BeanUtil {
         /**
          * 构造拷贝选项
          *
-         * @param editable 限制的类或接口，必须为目标对象的实现接口或父类，用于限制拷贝的属性
-         * @param ignoreNullValue 是否忽略空值，当源对象的值为null时，true: 忽略而不注入此值，false: 注入null
+         * @param editable         限制的类或接口，必须为目标对象的实现接口或父类，用于限制拷贝的属性
+         * @param ignoreNullValue  是否忽略空值，当源对象的值为null时，true: 忽略而不注入此值，false: 注入null
          * @param ignoreProperties 忽略的属性列表，设置一个属性列表，不拷贝这些属性值
          */
-        public CopyOptions(Class<?> editable, boolean ignoreNullValue, String...ignoreProperties) {
+        public CopyOptions(Class<?> editable, boolean ignoreNullValue, String... ignoreProperties) {
             this.editable = editable;
             this.ignoreNullValue = ignoreNullValue;
             this.ignoreProperties = ignoreProperties;
@@ -513,12 +513,12 @@ public final class BeanUtil {
         /**
          * 创建拷贝选项
          *
-         * @param editable 限制的类或接口，必须为目标对象的实现接口或父类，用于限制拷贝的属性
-         * @param ignoreNullValue 是否忽略空值，当源对象的值为null时，true: 忽略而不注入此值，false: 注入null
+         * @param editable         限制的类或接口，必须为目标对象的实现接口或父类，用于限制拷贝的属性
+         * @param ignoreNullValue  是否忽略空值，当源对象的值为null时，true: 忽略而不注入此值，false: 注入null
          * @param ignoreProperties 忽略的属性列表，设置一个属性列表，不拷贝这些属性值
          * @return 拷贝选项
          */
-        public static CopyOptions create(Class<?> editable, boolean ignoreNullValue, String...ignoreProperties) {
+        public static CopyOptions create(Class<?> editable, boolean ignoreNullValue, String... ignoreProperties) {
             return new CopyOptions(editable, ignoreNullValue, ignoreProperties);
         }
 
@@ -550,7 +550,7 @@ public final class BeanUtil {
          * @param ignoreProperties 忽略的属性列表，设置一个属性列表，不拷贝这些属性值
          * @return CopyOptions
          */
-        public CopyOptions setIgnoreProperties(String...ignoreProperties) {
+        public CopyOptions setIgnoreProperties(String... ignoreProperties) {
             this.ignoreProperties = ignoreProperties;
             return this;
         }

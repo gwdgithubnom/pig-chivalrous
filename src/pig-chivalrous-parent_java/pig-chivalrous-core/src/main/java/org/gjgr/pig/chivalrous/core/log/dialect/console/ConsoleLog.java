@@ -36,12 +36,12 @@ public class ConsoleLog extends AbstractLog {
 
     // ------------------------------------------------------------------------- Log
     @Override
-    public void log(Level level, String format, Object...arguments) {
+    public void log(Level level, String format, Object... arguments) {
         this.log(level, null, format, arguments);
     }
 
     @Override
-    public void log(Level level, Throwable t, String format, Object...arguments) {
+    public void log(Level level, Throwable t, String format, Object... arguments) {
         if (false == isEnabled(level)) {
             return;
         }
@@ -70,12 +70,12 @@ public class ConsoleLog extends AbstractLog {
     }
 
     @Override
-    public void trace(String format, Object...arguments) {
+    public void trace(String format, Object... arguments) {
         log(Level.TRACE, format, arguments);
     }
 
     @Override
-    public void trace(Throwable t, String format, Object...arguments) {
+    public void trace(Throwable t, String format, Object... arguments) {
         log(Level.TRACE, t, format, arguments);
     }
 
@@ -86,12 +86,12 @@ public class ConsoleLog extends AbstractLog {
     }
 
     @Override
-    public void debug(String format, Object...arguments) {
+    public void debug(String format, Object... arguments) {
         log(Level.DEBUG, format, arguments);
     }
 
     @Override
-    public void debug(Throwable t, String format, Object...arguments) {
+    public void debug(Throwable t, String format, Object... arguments) {
         log(Level.DEBUG, t, format, arguments);
     }
 
@@ -102,12 +102,12 @@ public class ConsoleLog extends AbstractLog {
     }
 
     @Override
-    public void info(String format, Object...arguments) {
+    public void info(String format, Object... arguments) {
         log(Level.INFO, format, arguments);
     }
 
     @Override
-    public void info(Throwable t, String format, Object...arguments) {
+    public void info(Throwable t, String format, Object... arguments) {
         log(Level.INFO, t, format, arguments);
     }
 
@@ -118,12 +118,12 @@ public class ConsoleLog extends AbstractLog {
     }
 
     @Override
-    public void warn(String format, Object...arguments) {
+    public void warn(String format, Object... arguments) {
         log(Level.WARN, format, arguments);
     }
 
     @Override
-    public void warn(Throwable t, String format, Object...arguments) {
+    public void warn(Throwable t, String format, Object... arguments) {
         log(Level.WARN, t, format, arguments);
     }
 
@@ -134,12 +134,12 @@ public class ConsoleLog extends AbstractLog {
     }
 
     @Override
-    public void error(String format, Object...arguments) {
+    public void error(String format, Object... arguments) {
         log(Level.ERROR, format, arguments);
     }
 
     @Override
-    public void error(Throwable t, String format, Object...arguments) {
+    public void error(Throwable t, String format, Object... arguments) {
         log(Level.ERROR, t, format, arguments);
     }
 }

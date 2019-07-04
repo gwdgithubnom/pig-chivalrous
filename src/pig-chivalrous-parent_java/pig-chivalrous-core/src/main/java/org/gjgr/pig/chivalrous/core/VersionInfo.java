@@ -11,4 +11,5 @@ public class VersionInfo {
     public static final String groupId = "org.gjgr.pig";
     public static final String artifactId = "pig-chivalrous-core";
     public static final String version = "0.0.3";
+    public static final String timeVersion = "20190424";
 }

@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.core.io;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
 import org.gjgr.pig.chivalrous.core.lang.Console;
+
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * ClassPath资源读取测试

@@ -19,7 +19,7 @@ public class CryptoException extends RuntimeException {
         super(message);
     }
 
-    public CryptoException(String messageTemplate, Object...params) {
+    public CryptoException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -27,7 +27,7 @@ public class CryptoException extends RuntimeException {
         super(message, throwable);
     }
 
-    public CryptoException(Throwable throwable, String messageTemplate, Object...params) {
+    public CryptoException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

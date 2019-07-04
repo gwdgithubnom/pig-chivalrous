@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  * @More:
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
+@Target( {ElementType.METHOD})
 @Documented
 public @interface AliasFor {
     @AliasFor("attribute")

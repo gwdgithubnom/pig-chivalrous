@@ -31,7 +31,7 @@ public class FIFOCache<K, V> extends AbstractCache<K, V> {
      * 构造
      *
      * @param capacity 容量
-     * @param timeout 过期时长
+     * @param timeout  过期时长
      */
     public FIFOCache(int capacity, long timeout) {
         this.capacity = capacity;

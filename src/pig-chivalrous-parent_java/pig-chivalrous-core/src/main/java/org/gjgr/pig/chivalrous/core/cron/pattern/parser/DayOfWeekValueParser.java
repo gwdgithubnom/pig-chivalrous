@@ -13,7 +13,7 @@ public class DayOfWeekValueParser extends SimpleValueParser {
     /**
      * Weeks aliases.
      */
-    private static final String[] ALIASES = { "sun", "mon", "tue", "wed", "thu", "fri", "sat" };
+    private static final String[] ALIASES = {"sun", "mon", "tue", "wed", "thu", "fri", "sat"};
 
     public DayOfWeekValueParser() {
         super(0, 7);

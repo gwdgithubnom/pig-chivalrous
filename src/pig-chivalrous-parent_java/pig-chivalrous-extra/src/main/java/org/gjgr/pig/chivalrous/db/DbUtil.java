@@ -1,5 +1,21 @@
 package org.gjgr.pig.chivalrous.db;
 
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.Log;
+import org.gjgr.pig.chivalrous.core.log.StaticLog;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
+import org.gjgr.pig.chivalrous.db.dialect.Dialect;
+import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
+import org.gjgr.pig.chivalrous.db.ds.DSFactory;
+import org.gjgr.pig.chivalrous.db.meta.Column;
+import org.gjgr.pig.chivalrous.db.meta.Table;
+import org.gjgr.pig.chivalrous.db.sql.Condition;
+import org.gjgr.pig.chivalrous.db.sql.SqlFormatter;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ParameterMetaData;
@@ -14,23 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.log.Log;
-import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
-import org.gjgr.pig.chivalrous.db.dialect.Dialect;
-import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
-import org.gjgr.pig.chivalrous.db.ds.DSFactory;
-import org.gjgr.pig.chivalrous.db.meta.Column;
-import org.gjgr.pig.chivalrous.db.meta.Table;
-import org.gjgr.pig.chivalrous.db.sql.Condition;
-import org.gjgr.pig.chivalrous.db.sql.SqlFormatter;
 
 /**
  * 数据库操作工具类
@@ -95,7 +94,7 @@ public final class DbUtil {
     /**
      * 实例化一个新的SQL运行对象
      *
-     * @param ds 数据源
+     * @param ds      数据源
      * @param dialect SQL方言
      * @return SQL执行类
      */
@@ -138,7 +137,7 @@ public final class DbUtil {
      *
      * @param objsToClose 需要关闭的对象
      */
-    public static void close(Object...objsToClose) {
+    public static void close(Object... objsToClose) {
         for (Object obj : objsToClose) {
             try {
                 if (obj != null) {
@@ -218,7 +217,7 @@ public final class DbUtil {
         try {
             conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
-            rs = metaData.getTables(conn.getCatalog(), null, null, new String[] { "TABLES" });
+            rs = metaData.getTables(conn.getCatalog(), null, null, new String[] {"TABLES"});
             if (rs == null) {
                 return null;
             }
@@ -259,7 +258,7 @@ public final class DbUtil {
     /**
      * 获得表的所有列名
      *
-     * @param ds 数据源
+     * @param ds        数据源
      * @param tableName 表名
      * @return 列数组
      * @throws SQLException
@@ -287,7 +286,7 @@ public final class DbUtil {
      * 创建带有字段限制的Entity对象<br>
      * 此方法读取数据库中对应表的字段列表，加入到Entity中，当Entity被设置内容时，会忽略对应表字段外的所有KEY
      *
-     * @param ds 数据源
+     * @param ds        数据源
      * @param tableName 表名
      * @return Entity对象
      */
@@ -299,7 +298,7 @@ public final class DbUtil {
     /**
      * 获得表的元信息
      *
-     * @param ds 数据源
+     * @param ds        数据源
      * @param tableName 表名
      * @return Table对象
      */
@@ -334,7 +333,7 @@ public final class DbUtil {
     /**
      * 填充SQL的参数。
      *
-     * @param ps PreparedStatement
+     * @param ps     PreparedStatement
      * @param params SQL参数
      * @throws SQLException
      */
@@ -345,11 +344,11 @@ public final class DbUtil {
     /**
      * 填充SQL的参数。
      *
-     * @param ps PreparedStatement
+     * @param ps     PreparedStatement
      * @param params SQL参数
      * @throws SQLException
      */
-    public static void fillParams(PreparedStatement ps, Object...params) throws SQLException {
+    public static void fillParams(PreparedStatement ps, Object... params) throws SQLException {
         if (ArrayCommand.isEmpty(params)) {
             return;// 无参数
         }
@@ -426,7 +425,7 @@ public final class DbUtil {
      * 构件相等条件的where语句<br>
      * 如果没有条件语句，泽返回空串，表示没有条件
      *
-     * @param entity 条件实体
+     * @param entity      条件实体
      * @param paramValues 条件值得存放List
      * @return 带where关键字的SQL部分
      */
@@ -473,7 +472,7 @@ public final class DbUtil {
     /**
      * 创建LIKE语句中的值
      *
-     * @param value 被查找值
+     * @param value    被查找值
      * @param likeType LIKE值类型 {@link Condition.LikeType}
      * @return 拼接后的like值
      */

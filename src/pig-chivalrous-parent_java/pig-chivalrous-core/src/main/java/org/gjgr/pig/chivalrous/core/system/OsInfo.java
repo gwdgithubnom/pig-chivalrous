@@ -297,7 +297,7 @@ public class OsInfo {
     /**
      * 匹配OS名称。
      *
-     * @param osNamePrefix OS名称前缀
+     * @param osNamePrefix    OS名称前缀
      * @param osVersionPrefix OS版本前缀
      * @return 如果匹配，则返回<code>true</code>
      */

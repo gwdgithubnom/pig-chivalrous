@@ -22,8 +22,8 @@ package org.gjgr.pig.chivalrous.core.io.file;
  * without an explicit prefix, hence applying relative to the local {@link ResourceLoader}'s context).
  *
  * @author Juergen Hoeller
- * @since 2.5
  * @sees org.springframework.web.context.support.ServletContextResource
+ * @since 2.5
  */
 public interface ContextResource extends Resource {
 

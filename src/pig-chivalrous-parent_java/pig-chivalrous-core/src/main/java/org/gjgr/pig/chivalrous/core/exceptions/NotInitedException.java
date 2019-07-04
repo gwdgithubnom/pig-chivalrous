@@ -18,7 +18,7 @@ public class NotInitedException extends RuntimeException {
         super(message);
     }
 
-    public NotInitedException(String messageTemplate, Object...params) {
+    public NotInitedException(String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params));
     }
 
@@ -26,7 +26,7 @@ public class NotInitedException extends RuntimeException {
         super(message, throwable);
     }
 
-    public NotInitedException(Throwable throwable, String messageTemplate, Object...params) {
+    public NotInitedException(Throwable throwable, String messageTemplate, Object... params) {
         super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

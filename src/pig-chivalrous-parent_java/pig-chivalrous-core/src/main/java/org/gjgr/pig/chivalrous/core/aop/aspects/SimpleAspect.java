@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.aop.aspects;
 
-import java.lang.reflect.Method;
-
 import org.gjgr.pig.chivalrous.core.aop.Aspect;
+
+import java.lang.reflect.Method;
 
 /**
  * 简单切面类，不做任何操作<br>

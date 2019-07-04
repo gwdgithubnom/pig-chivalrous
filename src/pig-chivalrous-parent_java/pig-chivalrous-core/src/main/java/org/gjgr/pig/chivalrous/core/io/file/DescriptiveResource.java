@@ -16,11 +16,11 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.gjgr.pig.chivalrous.core.lang.Nullable;
 
 /**
  * Simple {@link Resource} implementation that holds a resource description but does not point to an actually readable
@@ -39,7 +39,7 @@ public class DescriptiveResource extends AbstractResource {
 
     /**
      * Create a new DescriptiveResource.
-     * 
+     *
      * @param description the resource description
      */
     public DescriptiveResource(@Nullable String description) {

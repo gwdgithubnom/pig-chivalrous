@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.cache.impl;
 
-import java.util.Iterator;
-
 import org.gjgr.pig.chivalrous.core.cache.Cache;
+
+import java.util.Iterator;
 
 /**
  * 无缓存实现，用于快速关闭缓存

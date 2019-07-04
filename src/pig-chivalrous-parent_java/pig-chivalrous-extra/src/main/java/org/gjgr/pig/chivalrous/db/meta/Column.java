@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db.meta;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * 数据库表的列信息
@@ -37,7 +37,7 @@ public class Column implements Cloneable {
     /**
      * 创建列对象
      *
-     * @param tableName 表名
+     * @param tableName    表名
      * @param columnMetaRs 列元信息的ResultSet
      * @return 列对象
      */
@@ -49,7 +49,7 @@ public class Column implements Cloneable {
     /**
      * 初始化
      *
-     * @param tableName 表名
+     * @param tableName    表名
      * @param columnMetaRs 列的meta ResultSet
      * @throws SQLException
      */

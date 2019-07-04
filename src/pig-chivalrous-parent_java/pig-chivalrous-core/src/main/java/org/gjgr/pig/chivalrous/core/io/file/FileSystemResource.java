@@ -16,6 +16,9 @@
 
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,9 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.StandardOpenOption;
 
-import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
-import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
-
 /**
  * {@link Resource} implementation for {@code java.io.File} handles. Supports resolution as a {@code File} and also as a
  * {@code URL}. Implements the extended {@link WritableResource} interface.
@@ -42,10 +42,10 @@ import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
  * Nevertheless, in contrast to {@link PathResource}, it primarily manages a {@code java.io.File} handle.
  *
  * @author Juergen Hoeller
- * @since 28.12.2003
  * @see PathResource
  * @see File
  * @see Files
+ * @since 28.12.2003
  */
 public class FileSystemResource extends AbstractResource implements WritableResource {
 
@@ -61,7 +61,7 @@ public class FileSystemResource extends AbstractResource implements WritableReso
      * paths built underneath the given root directory, use the {@link #FileSystemResource(String) constructor with a
      * file path} to append a trailing slash to the root path: "C:/dir1/", which indicates this directory as root for
      * all relative paths.
-     * 
+     *
      * @param file a File handle
      */
     public FileSystemResource(File file) {
@@ -77,7 +77,7 @@ public class FileSystemResource extends AbstractResource implements WritableReso
      * resource base path here ends with a slash or not. In the case of "C:/dir1/", relative paths will be built
      * underneath that root: e.g. relative path "dir2" -> "C:/dir1/dir2". In the case of "C:/dir1", relative paths will
      * apply at the same directory level: relative path "dir2" -> "C:/dir2".
-     * 
+     *
      * @param path a file path
      */
     public FileSystemResource(String path) {
@@ -95,7 +95,7 @@ public class FileSystemResource extends AbstractResource implements WritableReso
 
     /**
      * This implementation returns whether the underlying file exists.
-     * 
+     *
      * @see File#exists()
      */
     @Override
@@ -106,7 +106,7 @@ public class FileSystemResource extends AbstractResource implements WritableReso
     /**
      * This implementation checks whether the underlying file is marked as readable (and corresponds to an actual file
      * with content, not to a directory).
-     * 
+     *
      * @see File#canRead()
      * @see File#isDirectory()
      */

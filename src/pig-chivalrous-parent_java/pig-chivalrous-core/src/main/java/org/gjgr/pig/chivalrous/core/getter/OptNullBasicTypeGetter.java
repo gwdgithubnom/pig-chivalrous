@@ -155,7 +155,7 @@ public abstract class OptNullBasicTypeGetter<K> implements BasicTypeGetter<K>, O
      * 无值或获取错误返回null
      *
      * @param clazz Enum 的 Class
-     * @param key 属性名
+     * @param key   属性名
      * @return 属性值
      */
     @Override

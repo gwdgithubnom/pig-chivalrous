@@ -1,12 +1,5 @@
 package org.gjgr.pig.chivalrous.log.appender;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.Core;
 import org.apache.logging.log4j.core.Filter;
@@ -20,6 +13,13 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.apache.logging.log4j.message.Message;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 自定义Appender，继承 AbstractAppender 只需要覆盖自已想要的方法即可<br>
@@ -39,12 +39,12 @@ public class MessageLogAppender extends AbstractAppender {
     private Integer maxCachedSize;
 
     private MessageLogAppender(String name, Filter filter, Layout<? extends Serializable> layout,
-            Integer maxCachedMarker, Integer maxCachedSize) {
+                               Integer maxCachedMarker, Integer maxCachedSize) {
         this(name, filter, layout, true, maxCachedSize);
     }
 
     public MessageLogAppender(String name, Filter filter, Layout<? extends Serializable> layout,
-            boolean ignoreExceptions, Integer maxCachedSize) {
+                              boolean ignoreExceptions, Integer maxCachedSize) {
         super(name, filter, layout, ignoreExceptions);
         if (maxCachedSize == null || maxCachedSize <= 0) {
             this.maxCachedSize = MAX_CACHED_SIZE;

@@ -1,12 +1,5 @@
 package org.gjgr.pig.chivalrous.core.net;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Map;
-
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -16,6 +9,13 @@ import org.gjgr.pig.chivalrous.core.entity.MessageBuilder;
 import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * @Author gwd
@@ -28,7 +28,7 @@ public class HttpCommand {
     private static Logger logger = LoggerFactory.getLogger(HttpCommand.class);
 
     public static CookieStore cookieStore(HttpClientBuilder httpClientBuilder, Map<String, String> stringMap,
-            String domain) {
+                                          String domain) {
         if (stringMap == null) {
             httpClientBuilder.disableCookieManagement();
             return null;

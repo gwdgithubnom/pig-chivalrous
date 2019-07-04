@@ -1,11 +1,10 @@
 package org.gjgr.pig.chivalrous.core.entity;
 
-import java.io.Serializable;
-import java.util.HashMap;
-
+import com.google.gson.JsonObject;
 import org.gjgr.pig.chivalrous.core.json.JsonCommand;
 
-import com.google.gson.JsonObject;
+import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by gwd on 2016/4/28.

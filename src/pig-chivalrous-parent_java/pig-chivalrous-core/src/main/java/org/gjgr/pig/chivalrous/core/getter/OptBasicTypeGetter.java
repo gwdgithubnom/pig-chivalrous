@@ -16,7 +16,7 @@ public interface OptBasicTypeGetter<K> {
     /**
      * 获取Object属性值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -26,7 +26,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取字符串型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -36,7 +36,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取int型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -46,7 +46,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取short型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -56,7 +56,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取boolean型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -66,7 +66,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取Long型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -76,7 +76,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取char型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -86,7 +86,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取float型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -96,7 +96,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取double型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -106,7 +106,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取byte型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -116,7 +116,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取BigDecimal型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -126,7 +126,7 @@ public interface OptBasicTypeGetter<K> {
      * 获取BigInteger型属性值<br>
      * 若获得的值为不可见字符，使用默认值
      *
-     * @param key 属性名
+     * @param key          属性名
      * @param defaultValue 默认值
      * @return 属性值，无对应值返回defaultValue
      */
@@ -135,8 +135,8 @@ public interface OptBasicTypeGetter<K> {
     /**
      * 获得Enum类型的值
      *
-     * @param clazz Enum的Class
-     * @param key KEY
+     * @param clazz        Enum的Class
+     * @param key          KEY
      * @param defaultValue 默认值
      * @return Enum类型的值，无则返回Null
      */

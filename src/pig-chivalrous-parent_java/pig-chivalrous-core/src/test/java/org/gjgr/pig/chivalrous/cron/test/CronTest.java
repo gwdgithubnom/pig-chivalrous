@@ -74,7 +74,7 @@ public class CronTest {
      * 表达式是否匹配日期
      *
      * @param pattern 表达式
-     * @param date 日期，标准日期时间字符串
+     * @param date    日期，标准日期时间字符串
      */
     private void assertMatch(CronPattern pattern, String date) {
         Assert.assertTrue(pattern.match(DateTimeCommand.parse(date).getTime(), false, false));

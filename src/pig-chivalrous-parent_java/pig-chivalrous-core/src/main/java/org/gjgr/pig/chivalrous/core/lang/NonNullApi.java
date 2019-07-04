@@ -8,14 +8,13 @@ package org.gjgr.pig.chivalrous.core.lang;
  * @More:
  */
 
+import javax.annotation.Nonnull;
+import javax.annotation.meta.TypeQualifierDefault;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import javax.annotation.Nonnull;
-import javax.annotation.meta.TypeQualifierDefault;
 
 /**
  * A common Spring annotation to declare that parameters and return values are to be considered as non-nullable by
@@ -39,6 +38,6 @@ import javax.annotation.meta.TypeQualifierDefault;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Nonnull
-@TypeQualifierDefault({ ElementType.METHOD, ElementType.PARAMETER })
+@TypeQualifierDefault( {ElementType.METHOD, ElementType.PARAMETER})
 public @interface NonNullApi {
 }
