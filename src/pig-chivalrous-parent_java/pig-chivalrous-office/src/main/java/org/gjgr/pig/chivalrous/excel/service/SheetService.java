@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by gwd on 2016/5/23.
- * 未实现多线程模式
+ * Created by gwd on 2016/5/23. 未实现多线程模式
  */
 public class SheetService {
 

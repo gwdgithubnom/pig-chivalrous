@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.web.http;
 
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 
 /**
  * http基类
@@ -38,7 +37,7 @@ public abstract class HttpBase<T> {
     /**
      * 编码
      */
-    protected String charset = CharsetUtil.UTF_8;
+    protected String charset = CharsetCommand.UTF_8;
     /**
      * http版本
      */
@@ -57,12 +56,12 @@ public abstract class HttpBase<T> {
      * @return Header值
      */
     public String header(String name) {
-        if (StrUtil.isBlank(name)) {
+        if (StringCommand.isBlank(name)) {
             return null;
         }
 
         List<String> values = headers.get(name.trim());
-        if (CollectionUtil.isEmpty(values)) {
+        if (CollectionCommand.isEmpty(values)) {
             return null;
         }
         return values.get(0);
@@ -113,7 +112,7 @@ public abstract class HttpBase<T> {
     public T header(String name, String value, boolean isOverride) {
         if (null != name && null != value) {
             final List<String> values = headers.get(name.trim());
-            if (isOverride || CollectionUtil.isEmpty(values)) {
+            if (isOverride || CollectionCommand.isEmpty(values)) {
                 final ArrayList<String> valueList = new ArrayList<String>();
                 valueList.add(value);
                 headers.put(name.trim(), valueList);
@@ -168,7 +167,7 @@ public abstract class HttpBase<T> {
      * @param headers 请求头
      */
     public T header(Map<String, List<String>> headers) {
-        if (CollectionUtil.isEmpty(headers)) {
+        if (CollectionCommand.isEmpty(headers)) {
             return (T) this;
         }
 
@@ -176,7 +175,7 @@ public abstract class HttpBase<T> {
         for (Entry<String, List<String>> entry : headers.entrySet()) {
             name = entry.getKey();
             for (String value : entry.getValue()) {
-                this.header(name, StrUtil.nullToEmpty(value), false);
+                this.header(name, StringCommand.nullToEmpty(value), false);
             }
         }
         return (T) this;
@@ -185,7 +184,7 @@ public abstract class HttpBase<T> {
     /**
      * 获取headers
      *
-     * @return Map<String   ,       List   <   String>>
+     * @return Map<String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               List                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               String>>
      */
     public Map<String, List<String>> headers() {
         return Collections.unmodifiableMap(headers);
@@ -228,7 +227,7 @@ public abstract class HttpBase<T> {
      * @return T 自己
      */
     public T charset(String charset) {
-        if (StrUtil.isNotBlank(charset)) {
+        if (StringCommand.isNotBlank(charset)) {
             this.charset = charset;
         }
         return (T) this;
@@ -249,14 +248,14 @@ public abstract class HttpBase<T> {
 
     @Override
     public String toString() {
-        StringBuilder sb = StrUtil.builder();
-        sb.append("Request Headers: ").append(StrUtil.CRLF);
+        StringBuilder sb = StringCommand.builder();
+        sb.append("Request Headers: ").append(StringCommand.CRLF);
         for (Entry<String, List<String>> entry : this.headers.entrySet()) {
-            sb.append("    ").append(entry).append(StrUtil.CRLF);
+            sb.append("    ").append(entry).append(StringCommand.CRLF);
         }
 
-        sb.append("Request Body: ").append(StrUtil.CRLF);
-        sb.append("    ").append(this.body).append(StrUtil.CRLF);
+        sb.append("Request Body: ").append(StringCommand.CRLF);
+        sb.append("    ").append(this.body).append(StringCommand.CRLF);
 
         return sb.toString();
     }

@@ -25,7 +25,7 @@ public class GlobalThreadPool {
     /**
      * 初始化全局线程池
      */
-    synchronized public static void init() {
+    public static synchronized void init() {
         if (null != executor) {
             executor.shutdownNow();
         }
@@ -37,7 +37,7 @@ public class GlobalThreadPool {
      *
      * @param isNow 是否立即关闭而不等待正在执行的线程
      */
-    synchronized public static void shutdown(boolean isNow) {
+    public static synchronized void shutdown(boolean isNow) {
         if (null != executor) {
             if (isNow) {
                 executor.shutdownNow();

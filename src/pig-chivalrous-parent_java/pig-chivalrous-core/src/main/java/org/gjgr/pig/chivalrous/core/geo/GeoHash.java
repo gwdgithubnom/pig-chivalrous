@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.geo;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     private static final char[] base32 = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'b', 'c', 'd', 'e', 'f',
             'g', 'h', 'j', 'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
-    private final static Map<Character, Integer> decodeMap = new HashMap<>();
+    private static final Map<Character, Integer> decodeMap = new HashMap<>();
 
     static {
         int sz = base32.length;
@@ -51,8 +51,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 构造
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude         纬度
+     * @param longitude        经度
      * @param desiredPrecision 限制长度
      */
     private GeoHash(double latitude, double longitude, int desiredPrecision) {
@@ -79,8 +79,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 使用字符数限制精度
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude           纬度
+     * @param longitude          经度
      * @param numberOfCharacters 字符数
      * @return {@link GeoHash}
      */
@@ -88,15 +88,15 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
         if (numberOfCharacters > MAX_CHARACTER_PRECISION) {
             throw new IllegalArgumentException("A geohash can only be " + MAX_CHARACTER_PRECISION + " character long.");
         }
-//		int desiredPrecision = (numberOfCharacters * 5 <= 60) ? numberOfCharacters * 5 : 60;
+        // int desiredPrecision = (numberOfCharacters * 5 <= 60) ? numberOfCharacters * 5 : 60;
         return new GeoHash(latitude, longitude, numberOfCharacters * 5);
     }
 
     /**
      * 创建 {@link GeoHash}，限制bit位精度
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude     纬度
+     * @param longitude    经度
      * @param numberOfBits 限制bit位数
      * @return {@link GeoHash}
      */
@@ -150,10 +150,10 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
             int cd = decodeMap.get(geohash.charAt(i));
             for (int j = 0; j < BASE32_BITS; j++) {
                 int mask = BITS[j];
-                if (isEvenBit) {//偶数表示经度
-                    divideRangeDecode(hash, longitudeRange, (cd & mask) != 0);
-                } else {//奇数表示纬度
-                    divideRangeDecode(hash, latitudeRange, (cd & mask) != 0);
+                if (isEvenBit) {
+                    divideRangeDecode(hash, longitudeRange, (cd & mask) != 0);// 偶数表示经度
+                } else {
+                    divideRangeDecode(hash, latitudeRange, (cd & mask) != 0);// 奇数表示纬度
                 }
                 isEvenBit = !isEvenBit;
             }
@@ -168,7 +168,7 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     public static GeoHash fromLongValue(long hashVal, int significantBits) {
         String binaryString = Long.toBinaryString(hashVal);
         if (binaryString.length() > significantBits) {
-            binaryString = StrUtil.subPre(binaryString, significantBits);
+            binaryString = StringCommand.subPre(binaryString, significantBits);
         }
         return fromBinaryString(binaryString);
     }
@@ -176,12 +176,13 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 坐标转为base32GeoHash编码
      *
-     * @param latitude 纬度
-     * @param longitude 经度
+     * @param latitude           纬度
+     * @param longitude          经度
      * @param numberOfCharacters 字符长度
      * @return GeoHash字符串
      */
-    public static String geoHashStringWithCharacterPrecision(double latitude, double longitude, int numberOfCharacters) {
+    public static String geoHashStringWithCharacterPrecision(double latitude, double longitude,
+                                                             int numberOfCharacters) {
         GeoHash hash = withCharacterPrecision(latitude, longitude, numberOfCharacters);
         return hash.toBase32();
     }
@@ -192,9 +193,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     }
 
     /**
-     * Counts the number of geohashes contained between the two (ie how many
-     * times next() is called to increment from one to two) This value depends
-     * on the number of significant bits.
+     * Counts the number of geohashes contained between the two (ie how many times next() is called to increment from
+     * one to two) This value depends on the number of significant bits.
      *
      * @param one
      * @param two
@@ -211,9 +211,9 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * 当值为1在range的右半区，为0在左半区
      *
-     * @param hash {@link GeoHash}
+     * @param hash  {@link GeoHash}
      * @param range 区域
-     * @param b bit值
+     * @param b     bit值
      */
     private static void divideRangeDecode(GeoHash hash, double[] range, boolean b) {
         double mid = (range[0] + range[1]) / 2;
@@ -246,8 +246,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
     /**
      * Returns the number of characters that represent this hash.
      *
-     * @throws IllegalStateException when the hash cannot be encoded in base32, i.e. when the
-     *                               precision is not a multiple of 5.
+     * @throws IllegalStateException when the hash cannot be encoded in base32, i.e. when the precision is not a
+     *                               multiple of 5.
      */
     public int getCharacterPrecision() {
         if (significantBits % 5 != 0) {
@@ -280,14 +280,14 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
         GeoHash southern = getSouthernNeighbour();
         GeoHash western = getWesternNeighbour();
         return new GeoHash[] {
-                northern,    //北
-                northern.getEasternNeighbour(), //东北
-                eastern,    //东
-                southern.getEasternNeighbour(),//东南
-                southern,//南
-                southern.getWesternNeighbour(), //西南
-                western, //西
-                northern.getWesternNeighbour() //西北
+                northern, // 北
+                northern.getEasternNeighbour(), // 东北
+                eastern, // 东
+                southern.getEasternNeighbour(), // 东南
+                southern, // 南
+                southern.getWesternNeighbour(), // 西南
+                western, // 西
+                northern.getWesternNeighbour() // 西北
         };
     }
 
@@ -316,7 +316,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
      */
     public String toBase32() {
         if (significantBits % 5 != 0) {
-            throw new IllegalStateException("Cannot convert a geohash to base32 if the precision is not a multiple of 5.");
+            throw new IllegalStateException(
+                    "Cannot convert a geohash to base32 if the precision is not a multiple of 5.");
         }
         StringBuilder buf = new StringBuilder();
 
@@ -342,8 +343,8 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
 
     /**
      * find out if the given point lies within this hashes bounding box.<br>
-     * <i>Note: this operation checks the bounding boxes coordinates, i.e. does
-     * not use the {@link GeoHash}s special abilities.s</i>
+     * <i>Note: this operation checks the bounding boxes coordinates, i.e. does not use the {@link GeoHash}s special
+     * abilities.s</i>
      */
     public boolean contains(Location point) {
         return boundingBox.contains(point);
@@ -351,16 +352,15 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
 
     /**
      * returns the {@link Location} that was originally used to set up this.<br>
-     * If it was built from a base32-{@link String}, this is the center point of
-     * the bounding box.
+     * If it was built from a base32-{@link String}, this is the center point of the bounding box.
      */
     public Location getPoint() {
         return point;
     }
 
     /**
-     * return the center of this {@link GeoHash}s bounding box. this is rarely
-     * the same point that was used to build the hash.
+     * return the center of this {@link GeoHash}s bounding box. this is rarely the same point that was used to build the
+     * hash.
      */
     public Location getBoundingBoxCenterPoint() {
         return boundingBox.getCenterPoint();
@@ -555,5 +555,3 @@ public final class GeoHash implements Comparable<GeoHash>, Serializable {
         }
     }
 }
-
-

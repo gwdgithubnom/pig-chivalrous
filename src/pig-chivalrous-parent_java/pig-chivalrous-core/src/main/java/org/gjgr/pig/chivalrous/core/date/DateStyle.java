@@ -14,8 +14,7 @@
 package org.gjgr.pig.chivalrous.core.date;
 
 /**
- * This class is used for ...
- * ClassName: DateStyle
+ * This class is used for ... ClassName: DateStyle
  *
  * @author 龚文东 root
  * @version Nov 22, 2015 11:58:33 AM

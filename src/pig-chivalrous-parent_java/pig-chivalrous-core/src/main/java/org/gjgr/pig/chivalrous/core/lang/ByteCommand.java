@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  * @Author gwd
- * @Time 10-29-2018  Monday
- * @Description: developer.tools:
+ * @Time 10-29-2018 Monday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
@@ -32,11 +32,13 @@ public final class ByteCommand {
     }
 
     public static int readInt(byte[] bytes, int offset) {
-        return (((bytes[offset + 0] & 0xff) << 24) | ((bytes[offset + 1] & 0xff) << 16) | ((bytes[offset + 2] & 0xff) << 8) | (bytes[offset + 3] & 0xff));
+        return (((bytes[offset + 0] & 0xff) << 24) | ((bytes[offset + 1] & 0xff) << 16)
+                | ((bytes[offset + 2] & 0xff) << 8) | (bytes[offset + 3] & 0xff));
     }
 
     public static long readUnsignedInt(byte[] bytes, int offset) {
-        return (((bytes[offset + 0] & 0xffL) << 24) | ((bytes[offset + 1] & 0xffL) << 16) | ((bytes[offset + 2] & 0xffL) << 8) | (bytes[offset + 3] & 0xffL));
+        return (((bytes[offset + 0] & 0xffL) << 24) | ((bytes[offset + 1] & 0xffL) << 16)
+                | ((bytes[offset + 2] & 0xffL) << 8) | (bytes[offset + 3] & 0xffL));
     }
 
     public static long readLong(byte[] bytes, int offset) {
@@ -114,7 +116,7 @@ public final class ByteCommand {
 
     /**
      * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice.
-     * <p />
+     * <p/>
      * The order of elements in the original arrays is preserved.
      *
      * @param array1 the first array.
@@ -130,9 +132,10 @@ public final class ByteCommand {
     }
 
     /**
-     * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice. Returns a new,
-     * empty array if {@code arrays} was empty and returns the first array if {@code arrays} contains only a single array.
-     * <p />
+     * Concatenate the given {@code byte} arrays into one, with overlapping array elements included twice. Returns a
+     * new, empty array if {@code arrays} was empty and returns the first array if {@code arrays} contains only a single
+     * array.
+     * <p/>
      * The order of elements in the original arrays is preserved.
      *
      * @param arrays the arrays.
@@ -158,7 +161,7 @@ public final class ByteCommand {
      * Split {@code source} into partitioned arrays using delimiter {@code c}.
      *
      * @param source the source array.
-     * @param c delimiter.
+     * @param c      delimiter.
      * @return the partitioned arrays.
      */
     public static byte[][] split(byte[] source, int c) {
@@ -188,14 +191,14 @@ public final class ByteCommand {
     /**
      * Merge multiple {@code byte} arrays into one array
      *
-     * @param firstArray must not be {@literal null}
+     * @param firstArray       must not be {@literal null}
      * @param additionalArrays must not be {@literal null}
      * @return
      */
     public static byte[][] mergeArrays(byte[] firstArray, byte[]... additionalArrays) {
 
-        Assert.notNull(firstArray, "first array must not be null");
-        Assert.notNull(additionalArrays, "additional arrays must not be null");
+        AssertCommand.notNull(firstArray, "first array must not be null");
+        AssertCommand.notNull(additionalArrays, "additional arrays must not be null");
 
         byte[][] result = new byte[additionalArrays.length + 1][];
         result[0] = firstArray;
@@ -213,7 +216,7 @@ public final class ByteCommand {
      */
     public static byte[] getBytes(ByteBuffer byteBuffer) {
 
-        Assert.notNull(byteBuffer, "ByteBuffer must not be null!");
+        AssertCommand.notNull(byteBuffer, "ByteBuffer must not be null!");
 
         ByteBuffer duplicate = byteBuffer.duplicate();
         byte[] bytes = new byte[duplicate.remaining()];
@@ -225,7 +228,7 @@ public final class ByteCommand {
      * Tests if the {@code haystack} starts with the given {@code prefix}.
      *
      * @param haystack the source to scan.
-     * @param prefix the prefix to find.
+     * @param prefix   the prefix to find.
      * @return {@literal true} if {@code haystack} at position {@code offset} starts with {@code prefix}.
      * @see #startsWith(byte[], byte[], int)
      * @since 1.8.10
@@ -238,8 +241,8 @@ public final class ByteCommand {
      * Tests if the {@code haystack} beginning at the specified {@code offset} starts with the given {@code prefix}.
      *
      * @param haystack the source to scan.
-     * @param prefix the prefix to find.
-     * @param offset the offset to start at.
+     * @param prefix   the prefix to find.
+     * @param offset   the offset to start at.
      * @return {@literal true} if {@code haystack} at position {@code offset} starts with {@code prefix}.
      * @since 1.8.10
      */
@@ -263,11 +266,11 @@ public final class ByteCommand {
     }
 
     /**
-     * Searches the specified array of bytes for the specified value. Returns the index of the first matching value in the
-     * {@code haystack}s natural order or {@code -1} of {@code needle} could not be found.
+     * Searches the specified array of bytes for the specified value. Returns the index of the first matching value in
+     * the {@code haystack}s natural order or {@code -1} of {@code needle} could not be found.
      *
      * @param haystack the source to scan.
-     * @param needle the value to scan for.
+     * @param needle   the value to scan for.
      * @return index of first appearance, or -1 if not found.
      * @since 1.8.10
      */
@@ -297,14 +300,14 @@ public final class ByteCommand {
      * Convert a {@link String} into a {@link ByteBuffer} using the given {@link Charset}.
      *
      * @param theString must not be {@literal null}.
-     * @param charset must not be {@literal null}.
+     * @param charset   must not be {@literal null}.
      * @return
      * @since 2.1
      */
     public static ByteBuffer getByteBuffer(String theString, Charset charset) {
 
-        Assert.notNull(theString, "The String must not be null!");
-        Assert.notNull(charset, "The String must not be null!");
+        AssertCommand.notNull(theString, "The String must not be null!");
+        AssertCommand.notNull(charset, "The String must not be null!");
 
         return charset.encode(theString);
     }

@@ -3,9 +3,9 @@ package org.gjgr.pig.chivalrous.crypto.test;
 import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
 import org.gjgr.pig.chivalrous.core.crypto.asymmetric.KeyType;
 import org.gjgr.pig.chivalrous.core.crypto.asymmetric.RSA;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.HexUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,21 +29,23 @@ public class RSATest {
     public void rsaTest() {
         RSA rsa = new RSA();
 
-        //获取私钥和公钥
+        // 获取私钥和公钥
         Assert.assertNotNull(rsa.getPrivateKey());
         Assert.assertNotNull(rsa.getPrivateKeyBase64());
         Assert.assertNotNull(rsa.getPublicKey());
         Assert.assertNotNull(rsa.getPrivateKeyBase64());
 
-        //公钥加密，私钥解密
-        byte[] encrypt = rsa.encrypt(StrUtil.bytes("我是一段测试aaaa", CharsetUtil.CHARSET_UTF_8), KeyType.PublicKey);
+        // 公钥加密，私钥解密
+        byte[] encrypt =
+                rsa.encrypt(StringCommand.bytes("我是一段测试aaaa", CharsetCommand.CHARSET_UTF_8), KeyType.PublicKey);
         byte[] decrypt = rsa.decrypt(encrypt, KeyType.PrivateKey);
-        Assert.assertEquals("我是一段测试aaaa", StrUtil.str(decrypt, CharsetUtil.CHARSET_UTF_8));
+        Assert.assertEquals("我是一段测试aaaa", StringCommand.str(decrypt, CharsetCommand.CHARSET_UTF_8));
 
-        //私钥加密，公钥解密
-        byte[] encrypt2 = rsa.encrypt(StrUtil.bytes("我是一段测试aaaa", CharsetUtil.CHARSET_UTF_8), KeyType.PrivateKey);
+        // 私钥加密，公钥解密
+        byte[] encrypt2 =
+                rsa.encrypt(StringCommand.bytes("我是一段测试aaaa", CharsetCommand.CHARSET_UTF_8), KeyType.PrivateKey);
         byte[] decrypt2 = rsa.decrypt(encrypt2, KeyType.PublicKey);
-        Assert.assertEquals("我是一段测试aaaa", StrUtil.str(decrypt2, CharsetUtil.CHARSET_UTF_8));
+        Assert.assertEquals("我是一段测试aaaa", StringCommand.str(decrypt2, CharsetCommand.CHARSET_UTF_8));
     }
 
     @Test
@@ -65,8 +67,8 @@ public class RSATest {
                 + "75F36564BA1DABAA20F3B90FD39315C30E68FE8A1803B36C29029B23EB612C06ACF3A34BE815074F5EB5AA3A"
                 + "C0C8832EC42DA725B4E1C38EF4EA1B85904F8B10B2D62EA782B813229F9090E6F7394E42E6F44494BB8";
 
-        byte[] aByte = HexUtil.decodeHex(a);
+        byte[] aByte = HexCommand.decodeHex(a);
         byte[] decrypt = rsa.decrypt(aByte, KeyType.PrivateKey);
-        Assert.assertEquals("虎头闯杭州,多抬头看天,切勿只管种地", StrUtil.str(decrypt, CharsetUtil.CHARSET_UTF_8));
+        Assert.assertEquals("虎头闯杭州,多抬头看天,切勿只管种地", StringCommand.str(decrypt, CharsetCommand.CHARSET_UTF_8));
     }
 }

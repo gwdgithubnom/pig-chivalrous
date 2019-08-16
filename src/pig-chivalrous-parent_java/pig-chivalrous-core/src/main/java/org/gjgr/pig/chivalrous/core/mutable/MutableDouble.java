@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.mutable;
 
-import org.gjgr.pig.chivalrous.core.util.NumberUtil;
+import org.gjgr.pig.chivalrous.core.math.NumberCommand;
 
 /**
  * 可变 <code>double</code> 类型
@@ -203,7 +203,7 @@ public class MutableDouble extends Number implements Comparable<MutableDouble>, 
      */
     @Override
     public int compareTo(final MutableDouble other) {
-        return NumberUtil.compare(this.value, other.value);
+        return NumberCommand.compare(this.value, other.value);
     }
 
 }

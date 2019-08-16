@@ -3,9 +3,9 @@ package org.gjgr.pig.chivalrous.core.log.dialect.console;
 import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.gjgr.pig.chivalrous.core.lang.Dict;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.AbstractLog;
 import org.gjgr.pig.chivalrous.core.log.level.Level;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 /**
  * 利用System.out.println()打印日志
@@ -20,7 +20,7 @@ public class ConsoleLog extends AbstractLog {
 
     private String name;
 
-    //------------------------------------------------------------------------- Constructor
+    // ------------------------------------------------------------------------- Constructor
     public ConsoleLog(Class<?> clazz) {
         this.name = clazz.getName();
     }
@@ -34,7 +34,7 @@ public class ConsoleLog extends AbstractLog {
         return this.name;
     }
 
-    //------------------------------------------------------------------------- Log
+    // ------------------------------------------------------------------------- Log
     @Override
     public void log(Level level, String format, Object... arguments) {
         this.log(level, null, format, arguments);
@@ -50,11 +50,11 @@ public class ConsoleLog extends AbstractLog {
                 .set("date", DateTimeCommand.now())
                 .set("level", level.toString())
                 .set("name", this.name)
-                .set("msg", StrUtil.format(format, arguments));
+                .set("msg", StringCommand.format(format, arguments));
 
-        String logMsg = StrUtil.format(logFormat, dict);
+        String logMsg = StringCommand.format(logFormat, dict);
 
-        //WARN以上级别打印至System.err
+        // WARN以上级别打印至System.err
         if (level.ordinal() >= Level.WARN.ordinal()) {
             Console.error(t, logMsg);
         } else {
@@ -63,7 +63,7 @@ public class ConsoleLog extends AbstractLog {
 
     }
 
-    //------------------------------------------------------------------------- Trace
+    // ------------------------------------------------------------------------- Trace
     @Override
     public boolean isTraceEnabled() {
         return level.compareTo(Level.TRACE) <= 0;
@@ -79,7 +79,7 @@ public class ConsoleLog extends AbstractLog {
         log(Level.TRACE, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Debug
+    // ------------------------------------------------------------------------- Debug
     @Override
     public boolean isDebugEnabled() {
         return level.compareTo(Level.DEBUG) <= 0;
@@ -95,7 +95,7 @@ public class ConsoleLog extends AbstractLog {
         log(Level.DEBUG, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Info
+    // ------------------------------------------------------------------------- Info
     @Override
     public boolean isInfoEnabled() {
         return level.compareTo(Level.INFO) <= 0;
@@ -111,7 +111,7 @@ public class ConsoleLog extends AbstractLog {
         log(Level.INFO, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Warn
+    // ------------------------------------------------------------------------- Warn
     @Override
     public boolean isWarnEnabled() {
         return level.compareTo(Level.WARN) <= 0;
@@ -127,7 +127,7 @@ public class ConsoleLog extends AbstractLog {
         log(Level.WARN, t, format, arguments);
     }
 
-    //------------------------------------------------------------------------- Error
+    // ------------------------------------------------------------------------- Error
     @Override
     public boolean isErrorEnabled() {
         return level.compareTo(Level.ERROR) <= 0;

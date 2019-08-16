@@ -1,7 +1,6 @@
 package org.gjgr.pig.chivalrous.web.http;
 
-
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * HTTP异常
@@ -20,7 +19,7 @@ public class HttpException extends RuntimeException {
     }
 
     public HttpException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public HttpException(String message, Throwable throwable) {
@@ -28,6 +27,6 @@ public class HttpException extends RuntimeException {
     }
 
     public HttpException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

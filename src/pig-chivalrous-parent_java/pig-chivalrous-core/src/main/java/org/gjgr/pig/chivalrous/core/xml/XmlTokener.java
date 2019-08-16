@@ -58,7 +58,8 @@ public class XmlTokener extends JsonTokener {
     }
 
     /**
-     * Get the next XmlBetweenJsonObject outer token, trimming whitespace. There are two kinds of tokens: the '<' character which begins a markup tag, and the content text between markup tags.
+     * Get the next XmlBetweenJsonObject outer token, trimming whitespace. There are two kinds of tokens: the '<'
+     * character which begins a markup tag, and the content text between markup tags.
      *
      * @return A string, or a '<' Character, or null if there is no more source text.
      * @throws JsonException
@@ -91,7 +92,8 @@ public class XmlTokener extends JsonTokener {
     }
 
     /**
-     * Return the next entity. These entities are translated to Characters: <code>&amp;  &apos;  &gt;  &lt;  &quot;</code>.
+     * Return the next entity. These entities are translated to Characters:
+     * <code>&amp;  &apos;  &gt;  &lt;  &quot;</code>.
      *
      * @param ampersand An ampersand character.
      * @return A Character or an entity String if the entity is not recognized.
@@ -114,10 +116,47 @@ public class XmlTokener extends JsonTokener {
         return object != null ? object : ampersand + string + ";";
     }
 
+    public boolean nextMeta(char c, char q) {
+        while (true) {
+            c = next();
+            if (c == 0) {
+                throw syntaxError("Unterminated string");
+            }
+            if (c == q) {
+                return Boolean.TRUE;
+            }
+        }
+    }
+
+    public boolean nextMeta(char c) {
+        while (true) {
+            c = next();
+            if (Character.isWhitespace(c)) {
+                return Boolean.TRUE;
+            }
+            switch (c) {
+                case 0:
+                case '<':
+                case '>':
+                case '/':
+                case '=':
+                case '!':
+                case '?':
+                case '"':
+                case '\'':
+                    back();
+                    return Boolean.TRUE;
+                default:
+                    return Boolean.FALSE;
+            }
+        }
+    }
+
     /**
      * Returns the next XmlBetweenJsonObject meta token. This is used for skipping over <!...> and <?...?> structures.
      *
-     * @return Syntax characters (<code>< > / = ! ?</code>) are returned as Character, and strings and names are returned as Boolean. We don't care what the values actually are.
+     * @return Syntax characters (<code>< > / = ! ?</code>) are returned as Character, and strings and names are
+     * returned as Boolean. We don't care what the values actually are.
      * @throws JsonException If a string is not properly closed or if the XmlBetweenJsonObject is badly structured.
      */
     public Object nextMeta() throws JsonException {
@@ -144,41 +183,35 @@ public class XmlTokener extends JsonTokener {
             case '"':
             case '\'':
                 q = c;
-                for (; ; ) {
-                    c = next();
-                    if (c == 0) {
-                        throw syntaxError("Unterminated string");
-                    }
-                    if (c == q) {
-                        return Boolean.TRUE;
-                    }
-                }
+                return nextMeta(c, q);
             default:
-                for (; ; ) {
-                    c = next();
-                    if (Character.isWhitespace(c)) {
-                        return Boolean.TRUE;
-                    }
-                    switch (c) {
-                        case 0:
-                        case '<':
-                        case '>':
-                        case '/':
-                        case '=':
-                        case '!':
-                        case '?':
-                        case '"':
-                        case '\'':
-                            back();
-                            return Boolean.TRUE;
-                    }
-                }
+                return nextMeta(c);
+        }
+    }
+
+    public String nextToken(char c) {
+        char q = c;
+        StringBuilder sb = new StringBuilder();
+        while (true) {
+            c = next();
+            if (c == 0) {
+                throw syntaxError("Unterminated string");
+            }
+            if (c == q) {
+                return sb.toString();
+            }
+            if (c == '&') {
+                sb.append(nextEntity(c));
+            } else {
+                sb.append(c);
+            }
         }
     }
 
     /**
-     * Get the next XmlBetweenJsonObject Token. These tokens are found inside of angle brackets. It may be one of these characters: <code>/ > = ! ?</code> or it may be a string wrapped in single quotes or double
-     * quotes, or it may be a name.
+     * Get the next XmlBetweenJsonObject Token. These tokens are found inside of angle brackets. It may be one of these
+     * characters: <code>/ > = ! ?</code> or it may be a string wrapped in single quotes or double quotes, or it may be
+     * a name.
      *
      * @return a String or a Character.
      * @throws JsonException If the XmlBetweenJsonObject is not well formed.
@@ -210,26 +243,9 @@ public class XmlTokener extends JsonTokener {
 
             case '"':
             case '\'':
-                q = c;
-                sb = new StringBuilder();
-                for (; ; ) {
-                    c = next();
-                    if (c == 0) {
-                        throw syntaxError("Unterminated string");
-                    }
-                    if (c == q) {
-                        return sb.toString();
-                    }
-                    if (c == '&') {
-                        sb.append(nextEntity(c));
-                    } else {
-                        sb.append(c);
-                    }
-                }
+                return nextToken(c);
             default:
-
                 // Name
-
                 sb = new StringBuilder();
                 for (; ; ) {
                     sb.append(c);
@@ -253,13 +269,16 @@ public class XmlTokener extends JsonTokener {
                         case '"':
                         case '\'':
                             throw syntaxError("Bad character in a name");
+                        default:
+                            return null;
                     }
                 }
         }
     }
 
     /**
-     * Skip characters until past the requested string. If it is not found, we are left at the end of the source with a result of false.
+     * Skip characters until past the requested string. If it is not found, we are left at the end of the source with a
+     * result of false.
      *
      * @param to A string to skip past.
      * @throws JsonException

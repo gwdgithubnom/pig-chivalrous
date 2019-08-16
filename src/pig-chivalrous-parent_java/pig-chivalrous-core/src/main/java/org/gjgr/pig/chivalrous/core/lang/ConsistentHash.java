@@ -1,14 +1,13 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.util.HashUtil;
+import org.gjgr.pig.chivalrous.core.math.HashCommand;
 
 import java.util.Collection;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * 一致性Hash算法
- * 算法详解：http://blog.csdn.net/sparkliang/article/details/5279393
+ * 一致性Hash算法 算法详解：http://blog.csdn.net/sparkliang/article/details/5279393
  * 算法实现：https://weblogs.java.net/blog/2007/11/27/consistent-hashing
  *
  * @param <T> 节点类型
@@ -32,7 +31,7 @@ public class ConsistentHash<T> {
      * 构造，使用Java默认的Hash算法
      *
      * @param numberOfReplicas 复制的节点个数，增加每个节点的复制节点有利于负载均衡
-     * @param nodes 节点对象
+     * @param nodes            节点对象
      */
     public ConsistentHash(int numberOfReplicas, Collection<T> nodes) {
         this.numberOfReplicas = numberOfReplicas;
@@ -40,11 +39,11 @@ public class ConsistentHash<T> {
 
             @Override
             public Integer hash(Object key) {
-                //默认使用FNV1hash算法
-                return HashUtil.fnvHash(key.toString());
+                // 默认使用FNV1hash算法
+                return HashCommand.fnvHash(key.toString());
             }
         };
-        //初始化节点
+        // 初始化节点
         for (T node : nodes) {
             add(node);
         }
@@ -53,14 +52,14 @@ public class ConsistentHash<T> {
     /**
      * 构造
      *
-     * @param hashFunc hash算法对象
+     * @param hashFunc         hash算法对象
      * @param numberOfReplicas 复制的节点个数，增加每个节点的复制节点有利于负载均衡
-     * @param nodes 节点对象
+     * @param nodes            节点对象
      */
     public ConsistentHash(HashFunc hashFunc, int numberOfReplicas, Collection<T> nodes) {
         this.numberOfReplicas = numberOfReplicas;
         this.hashFunc = hashFunc;
-        //初始化节点
+        // 初始化节点
         for (T node : nodes) {
             add(node);
         }
@@ -69,8 +68,7 @@ public class ConsistentHash<T> {
     /**
      * 增加节点<br>
      * 每增加一个节点，就会在闭环上增加给定复制节点数<br>
-     * 例如复制节点数是2，则每调用此方法一次，增加两个虚拟节点，这两个节点指向同一Node
-     * 由于hash算法会调用node的toString方法，故按照toString去重
+     * 例如复制节点数是2，则每调用此方法一次，增加两个虚拟节点，这两个节点指向同一Node 由于hash算法会调用node的toString方法，故按照toString去重
      *
      * @param node 节点对象
      */
@@ -103,10 +101,10 @@ public class ConsistentHash<T> {
         }
         int hash = hashFunc.hash(key);
         if (!circle.containsKey(hash)) {
-            SortedMap<Integer, T> tailMap = circle.tailMap(hash);    //返回此映射的部分视图，其键大于等于 hash
+            SortedMap<Integer, T> tailMap = circle.tailMap(hash); // 返回此映射的部分视图，其键大于等于 hash
             hash = tailMap.isEmpty() ? circle.firstKey() : tailMap.firstKey();
         }
-        //正好命中
+        // 正好命中
         return circle.get(hash);
     }
 

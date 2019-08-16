@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.io.resource;
 
-import org.gjgr.pig.chivalrous.core.io.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 import java.net.URL;
 
@@ -17,7 +17,7 @@ public class ClassPathResource extends UrlResource {
     private ClassLoader classLoader;
     private Class<?> clazz;
 
-    //-------------------------------------------------------------------------------------- Constructor start
+    // -------------------------------------------------------------------------------------- Constructor start
 
     /**
      * 构造
@@ -31,7 +31,7 @@ public class ClassPathResource extends UrlResource {
     /**
      * 构造
      *
-     * @param path 相对于ClassPath的路径
+     * @param path        相对于ClassPath的路径
      * @param classLoader {@link ClassLoader}
      */
     public ClassPathResource(String path, ClassLoader classLoader) {
@@ -41,7 +41,7 @@ public class ClassPathResource extends UrlResource {
     /**
      * 构造
      *
-     * @param path 相对于给定Class的路径
+     * @param path  相对于给定Class的路径
      * @param clazz {@link Class} 用于定位路径
      */
     public ClassPathResource(String path, Class<?> clazz) {
@@ -51,19 +51,19 @@ public class ClassPathResource extends UrlResource {
     /**
      * 构造
      *
-     * @param path 相对路劲
+     * @param path        相对路劲
      * @param classLoader {@link ClassLoader}
-     * @param clazz {@link Class} 用于定位路径
+     * @param clazz       {@link Class} 用于定位路径
      */
     public ClassPathResource(String path, ClassLoader classLoader, Class<?> clazz) {
         super((URL) null);
-        Assert.notNull(path, "Path must not be null");
+        AssertCommand.notNull(path, "Path must not be null");
         this.path = path;
-        this.classLoader = (classLoader != null ? classLoader : ClassUtil.getClassLoader());
+        this.classLoader = (classLoader != null ? classLoader : ClassCommand.getClassLoader());
         this.clazz = clazz;
         initUrl();
     }
-    //-------------------------------------------------------------------------------------- Constructor end
+    // -------------------------------------------------------------------------------------- Constructor end
 
     /**
      * 获得Path

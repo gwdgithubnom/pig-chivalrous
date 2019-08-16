@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.convert.impl;
 
 import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 import java.nio.charset.Charset;
 
@@ -14,7 +14,7 @@ public class CharsetConverter extends AbstractConverter<Charset> {
 
     @Override
     protected Charset convertInternal(Object value) {
-        return CharsetUtil.charset(convertToStr(value));
+        return CharsetCommand.charset(convertToStr(value));
     }
 
 }

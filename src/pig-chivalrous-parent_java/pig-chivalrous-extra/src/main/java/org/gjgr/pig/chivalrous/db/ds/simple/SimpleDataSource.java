@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /***
  * 简易数据源，没有使用连接池，仅供测试或打开关闭连接非常少的场合使用！
+ *
  * @author loolly
  *
  */
@@ -19,14 +20,14 @@ public class SimpleDataSource extends AbstractDataSource {
     /**
      * 默认的数据库连接配置文件路径
      */
-    public final static String DEFAULT_DB_CONFIG_PATH = "config/db.setting";
+    public static final String DEFAULT_DB_CONFIG_PATH = "config/db.setting";
 
-    //-------------------------------------------------------------------- Fields start
-    private String driver;        //数据库驱动
-    private String url;            //jdbc url
-    private String user;            //用户名
-    private String pass;            //密码
-    //-------------------------------------------------------------------- Fields end
+    // -------------------------------------------------------------------- Fields start
+    private String driver; // 数据库驱动
+    private String url; // jdbc url
+    private String user; // 用户名
+    private String pass; // 密码
+    // -------------------------------------------------------------------- Fields end
 
     /**
      * 构造
@@ -44,7 +45,7 @@ public class SimpleDataSource extends AbstractDataSource {
         this(null, group);
     }
 
-    //-------------------------------------------------------------------- Constructor start
+    // -------------------------------------------------------------------- Constructor start
 
     /**
      * 构造
@@ -59,8 +60,7 @@ public class SimpleDataSource extends AbstractDataSource {
         init(
                 setting.getByGroup("url", group),
                 setting.getByGroup("user", group),
-                setting.getByGroup("pass", group)
-        );
+                setting.getByGroup("pass", group));
     }
 
     /**
@@ -79,17 +79,17 @@ public class SimpleDataSource extends AbstractDataSource {
      *
      * @param group 数据源分组
      */
-    synchronized public static SimpleDataSource getDataSource(String group) {
+    public static synchronized SimpleDataSource getDataSource(String group) {
         return new SimpleDataSource(group);
     }
 
     /**
      * 获得一个数据源
      */
-    synchronized public static SimpleDataSource getDataSource() {
+    public static synchronized SimpleDataSource getDataSource() {
         return new SimpleDataSource();
     }
-    //-------------------------------------------------------------------- Constructor end
+    // -------------------------------------------------------------------- Constructor end
 
     /**
      * 初始化
@@ -110,7 +110,7 @@ public class SimpleDataSource extends AbstractDataSource {
         }
     }
 
-    //-------------------------------------------------------------------- Getters and Setters start
+    // -------------------------------------------------------------------- Getters and Setters start
     public String getDriver() {
         return driver;
     }
@@ -142,7 +142,7 @@ public class SimpleDataSource extends AbstractDataSource {
     public void setPass(String pass) {
         this.pass = pass;
     }
-    //-------------------------------------------------------------------- Getters and Setters end
+    // -------------------------------------------------------------------- Getters and Setters end
 
     @Override
     public Connection getConnection() throws SQLException {
@@ -156,6 +156,6 @@ public class SimpleDataSource extends AbstractDataSource {
 
     @Override
     public void close() throws IOException {
-        //Not need to close;
+        // Not need to close;
     }
 }

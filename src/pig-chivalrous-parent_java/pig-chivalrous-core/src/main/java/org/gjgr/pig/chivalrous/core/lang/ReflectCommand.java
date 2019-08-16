@@ -16,8 +16,8 @@ import java.lang.reflect.Type;
 
 /**
  * @Author gwd
- * @Time 10-29-2018  Monday
- * @Description: developer.tools:
+ * @Time 10-29-2018 Monday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
@@ -36,7 +36,8 @@ public class ReflectCommand {
      * @return
      * @throws Exception
      */
-    public static Object callMethod(Class<?> clazz, String methodName, Class<?>[] methodParams, Object... args) throws Exception {
+    public static Object callMethod(Class<?> clazz, String methodName, Class<?>[] methodParams, Object... args)
+            throws Exception {
         return callMethod(clazz, null, methodName, methodParams, args);
     }
 
@@ -51,14 +52,16 @@ public class ReflectCommand {
      * @return
      * @throws Exception
      */
-    public static Object callMethod(Class<?> clazz, Object instance, String methodName, Class<?>[] methodParams, Object... args)
+    public static Object callMethod(Class<?> clazz, Object instance, String methodName, Class<?>[] methodParams,
+                                    Object... args)
             throws Exception {
         Method method = clazz.getMethod(methodName, methodParams);
         return method.invoke(instance, args);
     }
 
     /**
-     * Gets the {@link Constructor} having the given number of arguments, or <code>null</code> if cannot find a appropriate one.
+     * Gets the {@link Constructor} having the given number of arguments, or <code>null</code> if cannot find a
+     * appropriate one.
      *
      * @param clazz
      * @param argsCount
@@ -107,7 +110,9 @@ public class ReflectCommand {
         }
     }
 
-    /** Create a new instance by class object */
+    /**
+     * Create a new instance by class object
+     */
     public <T> T newInstance(Class<T> clazz) {
         try {
             return clazz.newInstance();

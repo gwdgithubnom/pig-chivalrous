@@ -6,8 +6,8 @@ import java.util.Set;
 
 /**
  * @Author gwd
- * @Time 11-29-2018  Thursday
- * @Description: developer.tools:
+ * @Time 11-29-2018 Thursday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */

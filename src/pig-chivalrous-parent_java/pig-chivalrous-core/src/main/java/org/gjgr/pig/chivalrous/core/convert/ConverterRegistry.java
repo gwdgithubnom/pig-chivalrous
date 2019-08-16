@@ -27,7 +27,7 @@ import org.gjgr.pig.chivalrous.core.convert.impl.TimeZoneConverter;
 import org.gjgr.pig.chivalrous.core.convert.impl.URIConverter;
 import org.gjgr.pig.chivalrous.core.convert.impl.URLConverter;
 import org.gjgr.pig.chivalrous.core.date.DateTime;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -43,8 +43,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 转换器登记中心
- * <p>将各种类型Convert对象放入登记中心，通过convert方法查找目标类型对应的转换器，将被转换对象转换之。</p>
- * <p>在此类中，存放着默认转换器和自定义转换器，默认转换器是Hutool中预定义的一些转换器，自定义转换器存放用户自定的转换器。</p>
+ * <p>
+ * 将各种类型Convert对象放入登记中心，通过convert方法查找目标类型对应的转换器，将被转换对象转换之。
+ * </p>
+ * <p>
+ * 在此类中，存放着默认转换器和自定义转换器，默认转换器是Hutool中预定义的一些转换器，自定义转换器存放用户自定的转换器。
+ * </p>
  *
  * @author Looly
  */
@@ -79,7 +83,7 @@ public class ConverterRegistry {
      * @return {@link ConverterRegistry}
      */
     public ConverterRegistry putCustom(Class<?> clazz, Class<? extends Converter<?>> converterClass) {
-        return putCustom(clazz, ClassUtil.newInstance(converterClass));
+        return putCustom(clazz, ClassCommand.newInstance(converterClass));
     }
 
     /**
@@ -103,8 +107,8 @@ public class ConverterRegistry {
     /**
      * 获得转换器<br>
      *
-     * @param <T> 转换的目标类型
-     * @param type 类型
+     * @param <T>           转换的目标类型
+     * @param type          类型
      * @param isCustomFirst 是否自定义转换器优先
      * @return 转换器
      */
@@ -151,9 +155,9 @@ public class ConverterRegistry {
     /**
      * 转换值为指定类型
      *
-     * @param type 类型
-     * @param value 值
-     * @param defaultValue 默认值
+     * @param type          类型
+     * @param value         值
+     * @param defaultValue  默认值
      * @param isCustomFirst 是否自定义转换器优先
      * @return 转换后的值
      * @throws ConvertException 转换器不存在
@@ -161,7 +165,8 @@ public class ConverterRegistry {
     @SuppressWarnings("unchecked")
     public <T> T convert(Class<T> type, Object value, T defaultValue, boolean isCustomFirst) throws ConvertException {
         if (null == type && null == defaultValue) {
-            throw new NullPointerException("[type] and [defaultValue] are both null, we can not know what type to convert !");
+            throw new NullPointerException(
+                    "[type] and [defaultValue] are both null, we can not know what type to convert !");
         }
         if (null == value) {
             return defaultValue;
@@ -175,7 +180,7 @@ public class ConverterRegistry {
 
         Converter<T> converter = getConverter(type, isCustomFirst);
         if (null == converter) {
-//			return defaultValue;
+            // return defaultValue;
             throw new ConvertException("No Converter for type [{}]", type.getName());
         }
         return converter.convert(value, defaultValue);
@@ -185,8 +190,8 @@ public class ConverterRegistry {
      * 转换值为指定类型<br>
      * 自定义转换器优先
      *
-     * @param type 类型
-     * @param value 值
+     * @param type         类型
+     * @param value        值
      * @param defaultValue 默认值
      * @return 转换后的值
      * @throws ConvertException 转换器不存在
@@ -198,7 +203,7 @@ public class ConverterRegistry {
     /**
      * 转换值为指定类型
      *
-     * @param type 类型
+     * @param type  类型
      * @param value 值
      * @return 转换后的值，默认为<code>null</code>
      * @throws ConvertException 转换器不存在
@@ -215,7 +220,7 @@ public class ConverterRegistry {
     private ConverterRegistry defaultConverter() {
         defaultConverterMap = new ConcurrentHashMap<>();
 
-        //原始类型转换器
+        // 原始类型转换器
         defaultConverterMap.put(byte.class, new PrimitiveConverter(byte.class));
         defaultConverterMap.put(short.class, new PrimitiveConverter(short.class));
         defaultConverterMap.put(int.class, new PrimitiveConverter(int.class));
@@ -225,7 +230,7 @@ public class ConverterRegistry {
         defaultConverterMap.put(char.class, new PrimitiveConverter(char.class));
         defaultConverterMap.put(boolean.class, new PrimitiveConverter(boolean.class));
 
-        //包装类转换器
+        // 包装类转换器
         defaultConverterMap.put(String.class, new StringConverter());
         defaultConverterMap.put(Boolean.class, new BooleanConverter());
         defaultConverterMap.put(Character.class, new CharacterConverter());
@@ -239,7 +244,7 @@ public class ConverterRegistry {
         defaultConverterMap.put(BigDecimal.class, new NumberConverter(BigDecimal.class));
         defaultConverterMap.put(BigInteger.class, new NumberConverter(BigInteger.class));
 
-        //数组类型转换器
+        // 数组类型转换器
         defaultConverterMap.put(Integer[].class, new ArrayConverter<Integer>(Integer.class));
         defaultConverterMap.put(Long[].class, new ArrayConverter<Long>(Long.class));
         defaultConverterMap.put(Byte[].class, new ArrayConverter<Byte>(Byte.class));
@@ -250,7 +255,7 @@ public class ConverterRegistry {
         defaultConverterMap.put(Character[].class, new ArrayConverter<Character>(Character.class));
         defaultConverterMap.put(String[].class, new ArrayConverter<String>(String.class));
 
-        //原始类型数组转换器
+        // 原始类型数组转换器
         defaultConverterMap.put(byte[].class, new ByteArrayConverter());
         defaultConverterMap.put(short[].class, new ShortArrayConverter());
         defaultConverterMap.put(int[].class, new IntArrayConverter());
@@ -260,11 +265,11 @@ public class ConverterRegistry {
         defaultConverterMap.put(boolean[].class, new BooleanArrayConverter());
         defaultConverterMap.put(char[].class, new CharArrayConverter());
 
-        //URI and URL
+        // URI and URL
         defaultConverterMap.put(URI.class, new URIConverter());
         defaultConverterMap.put(URL.class, new URLConverter());
 
-        //日期时间
+        // 日期时间
         defaultConverterMap.put(Calendar.class, new CalendarConverter());
         defaultConverterMap.put(Date.class, new DateConverter());
         defaultConverterMap.put(DateTime.class, new DateTimeConverter());
@@ -272,7 +277,7 @@ public class ConverterRegistry {
         defaultConverterMap.put(java.sql.Time.class, new SqlTimeConverter());
         defaultConverterMap.put(java.sql.Timestamp.class, new SqlTimestampConverter());
 
-        //其它类型
+        // 其它类型
         defaultConverterMap.put(Class.class, new ClassConverter());
         defaultConverterMap.put(TimeZone.class, new TimeZoneConverter());
         defaultConverterMap.put(Charset.class, new CharsetConverter());
@@ -281,7 +286,7 @@ public class ConverterRegistry {
         return this;
     }
 
-    //----------------------------------------------------------- Private method start
+    // ----------------------------------------------------------- Private method start
 
     /**
      * 类级的内部类，也就是静态的成员式内部类，该内部类的实例与外部类的实例 没有绑定关系，而且只有被调用到才会装载，从而实现了延迟加载
@@ -292,5 +297,5 @@ public class ConverterRegistry {
          */
         private static ConverterRegistry instance = new ConverterRegistry();
     }
-    //----------------------------------------------------------- Private method end
+    // ----------------------------------------------------------- Private method end
 }

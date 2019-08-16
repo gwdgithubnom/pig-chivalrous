@@ -23,7 +23,7 @@ public class SyncFinisher {
      *
      * @param worker 工作线程
      */
-    synchronized public void addWorker(Worker worker) {
+    public synchronized void addWorker(Worker worker) {
         workers.add(worker);
     }
 

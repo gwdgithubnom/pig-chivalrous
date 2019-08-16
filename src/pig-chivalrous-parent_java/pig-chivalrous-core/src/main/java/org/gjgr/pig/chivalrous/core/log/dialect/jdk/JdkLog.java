@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.log.dialect.jdk;
 
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.AbstractLocationAwareLog;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -39,8 +39,8 @@ public class JdkLog extends AbstractLocationAwareLog {
      * 传入调用日志类的信息
      *
      * @param callerFQCN 调用者全限定类名
-     * @param superFQCN 调用者父类全限定名
-     * @param record The record to update
+     * @param superFQCN  调用者父类全限定名
+     * @param record     The record to update
      */
     private static void fillCallerData(String callerFQCN, LogRecord record) {
         StackTraceElement[] steArray = new Throwable().getStackTrace();
@@ -73,7 +73,8 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
+    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+                    Object... arguments) {
 
     }
 
@@ -170,35 +171,21 @@ public class JdkLog extends AbstractLocationAwareLog {
     // ------------------------------------------------------------------------- Private method
 
     public void log(String fqcn, Level level, Throwable t, String format, Object... arguments) {
-        /*Level jdkLevel;
-        switch (level) {
-			case TRACE:
-				jdkLevel = Level.FINEST;
-				break;
-			case DEBUG:
-				jdkLevel = Level.FINE;
-				break;
-			case INFO:
-				jdkLevel = Level.INFO;
-				break;
-			case WARN:
-				jdkLevel = Level.WARNING;
-				break;
-			case ERROR:
-				jdkLevel = Level.SEVERE;
-				break;
-			default:
-				throw new Error(StrUtil.format("Can not identify level: {}", level));
-		}
-		logIfEnabled(fqcn, jdkLevel, t, format, arguments);*/
+        /*
+         * Level jdkLevel; switch (level) { case TRACE: jdkLevel = Level.FINEST; break; case DEBUG: jdkLevel =
+         * Level.FINE; break; case INFO: jdkLevel = Level.INFO; break; case WARN: jdkLevel = Level.WARNING; break; case
+         * ERROR: jdkLevel = Level.SEVERE; break; default: throw new
+         * Error(StringCommand.format("Can not identify level: {}", level)); } logIfEnabled(fqcn, jdkLevel, t, format,
+         * arguments);
+         */
     }
 
     /**
      * 打印对应等级的日志
      *
-     * @param level 等级
+     * @param level     等级
      * @param throwable 异常对象
-     * @param format 消息模板
+     * @param format    消息模板
      * @param arguments 参数
      */
     private void logIfEnabled(Level level, Throwable throwable, String format, Object[] arguments) {
@@ -209,14 +196,14 @@ public class JdkLog extends AbstractLocationAwareLog {
      * 打印对应等级的日志
      *
      * @param callerFQCN
-     * @param level 等级
-     * @param throwable 异常对象
-     * @param format 消息模板
-     * @param arguments 参数
+     * @param level      等级
+     * @param throwable  异常对象
+     * @param format     消息模板
+     * @param arguments  参数
      */
     private void logIfEnabled(String callerFQCN, Level level, Throwable throwable, String format, Object[] arguments) {
         if (logger.isLoggable(level)) {
-            LogRecord record = new LogRecord(level, StrUtil.format(format, arguments));
+            LogRecord record = new LogRecord(level, StringCommand.format(format, arguments));
             record.setLoggerName(getName());
             record.setThrown(throwable);
             fillCallerData(callerFQCN, record);
@@ -225,7 +212,8 @@ public class JdkLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
-        //TODO
+    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+                    Object... arguments) {
+        // TODO
     }
 }

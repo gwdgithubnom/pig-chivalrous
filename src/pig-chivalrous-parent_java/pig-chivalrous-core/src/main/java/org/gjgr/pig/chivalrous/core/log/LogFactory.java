@@ -134,18 +134,22 @@ public abstract class LogFactory {
             } catch (Throwable e2) {
                 try {
                     logFactory = new Log4j2LogFactory();
-                    logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.", logFactory.logFramworkName);
+                    logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.",
+                            logFactory.logFramworkName);
                 } catch (Throwable e3) {
                     try {
                         logFactory = new SimpleLogFactory();
-                        logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.", logFactory.logFramworkName);
+                        logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.",
+                                logFactory.logFramworkName);
                     } catch (Throwable e4) {
                         try {
                             logFactory = new JdkLogFactory();
-                            logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.", logFactory.logFramworkName);
+                            logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.",
+                                    logFactory.logFramworkName);
                         } catch (Throwable e6) {
                             logFactory = new ConsoleLogFactory();
-                            logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.", logFactory.logFramworkName);
+                            logFactory.getLog(LogFactory.class).debug("Use [{}] Logger As Default.",
+                                    logFactory.logFramworkName);
                         }
                     }
                 }

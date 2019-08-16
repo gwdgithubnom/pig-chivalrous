@@ -23,12 +23,12 @@ public class ConverterRegistryTest {
     public void arrayConverterTest() {
         String arrayStr = "1,2,3,4,5";
 
-        //获取Converter类的方法1，从ConverterRegistry单例对象中查找
+        // 获取Converter类的方法1，从ConverterRegistry单例对象中查找
         Converter<Integer[]> c = ConverterRegistry.getInstance().getDefaultConverter(Integer[].class);
         Integer[] result = c.convert(arrayStr, null);
         Assert.assertArrayEquals(new Integer[] {1, 2, 3, 4, 5}, result);
 
-        //获取Converter类的方法2，自己实例化相应Converter对象
+        // 获取Converter类的方法2，自己实例化相应Converter对象
         ArrayConverter<Integer> c2 = new ArrayConverter<>(Integer.class);
         Integer[] result2 = c2.convert(arrayStr, null);
         Assert.assertArrayEquals(new Integer[] {1, 2, 3, 4, 5}, result2);
@@ -38,8 +38,8 @@ public class ConverterRegistryTest {
     public void customTest() {
         int a = 454553;
         ConverterRegistry converterRegistry = ConverterRegistry.getInstance();
-        //此处做为示例自定义CharSequence转换，因为Hutool中已经提供CharSequence转换，请尽量不要替换
-        //替换可能引发关联转换异常（例如覆盖CharSequence转换会影响全局）
+        // 此处做为示例自定义CharSequence转换，因为Hutool中已经提供CharSequence转换，请尽量不要替换
+        // 替换可能引发关联转换异常（例如覆盖CharSequence转换会影响全局）
         converterRegistry.putCustom(CharSequence.class, CustomConverter.class);
         CharSequence result = converterRegistry.convert(CharSequence.class, a);
         Assert.assertEquals("Custom: 454553", result);

@@ -3,8 +3,7 @@ package org.gjgr.pig.chivalrous.core.lang;
 /**
  * 编辑器接口，常用于对于集合中的元素做统一编辑<br>
  * 此编辑器两个作用：<br>
- * 1、如果返回值为<code>null</code>，表示此值被抛弃
- * 2、对对象做修改
+ * 1、如果返回值为<code>null</code>，表示此值被抛弃 2、对对象做修改
  *
  * @param <T>
  * @author Looly

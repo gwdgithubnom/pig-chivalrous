@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.aop.test;
 
-import org.gjgr.pig.chivalrous.core.aop.ProxyUtil;
+import org.gjgr.pig.chivalrous.core.aop.ProxyCommand;
 import org.gjgr.pig.chivalrous.core.aop.aspects.TimeIntervalAspect;
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class AopTest {
 
     @Test
     public void aopTest() {
-        Animal cat = ProxyUtil.proxy(new Cat(), TimeIntervalAspect.class);
+        Animal cat = ProxyCommand.proxy(new Cat(), TimeIntervalAspect.class);
         cat.eat();
     }
 

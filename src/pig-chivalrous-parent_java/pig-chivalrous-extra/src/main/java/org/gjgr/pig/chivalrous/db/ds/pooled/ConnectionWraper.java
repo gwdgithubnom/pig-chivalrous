@@ -26,7 +26,7 @@ import java.util.concurrent.Executor;
  */
 public abstract class ConnectionWraper implements Connection {
 
-    protected Connection raw;//真正的连接
+    protected Connection raw;// 真正的连接
 
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
@@ -56,6 +56,13 @@ public abstract class ConnectionWraper implements Connection {
     @Override
     public String nativeSQL(String sql) throws SQLException {
         return raw.nativeSQL(sql);
+    }
+
+    /**
+     * @return 实际的连接对象
+     */
+    public Connection getRaw() {
+        return this.raw;
     }
 
     @Override
@@ -129,7 +136,8 @@ public abstract class ConnectionWraper implements Connection {
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency)
+            throws SQLException {
         return raw.prepareStatement(sql, resultSetType, resultSetConcurrency);
     }
 
@@ -179,17 +187,20 @@ public abstract class ConnectionWraper implements Connection {
     }
 
     @Override
-    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
         return raw.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
     @Override
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency,
+                                              int resultSetHoldability) throws SQLException {
         return raw.prepareStatement(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
     @Override
-    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
+                                         int resultSetHoldability) throws SQLException {
         return raw.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
@@ -288,10 +299,4 @@ public abstract class ConnectionWraper implements Connection {
         return raw.getNetworkTimeout();
     }
 
-    /**
-     * @return 实际的连接对象
-     */
-    public Connection getRaw() {
-        return this.raw;
-    }
 }

@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.db;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.util.PageUtil;
 import org.gjgr.pig.chivalrous.db.sql.Order;
 
@@ -48,7 +48,7 @@ public class Page {
      */
     public Page(int pageNumber, int numPerPage, Order order) {
         this(pageNumber, numPerPage);
-        this.orders = new Order[]{order};
+        this.orders = new Order[] {order};
     }
     // ---------------------------------------------------------- Constructor start
 
@@ -109,7 +109,7 @@ public class Page {
      */
     public void addOrder(Order... orders) {
         if (null != this.orders) {
-            ArrayUtil.append(this.orders, orders);
+            ArrayCommand.append(this.orders, orders);
         }
         this.orders = orders;
     }

@@ -65,6 +65,40 @@ public final class RandomCommand {
     }
 
     /**
+     * return a random value in [0,1)
+     *
+     * @return
+     */
+    public static double randomDouble() {
+        Random random = new Random();
+        return random.nextDouble();
+    }
+
+    /**
+     * 获得指定范围内的随机数
+     *
+     * @param min 最小数
+     * @param max 最大数
+     * @return 随机数
+     */
+    public static double randomDouble(int min, int max) {
+        return randomDouble(max - min) + min;
+    }
+
+    /**
+     * return a random double value in [0,limit)
+     *
+     * @param limit
+     * @return
+     */
+    public static double randomDouble(int limit) {
+        Random random = new Random();
+        double d = random.nextDouble();
+        d = d + random.nextInt(limit);
+        return d;
+    }
+
+    /**
      * 随机bytes
      *
      * @param length 长度
@@ -80,7 +114,7 @@ public final class RandomCommand {
     /**
      * 随机获得列表中的元素
      *
-     * @param <T> 元素类型
+     * @param <T>  元素类型
      * @param list 列表
      * @return 随机元素
      */
@@ -91,8 +125,8 @@ public final class RandomCommand {
     /**
      * 随机获得列表中的元素
      *
-     * @param <T> 元素类型
-     * @param list 列表
+     * @param <T>   元素类型
+     * @param list  列表
      * @param limit 限制列表的前N项
      * @return 随机元素
      */
@@ -103,8 +137,8 @@ public final class RandomCommand {
     /**
      * 随机获得列表中的一定量元素
      *
-     * @param <T> 元素类型
-     * @param list 列表
+     * @param <T>   元素类型
+     * @param list  列表
      * @param count 随机取出的个数
      * @return 随机元素
      */
@@ -121,9 +155,9 @@ public final class RandomCommand {
     /**
      * 随机获得列表中的一定量的不重复元素，返回Set
      *
-     * @param <T> 元素类型
+     * @param <T>        元素类型
      * @param collection 列表
-     * @param count 随机取出的个数
+     * @param count      随机取出的个数
      * @return 随机元素
      * @throws IllegalArgumentException 需要的长度大于给定集合非重复总数
      */
@@ -166,7 +200,7 @@ public final class RandomCommand {
      * 获得一个随机的字符串
      *
      * @param baseString 随机字符选取的样本
-     * @param length 字符串的长度
+     * @param length     字符串的长度
      * @return 随机字符串
      */
     public static String randomString(String baseString, int length) {

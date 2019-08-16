@@ -6,14 +6,14 @@ import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
 import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
 import org.gjgr.pig.chivalrous.core.io.watch.SimpleWatcher;
 import org.gjgr.pig.chivalrous.core.io.watch.WatchMonitor;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.gjgr.pig.chivalrous.core.setting.AbsSetting;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
 import org.gjgr.pig.chivalrous.core.setting.SettingLoader;
 import org.gjgr.pig.chivalrous.core.setting.SettingRuntimeException;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 import java.io.File;
 import java.net.URL;
@@ -30,11 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 分组设置工具类。 用于支持设置文件<br>
- * 1、支持变量，默认变量命名为 ${变量名}，变量只能识别读入行的变量，例如第6行的变量在第三行无法读取
- * 2、支持分组，分组为中括号括起来的内容，中括号以下的行都为此分组的内容，无分组相当于空字符分组<br>
- * 若某个key是name，加上分组后的键相当于group.name
- * 3、注释以#开头，但是空行和不带“=”的行也会被跳过，但是建议加#
- * 4、store方法不会保存注释内容，慎重使用
+ * 1、支持变量，默认变量命名为 ${变量名}，变量只能识别读入行的变量，例如第6行的变量在第三行无法读取 2、支持分组，分组为中括号括起来的内容，中括号以下的行都为此分组的内容，无分组相当于空字符分组<br>
+ * 若某个key是name，加上分组后的键相当于group.name 3、注释以#开头，但是空行和不带“=”的行也会被跳过，但是建议加# 4、store方法不会保存注释内容，慎重使用
  *
  * @author xiaoleilu
  */
@@ -43,7 +40,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
     /**
      * 默认字符集
      */
-    public final static Charset DEFAULT_CHARSET = CharsetUtil.CHARSET_UTF_8;
+    public static final Charset DEFAULT_CHARSET = CharsetCommand.CHARSET_UTF_8;
 
     /**
      * 分组
@@ -86,48 +83,48 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
      * 构造，使用相对于Class文件根目录的相对路径
      *
      * @param pathBaseClassLoader 相对路径（相对于当前项目的classes路径）
-     * @param charset 字符集
-     * @param isUseVariable 是否使用变量
+     * @param charset             字符集
+     * @param isUseVariable       是否使用变量
      */
     public BasicSetting(String pathBaseClassLoader, Charset charset, boolean isUseVariable) {
-        Assert.notBlank(pathBaseClassLoader, "Blank setting path !");
+        AssertCommand.notBlank(pathBaseClassLoader, "Blank setting path !");
         this.init(new ClassPathResource(pathBaseClassLoader), charset, isUseVariable);
     }
 
     /**
      * 构造
      *
-     * @param configFile 配置文件对象
-     * @param charset 字符集
+     * @param configFile    配置文件对象
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(File configFile, Charset charset, boolean isUseVariable) {
-        Assert.notNull(configFile, "Null setting file define!");
+        AssertCommand.notNull(configFile, "Null setting file define!");
         this.init(new UrlResource(configFile), charset, isUseVariable);
     }
 
     /**
      * 构造，相对于classes读取文件
      *
-     * @param path 相对路径
-     * @param clazz 基准类
-     * @param charset 字符集
+     * @param path          相对路径
+     * @param clazz         基准类
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(String path, Class<?> clazz, Charset charset, boolean isUseVariable) {
-        Assert.notBlank(path, "Blank setting path !");
+        AssertCommand.notBlank(path, "Blank setting path !");
         this.init(new ClassPathResource(path, clazz), charset, isUseVariable);
     }
 
     /**
      * 构造
      *
-     * @param url 设定文件的URL
-     * @param charset 字符集
+     * @param url           设定文件的URL
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      */
     public BasicSetting(URL url, Charset charset, boolean isUseVariable) {
-        Assert.notNull(url, "Null setting url define!");
+        AssertCommand.notNull(url, "Null setting url define!");
         this.init(new UrlResource(url), charset, isUseVariable);
     }
 
@@ -136,8 +133,8 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
     /**
      * 初始化设定文件
      *
-     * @param urlResource 设定文件的URL
-     * @param charset 字符集
+     * @param urlResource   设定文件的URL
+     * @param charset       字符集
      * @param isUseVariable 是否使用变量
      * @return 成功初始化与否
      */
@@ -155,7 +152,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
     /**
      * 重新加载配置文件
      */
-    synchronized public boolean load() {
+    public synchronized boolean load() {
         if (null == this.settingLoader) {
             settingLoader = new SettingLoader(this, this.charset, this.isUseVariable);
         }
@@ -222,7 +219,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
         return this.map.get(key);
     }
 
-    //--------------------------------------------------------------------------------- Functions
+    // --------------------------------------------------------------------------------- Functions
 
     @Override
     public Object put(Object key, Object value) {
@@ -249,7 +246,7 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
         this.map.clear();
     }
 
-    //------------------------------------------------- Override Map interface
+    // ------------------------------------------------- Override Map interface
 
     @Override
     public Set<Object> keySet() {
@@ -285,17 +282,17 @@ public class BasicSetting extends AbsSetting implements Map<Object, Object> {
      * @return beanMapWithHashSetValue
      */
     public Map<?, ?> getMap(String group) {
-        if (StrUtil.isBlank(group)) {
+        if (StringCommand.isBlank(group)) {
             return this;
         }
 
-        String groupDot = group.concat(StrUtil.DOT);
+        String groupDot = group.concat(StringCommand.DOT);
         Map<String, Object> map2 = new HashMap<String, Object>();
         String keyStr;
         for (Object key : map.keySet()) {
             keyStr = Convert.toStr(key);
-            if (StrUtil.isNotBlank(keyStr) && keyStr.startsWith(groupDot)) {
-                map2.put(StrUtil.removePrefix(keyStr, groupDot), map.get(key));
+            if (StringCommand.isNotBlank(keyStr) && keyStr.startsWith(groupDot)) {
+                map2.put(StringCommand.removePrefix(keyStr, groupDot), map.get(key));
             }
         }
         return map2;

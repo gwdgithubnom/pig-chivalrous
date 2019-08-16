@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.system;
 
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 
 public class RuntimeInfo {
 

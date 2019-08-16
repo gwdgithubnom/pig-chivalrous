@@ -4,9 +4,9 @@ import org.gjgr.pig.chivalrous.core.cron.CronException;
 import org.gjgr.pig.chivalrous.core.cron.pattern.parser.DayOfMonthValueParser;
 import org.gjgr.pig.chivalrous.core.cron.pattern.parser.ValueParser;
 import org.gjgr.pig.chivalrous.core.cron.pattern.parser.YearValueParser;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.NumberUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.NumberCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ValueMatcherBuilder {
      * 处理定时任务表达式每个时间字段<br>
      * 多个时间使用逗号分隔
      *
-     * @param value 某个时间字段
+     * @param value  某个时间字段
      * @param parser 针对这个时间字段的解析器
      * @return List
      */
@@ -36,10 +36,10 @@ public class ValueMatcherBuilder {
         }
 
         if (parser instanceof DayOfMonthValueParser) {
-            //考虑每月的天数不同，切存在闰年情况，日匹配单独使用
+            // 考虑每月的天数不同，切存在闰年情况，日匹配单独使用
             return new DayOfMonthValueMatcher(values);
         } else if (parser instanceof YearValueParser) {
-            //考虑年数字太大，不适合boolean数组，单独使用列表遍历匹配
+            // 考虑年数字太大，不适合boolean数组，单独使用列表遍历匹配
             return new YearValueMatcher(values);
         } else {
             return new BoolArrayValueMatcher(values);
@@ -54,16 +54,16 @@ public class ValueMatcherBuilder {
      * <li><strong>a,b,c,d</strong></li>
      * </ul>
      *
-     * @param value 子表达式值
+     * @param value  子表达式值
      * @param parser 针对这个字段的解析器
      * @return 值列表
      */
     private static List<Integer> parseArray(String value, ValueParser parser) {
         final List<Integer> values = new ArrayList<>();
 
-        final List<String> parts = StrUtil.split(value, StrUtil.C_COMMA);
+        final List<String> parts = StringCommand.split(value, StringCommand.C_COMMA);
         for (String part : parts) {
-            CollectionUtil.addAllIfNotContains(values, parseStep(part, parser));
+            CollectionCommand.addAllIfNotContains(values, parseStep(part, parser));
         }
         return values;
     }
@@ -77,16 +77,18 @@ public class ValueMatcherBuilder {
      * <li><strong>a-b/2</strong></li>
      * </ul>
      *
-     * @param value 表达式值
+     * @param value  表达式值
      * @param parser 针对这个时间字段的解析器
      * @return List
      */
     private static List<Integer> parseStep(String value, ValueParser parser) {
-        List<String> parts = StrUtil.split(value, StrUtil.C_SLASH);
+        List<String> parts = StringCommand.split(value, StringCommand.C_SLASH);
         int size = parts.size();
-        if (size == 1) {// 普通形式
+        if (size == 1) {
+            // 普通形式
             return parseRange(value, parser);
-        } else if (size == 2) {// 间隔形式
+        } else if (size == 2) {
+            // 间隔形式
             final List<Integer> rangeValues = parseRange(parts.get(0), parser);
             int step = parser.parse(parts.get(1));
             if (step < 1) {
@@ -113,7 +115,7 @@ public class ValueMatcherBuilder {
      * <li>3-3</li>
      * </ul>
      *
-     * @param value 范围表达式
+     * @param value  范围表达式
      * @param parser 针对这个时间字段的解析器
      * @return List
      */
@@ -127,21 +129,26 @@ public class ValueMatcherBuilder {
             return values;
         }
 
-        List<String> parts = StrUtil.split(value, '-');
+        List<String> parts = StringCommand.split(value, '-');
         int size = parts.size();
         List<Integer> values = new ArrayList<>();
-        if (size == 1) {// 普通值
+        if (size == 1) {
+            // 普通值
             values.add(parser.parse(value));
             return values;
-        } else if (size == 2) {// range值
+        } else if (size == 2) {
+            // range值
             int v1 = parser.parse(parts.get(0));
             int v2 = parser.parse(parts.get(1));
-            if (v1 < v2) {// 正常范围，例如：2-5
-                NumberUtil.appendRange(v1, v2, values);
-            } else if (v1 > v2) {// 逆向范围，反选模式，例如：5-2
-                NumberUtil.appendRange(v1, parser.getMax(), values);
-                NumberUtil.appendRange(parser.getMin(), v2, values);
-            } else {// v1 == v2
+            if (v1 < v2) {
+                // 正常范围，例如：2-5
+                NumberCommand.appendRange(v1, v2, values);
+            } else if (v1 > v2) {
+                // 逆向范围，反选模式，例如：5-2
+                NumberCommand.appendRange(v1, parser.getMax(), values);
+                NumberCommand.appendRange(parser.getMin(), v2, values);
+            } else {
+                // v1 == v2
                 values.add(v1);
             }
         } else {

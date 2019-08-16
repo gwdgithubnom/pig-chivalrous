@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.db;
 
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.db.ds.pooled.PooledDataSource;
 import org.gjgr.pig.chivalrous.db.handler.EntityHandler;
 import org.gjgr.pig.chivalrous.db.handler.EntityListHandler;
@@ -34,7 +34,7 @@ public class DaoTemplate {
      */
     protected SqlRunner runner;
 
-    //--------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------- Constructor start
 
     /**
      * 构造，此构造需要自定义SqlRunner，主键默认为id
@@ -79,14 +79,14 @@ public class DaoTemplate {
      */
     public DaoTemplate(String tableName, String primaryKeyField, SqlRunner runner) {
         this.tableName = tableName;
-        if (StrUtil.isNotBlank(primaryKeyField)) {
+        if (StringCommand.isNotBlank(primaryKeyField)) {
             this.primaryKeyField = primaryKeyField;
         }
         this.runner = runner;
     }
-    //--------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------- Constructor end
 
-    //------------------------------------------------------------- Add start
+    // ------------------------------------------------------------- Add start
 
     /**
      * 添加
@@ -120,9 +120,9 @@ public class DaoTemplate {
     public Long addForGeneratedKey(Entity entity) throws SQLException {
         return runner.insertForGeneratedKey(fixEntity(entity));
     }
-    //------------------------------------------------------------- Add end
+    // ------------------------------------------------------------- Add end
 
-    //------------------------------------------------------------- Delete start
+    // ------------------------------------------------------------- Delete start
 
     /**
      * 删除
@@ -149,7 +149,7 @@ public class DaoTemplate {
      * @throws SQLException
      */
     public <T> int del(String field, T value) throws SQLException {
-        if (StrUtil.isBlank(field)) {
+        if (StringCommand.isBlank(field)) {
             return 0;
         }
 
@@ -165,14 +165,14 @@ public class DaoTemplate {
      * @throws SQLException
      */
     public <T> int del(Entity where) throws SQLException {
-        if (CollectionUtil.isEmpty(where)) {
+        if (CollectionCommand.isEmpty(where)) {
             return 0;
         }
         return runner.del(fixEntity(where));
     }
-    //------------------------------------------------------------- Delete end
+    // ------------------------------------------------------------- Delete end
 
-    //------------------------------------------------------------- Update start
+    // ------------------------------------------------------------- Update start
 
     /**
      * 按照条件更新
@@ -183,7 +183,7 @@ public class DaoTemplate {
      * @throws SQLException
      */
     public int update(Entity record, Entity where) throws SQLException {
-        if (CollectionUtil.isEmpty(record)) {
+        if (CollectionCommand.isEmpty(record)) {
             return 0;
         }
         return runner.update(fixEntity(record), where);
@@ -197,13 +197,13 @@ public class DaoTemplate {
      * @throws SQLException
      */
     public int update(Entity entity) throws SQLException {
-        if (CollectionUtil.isEmpty(entity)) {
+        if (CollectionCommand.isEmpty(entity)) {
             return 0;
         }
         entity = fixEntity(entity);
         Object pk = entity.get(primaryKeyField);
         if (null == pk) {
-            throw new SQLException(StrUtil.format("Please determine `{}` for update", primaryKeyField));
+            throw new SQLException(StringCommand.format("Please determine `{}` for update", primaryKeyField));
         }
 
         final Entity where = Entity.create(tableName).set(primaryKeyField, pk);
@@ -223,9 +223,9 @@ public class DaoTemplate {
     public int addOrUpdate(Entity entity) throws SQLException {
         return null == entity.get(primaryKeyField) ? add(entity) : update(entity);
     }
-    //------------------------------------------------------------- Update end
+    // ------------------------------------------------------------- Update end
 
-    //------------------------------------------------------------- Get start
+    // ------------------------------------------------------------- Get start
 
     /**
      * 根据主键获取单个记录
@@ -263,9 +263,9 @@ public class DaoTemplate {
     public Entity get(Entity where) throws SQLException {
         return runner.find(null, fixEntity(where), new EntityHandler());
     }
-    //------------------------------------------------------------- Get end
+    // ------------------------------------------------------------- Get end
 
-    //------------------------------------------------------------- Find start
+    // ------------------------------------------------------------- Find start
 
     /**
      * 根据某个字段值查询结果
@@ -311,7 +311,7 @@ public class DaoTemplate {
      * @throws SQLException
      */
     public List<Entity> findBySql(String sql, Object... params) throws SQLException {
-        String selectKeyword = StrUtil.subPre(sql.trim(), 6).toLowerCase();
+        String selectKeyword = StringCommand.subPre(sql.trim(), 6).toLowerCase();
         if (false == "select".equals(selectKeyword)) {
             sql = "SELECT * FROM " + this.tableName + " " + sql;
         }
@@ -364,7 +364,7 @@ public class DaoTemplate {
     public boolean exist(Entity where) throws SQLException {
         return this.count(where) > 0;
     }
-    //------------------------------------------------------------- Find end
+    // ------------------------------------------------------------- Find end
 
     /**
      * 修正Entity对象，避免null和填充表名
@@ -375,7 +375,7 @@ public class DaoTemplate {
     private Entity fixEntity(Entity entity) {
         if (null == entity) {
             entity = Entity.create(tableName);
-        } else if (StrUtil.isBlank(entity.getTableName())) {
+        } else if (StringCommand.isBlank(entity.getTableName())) {
             entity.setTableName(tableName);
         }
         return entity;

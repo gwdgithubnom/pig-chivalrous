@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.setting;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 设置异常
@@ -19,7 +19,7 @@ public class SettingRuntimeException extends RuntimeException {
     }
 
     public SettingRuntimeException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public SettingRuntimeException(String message, Throwable throwable) {
@@ -27,6 +27,6 @@ public class SettingRuntimeException extends RuntimeException {
     }
 
     public SettingRuntimeException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

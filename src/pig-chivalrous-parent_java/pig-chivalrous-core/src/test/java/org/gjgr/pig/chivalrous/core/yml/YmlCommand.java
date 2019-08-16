@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.yml;
 
-import org.gjgr.pig.chivalrous.core.file.YmlNode;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
@@ -12,8 +12,8 @@ import java.util.Map;
 
 /**
  * @Author gwd
- * @Time 09-28-2018  Friday
- * @Description: developer.tools:
+ * @Time 09-28-2018 Friday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
@@ -27,11 +27,9 @@ public class YmlCommand {
             if (oo instanceof Map) {
                 System.out.println("true");
             }
-            YmlNode root = org.gjgr.pig.chivalrous.core.file.YmlCommand.getYmlNode("application.yml");
+            YmlNode root = org.gjgr.pig.chivalrous.core.io.file.yml.YmlCommand.getYmlNode("application.yml");
 
-            System.out.println(root.get("pipeline0").get("push").get("country").value());
-
-            System.out.println(oo.getClass().getName());
+            System.out.println(root.get("test").get("save").get("jsonArray").get("set").object().getClass());
             System.out.println(oo.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();

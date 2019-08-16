@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.db.ds.pooled;
 
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.ds.simple.AbstractDataSource;
@@ -21,7 +21,7 @@ import java.util.Queue;
 public class PooledDataSource extends AbstractDataSource {
 
     private Queue<PooledConnection> freePool;
-    private int activeCount;            //活跃连接数
+    private int activeCount; // 活跃连接数
 
     private DbConfig config;
 
@@ -29,7 +29,7 @@ public class PooledDataSource extends AbstractDataSource {
      * 构造，读取默认的配置文件和默认分组
      */
     public PooledDataSource() {
-        this(StrUtil.EMPTY);
+        this(StringCommand.EMPTY);
     }
 
     /**
@@ -41,7 +41,7 @@ public class PooledDataSource extends AbstractDataSource {
         this(new DbSetting(), group);
     }
 
-    //-------------------------------------------------------------------- Constructor start
+    // -------------------------------------------------------------------- Constructor start
 
     /**
      * 构造
@@ -76,17 +76,17 @@ public class PooledDataSource extends AbstractDataSource {
      *
      * @param group 数据源分组
      */
-    synchronized public static PooledDataSource getDataSource(String group) {
+    public static synchronized PooledDataSource getDataSource(String group) {
         return new PooledDataSource(group);
     }
 
     /**
      * 获得一个数据源
      */
-    synchronized public static PooledDataSource getDataSource() {
+    public static synchronized PooledDataSource getDataSource() {
         return new PooledDataSource();
     }
-    //-------------------------------------------------------------------- Constructor start
+    // -------------------------------------------------------------------- Constructor start
 
     /**
      * 从数据库连接池中获取数据库连接对象
@@ -143,8 +143,8 @@ public class PooledDataSource extends AbstractDataSource {
     }
 
     @Override
-    synchronized public void close() throws IOException {
-        if (CollectionUtil.isNotEmpty(this.freePool)) {
+    public synchronized void close() throws IOException {
+        if (CollectionCommand.isNotEmpty(this.freePool)) {
             for (PooledConnection pooledConnection : freePool) {
                 pooledConnection.release();
                 this.freePool.clear();
@@ -171,7 +171,7 @@ public class PooledDataSource extends AbstractDataSource {
 
         int maxActive = config.getMaxActive();
         if (maxActive <= 0 || maxActive < this.activeCount) {
-            //超过最大使用限制
+            // 超过最大使用限制
             throw new SQLException("In used Connection is more than Max Active.");
         }
 

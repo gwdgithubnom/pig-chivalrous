@@ -2,9 +2,9 @@ package org.gjgr.pig.chivalrous.db.ds.tomcat;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
@@ -38,9 +38,9 @@ public class TomcatDSFactory extends DSFactory {
     }
 
     @Override
-    synchronized public DataSource getDataSource(String group) {
+    public synchronized DataSource getDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         // 如果已经存在已有数据源（连接池）直接返回
@@ -58,7 +58,7 @@ public class TomcatDSFactory extends DSFactory {
     @Override
     public void close(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         DataSource ds = dsMap.get(group);
@@ -70,7 +70,7 @@ public class TomcatDSFactory extends DSFactory {
 
     @Override
     public void destroy() {
-        if (CollectionUtil.isNotEmpty(dsMap)) {
+        if (CollectionCommand.isNotEmpty(dsMap)) {
             Collection<DataSource> values = dsMap.values();
             for (DataSource ds : values) {
                 if (null != ds) {
@@ -89,7 +89,7 @@ public class TomcatDSFactory extends DSFactory {
      */
     private DataSource createDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         Setting config = setting.getSetting(group);
@@ -99,18 +99,18 @@ public class TomcatDSFactory extends DSFactory {
 
         final PoolProperties poolProps = new PoolProperties();
 
-        //基本信息
+        // 基本信息
         poolProps.setUrl(getAndRemoveProperty(config, "url", "jdbcUrl"));
         poolProps.setUsername(getAndRemoveProperty(config, "username", "user"));
         poolProps.setPassword(getAndRemoveProperty(config, "password", "pass"));
         final String driver = getAndRemoveProperty(config, "driver", "driverClassName");
-        if (StrUtil.isNotBlank(driver)) {
+        if (StringCommand.isNotBlank(driver)) {
             poolProps.setDriverClassName(driver);
         } else {
             poolProps.setDriverClassName(DbUtil.identifyDriver(poolProps.getUrl()));
         }
 
-        //扩展属性
+        // 扩展属性
         config.toBean(poolProps);
 
         final DataSource ds = new DataSource(poolProps);
@@ -127,7 +127,7 @@ public class TomcatDSFactory extends DSFactory {
      */
     private String getAndRemoveProperty(Setting setting, String key1, String key2) {
         String value = (String) setting.remove(key1);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             value = (String) setting.remove(key2);
         }
         return value;

@@ -6,8 +6,8 @@ import java.lang.reflect.Type;
 
 /**
  * @Author gwd
- * @Time 08-17-2018  Friday
- * @Description: developer.tools:
+ * @Time 08-17-2018 Friday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */

@@ -1,9 +1,8 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.IORuntimeException;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,8 +25,8 @@ public class FileReader extends FileWrapper {
     /**
      * 构造
      *
-     * @param file 文件
-     * @param charset 编码，使用 {@link CharsetUtil}
+     * @param file    文件
+     * @param charset 编码，使用 {@link CharsetCommand}
      */
     public FileReader(File file, Charset charset) {
         super(file, charset);
@@ -37,11 +36,11 @@ public class FileReader extends FileWrapper {
     /**
      * 构造
      *
-     * @param file 文件
-     * @param charset 编码，使用 {@link CharsetUtil#charset(String)}
+     * @param file    文件
+     * @param charset 编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileReader(File file, String charset) {
-        this(file, CharsetUtil.charset(charset));
+        this(file, CharsetCommand.charset(charset));
     }
 
     // ------------------------------------------------------- Constructor start
@@ -50,7 +49,7 @@ public class FileReader extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetUtil}
+     * @param charset  编码，使用 {@link CharsetCommand}
      */
     public FileReader(String filePath, Charset charset) {
         this(FileCommand.file(filePath), charset);
@@ -60,10 +59,10 @@ public class FileReader extends FileWrapper {
      * 构造
      *
      * @param filePath 文件路径，相对路径会被转换为相对于ClassPath的路径
-     * @param charset 编码，使用 {@link CharsetUtil#charset(String)}
+     * @param charset  编码，使用 {@link CharsetCommand#charset(String)}
      */
     public FileReader(String filePath, String charset) {
-        this(FileCommand.file(filePath), CharsetUtil.charset(charset));
+        this(FileCommand.file(filePath), CharsetCommand.charset(charset));
     }
 
     /**
@@ -89,8 +88,8 @@ public class FileReader extends FileWrapper {
     /**
      * 创建 FileReader
      *
-     * @param file 文件
-     * @param charset 编码，使用 {@link CharsetUtil}
+     * @param file    文件
+     * @param charset 编码，使用 {@link CharsetCommand}
      * @return {@link FileReader}
      */
     public static FileReader create(File file, Charset charset) {
@@ -155,7 +154,7 @@ public class FileReader extends FileWrapper {
     public <T extends Collection<String>> T readLines(T collection) throws IORuntimeException {
         BufferedReader reader = null;
         try {
-            reader = FileCommand.getReader(file, charset);
+            reader = FileCommand.bufferedReader(file, charset);
             String line;
             while (true) {
                 line = reader.readLine();
@@ -193,7 +192,7 @@ public class FileReader extends FileWrapper {
         BufferedReader reader = null;
         T result = null;
         try {
-            reader = FileCommand.getReader(this.file, charset);
+            reader = FileCommand.bufferedReader(this.file, charset);
             result = readerHandler.handle(reader);
         } catch (IOException e) {
             throw new IORuntimeException(e);

@@ -7,8 +7,8 @@ import org.gjgr.pig.chivalrous.core.cron.pattern.CronPattern;
 import org.gjgr.pig.chivalrous.core.cron.task.InvokeTask;
 import org.gjgr.pig.chivalrous.core.cron.task.RunnableTask;
 import org.gjgr.pig.chivalrous.core.cron.task.Task;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
 import org.gjgr.pig.chivalrous.core.util.ThreadUtil;
 
 import java.util.Map.Entry;
@@ -20,23 +20,27 @@ import java.util.UUID;
  * <p>
  * 调度器启动流程：<br>
  * <p>
+ *
  * <pre>
  * 启动Timer -> 启动TaskLauncher -> 启动TaskExecutor
  * </pre>
  * <p>
  * 调度器关闭流程:<br>
  * <p>
+ *
  * <pre>
  * 关闭Timer -> 关闭所有运行中的TaskLauncher -> 关闭所有运行中的TaskExecutor
  * </pre>
  * <p>
  * 其中：
  * <p>
+ *
  * <pre>
  * <strong>TaskLauncher</strong>：定时器每分钟调用一次（如果{@link Scheduler#isMatchSecond()}为<code>true</code>每秒调用一次），
  * 负责检查<strong>TaskTable</strong>是否有匹配到此时间运行的Task
  * </pre>
  * <p>
+ *
  * <pre>
  * <strong>TaskExecutor</strong>：TaskLauncher匹配成功后，触发TaskExecutor执行具体的作业，执行完毕销毁
  * </pre>
@@ -200,13 +204,12 @@ public class Scheduler {
 
     /**
      * 批量加入配置文件中的定时任务<br>
-     * 配置文件格式为：
-     * xxx.xxx.xxx.Class.method = * * * * *
+     * 配置文件格式为： xxx.xxx.xxx.Class.method = * * * * *
      *
      * @param cronSetting 定时任务设置文件
      */
     public Scheduler schedule(Setting cronSetting) {
-        if (CollectionUtil.isNotEmpty(cronSetting)) {
+        if (CollectionCommand.isNotEmpty(cronSetting)) {
             for (Entry<Object, Object> entry : cronSetting.entrySet()) {
                 final String jobClass = Convert.toStr(entry.getKey());
                 final String pattern = Convert.toStr(entry.getValue());
@@ -224,7 +227,7 @@ public class Scheduler {
      * 新增Task，使用随机UUID
      *
      * @param pattern {@link CronPattern}对应的String表达式
-     * @param task {@link Runnable}
+     * @param task    {@link Runnable}
      * @return ID
      */
     public String schedule(String pattern, Runnable task) {
@@ -235,7 +238,7 @@ public class Scheduler {
      * 新增Task，使用随机UUID
      *
      * @param pattern {@link CronPattern}对应的String表达式
-     * @param task {@link Task}
+     * @param task    {@link Task}
      * @return ID
      */
     public String schedule(String pattern, Task task) {
@@ -247,9 +250,9 @@ public class Scheduler {
     /**
      * 新增Task
      *
-     * @param id ID，为每一个Task定义一个ID
+     * @param id      ID，为每一个Task定义一个ID
      * @param pattern {@link CronPattern}对应的String表达式
-     * @param task {@link Runnable}
+     * @param task    {@link Runnable}
      * @return this
      */
     public Scheduler schedule(String id, String pattern, Runnable task) {
@@ -259,9 +262,9 @@ public class Scheduler {
     /**
      * 新增Task
      *
-     * @param id ID，为每一个Task定义一个ID
+     * @param id      ID，为每一个Task定义一个ID
      * @param pattern {@link CronPattern}对应的String表达式
-     * @param task {@link Task}
+     * @param task    {@link Task}
      * @return this
      */
     public Scheduler schedule(String id, String pattern, Task task) {
@@ -271,9 +274,9 @@ public class Scheduler {
     /**
      * 新增Task
      *
-     * @param id ID，为每一个Task定义一个ID
+     * @param id      ID，为每一个Task定义一个ID
      * @param pattern {@link CronPattern}
-     * @param task {@link Task}
+     * @param task    {@link Task}
      * @return this
      */
     public Scheduler schedule(String id, CronPattern pattern, Task task) {
@@ -340,7 +343,7 @@ public class Scheduler {
             // 停止所有TaskExecutor
             this.taskExecutorManager.destroy();
 
-            //修改标志
+            // 修改标志
             started = false;
         }
         return this;

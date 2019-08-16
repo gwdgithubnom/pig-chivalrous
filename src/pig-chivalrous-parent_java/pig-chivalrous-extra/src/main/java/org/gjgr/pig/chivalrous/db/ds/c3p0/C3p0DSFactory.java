@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.db.ds.c3p0;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
@@ -38,9 +38,9 @@ public class C3p0DSFactory extends DSFactory {
     }
 
     @Override
-    synchronized public DataSource getDataSource(String group) {
+    public synchronized DataSource getDataSource(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         // 如果已经存在已有数据源（连接池）直接返回
@@ -58,7 +58,7 @@ public class C3p0DSFactory extends DSFactory {
     @Override
     public void close(String group) {
         if (group == null) {
-            group = StrUtil.EMPTY;
+            group = StringCommand.EMPTY;
         }
 
         ComboPooledDataSource ds = dsMap.get(group);
@@ -70,7 +70,7 @@ public class C3p0DSFactory extends DSFactory {
 
     @Override
     public void destroy() {
-        if (CollectionUtil.isNotEmpty(dsMap)) {
+        if (CollectionCommand.isNotEmpty(dsMap)) {
             Collection<ComboPooledDataSource> values = dsMap.values();
             for (ComboPooledDataSource ds : values) {
                 ds.close();
@@ -87,19 +87,19 @@ public class C3p0DSFactory extends DSFactory {
      */
     private ComboPooledDataSource createDataSource(String group) {
         final Setting config = setting.getSetting(group);
-        if (CollectionUtil.isEmpty(config)) {
+        if (CollectionCommand.isEmpty(config)) {
             throw new DbRuntimeException("No C3P0 config for group: [{}]", group);
         }
 
         final ComboPooledDataSource ds = new ComboPooledDataSource();
 
-        //基本信息
+        // 基本信息
         ds.setJdbcUrl(getAndRemoveProperty(config, "url", "jdbcUrl"));
         ds.setUser(getAndRemoveProperty(config, "username", "user"));
         ds.setPassword(getAndRemoveProperty(config, "password", "pass"));
         final String driver = getAndRemoveProperty(config, "driver", "driverClassName");
         try {
-            if (StrUtil.isNotBlank(driver)) {
+            if (StringCommand.isNotBlank(driver)) {
                 ds.setDriverClass(driver);
             } else {
                 ds.setDriverClass(DbUtil.identifyDriver(ds.getJdbcUrl()));
@@ -108,7 +108,7 @@ public class C3p0DSFactory extends DSFactory {
             throw new DbRuntimeException(e);
         }
 
-        config.toBean(ds);//注入属性
+        config.toBean(ds);// 注入属性
 
         return ds;
     }
@@ -123,7 +123,7 @@ public class C3p0DSFactory extends DSFactory {
      */
     private String getAndRemoveProperty(Setting setting, String key1, String key2) {
         String value = (String) setting.remove(key1);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             value = (String) setting.remove(key2);
         }
         return value;

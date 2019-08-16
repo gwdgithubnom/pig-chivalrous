@@ -1,6 +1,5 @@
 package org.gjgr.pig.chivalrous.excel.service;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -13,15 +12,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by gwd on 2016/5/23.
- * through this service can get the sheet and workbook object.
- * 未实现多线程的模式
+ * Created by gwd on 2016/5/23. through this service can get the sheet and workbook object. 未实现多线程的模式
  */
 
 public class PoiService {
 
     private static Logger logger = LoggerFactory.getLogger(PoiService.class.getName());
-
 
     public static Workbook openWorkbook(FileInputStream fileInputStream) {
 
@@ -30,8 +26,6 @@ public class PoiService {
         try {
             workbook = WorkbookFactory.create(fileInputStream);
         } catch (IOException e) {
-            logger.info(e.toString());
-        } catch (InvalidFormatException e) {
             logger.info(e.toString());
         }
 
@@ -53,7 +47,6 @@ public class PoiService {
         return workbook;
     }
 
-
     public static Sheet openSheet(FileInputStream fileInputStream) {
 
         try {
@@ -65,9 +58,6 @@ public class PoiService {
             return sheet;
         } catch (IOException e) {
             logger.error(e.toString());
-            return null;
-        } catch (InvalidFormatException e) {
-            logger.equals(e);
             return null;
         }
 

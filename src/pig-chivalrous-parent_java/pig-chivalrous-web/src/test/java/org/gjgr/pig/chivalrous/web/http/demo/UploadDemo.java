@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.web.http.demo;
 
-import org.gjgr.pig.chivalrous.core.io.FileUtil;
+import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
 import org.gjgr.pig.chivalrous.web.http.HttpRequest;
 import org.gjgr.pig.chivalrous.web.http.HttpResponse;
 import org.gjgr.pig.chivalrous.web.http.HttpUtil;

@@ -112,7 +112,7 @@ public interface BasicTypeGetter<K> {
      * 获得Enum类型的值
      *
      * @param clazz Enum的Class
-     * @param key KEY
+     * @param key   KEY
      * @return Enum类型的值，无则返回Null
      */
     public <E extends Enum<E>> E getEnum(Class<E> clazz, K key);

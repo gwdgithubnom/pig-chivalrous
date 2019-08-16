@@ -48,7 +48,7 @@ public class SqlRunner extends AbstractSqlRunner {
         this.ds = ds;
     }
 
-    //------------------------------------------------------- Constructor start
+    // ------------------------------------------------------- Constructor start
 
     /**
      * 创建SqlRunner<br>
@@ -82,19 +82,7 @@ public class SqlRunner extends AbstractSqlRunner {
     public static SqlRunner create(DataSource ds, String driverClassName) {
         return new SqlRunner(ds, DialectFactory.newDialect(driverClassName));
     }
-    //------------------------------------------------------- Constructor end
-
-    //---------------------------------------------------------------------------- Getters and Setters start
-    @Override
-    public SqlConnRunner getRunner() {
-        return this.runner;
-    }
-
-    @Override
-    public void setRunner(SqlConnRunner runner) {
-        this.runner = runner;
-    }
-    //---------------------------------------------------------------------------- Getters and Setters end
+    // ------------------------------------------------------- Constructor end
 
     @Override
     public Connection getConnection() throws SQLException {
@@ -105,7 +93,19 @@ public class SqlRunner extends AbstractSqlRunner {
     public void closeConnection(Connection conn) {
         DbUtil.close(conn);
     }
+    // ---------------------------------------------------------------------------- Getters and Setters end
 
-    //---------------------------------------------------------------------------- Private method start
-    //---------------------------------------------------------------------------- Private method end
+    // ---------------------------------------------------------------------------- Getters and Setters start
+    @Override
+    public SqlConnRunner getRunner() {
+        return this.runner;
+    }
+
+    @Override
+    public void setRunner(SqlConnRunner runner) {
+        this.runner = runner;
+    }
+
+    // ---------------------------------------------------------------------------- Private method start
+    // ---------------------------------------------------------------------------- Private method end
 }

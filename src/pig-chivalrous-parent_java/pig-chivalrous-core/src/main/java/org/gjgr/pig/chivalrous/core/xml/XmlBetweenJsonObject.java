@@ -62,6 +62,7 @@ public class XmlBetweenJsonObject {
     /**
      * Replace special characters with XmlBetweenJsonObject escapes:
      * <p>
+     *
      * <pre>
      * &amp; <small>(ampersand)</small> is replaced by &amp;amp;
      * &lt; <small>(less than)</small> is replaced by &amp;lt;
@@ -106,7 +107,8 @@ public class XmlBetweenJsonObject {
      * @throws JsonException Thrown if the string contains whitespace or is empty.
      */
     public static void noSpace(String string) throws JsonException {
-        int i, length = string.length();
+        int i;
+        int length = string.length();
         if (length == 0) {
             throw new JsonException("Empty string.");
         }
@@ -120,13 +122,14 @@ public class XmlBetweenJsonObject {
     /**
      * Scan the content following the named tag, attaching it to the context.
      *
-     * @param x The XmlTokener containing the source string.
+     * @param x       The XmlTokener containing the source string.
      * @param context The JsonObject that will include the new material.
-     * @param name The tag name.
+     * @param name    The tag name.
      * @return true if the close tag is processed.
      * @throws JsonException
      */
-    private static boolean parse(XmlTokener x, JsonObject context, String name, boolean keepStrings) throws JsonException {
+    private static boolean parse(XmlTokener x, JsonObject context, String name, boolean keepStrings)
+            throws JsonException {
         char c;
         int i;
         JsonObject jsonobject = null;
@@ -225,7 +228,8 @@ public class XmlBetweenJsonObject {
                         if (!(token instanceof String)) {
                             throw x.syntaxError("Missing value");
                         }
-                        jsonobject.accumulate(string, keepStrings ? token : InternalJsonUtil.stringToValue((String) token));
+                        jsonobject.accumulate(string,
+                                keepStrings ? token : InternalJsonUtil.stringToValue((String) token));
                         token = null;
                     } else {
                         jsonobject.accumulate(string, "");
@@ -255,7 +259,8 @@ public class XmlBetweenJsonObject {
                         } else if (token instanceof String) {
                             string = (String) token;
                             if (string.length() > 0) {
-                                jsonobject.accumulate("content", keepStrings ? token : InternalJsonUtil.stringToValue(string));
+                                jsonobject.accumulate("content",
+                                        keepStrings ? token : InternalJsonUtil.stringToValue(string));
                             }
 
                         } else if (token == LT) {
@@ -280,9 +285,12 @@ public class XmlBetweenJsonObject {
     }
 
     /**
-     * Convert a well-formed (but not necessarily valid) XmlBetweenJsonObject string into a JsonObject. Some information may be lost in this transformation because Json is a data format and XmlBetweenJsonObject is a document format.
-     * XmlBetweenJsonObject uses elements, attributes, and content text, while Json uses unordered collections of name/value pairs and arrays of values. Json does not does not like to distinguish between elements and
-     * attributes. Sequences of similar elements are represented as JSONArrays. Content text may be placed in a "content" member. Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
+     * Convert a well-formed (but not necessarily valid) XmlBetweenJsonObject string into a JsonObject. Some information
+     * may be lost in this transformation because Json is a data format and XmlBetweenJsonObject is a document format.
+     * XmlBetweenJsonObject uses elements, attributes, and content text, while Json uses unordered collections of
+     * name/value pairs and arrays of values. Json does not does not like to distinguish between elements and
+     * attributes. Sequences of similar elements are represented as JSONArrays. Content text may be placed in a
+     * "content" member. Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
      *
      * @param string The source string.
      * @return A JsonObject containing the structured data from the XmlBetweenJsonObject string.
@@ -293,14 +301,19 @@ public class XmlBetweenJsonObject {
     }
 
     /**
-     * Convert a well-formed (but not necessarily valid) XmlBetweenJsonObject string into a JsonObject. Some information may be lost in this transformation because Json is a data format and XmlBetweenJsonObject is a document format.
-     * XmlBetweenJsonObject uses elements, attributes, and content text, while Json uses unordered collections of name/value pairs and arrays of values. Json does not does not like to distinguish between elements and
-     * attributes. Sequences of similar elements are represented as JSONArrays. Content text may be placed in a "content" member. Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
+     * Convert a well-formed (but not necessarily valid) XmlBetweenJsonObject string into a JsonObject. Some information
+     * may be lost in this transformation because Json is a data format and XmlBetweenJsonObject is a document format.
+     * XmlBetweenJsonObject uses elements, attributes, and content text, while Json uses unordered collections of
+     * name/value pairs and arrays of values. Json does not does not like to distinguish between elements and
+     * attributes. Sequences of similar elements are represented as JSONArrays. Content text may be placed in a
+     * "content" member. Comments, prologs, DTDs, and <code>&lt;[ [ ]]></code> are ignored.
      * <p>
-     * All values are converted as strings, for 1, 01, 29.0 will not be coerced to numbers but will instead be the exact value as seen in the XmlBetweenJsonObject document.
+     * All values are converted as strings, for 1, 01, 29.0 will not be coerced to numbers but will instead be the exact
+     * value as seen in the XmlBetweenJsonObject document.
      *
-     * @param string The source string.
-     * @param keepStrings If true, then values will not be coerced into boolean or numeric values and will instead be left as strings
+     * @param string      The source string.
+     * @param keepStrings If true, then values will not be coerced into boolean or numeric values and will instead be
+     *                    left as strings
      * @return A JsonObject containing the structured data from the XmlBetweenJsonObject string.
      * @throws JsonException Thrown if there is an errors while parsing the string
      */
@@ -327,7 +340,7 @@ public class XmlBetweenJsonObject {
     /**
      * Convert a JsonObject into a well-formed, element-normal XmlBetweenJsonObject string.
      *
-     * @param object A JsonObject.
+     * @param object  A JsonObject.
      * @param tagName The optional name of the enclosing tag.
      * @return A string.
      * @throws JsonException Thrown if there is an error parsing the string
@@ -436,7 +449,8 @@ public class XmlBetweenJsonObject {
         }
 
         string = (object == null) ? "null" : escape(object.toString());
-        return (tagName == null) ? "\"" + string + "\"" : (string.length() == 0) ? "<" + tagName + "/>" : "<" + tagName + ">" + string + "</" + tagName + ">";
+        return (tagName == null) ? "\"" + string + "\""
+                : (string.length() == 0) ? "<" + tagName + "/>" : "<" + tagName + ">" + string + "</" + tagName + ">";
 
     }
 }

@@ -9,7 +9,9 @@ public class UserInfo {
     private final String USER_HOME = JavaSystemCommand.get("user.home", false);
     private final String USER_DIR = JavaSystemCommand.get("user.dir", false);
     private final String USER_LANGUAGE = JavaSystemCommand.get("user.language", false);
-    private final String USER_COUNTRY = ((JavaSystemCommand.get("user.country", false) == null) ? JavaSystemCommand.get("user.region", false) : JavaSystemCommand.get("user.country", false));
+    private final String USER_COUNTRY =
+            ((JavaSystemCommand.get("user.country", false) == null) ? JavaSystemCommand.get("user.region", false)
+                    : JavaSystemCommand.get("user.country", false));
     private final String JAVA_IO_TMPDIR = JavaSystemCommand.get("java.io.tmpdir", false);
 
     /**

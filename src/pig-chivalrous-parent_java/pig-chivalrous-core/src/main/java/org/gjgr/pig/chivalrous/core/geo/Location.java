@@ -9,7 +9,7 @@
 
 package org.gjgr.pig.chivalrous.core.geo;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import java.io.Serializable;
 
@@ -33,7 +33,7 @@ public class Location implements Serializable {
     /**
      * 构造
      *
-     * @param latitude 纬度
+     * @param latitude  纬度
      * @param longitude 经度
      */
     public Location(double latitude, double longitude) {
@@ -92,6 +92,6 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-        return StrUtil.format("({}, {})", this.latitude, this.longitude);
+        return StringCommand.format("({}, {})", this.latitude, this.longitude);
     }
 }

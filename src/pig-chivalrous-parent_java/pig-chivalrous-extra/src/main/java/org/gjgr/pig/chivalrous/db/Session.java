@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.db;
 
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.LogFactory;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
 
 import javax.sql.DataSource;
@@ -19,7 +19,7 @@ import java.sql.Savepoint;
  * @author loolly
  */
 public class Session extends AbstractSqlRunner implements Closeable {
-    private final static Log log = LogFactory.get();
+    private static final Log log = LogFactory.get();
 
     private Connection conn = null;
     private Boolean isSupportTransaction = null;
@@ -48,7 +48,7 @@ public class Session extends AbstractSqlRunner implements Closeable {
         this.runner = new SqlConnRunner(DialectFactory.newDialect(conn));
     }
 
-    //---------------------------------------------------------------------------- Constructor start
+    // ---------------------------------------------------------------------------- Constructor start
 
     /**
      * 创建会话
@@ -68,9 +68,9 @@ public class Session extends AbstractSqlRunner implements Closeable {
         return new Session(conn);
     }
 
-    //---------------------------------------------------------------------------- Constructor end
+    // ---------------------------------------------------------------------------- Constructor end
 
-    //---------------------------------------------------------------------------- Getters and Setters end
+    // ---------------------------------------------------------------------------- Getters and Setters end
     public Connection getConn() {
         return conn;
     }
@@ -78,19 +78,6 @@ public class Session extends AbstractSqlRunner implements Closeable {
     public void setConn(Connection conn) {
         this.conn = conn;
     }
-
-    @Override
-    public SqlConnRunner getRunner() {
-        return runner;
-    }
-
-    @Override
-    public void setRunner(SqlConnRunner runner) {
-        this.runner = runner;
-    }
-    //---------------------------------------------------------------------------- Getters and Setters end
-
-    //---------------------------------------------------------------------------- Transaction method start
 
     /**
      * 开始事务
@@ -117,9 +104,12 @@ public class Session extends AbstractSqlRunner implements Closeable {
         } catch (SQLException e) {
             throw e;
         } finally {
-            conn.setAutoCommit(true);            //事务结束，恢复自动提交
+            conn.setAutoCommit(true); // 事务结束，恢复自动提交
         }
     }
+    // ---------------------------------------------------------------------------- Getters and Setters end
+
+    // ---------------------------------------------------------------------------- Transaction method start
 
     /**
      * 回滚事务
@@ -133,7 +123,7 @@ public class Session extends AbstractSqlRunner implements Closeable {
             throw e;
         } finally {
             try {
-                conn.setAutoCommit(true);    //事务结束，恢复自动提交
+                conn.setAutoCommit(true); // 事务结束，恢复自动提交
             } catch (SQLException e) {
                 throw e;
             }
@@ -153,7 +143,7 @@ public class Session extends AbstractSqlRunner implements Closeable {
             log.error(e);
         } finally {
             try {
-                conn.setAutoCommit(true);    //事务结束，恢复自动提交
+                conn.setAutoCommit(true); // 事务结束，恢复自动提交
             } catch (SQLException e) {
                 log.error(e);
             }
@@ -173,7 +163,7 @@ public class Session extends AbstractSqlRunner implements Closeable {
             throw e;
         } finally {
             try {
-                conn.setAutoCommit(true);    //事务结束，恢复自动提交
+                conn.setAutoCommit(true); // 事务结束，恢复自动提交
             } catch (SQLException e) {
                 throw e;
             }
@@ -193,7 +183,7 @@ public class Session extends AbstractSqlRunner implements Closeable {
             log.error(e);
         } finally {
             try {
-                conn.setAutoCommit(true);    //事务结束，恢复自动提交
+                conn.setAutoCommit(true); // 事务结束，恢复自动提交
             } catch (SQLException e) {
                 log.error(e);
             }
@@ -224,22 +214,21 @@ public class Session extends AbstractSqlRunner implements Closeable {
     /**
      * 设置事务的隔离级别<br>
      * <p>
-     * Connection.TRANSACTION_NONE                             驱动不支持事务<br>
-     * Connection.TRANSACTION_READ_UNCOMMITTED   允许脏读、不可重复读和幻读<br>
-     * Connection.TRANSACTION_READ_COMMITTED        禁止脏读，但允许不可重复读和幻读<br>
-     * Connection.TRANSACTION_REPEATABLE_READ         禁止脏读和不可重复读，单运行幻读<br>
-     * Connection.TRANSACTION_SERIALIZABLE                 禁止脏读、不可重复读和幻读<br>
+     * Connection.TRANSACTION_NONE 驱动不支持事务<br>
+     * Connection.TRANSACTION_READ_UNCOMMITTED 允许脏读、不可重复读和幻读<br>
+     * Connection.TRANSACTION_READ_COMMITTED 禁止脏读，但允许不可重复读和幻读<br>
+     * Connection.TRANSACTION_REPEATABLE_READ 禁止脏读和不可重复读，单运行幻读<br>
+     * Connection.TRANSACTION_SERIALIZABLE 禁止脏读、不可重复读和幻读<br>
      *
      * @param level 隔离级别
      * @throws SQLException
      */
     public void setTransactionIsolation(int level) throws SQLException {
         if (conn.getMetaData().supportsTransactionIsolationLevel(level) == false) {
-            throw new SQLException(StrUtil.format("Transaction isolation [{}] not support!", level));
+            throw new SQLException(StringCommand.format("Transaction isolation [{}] not support!", level));
         }
         conn.setTransactionIsolation(level);
     }
-    //---------------------------------------------------------------------------- Transaction method end
 
     /**
      * 获得连接，Session中使用同一个连接
@@ -248,7 +237,7 @@ public class Session extends AbstractSqlRunner implements Closeable {
      */
     @Override
     public Connection getConnection() throws SQLException {
-        //Session中使用同一个连接操作
+        // Session中使用同一个连接操作
         return this.conn;
     }
 
@@ -259,7 +248,18 @@ public class Session extends AbstractSqlRunner implements Closeable {
      */
     @Override
     public void closeConnection(Connection conn) {
-        //Session中不关闭连接
+        // Session中不关闭连接
+    }
+    // ---------------------------------------------------------------------------- Transaction method end
+
+    @Override
+    public SqlConnRunner getRunner() {
+        return runner;
+    }
+
+    @Override
+    public void setRunner(SqlConnRunner runner) {
+        this.runner = runner;
     }
 
     @Override

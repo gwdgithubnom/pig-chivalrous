@@ -12,8 +12,7 @@ import java.util.Map;
 
 /**
  * Beetl模板引擎工具类<br>
- * http://git.oschina.net/xiandafu/beetl2.0
- * 文档：http://ibeetl.com/guide/beetl.html
+ * http://git.oschina.net/xiandafu/beetl2.0 文档：http://ibeetl.com/guide/beetl.html
  *
  * @author Looly
  */

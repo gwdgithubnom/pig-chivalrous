@@ -38,8 +38,7 @@ public class PooledConnection extends ConnectionWraper {
 
     /**
      * 连接是否关闭，关闭条件：<br>
-     * 1、被归还到池中
-     * 2、实际连接已关闭
+     * 1、被归还到池中 2、实际连接已关闭
      */
     @Override
     public boolean isClosed() throws SQLException {

@@ -1,10 +1,9 @@
 package org.gjgr.pig.chivalrous.web.http.demo;
 
-import org.gjgr.pig.chivalrous.core.io.FileUtil;
-import org.gjgr.pig.chivalrous.core.io.StreamProgress;
+import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
+import org.gjgr.pig.chivalrous.core.io.stream.StreamProgress;
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.gjgr.pig.chivalrous.web.http.HttpUtil;
-
 
 /**
  * 下载样例
@@ -17,7 +16,7 @@ public class DownloadDemo {
         long size = HttpUtil.downloadFile("https://www.baidu.com/", FileUtil.file("e:/"));
         System.out.println("Download size: " + size);
 
-        //带进度显示的文件下载
+        // 带进度显示的文件下载
         HttpUtil.downloadFile("http://mirrors.sohu.com/centos/7.3.1611/isos/x86_64/CentOS-7-x86_64-DVD-1611.iso",
                 FileUtil.file("e:/"), new StreamProgress() {
 

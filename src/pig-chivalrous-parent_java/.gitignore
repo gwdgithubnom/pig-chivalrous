@@ -20,7 +20,8 @@ deploy.xml
 repo
 # BlueJ files
 *.ctxt
-
+*.releaseBackup
+release.properties
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

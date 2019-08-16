@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.log;
 
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.level.Level;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 import java.io.Serializable;
 
@@ -28,7 +28,7 @@ public abstract class AbstractLog implements Log, Serializable {
             case ERROR:
                 return isErrorEnabled();
             default:
-                throw new Error(StrUtil.format("Can not identify level: {}", level));
+                throw new Error(StringCommand.format("Can not identify level: {}", level));
         }
     }
 

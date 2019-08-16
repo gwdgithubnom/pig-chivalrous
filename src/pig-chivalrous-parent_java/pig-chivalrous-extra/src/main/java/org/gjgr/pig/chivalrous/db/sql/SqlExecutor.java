@@ -83,7 +83,7 @@ public class SqlExecutor {
                 try {
                     return rs.getLong(1);
                 } catch (SQLException e) {
-                    //可能会出现没有主键返回的情况
+                    // 可能会出现没有主键返回的情况
                 }
             }
             return null;
@@ -144,7 +144,8 @@ public class SqlExecutor {
         }
     }
 
-    //-------------------------------------------------------------------------------------- Execute With PreparedStatement
+    // -------------------------------------------------------------------------------------- Execute With
+    // PreparedStatement
 
     /**
      * 执行非查询语句<br>

@@ -3,18 +3,19 @@ package org.gjgr.pig.chivalrous.core.setting.dialect;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.getter.BasicTypeGetter;
 import org.gjgr.pig.chivalrous.core.getter.OptBasicTypeGetter;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
 import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
 import org.gjgr.pig.chivalrous.core.io.watch.SimpleWatcher;
 import org.gjgr.pig.chivalrous.core.io.watch.WatchMonitor;
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
 import org.gjgr.pig.chivalrous.core.setting.SettingRuntimeException;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,15 +35,15 @@ import java.util.Properties;
  */
 public final class Props extends Properties implements BasicTypeGetter<String>, OptBasicTypeGetter<String> {
     private static final long serialVersionUID = 1935981579709590740L;
-    private final static Log log = StaticLog.get();
+    private static final Log log = StaticLog.get();
 
-    //----------------------------------------------------------------------- 私有属性 start
+    // ----------------------------------------------------------------------- 私有属性 start
     /**
      * 属性文件的URL
      */
     private URL propertiesFileUrl;
     private WatchMonitor watchMonitor;
-    //----------------------------------------------------------------------- 私有属性 end
+    // ----------------------------------------------------------------------- 私有属性 end
 
     /**
      * 构造
@@ -51,7 +52,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         super();
     }
 
-    //----------------------------------------------------------------------- 构造方法 start
+    // ----------------------------------------------------------------------- 构造方法 start
 
     /**
      * 构造，使用相对于Class文件根目录的相对路径
@@ -59,7 +60,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param pathBaseClassLoader 相对路径（相对于当前项目的classes路径）
      */
     public Props(String pathBaseClassLoader) {
-        Assert.notBlank(pathBaseClassLoader, "Blank properties file path !");
+        AssertCommand.notBlank(pathBaseClassLoader, "Blank properties file path !");
         this.load(new ClassPathResource(pathBaseClassLoader));
     }
 
@@ -69,18 +70,18 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param propertiesFile 配置文件对象
      */
     public Props(File propertiesFile) {
-        Assert.notNull(propertiesFile, "Null properties file!");
+        AssertCommand.notNull(propertiesFile, "Null properties file!");
         this.load(new UrlResource(propertiesFile));
     }
 
     /**
      * 构造，相对于classes读取文件
      *
-     * @param path 相对路径
+     * @param path  相对路径
      * @param clazz 基准类
      */
     public Props(String path, Class<?> clazz) {
-        Assert.notBlank(path, "Blank properties file path !");
+        AssertCommand.notBlank(path, "Blank properties file path !");
         this.load(new ClassPathResource(path, clazz));
     }
 
@@ -90,7 +91,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param propertiesUrl 属性文件路径
      */
     public Props(URL propertiesUrl) {
-        Assert.notNull(propertiesUrl, "Null properties URL !");
+        AssertCommand.notNull(propertiesUrl, "Null properties URL !");
         this.load(new UrlResource(propertiesUrl));
     }
 
@@ -100,7 +101,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param properties 属性文件路径
      */
     public Props(Properties properties) {
-        if (CollectionUtil.isNotEmpty(properties)) {
+        if (CollectionCommand.isNotEmpty(properties)) {
             this.putAll(properties);
         }
     }
@@ -115,7 +116,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         return new Props(resource);
     }
 
-    //----------------------------------------------------------------------- 构造方法 end
+    // ----------------------------------------------------------------------- 构造方法 end
 
     /**
      * 初始化配置文件
@@ -164,7 +165,8 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
                         }
                     }).start();
                 } catch (Exception e) {
-                    throw new SettingRuntimeException(e, "Setting auto load not support url: [{}]", this.propertiesFileUrl);
+                    throw new SettingRuntimeException(e, "Setting auto load not support url: [{}]",
+                            this.propertiesFileUrl);
                 }
             }
         } else {
@@ -173,7 +175,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         }
     }
 
-    //----------------------------------------------------------------------- Get start
+    // ----------------------------------------------------------------------- Get start
     @Override
     public Object getObj(String key, Object defaultValue) {
         return getStr(key, null == defaultValue ? null : defaultValue.toString());
@@ -207,7 +209,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     @Override
     public Character getChar(String key, Character defaultValue) {
         final String value = getStr(key);
-        if (StrUtil.isBlank(value)) {
+        if (StringCommand.isBlank(value)) {
             return defaultValue;
         }
         return value.charAt(0);
@@ -231,7 +233,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     @Override
     public BigDecimal getBigDecimal(String key, BigDecimal defaultValue) {
         final String valueStr = getStr(key);
-        if (StrUtil.isBlank(valueStr)) {
+        if (StringCommand.isBlank(valueStr)) {
             return defaultValue;
         }
 
@@ -245,7 +247,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     @Override
     public BigInteger getBigInteger(String key, BigInteger defaultValue) {
         final String valueStr = getStr(key);
-        if (StrUtil.isBlank(valueStr)) {
+        if (StringCommand.isBlank(valueStr)) {
             return defaultValue;
         }
 
@@ -326,14 +328,14 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
         return getEnum(clazz, key, null);
     }
 
-    //----------------------------------------------------------------------- Get end
+    // ----------------------------------------------------------------------- Get end
 
-    //----------------------------------------------------------------------- Set start
+    // ----------------------------------------------------------------------- Set start
 
     /**
      * 设置值，无给定键创建之。设置后未持久化
      *
-     * @param key 属性键
+     * @param key   属性键
      * @param value 属性值
      */
     public void setProperty(String key, Object value) {
@@ -348,9 +350,9 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     public void store(String absolutePath) {
         try {
             FileCommand.touch(absolutePath);
-            super.store(FileCommand.getOutputStream(absolutePath), null);
+            super.store(FileCommand.bufferedOutputStream(absolutePath), null);
         } catch (FileNotFoundException e) {
-            //不会出现这个异常
+            // 不会出现这个异常
         } catch (IOException e) {
             log.error(e, "Store properties to [{}] error!", absolutePath);
         }
@@ -359,11 +361,11 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     /**
      * 存储当前设置，会覆盖掉以前的设置
      *
-     * @param path 相对路径
+     * @param path  相对路径
      * @param clazz 相对的类
      */
     public void store(String path, Class<?> clazz) {
-        this.store(FileCommand.getAbsolutePath(path, clazz));
+        this.store(LocationCommand.getAbsolutePath(path, clazz));
     }
-    //----------------------------------------------------------------------- Set end
+    // ----------------------------------------------------------------------- Set end
 }

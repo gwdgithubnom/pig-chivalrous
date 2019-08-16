@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.exceptions;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 工具类异常
@@ -19,7 +19,7 @@ public class UtilException extends RuntimeException {
     }
 
     public UtilException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public UtilException(String message, Throwable throwable) {
@@ -27,6 +27,6 @@ public class UtilException extends RuntimeException {
     }
 
     public UtilException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

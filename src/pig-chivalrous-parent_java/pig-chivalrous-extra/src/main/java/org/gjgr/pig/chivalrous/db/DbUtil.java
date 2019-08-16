@@ -1,10 +1,10 @@
 package org.gjgr.pig.chivalrous.db;
 
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.gjgr.pig.chivalrous.db.dialect.Dialect;
 import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
 import org.gjgr.pig.chivalrous.db.ds.DSFactory;
@@ -37,7 +37,7 @@ import java.util.Map.Entry;
  * @author Luxiaolei
  */
 public final class DbUtil {
-    private final static Log log = StaticLog.get();
+    private static final Log log = StaticLog.get();
 
     private DbUtil() {
     }
@@ -150,7 +150,8 @@ public final class DbUtil {
                     } else if (obj instanceof Connection) {
                         ((Connection) obj).close();
                     } else {
-                        log.warn("Object " + obj.getClass().getName() + " not a ResultSet or Statement or PreparedStatement or Connection!");
+                        log.warn("Object " + obj.getClass().getName()
+                                + " not a ResultSet or Statement or PreparedStatement or Connection!");
                     }
                 }
             } catch (SQLException e) {
@@ -216,13 +217,13 @@ public final class DbUtil {
         try {
             conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
-            rs = metaData.getTables(conn.getCatalog(), null, null, new String[]{"TABLES"});
+            rs = metaData.getTables(conn.getCatalog(), null, null, new String[] {"TABLES"});
             if (rs == null) {
                 return null;
             }
             while (rs.next()) {
                 final String table = rs.getString("TABLE_NAME");
-                if (StrUtil.isBlank(table) == false) {
+                if (StringCommand.isBlank(table) == false) {
                     tables.add(table);
                 }
             }
@@ -309,13 +310,13 @@ public final class DbUtil {
         try {
             conn = ds.getConnection();
             final DatabaseMetaData metaData = conn.getMetaData();
-            //获得主键
+            // 获得主键
             rs = metaData.getPrimaryKeys(conn.getCatalog(), null, tableName);
             while (rs.next()) {
                 table.addPk("COLUMN_NAME");
             }
 
-            //获得列
+            // 获得列
             rs = metaData.getColumns(conn.getCatalog(), null, tableName, null);
             while (rs.next()) {
                 table.setColumn(Column.create(tableName, rs));
@@ -348,8 +349,8 @@ public final class DbUtil {
      * @throws SQLException
      */
     public static void fillParams(PreparedStatement ps, Object... params) throws SQLException {
-        if (ArrayUtil.isEmpty(params)) {
-            return;//无参数
+        if (ArrayCommand.isEmpty(params)) {
+            return;// 无参数
         }
         ParameterMetaData pmd = ps.getParameterMetaData();
         for (int i = 0; i < params.length; i++) {
@@ -385,7 +386,7 @@ public final class DbUtil {
                 try {
                     generatedKey = rs.getLong(1);
                 } catch (SQLException e) {
-                    //自增主键不为数字或者为Oracle的rowid，跳过
+                    // 自增主键不为数字或者为Oracle的rowid，跳过
                 }
             }
             return generatedKey;
@@ -430,7 +431,7 @@ public final class DbUtil {
      */
     public static String buildEqualsWhere(Entity entity, List<Object> paramValues) {
         if (null == entity || entity.isEmpty()) {
-            return StrUtil.EMPTY;
+            return StringCommand.EMPTY;
         }
 
         final StringBuilder sb = new StringBuilder(" WHERE ");
@@ -476,7 +477,7 @@ public final class DbUtil {
      * @return 拼接后的like值
      */
     public static String buildLikeValue(String value, Condition.LikeType likeType) {
-        StringBuilder likeValue = StrUtil.builder("LIKE ");
+        StringBuilder likeValue = StringCommand.builder("LIKE ");
         switch (likeType) {
             case StartWith:
                 likeValue.append('%').append(value);
@@ -501,7 +502,7 @@ public final class DbUtil {
      * @return 驱动
      */
     public static String identifyDriver(String nameContainsProductInfo) {
-        if (StrUtil.isBlank(nameContainsProductInfo)) {
+        if (StringCommand.isBlank(nameContainsProductInfo)) {
             return null;
         }
         nameContainsProductInfo = nameContainsProductInfo.toLowerCase();
@@ -552,7 +553,7 @@ public final class DbUtil {
         try {
             DatabaseMetaData meta = conn.getMetaData();
             driver = identifyDriver(meta.getDatabaseProductName());
-            if (StrUtil.isBlank(driver)) {
+            if (StringCommand.isBlank(driver)) {
                 driver = identifyDriver(meta.getDriverName());
             }
         } catch (SQLException e) {
@@ -571,7 +572,7 @@ public final class DbUtil {
         if (null == entity) {
             throw new DbRuntimeException("Entity is null !");
         }
-        if (StrUtil.isBlank(entity.getTableName())) {
+        if (StringCommand.isBlank(entity.getTableName())) {
             throw new DbRuntimeException("Entity`s table name is null !");
         }
         if (entity.isEmpty()) {
@@ -586,7 +587,7 @@ public final class DbUtil {
      * @return RowId字符串
      */
     public static String rowIdToString(RowId rowId) {
-        return StrUtil.str(rowId.getBytes(), CharsetUtil.CHARSET_ISO_8859_1);
+        return StringCommand.str(rowId.getBytes(), CharsetCommand.CHARSET_ISO_8859_1);
     }
 
     /**
@@ -598,6 +599,6 @@ public final class DbUtil {
     public static String formatSql(String sql) {
         return SqlFormatter.format(sql);
     }
-    //---------------------------------------------------------------------------- Private method start
-    //---------------------------------------------------------------------------- Private method end
+    // ---------------------------------------------------------------------------- Private method start
+    // ---------------------------------------------------------------------------- Private method end
 }

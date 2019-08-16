@@ -2,8 +2,6 @@ package org.gjgr.pig.chivalrous.core.lang;
 
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.getter.BasicTypeGetter;
-import org.gjgr.pig.chivalrous.core.util.BeanUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -21,9 +19,9 @@ import java.util.HashSet;
 public class Dict extends HashMap<String, Object> implements BasicTypeGetter<String> {
     private static final long serialVersionUID = 6135423866861206530L;
 
-    //--------------------------------------------------------------- Static method start
+    // --------------------------------------------------------------- Static method start
 
-    //--------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------- Constructor start
     public Dict() {
     }
 
@@ -35,7 +33,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     public static Dict create() {
         return new Dict();
     }
-    //--------------------------------------------------------------- Static method end
+    // --------------------------------------------------------------- Static method end
 
     /**
      * 将PO对象转为Dict
@@ -47,7 +45,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     public static <T> Dict parse(T bean) {
         return create().parseBean(bean);
     }
-    //--------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------- Constructor end
 
     /**
      * 转换为Bean对象
@@ -64,7 +62,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
      * 转换为Bean对象
      *
      * @param <T>
-     * @param bean Bean
+     * @param bean          Bean
      * @param isToCamelCase 是否转换为驼峰模式
      * @return Bean
      */
@@ -108,14 +106,13 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
 
     /**
      * 与给定实体对比并去除相同的部分<br>
-     * 此方法用于在更新操作时避免所有字段被更新，跳过不需要更新的字段
-     * version from 2.0.0
+     * 此方法用于在更新操作时避免所有字段被更新，跳过不需要更新的字段 version from 2.0.0
      *
      * @param dict
      * @param withoutNames 不需要去除的字段名
      */
     public <T extends Dict> void removeEqual(T dict, String... withoutNames) {
-        HashSet<String> withoutSet = CollectionUtil.newHashSet(withoutNames);
+        HashSet<String> withoutSet = CollectionCommand.newHashSet(withoutNames);
         for (Entry<String, Object> entry : dict.entrySet()) {
             if (withoutSet.contains(entry.getKey())) {
                 continue;
@@ -128,12 +125,12 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
         }
     }
 
-    //-------------------------------------------------------------------- Set start
+    // -------------------------------------------------------------------- Set start
 
     /**
      * 设置列
      *
-     * @param attr 属性
+     * @param attr  属性
      * @param value 值
      * @return 本身
      */
@@ -145,7 +142,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     /**
      * 设置列，当键或值为null时忽略
      *
-     * @param attr 属性
+     * @param attr  属性
      * @param value 值
      * @return 本身
      */
@@ -155,9 +152,9 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
         }
         return this;
     }
-    //-------------------------------------------------------------------- Set end
+    // -------------------------------------------------------------------- Set end
 
-    //-------------------------------------------------------------------- Get start
+    // -------------------------------------------------------------------- Get start
 
     @Override
     public Object getObj(String key) {
@@ -255,7 +252,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     /**
      * 获得特定类型值
      *
-     * @param attr 字段名
+     * @param attr         字段名
      * @param defaultValue 默认值
      * @return 字段值
      */
@@ -304,7 +301,7 @@ public class Dict extends HashMap<String, Object> implements BasicTypeGetter<Str
     public Number getNumber(String attr) {
         return get(attr, null);
     }
-    //-------------------------------------------------------------------- Get end
+    // -------------------------------------------------------------------- Get end
 
     @Override
     public Dict clone() {

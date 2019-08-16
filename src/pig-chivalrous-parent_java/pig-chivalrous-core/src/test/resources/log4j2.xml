@@ -250,14 +250,14 @@
             <PatternLayout pattern="${pattern}"/>
         </Console>
 
-        <!--  <MarkerCacheAppender name="marker">
+        <!--  <MessageLogAppender name="marker">
               <Filters>
                   <MarkerFilter marker="SPIDER_JSON" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
                   <MarkerFilter marker="SPIDER_STATUS" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
                   <MarkerFilter marker="SPIDER_THREAD" onMatch="ACCEPT" onMismatch="DENY"/>
               </Filters>
               <PatternLayout pattern="%d{MM-dd-yyyy HH:mm:ss.SSS} [%t] %-5p (%F:%L) - %marker %-5level %logger{36} - %m%n"/>
-          </MarkerCacheAppender>-->
+          </MessageLogAppender>-->
     </Appenders>
     <Loggers>
         <logger name="org.gjgr" additivity="false" level="debug">

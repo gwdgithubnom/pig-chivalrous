@@ -13,10 +13,10 @@ public interface LocationAwareLog extends Log {
     /**
      * 打印 指定级别的日志
      *
-     * @param fqcn 完全限定类名(Fully Qualified Class Name)，用于纠正定位错误行号
-     * @param level 级别
-     * @param t 错误对象
-     * @param format 消息模板
+     * @param fqcn      完全限定类名(Fully Qualified Class Name)，用于纠正定位错误行号
+     * @param level     级别
+     * @param t         错误对象
+     * @param format    消息模板
      * @param arguments 参数
      */
     void log(String fqcn, Level level, Throwable t, String format, Object... arguments);

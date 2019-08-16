@@ -2,7 +2,7 @@ package org.gjgr.pig.chivalrous.core.convert.impl;
 
 import org.gjgr.pig.chivalrous.core.convert.AbstractConverter;
 import org.gjgr.pig.chivalrous.core.date.DateTimeCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -46,13 +46,14 @@ public class SqlTimestampConverter extends AbstractConverter<Timestamp> {
 
         // Handle Long
         if (value instanceof Long) {
-            //此处使用自动拆装箱
+            // 此处使用自动拆装箱
             return new Timestamp((Long) value);
         }
 
         final String valueStr = convertToStr(value);
         try {
-            final long date = StrUtil.isBlank(format) ? DateTimeCommand.parse(valueStr).getTime() : DateTimeCommand.parse(valueStr, format).getTime();
+            final long date = StringCommand.isBlank(format) ? DateTimeCommand.parse(valueStr).getTime()
+                    : DateTimeCommand.parse(valueStr, format).getTime();
             return new Timestamp(date);
         } catch (Exception e) {
             // Ignore Exception

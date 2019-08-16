@@ -34,9 +34,9 @@ public class TaskTable {
     /**
      * 新增Task
      *
-     * @param id ID
+     * @param id      ID
      * @param pattern {@link CronPattern}
-     * @param task {@link Task}
+     * @param task    {@link Task}
      * @return this
      */
     public TaskTable add(String id, CronPattern pattern, Task task) {
@@ -67,9 +67,9 @@ public class TaskTable {
     /**
      * 如果时间匹配则执行相应的Task
      *
-     * @param millis 时间毫秒
+     * @param millis        时间毫秒
      * @param isMatchSecond 是否匹配秒
-     * @param isMatchYear 是否匹配年
+     * @param isMatchYear   是否匹配年
      */
     public void executeTaskIfMatch(long millis, boolean isMatchSecond, boolean isMatchYear) {
         for (int i = 0; i < size; i++) {

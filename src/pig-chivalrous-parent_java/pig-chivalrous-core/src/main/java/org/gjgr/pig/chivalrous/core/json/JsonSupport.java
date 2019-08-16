@@ -14,7 +14,7 @@ public class JsonSupport implements JsonString {
     /**
      * Json String转Bean
      *
-     * @param jsonString Json String
+     * @param jsonString  Json String
      * @param ignoreError 是否忽略转换错误
      */
     public void parse(String jsonString, boolean ignoreError) {

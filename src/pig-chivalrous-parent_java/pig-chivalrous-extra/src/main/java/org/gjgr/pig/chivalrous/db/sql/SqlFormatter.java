@@ -62,7 +62,7 @@ public class SqlFormatter {
         return new FormatProcess(source).perform().trim();
     }
 
-    //------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------
 
     public static void main(String[] args) {
         String format = SqlFormatter.format("select * from xx where a = b");
@@ -73,7 +73,7 @@ public class SqlFormatter {
         boolean beginLine = true;
         boolean afterBeginBeforeEnd = false;
         boolean afterByOrSetOrFromOrSelect = false;
-        //		boolean afterValues = false;
+        // boolean afterValues = false;
         boolean afterOn = false;
         boolean afterBetween = false;
         boolean afterInsert = false;
@@ -95,7 +95,8 @@ public class SqlFormatter {
         private static boolean isFunctionName(String tok) {
             char begin = tok.charAt(0);
             boolean isIdentifier = (Character.isJavaIdentifierStart(begin)) || ('"' == begin);
-            return (isIdentifier) && (!LOGICAL.contains(tok)) && (!END_CLAUSES.contains(tok)) && (!QUANTIFIERS.contains(tok)) && (!DML.contains(tok)) && (!MISC.contains(tok));
+            return (isIdentifier) && (!LOGICAL.contains(tok)) && (!END_CLAUSES.contains(tok))
+                    && (!QUANTIFIERS.contains(tok)) && (!DML.contains(tok)) && (!MISC.contains(tok));
         }
 
         private static boolean isWhitespace(String token) {
@@ -255,7 +256,8 @@ public class SqlFormatter {
             }
             newline();
             this.afterBeginBeforeEnd = false;
-            this.afterByOrSetOrFromOrSelect = (("by".equals(this.lcToken)) || ("set".equals(this.lcToken)) || ("from".equals(this.lcToken)));
+            this.afterByOrSetOrFromOrSelect =
+                    (("by".equals(this.lcToken)) || ("set".equals(this.lcToken)) || ("from".equals(this.lcToken)));
         }
 
         private void beginNewClause() {
@@ -278,7 +280,7 @@ public class SqlFormatter {
             out();
             this.indent += 1;
             newline();
-//			this.afterValues = true;
+            // this.afterValues = true;
         }
 
         private void closeParen() {

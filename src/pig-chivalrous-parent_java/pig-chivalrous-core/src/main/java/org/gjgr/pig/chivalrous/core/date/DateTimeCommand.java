@@ -16,7 +16,7 @@ package org.gjgr.pig.chivalrous.core.date;
 import org.gjgr.pig.chivalrous.core.date.format.DateTimeFormatter;
 import org.gjgr.pig.chivalrous.core.date.format.DateTimeParser;
 import org.gjgr.pig.chivalrous.core.date.format.DateTimePrinter;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -36,8 +36,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * This class is used for ...
- * ClassName: DateTimeCommand
+ * This class is used for ... ClassName: DateTimeCommand
  *
  * @author 龚文东 root
  * @version Nov 22, 2015 11:57:29 AM
@@ -54,7 +53,9 @@ public class DateTimeCommand {
      * @param ： 模式名
      * @param ： 名称
      * @param ： 数据源类型
-     * <p>Description: </p>
+     *          <p>
+     *          Description:
+     *          </p>
      */
     public DateTimeCommand() {
         // TODO Auto-generated constructor stub
@@ -87,7 +88,7 @@ public class DateTimeCommand {
         return new DateTime(calendar);
     }
 
-    //-------------------------------------------------------------- Part of Date start
+    // -------------------------------------------------------------- Part of Date start
 
     /**
      * 转换为Calendar对象
@@ -234,7 +235,7 @@ public class DateTimeCommand {
     /**
      * 获得指定日期的小时数部分<br>
      *
-     * @param date 日期
+     * @param date          日期
      * @param is24HourClock 是否24小时制
      * @return 小时数
      */
@@ -341,7 +342,7 @@ public class DateTimeCommand {
     public static int thisDayOfWeek() {
         return dayOfWeek(dateTime());
     }
-    //-------------------------------------------------------------- Part of Date end
+    // -------------------------------------------------------------- Part of Date end
 
     /**
      * @return 当前日期是星期几 {@link PigWeek}
@@ -396,7 +397,7 @@ public class DateTimeCommand {
      * 获得指定日期区间内的年份和季节<br>
      *
      * @param startDate 其实日期（包含）
-     * @param endDate 结束日期（包含）
+     * @param endDate   结束日期（包含）
      * @return Season列表 ，元素类似于 20132
      */
     public static LinkedHashSet<String> yearAndSeasons(Date startDate, Date endDate) {
@@ -429,7 +430,7 @@ public class DateTimeCommand {
     /**
      * 根据特定格式格式化日期
      *
-     * @param date 被格式化的日期
+     * @param date   被格式化的日期
      * @param format 日期格式，常用格式见： {@link }
      * @return 格式化后的字符串
      */
@@ -440,7 +441,7 @@ public class DateTimeCommand {
     /**
      * 根据特定格式格式化日期
      *
-     * @param date 被格式化的日期
+     * @param date   被格式化的日期
      * @param format {@link DateTimePrinter} 或 {@link DateTimeFormatter}
      * @return 格式化后的字符串
      */
@@ -454,7 +455,7 @@ public class DateTimeCommand {
     /**
      * 根据特定格式格式化日期
      *
-     * @param date 被格式化的日期
+     * @param date   被格式化的日期
      * @param format {@link SimpleDateFormat}
      * @return 格式化后的字符串
      */
@@ -521,7 +522,7 @@ public class DateTimeCommand {
     /**
      * 构建DateTime对象
      *
-     * @param dateStr Date字符串
+     * @param dateStr    Date字符串
      * @param dateFormat 格式化器 {@link SimpleDateFormat}
      * @return DateTime对象
      */
@@ -533,7 +534,7 @@ public class DateTimeCommand {
      * 构建DateTime对象
      *
      * @param dateStr Date字符串
-     * @param parser 格式化器,{@link DateTimeFormatter}
+     * @param parser  格式化器,{@link DateTimeFormatter}
      * @return DateTime对象
      */
     public static DateTime parse(String dateStr, DateTimeParser parser) {
@@ -547,7 +548,7 @@ public class DateTimeCommand {
      * 将特定格式的日期转换为Date对象
      *
      * @param dateStr 特定格式的日期
-     * @param format 格式，例如yyyy-MM-dd
+     * @param format  格式，例如yyyy-MM-dd
      * @return 日期对象
      */
     public static DateTime parse(String dateStr, String format) {
@@ -616,11 +617,11 @@ public class DateTimeCommand {
                 return parse(dateStr, DateStyle.EN_YYYY_MM_DD_HH_MM_SS_SSS.getValue());
             }
         } catch (Exception e) {
-            throw new DateException(StrUtil.format("Parse [{}] with format normal error!", dateStr));
+            throw new DateException(StringCommand.format("Parse [{}] with format normal error!", dateStr));
         }
 
         // 没有更多匹配的时间格式
-        throw new DateException(StrUtil.format(" [{}] format is not fit for dateTime pattern!", dateStr));
+        throw new DateException(StringCommand.format(" [{}] format is not fit for dateTime pattern!", dateStr));
     }
 
     /**
@@ -629,8 +630,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfDay(Date date) {
-        return new DateTime(beginOfDay(calendar(date)));
+    public static DateTime beginOfDateTime(Date date) {
+        return new DateTime(beginOfDayCalendar(calendar(date)));
     }
 
     /**
@@ -639,8 +640,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfDay(Date date) {
-        return new DateTime(endOfDay(calendar(date)));
+    public static DateTime endOfDateTime(Date date) {
+        return new DateTime(endOfDayCalendar(calendar(date)));
     }
 
     /**
@@ -649,7 +650,7 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfDay(Calendar calendar) {
+    public static Calendar beginOfDayCalendar(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -657,13 +658,31 @@ public class DateTimeCommand {
         return calendar;
     }
 
+    public static Date beginOfDay(Date date) {
+        return beginOfDay(date.getTime());
+    }
+
+    public static Date endOfDay(Date date) {
+        return endOfDay(date.getTime());
+    }
+
+    public static Date endOfDay(long l) {
+        Calendar calendar = DateTimeCommand.calendar(l);
+        return endOfDayCalendar(calendar).getTime();
+    }
+
+    public static Date beginOfDay(long l) {
+        Calendar calendar = DateTimeCommand.calendar(l);
+        return beginOfDayCalendar(calendar).getTime();
+    }
+
     /**
      * 获取某天的结束时间
      *
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfDay(Calendar calendar) {
+    public static Calendar endOfDayCalendar(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
@@ -677,8 +696,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfWeek(Date date) {
-        return new DateTime(beginOfWeek(calendar(date)));
+    public static DateTime beginOfWeekDateTime(Date date) {
+        return new DateTime(beginOfWeekCalendar(calendar(date)));
     }
 
     /**
@@ -687,8 +706,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfWeek(Date date) {
-        return new DateTime(endOfWeek(calendar(date)));
+    public static DateTime endOfWeekDateTime(Date date) {
+        return new DateTime(endOfWeekCalendar(calendar(date)));
     }
 
     /**
@@ -697,9 +716,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfWeek(Calendar calendar) {
+    public static Calendar beginOfWeekCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        return beginOfDay(calendar);
+        return beginOfDayCalendar(calendar);
     }
 
     /**
@@ -708,9 +727,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfWeek(Calendar calendar) {
+    public static Calendar endOfWeekCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        return endOfDay(calendar);
+        return endOfDayCalendar(calendar);
     }
 
     /**
@@ -719,8 +738,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfMonth(Date date) {
-        return new DateTime(beginOfMonth(calendar(date)));
+    public static DateTime beginOfMonthDateTime(Date date) {
+        return new DateTime(beginOfMonthCalendar(calendar(date)));
     }
 
     /**
@@ -729,8 +748,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfMonth(Date date) {
-        return new DateTime(endOfMonth(calendar(date)));
+    public static DateTime endOfMonthDateTime(Date date) {
+        return new DateTime(endOfMonthCalendar(calendar(date)));
     }
 
     /**
@@ -739,12 +758,12 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfMonth(Calendar calendar) {
+    public static Calendar beginOfMonthCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        return beginOfDay(calendar);
+        return beginOfDayCalendar(calendar);
     }
 
-    //--------------------------------------------------- Offset for now
+    // --------------------------------------------------- Offset for now
 
     /**
      * 获取某月的结束时间
@@ -752,9 +771,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfMonth(Calendar calendar) {
+    public static Calendar endOfMonthCalendar(Calendar calendar) {
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return endOfDay(calendar);
+        return endOfDayCalendar(calendar);
     }
 
     /**
@@ -763,8 +782,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime beginOfYear(Date date) {
-        return new DateTime(beginOfYear(calendar(date)));
+    public static DateTime beginOfYearDateTime(Date date) {
+        return new DateTime(beginOfYearCalendar(calendar(date)));
     }
 
     /**
@@ -773,8 +792,8 @@ public class DateTimeCommand {
      * @param date 日期
      * @return {@link DateTime}
      */
-    public static DateTime endOfYear(Date date) {
-        return new DateTime(endOfYear(calendar(date)));
+    public static DateTime endOfYearDateTime(Date date) {
+        return new DateTime(endOfYearCalendar(calendar(date)));
     }
 
     /**
@@ -783,9 +802,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar beginOfYear(Calendar calendar) {
+    public static Calendar beginOfYearCalendar(Calendar calendar) {
         calendar.set(Calendar.MONTH, 1);
-        return beginOfMonth(calendar);
+        return beginOfMonthCalendar(calendar);
     }
 
     /**
@@ -794,9 +813,9 @@ public class DateTimeCommand {
      * @param calendar 日期 {@link Calendar}
      * @return {@link Calendar}
      */
-    public static Calendar endOfYear(Calendar calendar) {
+    public static Calendar endOfYearCalendar(Calendar calendar) {
         calendar.set(Calendar.MONTH, Calendar.DECEMBER);
-        return endOfMonth(calendar);
+        return endOfMonthCalendar(calendar);
     }
 
     /**
@@ -804,8 +823,8 @@ public class DateTimeCommand {
      *
      * @return 昨天
      */
-    public static DateTime yesterday() {
-        return offsetDay(new DateTime(), -1);
+    public static DateTime yesterdayOfDateTime() {
+        return offsetDayOfDateTime(new DateTime(), -1);
     }
 
     /**
@@ -814,8 +833,8 @@ public class DateTimeCommand {
      * @return 明天
      * @since 3.0.1
      */
-    public static DateTime tomorrow() {
-        return offsetDay(new DateTime(), 1);
+    public static DateTime tomorrowOfDateTime() {
+        return offsetDayOfDateTime(new DateTime(), 1);
     }
 
     /**
@@ -823,8 +842,8 @@ public class DateTimeCommand {
      *
      * @return 上周
      */
-    public static DateTime lastWeek() {
-        return offsetWeek(new DateTime(), -1);
+    public static DateTime lastWeekOfDateTime() {
+        return offsetWeekOfDateTime(new DateTime(), -1);
     }
 
     /**
@@ -833,8 +852,8 @@ public class DateTimeCommand {
      * @return 下周
      * @since 3.0.1
      */
-    public static DateTime nextWeek() {
-        return offsetWeek(new DateTime(), 1);
+    public static DateTime nextWeekOfDateTime() {
+        return offsetWeekOfDateTime(new DateTime(), 1);
     }
 
     /**
@@ -842,8 +861,8 @@ public class DateTimeCommand {
      *
      * @return 上个月
      */
-    public static DateTime lastMonth() {
-        return offsetMonth(new DateTime(), -1);
+    public static DateTime lastMonthOfDateTime() {
+        return offsetMonthOfDateTime(new DateTime(), -1);
     }
 
     /**
@@ -852,97 +871,97 @@ public class DateTimeCommand {
      * @return 下个月
      * @since 3.0.1
      */
-    public static DateTime nextMonth() {
-        return offsetMonth(new DateTime(), 1);
+    public static DateTime nextMonthOfDateTime() {
+        return offsetMonthOfDateTime(new DateTime(), 1);
     }
 
     /**
      * 偏移毫秒数
      *
-     * @param date 日期
+     * @param date   日期
      * @param offset 偏移毫秒数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMillisecond(Date date, int offset) {
-        return offset(date, DateField.MILLISECOND, offset);
+    public static DateTime offsetMillisecondOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.MILLISECOND, offset);
     }
 
     /**
      * 偏移秒数
      *
-     * @param date 日期
+     * @param date   日期
      * @param offset 偏移秒数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetSecond(Date date, int offset) {
-        return offset(date, DateField.SECOND, offset);
+    public static DateTime offsetSecondOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.SECOND, offset);
     }
 
     /**
      * 偏移分钟
      *
-     * @param date 日期
+     * @param date   日期
      * @param offset 偏移分钟数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMinute(Date date, int offset) {
-        return offset(date, DateField.MINUTE, offset);
+    public static DateTime offsetMinuteOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.MINUTE, offset);
     }
 
     /**
      * 偏移小时
      *
-     * @param date 日期
+     * @param date   日期
      * @param offset 偏移小时数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetHour(Date date, int offset) {
-        return offset(date, DateField.HOUR_OF_DAY, offset);
+    public static DateTime offsetHourOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.HOUR_OF_DAY, offset);
     }
     // ------------------------------------ Offset end ----------------------------------------------
 
     /**
      * 偏移天
      *
-     * @param date 日期
+     * @param date   日期
      * @param offset 偏移天数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetDay(Date date, int offset) {
-        return offset(date, DateField.DAY_OF_YEAR, offset);
+    public static DateTime offsetDayOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.DAY_OF_YEAR, offset);
     }
 
     /**
      * 偏移周
      *
-     * @param date 日期
+     * @param date   日期
      * @param offset 偏移周数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetWeek(Date date, int offset) {
-        return offset(date, DateField.WEEK_OF_YEAR, offset);
+    public static DateTime offsetWeekOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.WEEK_OF_YEAR, offset);
     }
 
     /**
      * 偏移月
      *
-     * @param date 日期
+     * @param date   日期
      * @param offset 偏移月数，正数向未来偏移，负数向历史偏移
      * @return 偏移后的日期
      */
-    public static DateTime offsetMonth(Date date, int offset) {
-        return offset(date, DateField.MONTH, offset);
+    public static DateTime offsetMonthOfDateTime(Date date, int offset) {
+        return offsetOfDateTime(date, DateField.MONTH, offset);
     }
 
     /**
      * 获取指定日期偏移指定时间后的时间
      *
-     * @param date 基准日期
+     * @param date      基准日期
      * @param dateField 偏移的粒度大小（小时、天、月等）{@link DateField}
-     * @param offset 偏移量，正数为向后偏移，负数为向前偏移
+     * @param offset    偏移量，正数为向后偏移，负数为向前偏移
      * @return 偏移后的日期
      */
-    public static DateTime offset(Date date, DateField dateField, int offset) {
+    public static DateTime offsetOfDateTime(Date date, DateField dateField, int offset) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(dateField.getValue(), offset);
@@ -952,22 +971,22 @@ public class DateTimeCommand {
     /**
      * 获取指定日期偏移指定时间后的时间
      *
-     * @param date 基准日期
+     * @param date      基准日期
      * @param dateField 偏移的粒度大小（小时、天、月等）{@link DateField}
-     * @param offset 偏移量，正数为向后偏移，负数为向前偏移
+     * @param offset    偏移量，正数为向后偏移，负数为向前偏移
      * @return 偏移后的日期
-     * @deprecated please use {@link DateTimeCommand#offset(Date, DateField, int)}
+     * @deprecated please use {@link DateTimeCommand#offsetOfDateTime(Date, DateField, int)}
      */
-    public static DateTime offsetDate(Date date, DateField dateField, int offset) {
-        return offset(date, dateField, offset);
+    public static DateTime offsetDateTime(Date date, DateField dateField, int offset) {
+        return offsetOfDateTime(date, dateField, offset);
     }
 
     /**
      * 判断两个日期相差的时长
      *
      * @param beginDate 起始日期
-     * @param endDate 结束日期
-     * @param unit 相差的单位：相差 天{@link DateUnit#DAY}、小时{@link DateUnit#HOUR} 等
+     * @param endDate   结束日期
+     * @param unit      相差的单位：相差 天{@link DateUnit#DAY}、小时{@link DateUnit#HOUR} 等
      * @return 日期差
      */
     public static long between(Date beginDate, Date endDate, DateUnit unit) {
@@ -978,7 +997,7 @@ public class DateTimeCommand {
      * 判断两个日期相差的毫秒数
      *
      * @param beginDate 起始日期
-     * @param endDate 结束日期
+     * @param endDate   结束日期
      * @return 日期差
      * @since 3.0.1
      */
@@ -988,6 +1007,7 @@ public class DateTimeCommand {
 
     /**
      * 判断两个日期相差的天数<br>
+     *
      * <pre>
      * 有时候我们计算相差天数的时候需要忽略时分秒。
      * 比如：2016-02-01 23:59:59和2016-02-02 00:00:00相差一秒
@@ -996,8 +1016,8 @@ public class DateTimeCommand {
      * </pre>
      *
      * @param beginDate 起始日期
-     * @param endDate 结束日期
-     * @param isReset 是否重置时间为起始时间
+     * @param endDate   结束日期
+     * @param isReset   是否重置时间为起始时间
      * @return 日期差
      * @since 3.0.1
      */
@@ -1013,8 +1033,8 @@ public class DateTimeCommand {
      * 格式化日期间隔输出
      *
      * @param beginDate 起始日期
-     * @param endDate 结束日期
-     * @param level 级别，按照天、小时、分、秒、毫秒分为5个等级
+     * @param endDate   结束日期
+     * @param level     级别，按照天、小时、分、秒、毫秒分为5个等级
      * @return XX天XX小时XX分XX秒
      */
     public static String formatBetween(Date beginDate, Date endDate, BetweenFormater.Level level) {
@@ -1025,7 +1045,7 @@ public class DateTimeCommand {
      * 格式化日期间隔输出，精确到毫秒
      *
      * @param beginDate 起始日期
-     * @param endDate 结束日期
+     * @param endDate   结束日期
      * @return XX天XX小时XX分XX秒
      * @since 3.0.1
      */
@@ -1037,7 +1057,7 @@ public class DateTimeCommand {
      * 格式化日期间隔输出
      *
      * @param betweenMs 日期间隔
-     * @param level 级别，按照天、小时、分、秒、毫秒分为5个等级
+     * @param level     级别，按照天、小时、分、秒、毫秒分为5个等级
      * @return XX天XX小时XX分XX秒XX毫秒
      */
     public static String formatBetween(long betweenMs, BetweenFormater.Level level) {
@@ -1089,7 +1109,7 @@ public class DateTimeCommand {
      * 计算指定指定时间区间内的周数
      *
      * @param start 开始时间
-     * @param end 结束时间
+     * @param end   结束时间
      * @return 周数
      */
     public static int weekCount(Date start, Date end) {
@@ -1149,7 +1169,7 @@ public class DateTimeCommand {
     /**
      * 计算相对于dateToCompare的年龄，长用于计算指定生日在某年的年龄
      *
-     * @param birthDay 生日
+     * @param birthDay      生日
      * @param dateToCompare 需要对比的日期
      * @return 年龄
      * @throws Exception
@@ -1159,7 +1179,8 @@ public class DateTimeCommand {
         cal.setTime(dateToCompare);
 
         if (cal.before(birthDay)) {
-            throw new IllegalArgumentException(StrUtil.format("Birthday is after dateTime {}!", formatDate(dateToCompare)));
+            throw new IllegalArgumentException(
+                    StringCommand.format("Birthday is after dateTime {}!", formatDate(dateToCompare)));
         }
 
         int year = cal.get(Calendar.YEAR);
@@ -1173,11 +1194,11 @@ public class DateTimeCommand {
         if (month == monthBirth) {
             int dayOfMonthBirth = cal.get(Calendar.DAY_OF_MONTH);
             if (dayOfMonth < dayOfMonthBirth) {
-                //如果生日在当月，但是未达到生日当天的日期，年龄减一
+                // 如果生日在当月，但是未达到生日当天的日期，年龄减一
                 age--;
             }
         } else if (month < monthBirth) {
-            //如果当前月份未达到生日的月份，年龄计算减一
+            // 如果当前月份未达到生日的月份，年龄计算减一
             age--;
         }
 
@@ -1229,7 +1250,7 @@ public class DateTimeCommand {
     /**
      * 获取日期中的某数值。如获取月份
      *
-     * @param date 日期
+     * @param date     日期
      * @param dateType 日期格式
      * @return 数值
      */
@@ -1246,9 +1267,9 @@ public class DateTimeCommand {
     /**
      * 增加日期中某类型的某数值。如增加日期
      *
-     * @param date 日期字符串
+     * @param date     日期字符串
      * @param dateType 类型
-     * @param amount 数值
+     * @param amount   数值
      * @return 计算后日期字符串
      */
     private static String addInteger(String date, int dateType, int amount) {
@@ -1265,9 +1286,9 @@ public class DateTimeCommand {
     /**
      * 增加日期中某类型的某数值。如增加日期
      *
-     * @param date 日期
+     * @param date     日期
      * @param dateType 类型
-     * @param amount 数值
+     * @param amount   数值
      * @return 计算后日期
      */
     private static Date addInteger(Date date, int dateType, int amount) {
@@ -1337,8 +1358,7 @@ public class DateTimeCommand {
     }
 
     /**
-     * get current dateTime string
-     * and default format is: yyyyMMddHHmmss
+     * get current dateTime string and default format is: yyyyMMddHHmmss
      */
     public static String getCurrentTimeString() {
         return DateTimeCommand.getDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -1425,7 +1445,7 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为日期。失败返回null。
      *
-     * @param date 日期字符串
+     * @param date    日期字符串
      * @param pattern 日期格式
      * @return 日期
      */
@@ -1443,7 +1463,7 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为日期。失败返回null。
      *
-     * @param date 日期字符串
+     * @param date      日期字符串
      * @param dateStyle 日期风格
      * @return 日期
      */
@@ -1458,7 +1478,7 @@ public class DateTimeCommand {
     /**
      * 将日期转化为日期字符串。失败返回null。
      *
-     * @param date 日期
+     * @param date    日期
      * @param pattern 日期格式
      * @return 日期字符串
      */
@@ -1476,7 +1496,7 @@ public class DateTimeCommand {
     /**
      * 将日期转化为日期字符串。失败返回null。
      *
-     * @param date 日期
+     * @param date      日期
      * @param dateStyle 日期风格
      * @return 日期字符串
      */
@@ -1491,7 +1511,7 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
      *
-     * @param date 旧日期字符串
+     * @param date       旧日期字符串
      * @param newPattern 新日期格式
      * @return 新日期字符串
      */
@@ -1503,7 +1523,7 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
      *
-     * @param date 旧日期字符串
+     * @param date         旧日期字符串
      * @param newDateStyle 新日期风格
      * @return 新日期字符串
      */
@@ -1515,9 +1535,9 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
      *
-     * @param date 旧日期字符串
+     * @param date        旧日期字符串
      * @param olddPattern 旧日期格式
-     * @param newPattern 新日期格式
+     * @param newPattern  新日期格式
      * @return 新日期字符串
      */
     public static String StringToString(String date, String olddPattern, String newPattern) {
@@ -1527,9 +1547,9 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
      *
-     * @param date 旧日期字符串
+     * @param date         旧日期字符串
      * @param olddDteStyle 旧日期风格
-     * @param newParttern 新日期格式
+     * @param newParttern  新日期格式
      * @return 新日期字符串
      */
     public static String StringToString(String date, DateStyle olddDteStyle, String newParttern) {
@@ -1543,8 +1563,8 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
      *
-     * @param date 旧日期字符串
-     * @param olddPattern 旧日期格式
+     * @param date         旧日期字符串
+     * @param olddPattern  旧日期格式
      * @param newDateStyle 新日期风格
      * @return 新日期字符串
      */
@@ -1559,7 +1579,7 @@ public class DateTimeCommand {
     /**
      * 将日期字符串转化为另一日期字符串。失败返回null。
      *
-     * @param date 旧日期字符串
+     * @param date         旧日期字符串
      * @param olddDteStyle 旧日期风格
      * @param newDateStyle 新日期风格
      * @return 新日期字符串
@@ -1575,7 +1595,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的年份。失败返回null。
      *
-     * @param date 日期
+     * @param date       日期
      * @param yearAmount 增加数量。可为负数
      * @return 增加年份后的日期字符串
      */
@@ -1586,7 +1606,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的年份。失败返回null。
      *
-     * @param date 日期
+     * @param date       日期
      * @param yearAmount 增加数量。可为负数
      * @return 增加年份后的日期
      */
@@ -1597,7 +1617,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的月份。失败返回null。
      *
-     * @param date 日期
+     * @param date        日期
      * @param monthAmount 增加数量。可为负数
      * @return 增加月份后的日期字符串
      */
@@ -1608,7 +1628,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的月份。失败返回null。
      *
-     * @param date 日期
+     * @param date        日期
      * @param monthAmount 增加数量。可为负数
      * @return 增加月份后的日期
      */
@@ -1619,7 +1639,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的天数。失败返回null。
      *
-     * @param date 日期字符串
+     * @param date      日期字符串
      * @param dayAmount 增加数量。可为负数
      * @return 增加天数后的日期字符串
      */
@@ -1630,7 +1650,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的天数。失败返回null。
      *
-     * @param date 日期
+     * @param date      日期
      * @param dayAmount 增加数量。可为负数
      * @return 增加天数后的日期
      */
@@ -1641,7 +1661,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的小时。失败返回null。
      *
-     * @param date 日期字符串
+     * @param date       日期字符串
      * @param hourAmount 增加数量。可为负数
      * @return 增加小时后的日期字符串
      */
@@ -1652,7 +1672,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的小时。失败返回null。
      *
-     * @param date 日期
+     * @param date       日期
      * @param hourAmount 增加数量。可为负数
      * @return 增加小时后的日期
      */
@@ -1663,7 +1683,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的分钟。失败返回null。
      *
-     * @param date 日期字符串
+     * @param date         日期字符串
      * @param minuteAmount 增加数量。可为负数
      * @return 增加分钟后的日期字符串
      */
@@ -1674,7 +1694,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的分钟。失败返回null。
      *
-     * @param date 日期
+     * @param date         日期
      * @param minuteAmount 增加数量。可为负数 dayAmount
      * @return 增加分钟后的日期
      */
@@ -1685,7 +1705,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的秒钟。失败返回null。
      *
-     * @param date 日期字符串
+     * @param date         日期字符串
      * @param secondAmount 增加数量。可为负数 dayAmount
      * @return 增加秒钟后的日期字符串
      */
@@ -1696,7 +1716,7 @@ public class DateTimeCommand {
     /**
      * 增加日期的秒钟。失败返回null。
      *
-     * @param date 日期
+     * @param date         日期
      * @param secondAmount 增加数量。可为负数 dayAmount
      * @return 增加秒钟后的日期
      */
@@ -1913,6 +1933,8 @@ public class DateTimeCommand {
             case 6:
                 pigWeek = PigWeek.SATURDAY;
                 break;
+            default:
+                break;
         }
         return pigWeek;
     }
@@ -1920,7 +1942,7 @@ public class DateTimeCommand {
     /**
      * 获取两个日期相差的天数
      *
-     * @param date 日期字符串
+     * @param date      日期字符串
      * @param otherDate 另一个日期字符串
      * @return 相差天数。如果失败则返回-1
      */
@@ -1929,7 +1951,7 @@ public class DateTimeCommand {
     }
 
     /**
-     * @param date 日期
+     * @param date      日期
      * @param otherDate 另一个日期
      * @return 相差天数。如果失败则返回-1
      */
@@ -2007,58 +2029,49 @@ public class DateTimeCommand {
     /*
      *//**
      * 格式化
+     *
      * @param dateTime
      * @param pattern
      * @return
-     *//*
-    public static String format(Date dateTime, String pattern) {
-        DateFormat format = new SimpleDateFormat(pattern);
-        return format.format(dateTime);
-    }
-
-    *//**
+     */
+    /*
+     * public static String format(Date dateTime, String pattern) { DateFormat format = new SimpleDateFormat(pattern);
+     * return format.format(dateTime); }
+     *
+     *//**
      * 格式化
+     *
      * @param dateTime
      * @param parsePattern
      * @param returnPattern
      * @return
      *//*
-    public static String format(String dateTime, String parsePattern, String returnPattern) {
-        return format(newJson(dateTime, parsePattern), returnPattern);
-    }*/
+     * public static String format(String dateTime, String parsePattern, String returnPattern) { return
+     * format(newJson(dateTime, parsePattern), returnPattern); }
+     */
 
     /* *//**
      * 解析
+     *
      * @param dateTime
      * @param pattern
      * @return
-     *//*
-    public static Date newJson(String dateTime, String pattern) {
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        try {
-            return format.newJson(dateTime);
-        } catch (ParseException e) {
-            logger.error("ToolDateTime.parse异常：date值" + dateTime + "，pattern值" + pattern);
-            return null;
-        }
-    }
-
-    *//**
+     */
+    /*
+     * public static Date newJson(String dateTime, String pattern) { SimpleDateFormat format = new
+     * SimpleDateFormat(pattern); try { return format.newJson(dateTime); } catch (ParseException e) {
+     * logger.error("ToolDateTime.parse异常：date值" + dateTime + "，pattern值" + pattern); return null; } }
+     *
+     *//**
      * 解析
+     *
      * @param dateStr
      * @return
      *//*
-    public static Date newJson(String dateStr) {
-        Date dateTime = null;
-        try {
-            dateTime = DateFormat.getDateTimeInstance().newJson(dateStr);
-        } catch (ParseException e) {
-            logger.error("ToolDateTime.parse异常：date值" + dateTime);
-            return null;
-        }
-        return dateTime;
-    }
-*/
+     * public static Date newJson(String dateStr) { Date dateTime = null; try { dateTime =
+     * DateFormat.getDateTimeInstance().newJson(dateStr); } catch (ParseException e) {
+     * logger.error("ToolDateTime.parse异常：date值" + dateTime); return null; } return dateTime; }
+     */
 
     /**
      * 两个日期的时间差，返回"X天X小时X分X秒"
@@ -2184,32 +2197,20 @@ public class DateTimeCommand {
     public static List<String> getDaySpaceDate(Date start, Date end) {
         Calendar fromCalendar = Calendar.getInstance();
         fromCalendar.setTime(start);
-        fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        fromCalendar.set(Calendar.MINUTE, 0);
-        fromCalendar.set(Calendar.SECOND, 0);
-        fromCalendar.set(Calendar.MILLISECOND, 0);
-
+        beginOfDayCalendar(fromCalendar);
         Calendar toCalendar = Calendar.getInstance();
         toCalendar.setTime(end);
-        toCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        toCalendar.set(Calendar.MINUTE, 0);
-        toCalendar.set(Calendar.SECOND, 0);
-        toCalendar.set(Calendar.MILLISECOND, 0);
-
+        beginOfDayCalendar(toCalendar);
         List<String> dateList = new LinkedList<String>();
-
         long dayCount = (toCalendar.getTime().getTime() - fromCalendar.getTime().getTime()) / (1000 * 60 * 60 * 24);
         if (dayCount < 0) {
             return dateList;
         }
-
         dateList.add(format(fromCalendar.getTime(), DateStyle.YYYY_MM_DD.getValue()));
-
         for (int i = 0; i < dayCount; i++) {
             fromCalendar.add(Calendar.DATE, 1);// 增加一天
             dateList.add(format(fromCalendar.getTime(), DateStyle.YYYY_MM_DD.getValue()));
         }
-
         return dateList;
     }
 
@@ -2374,7 +2375,7 @@ public class DateTimeCommand {
     }
 
     public static java.time.format.DateTimeFormatter nativeDateTimeFormatter() {
-        //TODO
+        // TODO
         return null;
     }
 
@@ -2386,5 +2387,20 @@ public class DateTimeCommand {
 
     public static DateTimeFormatter dateTimeFormatter(Locale locale, TimeZone timeZone, String style) {
         return DateTimeFormatter.getInstance(style, timeZone, locale);
+    }
+
+
+    public static long timestampLimit(long l, int i) {
+        i = (l + "").length() - i;
+        if (i > 0) {
+            for (int j = 0; j < i; j++) {
+                l = l / 10;
+            }
+        } else if (i < 0) {
+            for (int j = 0; j < -i; j++) {
+                l = l * 10;
+            }
+        }
+        return l;
     }
 }

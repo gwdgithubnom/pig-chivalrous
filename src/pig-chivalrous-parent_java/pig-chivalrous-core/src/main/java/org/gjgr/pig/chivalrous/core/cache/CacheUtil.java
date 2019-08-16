@@ -18,7 +18,7 @@ public class CacheUtil {
      * 创建FIFO(first in first out) 先进先出缓存.
      *
      * @param capacity 容量
-     * @param timeout 过期时长
+     * @param timeout  过期时长
      * @return {@link FIFOCache}
      */
     public static <K, V> Cache<K, V> newFIFOCache(int capacity, long timeout) {
@@ -39,7 +39,7 @@ public class CacheUtil {
      * 创建LFU(least frequently used) 最少使用率缓存.
      *
      * @param capacity 容量
-     * @param timeout 过期时长
+     * @param timeout  过期时长
      * @return {@link LFUCache}
      */
     public static <K, V> Cache<K, V> newLFUCache(int capacity, long timeout) {
@@ -60,7 +60,7 @@ public class CacheUtil {
      * 创建LRU (least recently used)最近最久未使用缓存.
      *
      * @param capacity 容量
-     * @param timeout 过期时长
+     * @param timeout  过期时长
      * @return {@link LRUCache}
      */
     public static <K, V> Cache<K, V> newLRUCache(int capacity, long timeout) {

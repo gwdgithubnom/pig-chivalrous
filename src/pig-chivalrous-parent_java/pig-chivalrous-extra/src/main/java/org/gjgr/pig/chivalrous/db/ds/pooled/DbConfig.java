@@ -10,19 +10,19 @@ import org.gjgr.pig.chivalrous.db.DbUtil;
  */
 public class DbConfig {
 
-    //-------------------------------------------------------------------- Fields start
-    private String driver;        //数据库驱动
-    private String url;            //jdbc url
-    private String user;            //用户名
-    private String pass;            //密码
+    // -------------------------------------------------------------------- Fields start
+    private String driver; // 数据库驱动
+    private String url; // jdbc url
+    private String user; // 用户名
+    private String pass; // 密码
 
-    private int initialSize;        //初始连接数
-    private int minIdle;            //最小闲置连接数
-    private int maxActive;        //最大活跃连接数
-    private long maxWait;        //获取连接的超时等待
-    //-------------------------------------------------------------------- Fields end
+    private int initialSize; // 初始连接数
+    private int minIdle; // 最小闲置连接数
+    private int maxActive; // 最大活跃连接数
+    private long maxWait; // 获取连接的超时等待
+    // -------------------------------------------------------------------- Fields end
 
-    //-------------------------------------------------------------------- Constructor start
+    // -------------------------------------------------------------------- Constructor start
     public DbConfig() {
     }
 
@@ -36,7 +36,7 @@ public class DbConfig {
     public DbConfig(String url, String user, String pass) {
         init(url, user, pass);
     }
-    //-------------------------------------------------------------------- Constructor end
+    // -------------------------------------------------------------------- Constructor end
 
     /**
      * 初始化
@@ -57,7 +57,7 @@ public class DbConfig {
         }
     }
 
-    //-------------------------------------------------------------------- Getters and Setters start
+    // -------------------------------------------------------------------- Getters and Setters start
     public String getDriver() {
         return driver;
     }
@@ -121,5 +121,5 @@ public class DbConfig {
     public void setMaxWait(long maxWait) {
         this.maxWait = maxWait;
     }
-    //-------------------------------------------------------------------- Getters and Setters end
+    // -------------------------------------------------------------------- Getters and Setters end
 }

@@ -21,8 +21,8 @@ import java.util.List;
 public abstract class AbstractSqlRunner {
     protected SqlConnRunner runner;
 
-    //------------------------------------------------------- Constructor start
-    //------------------------------------------------------- Constructor end
+    // ------------------------------------------------------- Constructor start
+    // ------------------------------------------------------- Constructor end
 
     /**
      * 获得链接。根据实现不同，可以自定义获取连接的方式
@@ -122,7 +122,7 @@ public abstract class AbstractSqlRunner {
         }
     }
 
-    //---------------------------------------------------------------------------- CRUD start
+    // ---------------------------------------------------------------------------- CRUD start
 
     /**
      * 插入数据
@@ -251,7 +251,7 @@ public abstract class AbstractSqlRunner {
         }
     }
 
-    //------------------------------------------------------------- Get start
+    // ------------------------------------------------------------- Get start
 
     /**
      * 根据某个字段（最好是唯一字段）查询单个记录<br>
@@ -278,7 +278,7 @@ public abstract class AbstractSqlRunner {
     public Entity get(Entity where) throws SQLException {
         return find(null, where, new EntityHandler());
     }
-    //------------------------------------------------------------- Get end
+    // ------------------------------------------------------------- Get end
 
     /**
      * 查询
@@ -358,7 +358,8 @@ public abstract class AbstractSqlRunner {
      * @return 数据对象列表
      * @throws SQLException
      */
-    public List<Entity> findLike(String tableName, String field, String value, Condition.LikeType likeType) throws SQLException {
+    public List<Entity> findLike(String tableName, String field, String value, Condition.LikeType likeType)
+            throws SQLException {
         return findAll(Entity.create(tableName).set(field, DbUtil.buildLikeValue(value, likeType)));
     }
 
@@ -392,7 +393,8 @@ public abstract class AbstractSqlRunner {
      * @return 结果对象
      * @throws SQLException
      */
-    public <T> T page(Collection<String> fields, Entity where, int page, int numPerPage, RsHandler<T> rsh) throws SQLException {
+    public <T> T page(Collection<String> fields, Entity where, int page, int numPerPage, RsHandler<T> rsh)
+            throws SQLException {
         Connection conn = null;
         try {
             conn = this.getConnection();
@@ -436,7 +438,8 @@ public abstract class AbstractSqlRunner {
      * @return 结果对象
      * @throws SQLException
      */
-    public PageResult<Entity> page(Collection<String> fields, Entity where, int page, int numPerPage) throws SQLException {
+    public PageResult<Entity> page(Collection<String> fields, Entity where, int page, int numPerPage)
+            throws SQLException {
         Connection conn = null;
         try {
             conn = this.getConnection();
@@ -480,9 +483,9 @@ public abstract class AbstractSqlRunner {
     public PageResult<Entity> page(Entity where, Page page) throws SQLException {
         return this.page(null, where, page);
     }
-    //---------------------------------------------------------------------------- CRUD end
+    // ---------------------------------------------------------------------------- CRUD end
 
-    //---------------------------------------------------------------------------- Getters and Setters start
+    // ---------------------------------------------------------------------------- Getters and Setters start
     public SqlConnRunner getRunner() {
         return runner;
     }
@@ -490,8 +493,8 @@ public abstract class AbstractSqlRunner {
     public void setRunner(SqlConnRunner runner) {
         this.runner = runner;
     }
-    //---------------------------------------------------------------------------- Getters and Setters end
+    // ---------------------------------------------------------------------------- Getters and Setters end
 
-    //---------------------------------------------------------------------------- Private method start
-    //---------------------------------------------------------------------------- Private method end
+    // ---------------------------------------------------------------------------- Private method start
+    // ---------------------------------------------------------------------------- Private method end
 }

@@ -16,7 +16,7 @@
 
 package org.gjgr.pig.chivalrous.core.kit;
 
-import org.gjgr.pig.chivalrous.core.base.Const;
+import org.gjgr.pig.chivalrous.core.lang.ConstEnumStringValue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +38,7 @@ public class Prop {
      * @see #Prop(String, String)
      */
     public Prop(String fileName) {
-        this(fileName, Const.DEFAULT_ENCODING);
+        this(fileName, ConstEnumStringValue.DEFAULT_ENCODING.value());
     }
 
     /**
@@ -46,7 +46,8 @@ public class Prop {
      * <p>
      * Example:<br>
      * Prop prop = new Prop("my_config.txt", "UTF-8");<br>
-     * String userName = prop.get("userName");<br><br>
+     * String userName = prop.get("userName");<br>
+     * <br>
      * <p>
      * prop = new Prop("com/jfinal/file_in_sub_path_of_classpath.txt", "UTF-8");<br>
      * String value = prop.get("key");
@@ -57,7 +58,7 @@ public class Prop {
     public Prop(String fileName, String encoding) {
         InputStream inputStream = null;
         try {
-            inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);        // properties.load(Prop.class.getResourceAsStream(fileName));
+            inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName); // properties.load(Prop.class.getResourceAsStream(fileName));
             if (inputStream == null) {
                 throw new IllegalArgumentException("Properties file not found in classpath: " + fileName);
             }
@@ -82,7 +83,7 @@ public class Prop {
      * @see #Prop(File, String)
      */
     public Prop(File file) {
-        this(file, Const.DEFAULT_ENCODING);
+        this(file, ConstEnumStringValue.DEFAULT_ENCODING.value());
     }
 
     /**
@@ -92,7 +93,7 @@ public class Prop {
      * Prop prop = new Prop(new File("/var/config/my_config.txt"), "UTF-8");<br>
      * String userName = prop.get("userName");
      *
-     * @param file the properties File object
+     * @param file     the properties File object
      * @param encoding the encoding
      */
     public Prop(File file, String encoding) {

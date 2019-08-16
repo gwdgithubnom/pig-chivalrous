@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.dfa;
 
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,16 +11,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * DFA（Deterministic Finite Automaton 确定有穷自动机）
- * DFA单词树（以下简称单词树），常用于在某大段文字中快速查找某几个关键词是否存在。<br>
+ * DFA（Deterministic Finite Automaton 确定有穷自动机） DFA单词树（以下简称单词树），常用于在某大段文字中快速查找某几个关键词是否存在。<br>
  * 单词树使用group区分不同的关键字集合，不同的分组可以共享树枝，避免重复建树。<br>
  * 单词树使用树状结构表示一组单词。<br>
  * 例如：红领巾，红河构建树后为：<br>
- * 红                    <br>
- * /      \                 <br>
- * 领         河             <br>
- * /                            <br>
- * 巾                            <br>
+ * 红 <br>
+ * / \ <br>
+ * 领 河 <br>
+ * / <br>
+ * 巾 <br>
  * 其中每个节点都是一个WordTree对象，查找时从上向下查找。<br>
  *
  * @author Looly
@@ -33,16 +32,16 @@ public class WordTree extends HashMap<Character, WordTree> {
      */
     private Set<Character> endCharacterSet = new HashSet<>();
 
-    //--------------------------------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------------------------------- Constructor start
 
     /**
      * 默认构造
      */
     public WordTree() {
     }
-    //--------------------------------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------------------------------- Constructor start
 
-    //------------------------------------------------------------------------------- add word
+    // ------------------------------------------------------------------------------- add word
 
     /**
      * 增加一组单词
@@ -64,7 +63,7 @@ public class WordTree extends HashMap<Character, WordTree> {
      * @param words 单词数组
      */
     public void addWords(String... words) {
-        HashSet<String> wordsSet = CollectionUtil.newHashSet(words);
+        HashSet<String> wordsSet = CollectionCommand.newHashSet(words);
         for (String word : wordsSet) {
             addWord(word);
         }
@@ -83,10 +82,11 @@ public class WordTree extends HashMap<Character, WordTree> {
         int length = word.length();
         for (int i = 0; i < length; i++) {
             currentChar = word.charAt(i);
-            if (false == StopChar.isStopChar(currentChar)) {//只处理合法字符
+            if (false == StopChar.isStopChar(currentChar)) {
+                // 只处理合法字符
                 child = current.get(currentChar);
                 if (child == null) {
-                    //无子类，新建一个子节点后存放下一个字符
+                    // 无子类，新建一个子节点后存放下一个字符
                     child = new WordTree();
                     current.put(currentChar, child);
                 }
@@ -99,7 +99,7 @@ public class WordTree extends HashMap<Character, WordTree> {
         }
     }
 
-    //------------------------------------------------------------------------------- match
+    // ------------------------------------------------------------------------------- match
 
     /**
      * 指定文本是否包含树中的词
@@ -125,13 +125,13 @@ public class WordTree extends HashMap<Character, WordTree> {
             return null;
         }
         List<String> matchAll = matchAll(text, 1);
-        if (CollectionUtil.isNotEmpty(matchAll)) {
+        if (CollectionCommand.isNotEmpty(matchAll)) {
             return matchAll.get(0);
         }
         return null;
     }
 
-    //------------------------------------------------------------------------------- match all
+    // ------------------------------------------------------------------------------- match all
 
     /**
      * 找出所有匹配的关键字
@@ -146,7 +146,7 @@ public class WordTree extends HashMap<Character, WordTree> {
     /**
      * 找出所有匹配的关键字
      *
-     * @param text 被检查的文本
+     * @param text  被检查的文本
      * @param limit 限制匹配个数
      * @return 匹配的词列表
      */
@@ -159,10 +159,10 @@ public class WordTree extends HashMap<Character, WordTree> {
      * 密集匹配原则：假如关键词有 ab,b，文本是abab，将匹配 [ab,b,ab]<br>
      * 贪婪匹配（最长匹配）原则：假如关键字a,ab，最长匹配将匹配[a, ab]
      *
-     * @param text 被检查的文本
-     * @param limit 限制匹配个数
+     * @param text           被检查的文本
+     * @param limit          限制匹配个数
      * @param isDensityMatch 是否使用密集匹配原则
-     * @param isGreedMatch 是否使用贪婪匹配（最长匹配）原则
+     * @param isGreedMatch   是否使用贪婪匹配（最长匹配）原则
      * @return 匹配的词列表
      */
     public List<String> matchAll(String text, int limit, boolean isDensityMatch, boolean isGreedMatch) {
@@ -176,28 +176,28 @@ public class WordTree extends HashMap<Character, WordTree> {
         int length = text.length();
         StringBuilder sb;
         for (int i = 0; i < length; i++) {
-            sb = StrUtil.builder();
+            sb = StringCommand.builder();
             for (int j = i; j < length; j++) {
                 currentChar = text.charAt(j);
-//				Console.log("i: {}, j: {}, currentChar: {}", i, j, currentChar);
+                // Console.log("i: {}, j: {}, currentChar: {}", i, j, currentChar);
                 if (StopChar.isStopChar(currentChar) || false == current.containsKey(currentChar)) {
-                    //停顿词（略过的词）和非关键字被跳过
+                    // 停顿词（略过的词）和非关键字被跳过
                     break;
                 }
                 sb.append(currentChar);
                 if (current.isEnd(currentChar)) {
-                    //到达单词末尾，关键词成立，从此词的下一个位置开始查找
+                    // 到达单词末尾，关键词成立，从此词的下一个位置开始查找
                     findedWords.add(sb.toString());
                     if (limit > 0 && findedWords.size() >= limit) {
-                        //超过匹配限制个数，直接返回
+                        // 超过匹配限制个数，直接返回
                         return findedWords;
                     }
                     if (false == isDensityMatch) {
-                        //如果非密度匹配，跳过匹配到的词
+                        // 如果非密度匹配，跳过匹配到的词
                         i = j;
                     }
                     if (false == isGreedMatch) {
-                        //如果懒惰匹配（非贪婪匹配）。当遇到第一个结尾标记就结束本轮匹配
+                        // 如果懒惰匹配（非贪婪匹配）。当遇到第一个结尾标记就结束本轮匹配
                         break;
                     }
                 }
@@ -211,7 +211,7 @@ public class WordTree extends HashMap<Character, WordTree> {
         return findedWords;
     }
 
-    //--------------------------------------------------------------------------------------- Private method start
+    // --------------------------------------------------------------------------------------- Private method start
 
     /**
      * 是否末尾
@@ -233,5 +233,5 @@ public class WordTree extends HashMap<Character, WordTree> {
             this.endCharacterSet.add(c);
         }
     }
-    //--------------------------------------------------------------------------------------- Private method end
+    // --------------------------------------------------------------------------------------- Private method end
 }

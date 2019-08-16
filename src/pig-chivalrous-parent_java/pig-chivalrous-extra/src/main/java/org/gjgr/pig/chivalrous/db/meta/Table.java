@@ -15,7 +15,7 @@ public class Table extends HashMap<String, Column> {
     private String tableName;
     private Set<String> pkNames = new LinkedHashSet<String>();
 
-    //----------------------------------------------------- Constructor start
+    // ----------------------------------------------------- Constructor start
     public Table(String tableName) {
         this.setTableName(tableName);
     }
@@ -23,9 +23,9 @@ public class Table extends HashMap<String, Column> {
     public static Table create(String tableName) {
         return new Table(tableName);
     }
-    //----------------------------------------------------- Constructor end
+    // ----------------------------------------------------- Constructor end
 
-    //----------------------------------------------------- Getters and Setters start
+    // ----------------------------------------------------- Getters and Setters start
     public String getTableName() {
         return tableName;
     }
@@ -41,7 +41,7 @@ public class Table extends HashMap<String, Column> {
     public void setPkNames(Set<String> pkNames) {
         this.pkNames = pkNames;
     }
-    //----------------------------------------------------- Getters and Setters end
+    // ----------------------------------------------------- Getters and Setters end
 
     /**
      * 设置列对象

@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.exceptions;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 带有状态码的异常
@@ -10,7 +10,7 @@ import org.gjgr.pig.chivalrous.core.util.StrUtil;
 public class StatefulException extends Exception {
     private static final long serialVersionUID = 6057602589533840889L;
 
-    //异常状态码
+    // 异常状态码
     private int status;
 
     public StatefulException() {
@@ -21,7 +21,7 @@ public class StatefulException extends Exception {
     }
 
     public StatefulException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public StatefulException(Throwable throwable) {

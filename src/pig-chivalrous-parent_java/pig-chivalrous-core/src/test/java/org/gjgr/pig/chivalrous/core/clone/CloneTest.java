@@ -13,18 +13,18 @@ public class CloneTest {
     @Test
     public void cloneTest() {
 
-        //实现Cloneable接口
+        // 实现Cloneable接口
         Cat cat = new Cat();
         Cat cat2 = cat.clone();
         Assert.assertEquals(cat, cat2);
 
-        //继承CloneSupport类
+        // 继承CloneSupport类
         Dog dog = new Dog();
         Dog dog2 = dog.clone();
         Assert.assertEquals(dog, dog2);
     }
 
-    //------------------------------------------------------------------------------- private Class for test
+    // ------------------------------------------------------------------------------- private Class for test
 
     /**
      * 猫猫类，使用实现Cloneable方式
@@ -42,28 +42,40 @@ public class CloneTest {
             result = prime * result + age;
             result = prime * result + ((name == null) ? 0 : name.hashCode());
             return result;
-        }        @Override
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            Cat other = (Cat) obj;
+            if (age != other.age) {
+                return false;
+            }
+            if (name == null) {
+                if (other.name != null) {
+                    return false;
+                }
+            } else if (!name.equals(other.name)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
         public Cat clone() {
             try {
                 return (Cat) super.clone();
             } catch (CloneNotSupportedException e) {
                 throw new CloneRuntimeException(e);
             }
-        }
-
-
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null) return false;
-            if (getClass() != obj.getClass()) return false;
-            Cat other = (Cat) obj;
-            if (age != other.age) return false;
-            if (name == null) {
-                if (other.name != null) return false;
-            } else if (!name.equals(other.name)) return false;
-            return true;
         }
     }
 
@@ -87,14 +99,26 @@ public class CloneTest {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null) return false;
-            if (getClass() != obj.getClass()) return false;
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
             Dog other = (Dog) obj;
-            if (age != other.age) return false;
+            if (age != other.age) {
+                return false;
+            }
             if (name == null) {
-                if (other.name != null) return false;
-            } else if (!name.equals(other.name)) return false;
+                if (other.name != null) {
+                    return false;
+                }
+            } else if (!name.equals(other.name)) {
+                return false;
+            }
             return true;
         }
     }

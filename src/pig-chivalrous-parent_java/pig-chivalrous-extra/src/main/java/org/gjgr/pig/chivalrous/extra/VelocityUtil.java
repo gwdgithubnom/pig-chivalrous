@@ -6,10 +6,10 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.gjgr.pig.chivalrous.core.exceptions.NotInitedException;
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.io.FileUtil;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.util.RandomCommand;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-
 
 /**
  * Velocity模板引擎工具类<br>
@@ -47,7 +46,7 @@ public class VelocityUtil {
      *
      * @param templateDir 模板所在目录，绝对路径
      */
-    synchronized public static void init(String templateDir, String charset) {
+    public static synchronized void init(String templateDir, String charset) {
         Velocity.init(_newInitedProp(templateDir, charset));
         Velocity.setProperty(Velocity.FILE_RESOURCE_LOADER_CACHE, true); // 使用缓存
 
@@ -90,7 +89,8 @@ public class VelocityUtil {
      * @param charset          字符集
      * @return 模板和内容匹配后的内容
      */
-    public static String getContent(String templateDir, String templateFileName, VelocityContext context, String charset) {
+    public static String getContent(String templateDir, String templateFileName, VelocityContext context,
+                                    String charset) {
         // 初始化模板引擎
         final VelocityEngine ve = newEngine(templateDir, charset);
 
@@ -159,10 +159,11 @@ public class VelocityUtil {
     public static void toFile(Template template, VelocityContext context, String destPath) {
         PrintWriter writer = null;
         try {
-            writer = FileUtil.getPrintWriter(destPath, Velocity.getProperty(Velocity.OUTPUT_ENCODING).toString(), false);
+            writer = FileUtil.getPrintWriter(destPath, Velocity.getProperty(Velocity.OUTPUT_ENCODING).toString(),
+                    false);
             merge(template, context, writer);
         } catch (IOException e) {
-            throw new UtilException(StrUtil.format("Write Velocity content to [{}] error!", destPath), e);
+            throw new UtilException(StringCommand.format("Write Velocity content to [{}] error!", destPath), e);
         } finally {
             IoCommand.close(writer);
         }
@@ -205,7 +206,8 @@ public class VelocityUtil {
      * @param request          请求对象，用于获取模板中的变量值
      * @param response         响应对象
      */
-    public static void toWriter(String templateFileName, javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) {
+    public static void toWriter(String templateFileName, javax.servlet.http.HttpServletRequest request,
+                                javax.servlet.http.HttpServletResponse response) {
         final VelocityContext context = new VelocityContext();
         parseRequest(context, request);
         parseSession(context, request.getSession(false));
@@ -215,7 +217,10 @@ public class VelocityUtil {
             writer = response.getWriter();
             toWriter(templateFileName, context, writer);
         } catch (Exception e) {
-            throw new UtilException(StrUtil.format("Write Velocity content template by [{}] to response error!", templateFileName), e);
+            throw new UtilException(
+                    StringCommand.format("Write Velocity content template by [{}] to response error!",
+                            templateFileName),
+                    e);
         } finally {
             IoCommand.close(writer);
         }
@@ -252,7 +257,7 @@ public class VelocityUtil {
         if (context == null) {
             context = new VelocityContext(globalContext);
         } else {
-            //加入全局上下文
+            // 加入全局上下文
             for (Entry<String, Object> entry : globalContext.entrySet()) {
                 context.put(entry.getKey(), entry.getValue());
             }

@@ -1,13 +1,12 @@
 package org.gjgr.pig.chivalrous.db;
 
-
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.Dict;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -32,16 +31,16 @@ import java.util.Set;
 public class Entity extends Dict {
     private static final long serialVersionUID = -1951012511464327448L;
 
-    //--------------------------------------------------------------- Static method start
-    /*表名*/
+    // --------------------------------------------------------------- Static method start
+    /* 表名 */
     private String tableName;
-    /*字段名列表，用于限制加入的字段的值*/
+    /* 字段名列表，用于限制加入的字段的值 */
     private Set<String> fieldNames;
 
-    //--------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------- Constructor start
     public Entity() {
     }
-    //--------------------------------------------------------------- Static method end
+    // --------------------------------------------------------------- Static method end
 
     /**
      * 构造
@@ -82,9 +81,9 @@ public class Entity extends Dict {
     public static <T> Entity parse(T bean) {
         return create(null).parseBean(bean);
     }
-    //--------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------- Constructor end
 
-    //--------------------------------------------------------------- Getters and Setters start
+    // --------------------------------------------------------------- Getters and Setters start
 
     /**
      * @return 获得表名
@@ -118,8 +117,8 @@ public class Entity extends Dict {
      * @return 自身
      */
     public Entity setFieldNames(String... fieldNames) {
-        if (ArrayUtil.isNotEmpty(fieldNames)) {
-            this.fieldNames = CollectionUtil.newHashSet(fieldNames);
+        if (ArrayCommand.isNotEmpty(fieldNames)) {
+            this.fieldNames = CollectionCommand.newHashSet(fieldNames);
         }
         return this;
     }
@@ -131,7 +130,7 @@ public class Entity extends Dict {
      * @return 自身
      */
     public Entity setFieldNames(List<String> fieldNames) {
-        if (CollectionUtil.isNotEmpty(fieldNames)) {
+        if (CollectionCommand.isNotEmpty(fieldNames)) {
             this.fieldNames = new HashSet<String>(fieldNames);
         }
         return this;
@@ -144,7 +143,7 @@ public class Entity extends Dict {
      * @return 自身
      */
     public Entity addFieldNames(String... fieldNames) {
-        if (ArrayUtil.isNotEmpty(fieldNames)) {
+        if (ArrayCommand.isNotEmpty(fieldNames)) {
             if (null == this.fieldNames) {
                 return setFieldNames(fieldNames);
             } else {
@@ -156,7 +155,7 @@ public class Entity extends Dict {
         return this;
     }
 
-    //--------------------------------------------------------------- Getters and Setters end
+    // --------------------------------------------------------------- Getters and Setters end
 
     /**
      * 将值对象转换为Entity<br>
@@ -169,27 +168,13 @@ public class Entity extends Dict {
     @Override
     public <T> Entity parseBean(T bean) {
         String tableName = bean.getClass().getSimpleName();
-        tableName = StrUtil.lowerFirst(tableName);
+        tableName = StringCommand.lowerFirst(tableName);
         this.setTableName(tableName);
 
         return (Entity) super.parseBean(bean);
     }
 
-    //-------------------------------------------------------------------- Put and Set start
-
-    /**
-     * PUT方法做了过滤限制，如果此实体限制了属性名，则忽略限制名列表外的字段名
-     *
-     * @param key   名
-     * @param value 值
-     */
-    @Override
-    public Object put(String key, Object value) {
-        if (CollectionUtil.isEmpty(fieldNames) || fieldNames.contains(key)) {
-            super.put(key, value);
-        }
-        return null;
-    }
+    // -------------------------------------------------------------------- Put and Set start
 
     @Override
     public Entity set(String field, Object value) {
@@ -199,64 +184,6 @@ public class Entity extends Dict {
     @Override
     public Entity setIgnoreNull(String field, Object value) {
         return (Entity) super.setIgnoreNull(field, value);
-    }
-    //-------------------------------------------------------------------- Put and Set end
-
-    //-------------------------------------------------------------------- Get start
-
-    /**
-     * 获得Clob类型结果
-     *
-     * @param field 参数
-     * @return Clob
-     */
-    public Clob getClob(String field) {
-        return get(field, null);
-    }
-
-    @Override
-    public Time getTime(String field) {
-        Object obj = get(field);
-        Time result = null;
-        if (null != obj) {
-            try {
-                result = (Time) obj;
-            } catch (Exception e) {
-                //try oracle.sql.TIMESTAMP
-                result = ClassUtil.invoke(obj, "timeValue", new Object[]{});
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public Date getDate(String field) {
-        Object obj = get(field);
-        Date result = null;
-        if (null != obj) {
-            try {
-                result = (Date) obj;
-            } catch (Exception e) {
-                //try oracle.sql.TIMESTAMP
-                result = ClassUtil.invoke(obj, "dateValue", new Object[]{});
-            }
-        }
-        return result;
-    }
-
-    @Override
-    public Timestamp getTimestamp(String field) {
-        Object obj = get(field);
-        Timestamp result = null;
-        if (null != obj) {
-            try {
-                result = (Timestamp) obj;
-            } catch (Exception e) {
-                //try oracle.sql.TIMESTAMP
-                result = ClassUtil.invoke(obj, "timestampValue", new Object[]{});
-            }
-        }
-        return result;
     }
 
     @Override
@@ -275,9 +202,87 @@ public class Entity extends Dict {
             }
         } else if (obj instanceof RowId) {
             final RowId rowId = (RowId) obj;
-            return StrUtil.str(rowId.getBytes(), CharsetUtil.UTF_8);
+            return StringCommand.str(rowId.getBytes(), CharsetCommand.UTF_8);
         }
         return super.getStr(field);
+    }
+    // -------------------------------------------------------------------- Put and Set end
+
+    // -------------------------------------------------------------------- Get start
+
+    @Override
+    public Date getDate(String field) {
+        Object obj = get(field);
+        Date result = null;
+        if (null != obj) {
+            try {
+                result = (Date) obj;
+            } catch (Exception e) {
+                // try oracle.sql.TIMESTAMP
+                result = ClassCommand.invoke(obj, "dateValue", new Object[] {});
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Time getTime(String field) {
+        Object obj = get(field);
+        Time result = null;
+        if (null != obj) {
+            try {
+                result = (Time) obj;
+            } catch (Exception e) {
+                // try oracle.sql.TIMESTAMP
+                result = ClassCommand.invoke(obj, "timeValue", new Object[] {});
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public Timestamp getTimestamp(String field) {
+        Object obj = get(field);
+        Timestamp result = null;
+        if (null != obj) {
+            try {
+                result = (Timestamp) obj;
+            } catch (Exception e) {
+                // try oracle.sql.TIMESTAMP
+                result = ClassCommand.invoke(obj, "timestampValue", new Object[] {});
+            }
+        }
+        return result;
+    }
+
+    // -------------------------------------------------------------------- 特殊方法 start
+    @Override
+    public Entity clone() {
+        return (Entity) super.clone();
+    }
+
+    /**
+     * PUT方法做了过滤限制，如果此实体限制了属性名，则忽略限制名列表外的字段名
+     *
+     * @param key   名
+     * @param value 值
+     */
+    @Override
+    public Object put(String key, Object value) {
+        if (CollectionCommand.isEmpty(fieldNames) || fieldNames.contains(key)) {
+            super.put(key, value);
+        }
+        return null;
+    }
+
+    /**
+     * 获得Clob类型结果
+     *
+     * @param field 参数
+     * @return Clob
+     */
+    public Clob getClob(String field) {
+        return get(field, null);
     }
 
     /**
@@ -288,6 +293,8 @@ public class Entity extends Dict {
     public RowId getRowId() {
         return getRowId("ROWID");
     }
+
+    // -------------------------------------------------------------------- Get end
 
     /**
      * 获得rowid
@@ -305,15 +312,7 @@ public class Entity extends Dict {
         }
         throw new DbRuntimeException("Value of field [{}] is not a rowid!", field);
     }
-
-    //-------------------------------------------------------------------- Get end
-
-    //-------------------------------------------------------------------- 特殊方法 start
-    @Override
-    public Entity clone() {
-        return (Entity) super.clone();
-    }
-    //-------------------------------------------------------------------- 特殊方法 end
+    // -------------------------------------------------------------------- 特殊方法 end
 
     @Override
     public String toString() {

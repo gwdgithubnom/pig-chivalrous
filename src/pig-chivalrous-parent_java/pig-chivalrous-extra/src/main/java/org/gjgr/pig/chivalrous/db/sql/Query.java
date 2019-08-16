@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.db.Page;
 
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ public class Query {
      */
     Page page;
 
-    //--------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------- Constructor start
 
     /**
      * 构造
@@ -80,9 +80,9 @@ public class Query {
         this.where = where;
         this.page = page;
     }
-    //--------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------- Constructor end
 
-    //--------------------------------------------------------------- Getters and Setters start
+    // --------------------------------------------------------------- Getters and Setters start
 
     /**
      * 获得查询的字段名列表
@@ -100,7 +100,7 @@ public class Query {
      * @return this
      */
     public Query setFields(String... fields) {
-        this.fields = CollectionUtil.newArrayList(fields);
+        this.fields = CollectionCommand.newArrayList(fields);
         return this;
     }
 
@@ -173,13 +173,13 @@ public class Query {
         this.page = page;
         return this;
     }
-    //--------------------------------------------------------------- Getters and Setters end
+    // --------------------------------------------------------------- Getters and Setters end
 
     /**
      * 获得第一个表名
      */
     public String getFirstTableName() throws SQLException {
-        if (ArrayUtil.isEmpty(this.tableNames)) {
+        if (ArrayCommand.isEmpty(this.tableNames)) {
             throw new SQLException("No tableName!");
         }
         return this.tableNames[0];

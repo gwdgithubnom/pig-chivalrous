@@ -42,9 +42,9 @@ public class BoundingBox implements Serializable {
     /**
      * 构造
      *
-     * @param latitude1 纬度1
-     * @param latitude2 纬度2
-     * @param longitude1 经度1
+     * @param latitude1   纬度1
+     * @param latitude2   纬度2
+     * @param longitude1  经度1
      * @param longgitude2 经度2
      */
     public BoundingBox(double latitude1, double latitude2, double longitude1, double longgitude2) {
@@ -89,7 +89,8 @@ public class BoundingBox implements Serializable {
      * @return 是否有交集
      */
     public boolean intersects(BoundingBox other) {
-        return false == (other.minLon > maxLon || other.maxLon < minLon || other.minLat > maxLat || other.maxLat < minLat);
+        return false == (other.minLon > maxLon || other.maxLon < minLon || other.minLat > maxLat
+                || other.maxLat < minLat);
     }
 
     /**

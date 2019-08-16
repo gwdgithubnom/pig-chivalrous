@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.system;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 代表当前运行的JRE的信息。
@@ -128,7 +128,7 @@ public class JavaRuntimeInfo {
      * @since Java 1.1
      */
     public final String[] getClassPathArray() {
-        return StrUtil.split(getClassPath(), JavaSystemCommand.get("path.separator", false));
+        return StringCommand.split(getClassPath(), JavaSystemCommand.get("path.separator", false));
     }
 
     /**
@@ -168,7 +168,7 @@ public class JavaRuntimeInfo {
      * @return 属性值，如果不能取得（因为Java安全限制）或值不存在，则返回<code>null</code>。
      */
     public final String[] getLibraryPathArray() {
-        return StrUtil.split(getLibraryPath(), JavaSystemCommand.get("path.separator", false));
+        return StringCommand.split(getLibraryPath(), JavaSystemCommand.get("path.separator", false));
     }
 
     /**

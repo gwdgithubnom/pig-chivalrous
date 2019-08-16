@@ -29,7 +29,7 @@ public interface Dialect {
      */
     public void setWrapper(Wrapper wrapper);
 
-    //-------------------------------------------- Execute
+    // -------------------------------------------- Execute
 
     /**
      * 构建用于插入的PreparedStatement
@@ -62,7 +62,7 @@ public interface Dialect {
      */
     public PreparedStatement psForUpdate(Connection conn, Entity entity, Query query) throws SQLException;
 
-    //-------------------------------------------- Query
+    // -------------------------------------------- Query
 
     /**
      * 构建用于获取多条记录的PreparedStatement

@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.log.dialect.commons;
 
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.AbstractLocationAwareLog;
 import org.gjgr.pig.chivalrous.core.log.level.Level;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,37 +45,39 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
+    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+                    Object... arguments) {
         this.log(FQCN, level, t, format, arguments);
 
     }
 
     @Override
-    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
+    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+                    Object... arguments) {
         Level log4jLevel;
         switch (level) {
             case TRACE:
                 log4jLevel = Level.TRACE;
-                logger.trace(FQCN, log4jLevel, StrUtil.format(format, arguments), t);
+                logger.trace(FQCN, log4jLevel, StringCommand.format(format, arguments), t);
                 break;
             case DEBUG:
                 log4jLevel = Level.DEBUG;
-                logger.debug(FQCN, log4jLevel, StrUtil.format(format, arguments), t);
+                logger.debug(FQCN, log4jLevel, StringCommand.format(format, arguments), t);
                 break;
             case INFO:
                 log4jLevel = Level.INFO;
-                logger.info(FQCN, log4jLevel, StrUtil.format(format, arguments), t);
+                logger.info(FQCN, log4jLevel, StringCommand.format(format, arguments), t);
                 break;
             case WARN:
                 log4jLevel = Level.WARN;
-                logger.warn(FQCN, log4jLevel, StrUtil.format(format, arguments), t);
+                logger.warn(FQCN, log4jLevel, StringCommand.format(format, arguments), t);
                 break;
             case ERROR:
                 log4jLevel = Level.ERROR;
-                logger.error(FQCN, log4jLevel, StrUtil.format(format, arguments), t);
+                logger.error(FQCN, log4jLevel, StringCommand.format(format, arguments), t);
                 break;
             default:
-                throw new Error(StrUtil.format("Can not identify level: {}", level));
+                throw new Error(StringCommand.format("Can not identify level: {}", level));
         }
     }
 
@@ -91,7 +93,7 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void debug(Throwable t, String format, Object... arguments) {
-        logger.debug(FQCN, Level.DEBUG, StrUtil.format(format, arguments), t);
+        logger.debug(FQCN, Level.DEBUG, StringCommand.format(format, arguments), t);
 
     }
 
@@ -108,7 +110,7 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void error(Throwable t, String format, Object... arguments) {
-        logger.error(FQCN, Level.ERROR, StrUtil.format(format, arguments), t);
+        logger.error(FQCN, Level.ERROR, StringCommand.format(format, arguments), t);
 
     }
 
@@ -126,7 +128,7 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void info(Throwable t, String format, Object... arguments) {
-        logger.info(FQCN, Level.INFO, StrUtil.format(format, arguments), t);
+        logger.info(FQCN, Level.INFO, StringCommand.format(format, arguments), t);
 
     }
 
@@ -143,7 +145,7 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void trace(Throwable t, String format, Object... arguments) {
-        logger.trace(FQCN, Level.TRACE, StrUtil.format(format, arguments), t);
+        logger.trace(FQCN, Level.TRACE, StringCommand.format(format, arguments), t);
 
     }
 
@@ -160,7 +162,7 @@ public class SimpleLog4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void warn(Throwable t, String format, Object... arguments) {
-        logger.warn(FQCN, Level.WARN, StrUtil.format(format, arguments), t);
+        logger.warn(FQCN, Level.WARN, StringCommand.format(format, arguments), t);
 
     }
 }

@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.exceptions;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 验证异常
@@ -18,7 +18,7 @@ public class ValidateException extends StatefulException {
     }
 
     public ValidateException(String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params));
+        super(StringCommand.format(messageTemplate, params));
     }
 
     public ValidateException(Throwable throwable) {

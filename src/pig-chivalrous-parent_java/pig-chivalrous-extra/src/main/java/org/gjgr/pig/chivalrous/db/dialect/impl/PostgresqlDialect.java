@@ -3,7 +3,6 @@ package org.gjgr.pig.chivalrous.db.dialect.impl;
 import org.gjgr.pig.chivalrous.db.dialect.DialectName;
 import org.gjgr.pig.chivalrous.db.sql.Wrapper;
 
-
 /**
  * Postgree方言
  *

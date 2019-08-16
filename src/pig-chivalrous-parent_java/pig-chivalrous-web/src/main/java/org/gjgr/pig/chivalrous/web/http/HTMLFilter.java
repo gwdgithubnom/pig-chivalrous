@@ -18,9 +18,11 @@ import java.util.regex.Pattern;
  * <p>
  * This code is a Java port of the original work in PHP by Cal Hendersen. http://code.iamcal.com/php/lib_filter/
  * <p>
- * The trickiest part of the translation was handling the differences in regex handling between PHP and Java. These resources were helpful in the process:
+ * The trickiest part of the translation was handling the differences in regex handling between PHP and Java. These
+ * resources were helpful in the process:
  * <p>
- * http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html http://us2.php.net/manual/en/reference.pcre.pattern.modifiers.php http://www.regular-expressions.info/modifiers.html
+ * http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html
+ * http://us2.php.net/manual/en/reference.pcre.pattern.modifiers.php http://www.regular-expressions.info/modifiers.html
  * <p>
  * A note on naming conventions: instance variables are prefixed with a "v"; global constants are in all caps.
  * <p>
@@ -28,8 +30,8 @@ import java.util.regex.Pattern;
  * <p>
  * The class is not thread safe. Create a new instance if in doubt.
  * <p>
- * If you find bugs or have suggestions on improvement (especially regarding performance), please contact us. The latest version of this source, and our contact details, can be found at
- * http://xss-html-filter.sf.net
+ * If you find bugs or have suggestions on improvement (especially regarding performance), please contact us. The latest
+ * version of this source, and our contact details, can be found at http://xss-html-filter.sf.net
  *
  * @author Joseph O'Connell
  * @author Cal Hendersen
@@ -112,8 +114,8 @@ public final class HTMLFilter {
     private final boolean stripComment;
     private final boolean encodeQuotes;
     /**
-     * flag determining whether to try to make tags when presented with "unbalanced" angle brackets (e.g. "<b text </b>" becomes "<b> text </b>"). If set to false, unbalanced angle brackets will be
-     * html escaped.
+     * flag determining whether to try to make tags when presented with "unbalanced" angle brackets (e.g. "<b text </b>"
+     * becomes "<b> text </b>"). If set to false, unbalanced angle brackets will be html escaped.
      */
     private final boolean alwaysMakeTags;
     private boolean vDebug = false;
@@ -142,13 +144,13 @@ public final class HTMLFilter {
         vAllowed.put("i", no_atts);
         vAllowed.put("em", no_atts);
 
-        vSelfClosingTags = new String[]{"img"};
-        vNeedClosingTags = new String[]{"a", "b", "strong", "i", "em"};
-        vDisallowed = new String[]{};
-        vAllowedProtocols = new String[]{"http", "mailto", "https"}; // no ftp.
-        vProtocolAtts = new String[]{"src", "href"};
-        vRemoveBlanks = new String[]{"a", "b", "strong", "i", "em"};
-        vAllowedEntities = new String[]{"amp", "gt", "lt", "quot"};
+        vSelfClosingTags = new String[] {"img"};
+        vNeedClosingTags = new String[] {"a", "b", "strong", "i", "em"};
+        vDisallowed = new String[] {};
+        vAllowedProtocols = new String[] {"http", "mailto", "https"}; // no ftp.
+        vProtocolAtts = new String[] {"src", "href"};
+        vRemoveBlanks = new String[] {"a", "b", "strong", "i", "em"};
+        vAllowedEntities = new String[] {"amp", "gt", "lt", "quot"};
         stripComment = true;
         encodeQuotes = true;
         alwaysMakeTags = true;
@@ -394,7 +396,8 @@ public final class HTMLFilter {
                     paramValues.add(m3.group(3)); // ([^\"\\s']+)
                 }
 
-                String paramName, paramValue;
+                String paramName;
+                String paramValue;
                 for (int ii = 0; ii < paramNames.size(); ii++) {
                     paramName = paramNames.get(ii).toLowerCase();
                     paramValue = paramValues.get(ii);

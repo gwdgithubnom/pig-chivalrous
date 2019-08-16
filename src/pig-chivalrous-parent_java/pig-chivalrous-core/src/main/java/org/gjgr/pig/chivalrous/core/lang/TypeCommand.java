@@ -9,17 +9,17 @@ import java.util.Set;
 
 /**
  * @Author gwd
- * @Time 10-29-2018  Monday
- * @Description: developer.tools:
+ * @Time 10-29-2018 Monday
+ * @Description: org.gjgr.pig.chivalrous.core:
  * @Target:
  * @More:
  */
 public class TypeCommand {
 
     /**
-     * Try convert {@link Number} value to given type.
-     * <br>
-     * If the value is not a  {@link Number}, or it's class equals the given returnType, the original value will be returned.
+     * Try convert {@link Number} value to given type. <br>
+     * If the value is not a {@link Number}, or it's class equals the given returnType, the original value will be
+     * returned.
      *
      * @param value
      * @param returnType

@@ -3,7 +3,7 @@ package org.gjgr.pig.chivalrous.crypto.test;
 import org.gjgr.pig.chivalrous.core.crypto.digest.HMac;
 import org.gjgr.pig.chivalrous.core.crypto.digest.HmacAlgorithm;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class HmacTest {
         String macHex1 = mac.digestHex(testStr);
         Assert.assertEquals("b977f4b13f93f549e06140971bded384", macHex1);
 
-        String macHex2 = mac.digestHex(IoCommand.toStream(testStr, CharsetUtil.CHARSET_UTF_8));
+        String macHex2 = mac.digestHex(IoCommand.toStream(testStr, CharsetCommand.CHARSET_UTF_8));
         Assert.assertEquals("b977f4b13f93f549e06140971bded384", macHex2);
     }
 }

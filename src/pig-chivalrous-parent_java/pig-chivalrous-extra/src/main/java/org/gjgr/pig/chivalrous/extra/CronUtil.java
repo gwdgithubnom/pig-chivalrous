@@ -4,8 +4,8 @@ import it.sauronsoftware.cron4j.Scheduler;
 import it.sauronsoftware.cron4j.Task;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.setting.Setting;
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
 
 import java.util.Map.Entry;
 
@@ -16,14 +16,14 @@ import java.util.Map.Entry;
  * @deprecated Please use [hutool-cron] module
  */
 public class CronUtil {
-//	private final static Log log = StaticLog.get();
+    // private final static Log log = StaticLog.get();
 
     /**
      * Crontab配置文件
      */
-    public final static String CRONTAB_CONFIG_PATH = "config/cron4j.setting";
+    public static final String CRONTAB_CONFIG_PATH = "config/cron4j.setting";
 
-    private final static Scheduler scheduler = new Scheduler();
+    private static final Scheduler scheduler = new Scheduler();
     private static Setting crontabSetting;
 
     /**
@@ -76,12 +76,12 @@ public class CronUtil {
             final String jobClass = Convert.toStr(entry.getKey());
             final String pattern = Convert.toStr(entry.getValue());
             try {
-                final Runnable job = ClassUtil.newInstance(jobClass);
+                final Runnable job = ClassCommand.newInstance(jobClass);
                 schedule(pattern, job);
-//				log.info("Schedule [{} {}] added.", pattern, jobClass);
+                // log.info("Schedule [{} {}] added.", pattern, jobClass);
             } catch (Exception e) {
                 e.printStackTrace();
-//				log.error(e, "Schedule [%s %s] add error!", pattern, jobClass);
+                // log.error(e, "Schedule [%s %s] add error!", pattern, jobClass);
             }
         }
     }
@@ -89,7 +89,7 @@ public class CronUtil {
     /**
      * 开始
      */
-    synchronized public static void start() {
+    public static synchronized void start() {
         if (null == crontabSetting) {
             setCronSetting(CRONTAB_CONFIG_PATH);
         }
@@ -105,7 +105,7 @@ public class CronUtil {
      * 重新启动定时任务<br>
      * 重新启动定时任务会清除动态加载的任务
      */
-    synchronized public static void restart() {
+    public static synchronized void restart() {
         if (null != crontabSetting) {
             crontabSetting.load();
         }
@@ -120,7 +120,7 @@ public class CronUtil {
     /**
      * 停止
      */
-    synchronized public static void stop() {
+    public static synchronized void stop() {
         scheduler.stop();
     }
 
@@ -141,4 +141,3 @@ public class CronUtil {
     }
 
 }
-

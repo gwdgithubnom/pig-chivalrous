@@ -8,10 +8,10 @@ import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
 import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
 import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
 import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
-import org.gjgr.pig.chivalrous.core.util.BeanUtil;
-import org.gjgr.pig.chivalrous.core.util.NumberUtil;
-import org.gjgr.pig.chivalrous.core.util.ObjectUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.BeanUtil;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.NumberCommand;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -31,15 +31,16 @@ public final class InternalJsonUtil {
     /**
      * 写入值到Writer
      *
-     * @param writer Writer
-     * @param value 值
+     * @param writer       Writer
+     * @param value        值
      * @param indentFactor
-     * @param indent 缩进空格数
+     * @param indent       缩进空格数
      * @return Writer
      * @throws JsonException
      * @throws IOException
      */
-    public static final Writer writeValue(Writer writer, Object value, int indentFactor, int indent) throws JsonException, IOException {
+    public static final Writer writeValue(Writer writer, Object value, int indentFactor, int indent)
+            throws JsonException, IOException {
         if (value == null || value.equals(null)) {
             writer.write("null");
         } else if (value instanceof Json) {
@@ -51,7 +52,7 @@ public final class InternalJsonUtil {
         } else if (value.getClass().isArray()) {
             new JsonArray(value).write(writer, indentFactor, indent);
         } else if (value instanceof Number) {
-            writer.write(NumberUtil.toStr((Number) value));
+            writer.write(NumberCommand.toStr((Number) value));
         } else if (value instanceof Boolean) {
             writer.write(value.toString());
         } else if (value instanceof JsonString) {
@@ -88,17 +89,19 @@ public final class InternalJsonUtil {
      * @throws JsonException If o is a non-finite number.
      */
     public static void testValidity(Object obj) throws JsonException {
-        if (false == ObjectUtil.isValidIfNumber(obj)) {
+        if (false == ObjectCommand.isValidIfNumber(obj)) {
             throw new JsonException("Json does not allow non-finite numbers.");
         }
     }
 
     /**
-     * 值转为String，用于JSON中。
-     * If the object has an value.toJSONString() method, then that method will be used to produce the Json text. <br>
+     * 值转为String，用于JSON中。 If the object has an value.toJSONString() method, then that method will be used to produce the
+     * Json text. <br>
      * The method is required to produce a strictly conforming text. <br>
-     * If the object does not contain a toJSONString method (which is the most common case), then a text will be produced by other means. <br>
-     * If the value is an array or Collection, then a JsonArray will be made from it and its toJSONString method will be called. <br>
+     * If the object does not contain a toJSONString method (which is the most common case), then a text will be
+     * produced by other means. <br>
+     * If the value is an array or Collection, then a JsonArray will be made from it and its toJSONString method will be
+     * called. <br>
      * If the value is a MAP, then a JsonObject will be made from it and its toJSONString method will be called. <br>
      * Otherwise, the value's toString method will be called, and the result will be quoted.<br>
      *
@@ -117,7 +120,7 @@ public final class InternalJsonUtil {
                 throw new JsonException(e);
             }
         } else if (value instanceof Number) {
-            return NumberUtil.toStr((Number) value);
+            return NumberCommand.toStr((Number) value);
         } else if (value instanceof Boolean || value instanceof JsonObject || value instanceof JsonArray) {
             return value.toString();
         } else if (value instanceof Map) {
@@ -145,7 +148,7 @@ public final class InternalJsonUtil {
             return JsonNull.NULL;
         }
 
-        if (StrUtil.EMPTY.equals(string)) {
+        if (StringCommand.EMPTY.equals(string)) {
             return string;
         }
         if ("true".equalsIgnoreCase(string)) {
@@ -155,7 +158,10 @@ public final class InternalJsonUtil {
             return Boolean.FALSE;
         }
 
-        /* If it might be a number, try converting it. If a number cannot be produced, then the value will just be a string. */
+        /*
+         * If it might be a number, try converting it. If a number cannot be produced, then the value will just be a
+         * string.
+         */
         char b = string.charAt(0);
         if ((b >= '0' && b <= '9') || b == '-') {
             try {
@@ -185,13 +191,13 @@ public final class InternalJsonUtil {
      * 用于识别类似于：com.luxiaolei.package.hutool这类用点隔开的键
      *
      * @param jsonObject JsonObject
-     * @param key 键
-     * @param value 值
+     * @param key        键
+     * @param value      值
      * @return JsonObject
      */
     public static JsonObject propertyPut(JsonObject jsonObject, Object key, Object value) {
         String keyStr = Convert.toStr(key);
-        String[] path = StrUtil.split(keyStr, StrUtil.DOT);
+        String[] path = StringCommand.split(keyStr, StringCommand.DOT);
         int last = path.length - 1;
         JsonObject target = jsonObject;
         for (int i = 0; i < last; i += 1) {
@@ -210,8 +216,8 @@ public final class InternalJsonUtil {
     /**
      * JSON或者
      *
-     * @param jsonObject JSON对象
-     * @param bean 目标Bean
+     * @param jsonObject  JSON对象
+     * @param bean        目标Bean
      * @param ignoreError 是否忽略转换错误
      * @return 目标Bean
      */
@@ -235,8 +241,8 @@ public final class InternalJsonUtil {
      * JSON递归转换<br>
      * 首先尝试JDK类型转换，如果失败尝试JSON转Bean
      *
-     * @param type 目标类型
-     * @param value 值
+     * @param type        目标类型
+     * @param value       值
      * @param ignoreError 是否忽略转换错误
      * @return 目标类型的值
      * @throws ConvertException 转换失败
@@ -250,15 +256,15 @@ public final class InternalJsonUtil {
         try {
             targetValue = ConverterRegistry.getInstance().convert(type, value);
         } catch (ConvertException e) {
-            //ignore
+            // ignore
         }
 
-        //非标准转换格式
+        // 非标准转换格式
         if (null == targetValue) {
 
-            //子对象递归转换
+            // 子对象递归转换
             if (value instanceof JsonObject) {
-                targetValue = JsonCommand.bean((JsonObject) value, type, ignoreError);
+                targetValue = JsonCommand.fromJson(value.toString(), type);
             }
         }
 

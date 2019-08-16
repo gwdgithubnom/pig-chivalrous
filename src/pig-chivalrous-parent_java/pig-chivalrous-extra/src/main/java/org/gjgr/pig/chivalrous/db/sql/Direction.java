@@ -1,7 +1,6 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
-
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 排序方式（升序或者降序）
@@ -30,8 +29,9 @@ public enum Direction {
         try {
             return Direction.valueOf(value.toUpperCase());
         } catch (Exception e) {
-            throw new IllegalArgumentException(StrUtil.format(
-                    "Invalid value [{}] for orders given! Has to be either 'desc' or 'asc' (case insensitive).", value), e);
+            throw new IllegalArgumentException(StringCommand.format(
+                    "Invalid value [{}] for orders given! Has to be either 'desc' or 'asc' (case insensitive).", value),
+                    e);
         }
     }
 }

@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.json;
 
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * JSON异常
@@ -24,6 +24,6 @@ public class JsonException extends RuntimeException {
     }
 
     public JsonException(Throwable throwable, String messageTemplate, Object... params) {
-        super(StrUtil.format(messageTemplate, params), throwable);
+        super(StringCommand.format(messageTemplate, params), throwable);
     }
 }

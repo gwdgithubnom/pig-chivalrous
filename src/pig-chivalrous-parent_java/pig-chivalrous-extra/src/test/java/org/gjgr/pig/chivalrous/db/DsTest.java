@@ -62,16 +62,11 @@ public class DsTest {
         }
     }
 
-    /*@Test
-    public void DbcpDsTest() throws SQLException {
-        DSFactory.setCurrentDSFactory(new DbcpDSFactory());
-        DataSource ds = DSFactory.get();
-        SqlRunner runner = SqlRunner.create(ds);
-        List<Entity> all = runner.findAll("user");
-        for (Entity entity : all) {
-            Console.log(entity);
-        }
-    }*/
+    /*
+     * @Test public void DbcpDsTest() throws SQLException { DSFactory.setCurrentDSFactory(new DbcpDSFactory());
+     * DataSource ds = DSFactory.get(); SqlRunner runner = SqlRunner.create(ds); List<Entity> all =
+     * runner.findAll("user"); for (Entity entity : all) { Console.log(entity); } }
+     */
 
     @Test
     public void C3p0DsTest() throws SQLException {

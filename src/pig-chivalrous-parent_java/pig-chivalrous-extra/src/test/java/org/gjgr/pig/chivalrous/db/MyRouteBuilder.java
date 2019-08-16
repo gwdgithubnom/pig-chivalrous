@@ -1,6 +1,5 @@
 package org.gjgr.pig.chivalrous.db;
 
-
 import org.apache.camel.builder.RouteBuilder;
 
 /**

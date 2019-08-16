@@ -12,7 +12,7 @@ public class DbSetting {
     /**
      * 默认的数据库连接配置文件路径
      */
-    public final static String DEFAULT_DB_CONFIG_PATH = "config/db.setting";
+    public static final String DEFAULT_DB_CONFIG_PATH = "config/db.setting";
 
     private Setting setting;
 
@@ -45,14 +45,14 @@ public class DbSetting {
     public DbConfig getDbConfig(String group) {
         DbConfig config = new DbConfig();
 
-        //基本信息
+        // 基本信息
         final String jdbcUrl = setting.getByGroup("url", group);
         config.setDriver(setting.getStr("driver", group, DbUtil.identifyDriver(jdbcUrl)));
         config.setUrl(jdbcUrl);
         config.setUser(setting.getStr("user", group));
         config.setPass(setting.getStr("pass", group));
 
-        //连接池相关信息
+        // 连接池相关信息
         config.setInitialSize(setting.getInt("initialSize", group, 0));
         config.setMinIdle(setting.getInt("minIdle", group, 0));
         config.setMaxActive(setting.getInt("maxActive", group, 8));

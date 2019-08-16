@@ -1,6 +1,6 @@
 package org.gjgr.pig.chivalrous.core.mutable;
 
-import org.gjgr.pig.chivalrous.core.util.NumberUtil;
+import org.gjgr.pig.chivalrous.core.math.NumberCommand;
 
 /**
  * 可变 <code>float</code> 类型
@@ -202,7 +202,7 @@ public class MutableFloat extends Number implements Comparable<MutableFloat>, Mu
      */
     @Override
     public int compareTo(final MutableFloat other) {
-        return NumberUtil.compare(this.value, other.value);
+        return NumberCommand.compare(this.value, other.value);
     }
 
 }

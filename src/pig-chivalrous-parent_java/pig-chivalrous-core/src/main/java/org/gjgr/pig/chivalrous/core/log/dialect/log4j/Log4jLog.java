@@ -15,7 +15,7 @@ public class Log4jLog extends AbstractLocationAwareLog {
     private static final String FQCN = Log4jLog.class.getName();
 
     private transient Logger logger = null;
-    //     private final transient Logger logger = null;
+    // private final transient Logger logger = null;
 
     // ------------------------------------------------------------------------- Constructor
     public Log4jLog(Logger logger) {
@@ -41,7 +41,8 @@ public class Log4jLog extends AbstractLocationAwareLog {
     }
 
     @Override
-    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
+    public void log(org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+                    Object... arguments) {
 
     }
 
@@ -58,7 +59,7 @@ public class Log4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void trace(Throwable t, String format, Object... arguments) {
-        // logger.log(FQCN, Level.TRACE, StrUtil.format(format, arguments), t);
+        // logger.log(FQCN, Level.TRACE, StringCommand.format(format, arguments), t);
     }
 
     // ------------------------------------------------------------------------- Debug
@@ -74,7 +75,7 @@ public class Log4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void debug(Throwable t, String format, Object... arguments) {
-        //    logger.log(FQCN, Level.DEBUG, StrUtil.format(format, arguments), t);
+        // logger.log(FQCN, Level.DEBUG, StringCommand.format(format, arguments), t);
     }
 
     // ------------------------------------------------------------------------- Info
@@ -90,7 +91,7 @@ public class Log4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void info(Throwable t, String format, Object... arguments) {
-        //    logger.log(FQCN, Level.INFO, StrUtil.format(format, arguments), t);
+        // logger.log(FQCN, Level.INFO, StringCommand.format(format, arguments), t);
     }
 
     // ------------------------------------------------------------------------- Warn
@@ -108,14 +109,14 @@ public class Log4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void warn(Throwable t, String format, Object... arguments) {
-        //  logger.log(FQCN, Level.WARN, StrUtil.format(format, arguments), t);
+        // logger.log(FQCN, Level.WARN, StringCommand.format(format, arguments), t);
     }
 
     // ------------------------------------------------------------------------- Error
     @Override
     public boolean isErrorEnabled() {
 
-        //return logger.isEnabledFor(Level.ERROR);
+        // return logger.isEnabledFor(Level.ERROR);
         return true;
     }
 
@@ -126,7 +127,7 @@ public class Log4jLog extends AbstractLocationAwareLog {
 
     @Override
     public void error(Throwable t, String format, Object... arguments) {
-        // logger.log(FQCN, Level.ERROR, StrUtil.format(format, arguments), t);
+        // logger.log(FQCN, Level.ERROR, StringCommand.format(format, arguments), t);
     }
 
     // ------------------------------------------------------------------------- Log
@@ -141,32 +142,19 @@ public class Log4jLog extends AbstractLocationAwareLog {
 
     public void log(String fqcn, Level level, Throwable t, String format, Object... arguments) {
         Level log4jLevel;
-        //@TODO
-        /*switch (level) {
-            case TRACE:
-				log4jLevel = Level.TRACE;
-				break;
-			case DEBUG:
-				log4jLevel = Level.DEBUG;
-				break;
-			case INFO:
-				log4jLevel = Level.INFO;
-				break;
-			case WARN:
-				log4jLevel = Level.WARN;
-				break;
-			case ERROR:
-				log4jLevel = Level.ERROR;
-				break;
-			default:
-				throw new Error(StrUtil.format("Can not identify level: {}", level));
-		}*/
-        //logger.log(fqcn, log4jLevel, StrUtil.format(format, arguments), t);
+        // @TODO
+        /*
+         * switch (level) { case TRACE: log4jLevel = Level.TRACE; break; case DEBUG: log4jLevel = Level.DEBUG; break;
+         * case INFO: log4jLevel = Level.INFO; break; case WARN: log4jLevel = Level.WARN; break; case ERROR: log4jLevel
+         * = Level.ERROR; break; default: throw new Error(StringCommand.format("Can not identify level: {}", level)); }
+         */
+        // logger.log(fqcn, log4jLevel, StringCommand.format(format, arguments), t);
     }
 
     @Override
-    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format, Object... arguments) {
-        //TODO
+    public void log(String fqcn, org.gjgr.pig.chivalrous.core.log.level.Level level, Throwable t, String format,
+                    Object... arguments) {
+        // TODO
     }
 
     // ------------------------------------------------------------------------- Private method

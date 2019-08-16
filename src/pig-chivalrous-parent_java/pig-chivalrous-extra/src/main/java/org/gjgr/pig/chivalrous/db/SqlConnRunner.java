@@ -1,9 +1,9 @@
 package org.gjgr.pig.chivalrous.db;
 
-import org.gjgr.pig.chivalrous.core.lang.Assert;
+import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.dialect.Dialect;
 import org.gjgr.pig.chivalrous.db.dialect.DialectFactory;
 import org.gjgr.pig.chivalrous.db.handler.EntityListHandler;
@@ -61,7 +61,7 @@ public class SqlConnRunner {
         return new SqlConnRunner(dialect);
     }
 
-    //------------------------------------------------------- Constructor start
+    // ------------------------------------------------------- Constructor start
 
     /**
      * 实例化一个新的SQL运行对象
@@ -82,9 +82,9 @@ public class SqlConnRunner {
     public static SqlConnRunner create(String driverClassName) {
         return new SqlConnRunner(driverClassName);
     }
-    //------------------------------------------------------- Constructor end
+    // ------------------------------------------------------- Constructor end
 
-    //---------------------------------------------------------------------------- CRUD start
+    // ---------------------------------------------------------------------------- CRUD start
 
     /**
      * 插入数据<br>
@@ -97,7 +97,7 @@ public class SqlConnRunner {
      */
     public int insert(Connection conn, Entity record) throws SQLException {
         checkConn(conn);
-        if (CollectionUtil.isEmpty(record)) {
+        if (CollectionCommand.isEmpty(record)) {
             throw new SQLException("Empty entity provided!");
         }
         PreparedStatement ps = null;
@@ -122,8 +122,8 @@ public class SqlConnRunner {
      */
     public int[] insert(Connection conn, Collection<Entity> records) throws SQLException {
         checkConn(conn);
-        if (CollectionUtil.isEmpty(records)) {
-            return new int[]{0};
+        if (CollectionCommand.isEmpty(records)) {
+            return new int[] {0};
         }
         Entity template = records.iterator().next();
         PreparedStatement ps = null;
@@ -153,7 +153,7 @@ public class SqlConnRunner {
      */
     public List<Object> insertForGeneratedKeys(Connection conn, Entity record) throws SQLException {
         checkConn(conn);
-        if (CollectionUtil.isEmpty(record)) {
+        if (CollectionCommand.isEmpty(record)) {
             throw new SQLException("Empty entity provided!");
         }
 
@@ -180,7 +180,7 @@ public class SqlConnRunner {
      */
     public Long insertForGeneratedKey(Connection conn, Entity record) throws SQLException {
         checkConn(conn);
-        if (CollectionUtil.isEmpty(record)) {
+        if (CollectionCommand.isEmpty(record)) {
             throw new SQLException("Empty entity provided!");
         }
 
@@ -207,8 +207,8 @@ public class SqlConnRunner {
      */
     public int del(Connection conn, Entity where) throws SQLException {
         checkConn(conn);
-        if (CollectionUtil.isEmpty(where)) {
-            //不允许做全表删除
+        if (CollectionCommand.isEmpty(where)) {
+            // 不允许做全表删除
             throw new SQLException("Empty entity provided!");
         }
 
@@ -235,17 +235,17 @@ public class SqlConnRunner {
      */
     public int update(Connection conn, Entity record, Entity where) throws SQLException {
         checkConn(conn);
-        if (CollectionUtil.isEmpty(record)) {
+        if (CollectionCommand.isEmpty(record)) {
             throw new SQLException("Empty entity provided!");
         }
-        if (CollectionUtil.isEmpty(where)) {
-            //不允许做全表更新
+        if (CollectionCommand.isEmpty(where)) {
+            // 不允许做全表更新
             throw new SQLException("Empty where provided!");
         }
 
-        //表名可以从被更新记录的Entity中获得，也可以从Where中获得
+        // 表名可以从被更新记录的Entity中获得，也可以从Where中获得
         String tableName = record.getTableName();
-        if (StrUtil.isBlank(tableName)) {
+        if (StringCommand.isBlank(tableName)) {
             tableName = where.getTableName();
             record.setTableName(tableName);
         }
@@ -274,7 +274,7 @@ public class SqlConnRunner {
      */
     public <T> T find(Connection conn, Query query, RsHandler<T> rsh) throws SQLException {
         checkConn(conn);
-        Assert.notNull(query, "[query] is null !");
+        AssertCommand.notNull(query, "[query] is null !");
 
         PreparedStatement ps = null;
         try {
@@ -369,7 +369,8 @@ public class SqlConnRunner {
      * @return 数据对象列表
      * @throws SQLException
      */
-    public List<Entity> findLike(Connection conn, String tableName, String field, String value, Condition.LikeType likeType) throws SQLException {
+    public List<Entity> findLike(Connection conn, String tableName, String field, String value,
+                                 Condition.LikeType likeType) throws SQLException {
         return findAll(conn, Entity.create(tableName).set(field, DbUtil.buildLikeValue(value, likeType)));
     }
 
@@ -423,7 +424,8 @@ public class SqlConnRunner {
      * @return 结果对象
      * @throws SQLException
      */
-    public <T> T page(Connection conn, Collection<String> fields, Entity where, int pageNumber, int numPerPage, RsHandler<T> rsh) throws SQLException {
+    public <T> T page(Connection conn, Collection<String> fields, Entity where, int pageNumber, int numPerPage,
+                      RsHandler<T> rsh) throws SQLException {
         return page(conn, fields, where, new Page(pageNumber, numPerPage), rsh);
     }
 
@@ -439,7 +441,8 @@ public class SqlConnRunner {
      * @return 结果对象
      * @throws SQLException
      */
-    public <T> T page(Connection conn, Collection<String> fields, Entity where, Page page, RsHandler<T> rsh) throws SQLException {
+    public <T> T page(Connection conn, Collection<String> fields, Entity where, Page page, RsHandler<T> rsh)
+            throws SQLException {
         checkConn(conn);
         if (null == page) {
             return this.find(conn, fields, where, rsh);
@@ -463,7 +466,8 @@ public class SqlConnRunner {
      * @return 结果对象
      * @throws SQLException
      */
-    public PageResult<Entity> page(Connection conn, Collection<String> fields, Entity where, int page, int numPerPage) throws SQLException {
+    public PageResult<Entity> page(Connection conn, Collection<String> fields, Entity where, int page, int numPerPage)
+            throws SQLException {
         checkConn(conn);
 
         final int count = count(conn, where);
@@ -482,10 +486,11 @@ public class SqlConnRunner {
      * @return 结果对象
      * @throws SQLException
      */
-    public PageResult<Entity> page(Connection conn, Collection<String> fields, Entity where, Page page) throws SQLException {
+    public PageResult<Entity> page(Connection conn, Collection<String> fields, Entity where, Page page)
+            throws SQLException {
         checkConn(conn);
 
-        //查询全部
+        // 查询全部
         if (null == page) {
             List<Entity> entityList = this.find(conn, fields, where, new EntityListHandler());
             PageResult<Entity> pageResult = new PageResult<Entity>(0, entityList.size(), entityList.size());
@@ -494,7 +499,8 @@ public class SqlConnRunner {
         }
 
         final int count = count(conn, where);
-        PageResultHandler pageResultHandler = PageResultHandler.create(new PageResult<Entity>(page.getPageNumber(), page.getNumPerPage(), count));
+        PageResultHandler pageResultHandler =
+                PageResultHandler.create(new PageResult<Entity>(page.getPageNumber(), page.getNumPerPage(), count));
         return this.page(conn, fields, where, page, pageResultHandler);
     }
 
@@ -511,9 +517,9 @@ public class SqlConnRunner {
     public PageResult<Entity> page(Connection conn, Entity where, Page page) throws SQLException {
         return this.page(conn, null, where, page);
     }
-    //---------------------------------------------------------------------------- CRUD end
+    // ---------------------------------------------------------------------------- CRUD end
 
-    //---------------------------------------------------------------------------- Getters and Setters end
+    // ---------------------------------------------------------------------------- Getters and Setters end
 
     /**
      * @return SQL方言
@@ -530,13 +536,13 @@ public class SqlConnRunner {
     public void setDialect(Dialect dialect) {
         this.dialect = dialect;
     }
-    //---------------------------------------------------------------------------- Getters and Setters end
+    // ---------------------------------------------------------------------------- Getters and Setters end
 
-    //---------------------------------------------------------------------------- Private method start
+    // ---------------------------------------------------------------------------- Private method start
     private void checkConn(Connection conn) {
         if (null == conn) {
             throw new NullPointerException("Connection object is null!");
         }
     }
-    //---------------------------------------------------------------------------- Private method start
+    // ---------------------------------------------------------------------------- Private method start
 }

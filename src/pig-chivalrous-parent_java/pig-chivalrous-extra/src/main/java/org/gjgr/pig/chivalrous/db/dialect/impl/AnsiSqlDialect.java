@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.db.dialect.impl;
 
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.Entity;
 import org.gjgr.pig.chivalrous.db.Page;
@@ -38,7 +38,6 @@ public class AnsiSqlDialect implements Dialect {
         this.wrapper = wrapper;
     }
 
-
     @Override
     public PreparedStatement psForInsert(Connection conn, Entity entity) throws SQLException {
         final SqlBuilder insert = SqlBuilder.create(wrapper).insert(entity, this.dialectName());
@@ -55,7 +54,7 @@ public class AnsiSqlDialect implements Dialect {
         }
 
         Condition[] where = query.getWhere();
-        if (ArrayUtil.isEmpty(where)) {
+        if (ArrayCommand.isEmpty(where)) {
             // 对于无条件的删除语句直接抛出异常禁止，防止误删除
             throw new SQLException("No 'WHERE' condition, we can't prepared statement for delete everything.");
         }
@@ -75,7 +74,7 @@ public class AnsiSqlDialect implements Dialect {
         }
 
         Condition[] where = query.getWhere();
-        if (ArrayUtil.isEmpty(where)) {
+        if (ArrayCommand.isEmpty(where)) {
             // 对于无条件的删除语句直接抛出异常禁止，防止误删除
             throw new SQLException("No 'WHERE' condition, we can't prepared statement for update everything.");
         }
@@ -91,7 +90,7 @@ public class AnsiSqlDialect implements Dialect {
 
     @Override
     public PreparedStatement psForFind(Connection conn, Query query) throws SQLException {
-        //验证
+        // 验证
         if (null == query) {
             throw new NullPointerException("query is null !");
         }
@@ -117,7 +116,7 @@ public class AnsiSqlDialect implements Dialect {
             }
         }
 
-        //limit  A  offset  B 表示：A就是你需要多少行，B就是查询的起点位置。
+        // limit A offset B 表示：A就是你需要多少行，B就是查询的起点位置。
         find.append(" limit ").append(page.getNumPerPage()).append(" offset ").append(page.getStartPosition());
 
         final PreparedStatement ps = conn.prepareStatement(find.build());
@@ -127,7 +126,7 @@ public class AnsiSqlDialect implements Dialect {
 
     @Override
     public PreparedStatement psForCount(Connection conn, Query query) throws SQLException {
-        query.setFields(CollectionUtil.newArrayList("count(1)"));
+        query.setFields(CollectionCommand.newArrayList("count(1)"));
         return psForFind(conn, query);
     }
 

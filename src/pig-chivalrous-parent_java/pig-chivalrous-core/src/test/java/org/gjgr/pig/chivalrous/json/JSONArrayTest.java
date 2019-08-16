@@ -1,36 +1,22 @@
 /*
-package org.gjgr.tools.newJson;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-*/
+ * package org.gjgr.tools.newJson;
+ *
+ * import org.junit.Assert; import org.junit.Test;
+ *
+ */
 /**
  * JSONArray单元测试
  *
  * @author Looly
  *//*
-
-public class JSONArrayTest {
-	
-	@Test
-	public void addTest(){
-		//方法1
-		JSONArray array = JsonUtil.createArray();
-		//方法2
-//		JSONArray array = new JSONArray();
-		array.add("value1");
-		array.add("value2");
-		array.add("value3");
-		
-		Assert.assertEquals(array.get(0), "value1");
-	}
-	
-	@Test
-	public void parseTest(){
-		String jsonStr = "[\"value1\", \"value2\", \"value3\"]";
-		JSONArray array = JsonUtil.newJsonArray(jsonStr);
-		Assert.assertEquals(array.get(0), "value1");
-	}
-}
-*/
+ *
+ * public class JSONArrayTest {
+ *
+ * @Test public void addTest(){ //方法1 JSONArray array = JsonUtil.createArray(); //方法2 // JSONArray array = new
+ * JSONArray(); array.add("value1"); array.add("value2"); array.add("value3");
+ *
+ * Assert.assertEquals(array.get(0), "value1"); }
+ *
+ * @Test public void parseTest(){ String jsonStr = "[\"value1\", \"value2\", \"value3\"]"; JSONArray array =
+ * JsonUtil.newJsonArray(jsonStr); Assert.assertEquals(array.get(0), "value1"); } }
+ */

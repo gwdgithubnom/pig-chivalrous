@@ -21,7 +21,7 @@ public interface InfoLog {
     /**
      * 打印 INFO 等级的日志
      *
-     * @param format 消息模板
+     * @param format    消息模板
      * @param arguments 参数
      */
     void info(String format, Object... arguments);
@@ -29,8 +29,8 @@ public interface InfoLog {
     /**
      * 打印 INFO 等级的日志
      *
-     * @param t 错误对象
-     * @param format 消息模板
+     * @param t         错误对象
+     * @param format    消息模板
      * @param arguments 参数
      */
     void info(Throwable t, String format, Object... arguments);

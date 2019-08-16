@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.crypto.digest;
 
 import org.gjgr.pig.chivalrous.core.crypto.CryptoException;
-import org.gjgr.pig.chivalrous.core.io.FileCommand;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
-import org.gjgr.pig.chivalrous.core.util.HexUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.math.HexCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,12 +48,12 @@ public class Digester {
     /**
      * 生成文件摘要
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return 摘要
      */
     public byte[] digest(String data, String charset) {
-        return digest(StrUtil.bytes(data, charset));
+        return digest(StringCommand.bytes(data, charset));
     }
 
     /**
@@ -63,18 +63,18 @@ public class Digester {
      * @return 摘要
      */
     public byte[] digest(String data) {
-        return digest(data, CharsetUtil.UTF_8);
+        return digest(data, CharsetCommand.UTF_8);
     }
 
     /**
      * 生成文件摘要，并转为16进制字符串
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return 摘要
      */
     public String digestHex(String data, String charset) {
-        return HexUtil.encodeHexStr(digest(data, charset));
+        return HexCommand.encodeHexStr(digest(data, charset));
     }
 
     /**
@@ -84,7 +84,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(String data) {
-        return digestHex(data, CharsetUtil.UTF_8);
+        return digestHex(data, CharsetCommand.UTF_8);
     }
 
     /**
@@ -98,7 +98,7 @@ public class Digester {
     public byte[] digest(File file) {
         InputStream in = null;
         try {
-            in = FileCommand.getInputStream(file);
+            in = FileCommand.bufferedInputStream(file);
             return digest(in);
         } catch (IOException e) {
             throw new CryptoException(e);
@@ -115,7 +115,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(File file) {
-        return HexUtil.encodeHexStr(digest(file));
+        return HexCommand.encodeHexStr(digest(file));
     }
 
     /**
@@ -141,7 +141,7 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(byte[] data) {
-        return HexUtil.encodeHexStr(digest(data));
+        return HexCommand.encodeHexStr(digest(data));
     }
 
     /**
@@ -162,13 +162,13 @@ public class Digester {
      * @return 摘要
      */
     public String digestHex(InputStream data) {
-        return HexUtil.encodeHexStr(digest(data));
+        return HexCommand.encodeHexStr(digest(data));
     }
 
     /**
      * 生成摘要
      *
-     * @param data {@link InputStream} 数据流
+     * @param data         {@link InputStream} 数据流
      * @param bufferLength 缓存长度，不足1使用 {@link IoCommand#DEFAULT_BUFFER_SIZE} 做为默认值
      * @return 摘要bytes
      */
@@ -199,12 +199,12 @@ public class Digester {
      * 生成摘要，并转为16进制字符串<br>
      * 使用默认缓存大小，见 {@link IoCommand#DEFAULT_BUFFER_SIZE}
      *
-     * @param data 被摘要数据
+     * @param data         被摘要数据
      * @param bufferLength 缓存长度，不足1使用 {@link IoCommand#DEFAULT_BUFFER_SIZE} 做为默认值
      * @return 摘要
      */
     public String digestHex(InputStream data, int bufferLength) {
-        return HexUtil.encodeHexStr(digest(data, bufferLength));
+        return HexCommand.encodeHexStr(digest(data, bufferLength));
     }
 
     /**

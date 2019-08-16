@@ -119,14 +119,14 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Iterable<V> {
         readLock.lock();
 
         try {
-            //不存在或已移除
+            // 不存在或已移除
             final CacheObj<K, V> co = cacheMap.get(key);
             if (co == null) {
                 missCount++;
                 return null;
             }
 
-            //过期
+            // 过期
             if (co.isExpired() == true) {
                 // remove(key); // 此方法无法获得锁
                 cacheMap.remove(key);
@@ -135,7 +135,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Iterable<V> {
                 return null;
             }
 
-            //命中
+            // 命中
             hitCount++;
             return co.get();
         } finally {
@@ -216,7 +216,7 @@ public abstract class AbstractCache<K, V> implements Cache<K, V>, Iterable<V> {
     /**
      * 对象移除回调。默认无动作
      *
-     * @param key 键
+     * @param key          键
      * @param cachedObject 被缓存的对象
      */
     protected void onRemove(K key, V cachedObject) {

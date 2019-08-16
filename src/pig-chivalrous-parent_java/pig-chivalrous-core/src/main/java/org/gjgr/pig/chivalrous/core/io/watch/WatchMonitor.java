@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.io.watch;
 
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 
 import java.io.Closeable;
 import java.io.File;
@@ -24,7 +24,7 @@ import java.nio.file.WatchService;
  * @author Looly
  */
 public class WatchMonitor extends Thread implements Closeable {
-//	private static final Log log = LogFactory.get();
+    // private static final Log log = LogFactory.get();
 
     /**
      * 事件丢失
@@ -45,11 +45,11 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 全部事件
      */
-    public static final WatchEvent.Kind<?>[] EVENTS_ALL = {//
-            StandardWatchEventKinds.OVERFLOW,//事件丢失
-            StandardWatchEventKinds.ENTRY_MODIFY, //修改
-            StandardWatchEventKinds.ENTRY_CREATE, //创建
-            StandardWatchEventKinds.ENTRY_DELETE};//删除
+    public static final WatchEvent.Kind<?>[] EVENTS_ALL = { //
+            StandardWatchEventKinds.OVERFLOW, // 事件丢失
+            StandardWatchEventKinds.ENTRY_MODIFY, // 修改
+            StandardWatchEventKinds.ENTRY_CREATE, // 创建
+            StandardWatchEventKinds.ENTRY_DELETE};// 删除
 
     /**
      * 监听路径，必须为目录
@@ -78,12 +78,12 @@ public class WatchMonitor extends Thread implements Closeable {
      */
     private boolean isClosed;
 
-    //------------------------------------------------------ Static method start
+    // ------------------------------------------------------ Static method start
 
     /**
      * 构造
      *
-     * @param file 文件
+     * @param file   文件
      * @param events 监听的事件列表
      */
     public WatchMonitor(File file, WatchEvent.Kind<?>... events) {
@@ -93,7 +93,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 构造
      *
-     * @param path 字符串路径
+     * @param path   字符串路径
      * @param events 监听的事件列表
      */
     public WatchMonitor(String path, WatchEvent.Kind<?>... events) {
@@ -103,7 +103,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 构造
      *
-     * @param path 字符串路径
+     * @param path   字符串路径
      * @param events 监听事件列表
      */
     public WatchMonitor(Path path, WatchEvent.Kind<?>... events) {
@@ -115,7 +115,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听
      *
-     * @param uri URI
+     * @param uri    URI
      * @param events 监听的事件列表
      * @return 监听对象
      */
@@ -126,7 +126,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听
      *
-     * @param url URL
+     * @param url    URL
      * @param events 监听的事件列表
      * @return 监听对象
      */
@@ -138,12 +138,12 @@ public class WatchMonitor extends Thread implements Closeable {
         }
     }
 
-    //--------- createAll
+    // --------- createAll
 
     /**
      * 创建并初始化监听
      *
-     * @param file 文件
+     * @param file   文件
      * @param events 监听的事件列表
      * @return 监听对象
      */
@@ -154,7 +154,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听
      *
-     * @param path 路径
+     * @param path   路径
      * @param events 监听的事件列表
      * @return 监听对象
      */
@@ -165,7 +165,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听
      *
-     * @param path 路径
+     * @param path   路径
      * @param events 监听事件列表
      * @return 监听对象
      */
@@ -176,7 +176,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param uri URI
+     * @param uri     URI
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -187,7 +187,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param url URL
+     * @param url     URL
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -198,14 +198,14 @@ public class WatchMonitor extends Thread implements Closeable {
             throw new WatchException(e);
         }
     }
-    //------------------------------------------------------ Static method end
+    // ------------------------------------------------------ Static method end
 
-    //------------------------------------------------------ Constructor method start
+    // ------------------------------------------------------ Constructor method start
 
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param file 被监听文件
+     * @param file    被监听文件
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -216,7 +216,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param path 路径
+     * @param path    路径
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -227,7 +227,7 @@ public class WatchMonitor extends Thread implements Closeable {
     /**
      * 创建并初始化监听，监听所有事件
      *
-     * @param path 路径
+     * @param path    路径
      * @param watcher {@link Watcher}
      * @return {@link WatchMonitor}
      */
@@ -236,7 +236,7 @@ public class WatchMonitor extends Thread implements Closeable {
         watchMonitor.setWatcher(watcher);
         return watchMonitor;
     }
-    //------------------------------------------------------ Constructor method end
+    // ------------------------------------------------------ Constructor method end
 
     /**
      * 初始化
@@ -251,7 +251,7 @@ public class WatchMonitor extends Thread implements Closeable {
 
         try {
             watchService = FileSystems.getDefault().newWatchService();
-            path.register(watchService, ArrayUtil.isEmpty(this.events) ? EVENTS_ALL : this.events);
+            path.register(watchService, ArrayCommand.isEmpty(this.events) ? EVENTS_ALL : this.events);
         } catch (Exception e) {
             throw new WatchException(e);
         }
@@ -295,14 +295,14 @@ public class WatchMonitor extends Thread implements Closeable {
             throw new WatchException("Watch Monitor is closed !");
         }
 
-//		log.debug("Start watching path: [{}]", this.path);
+        // log.debug("Start watching path: [{}]", this.path);
 
         while (false == isClosed) {
             WatchKey wk;
             try {
                 wk = watchService.take();
             } catch (InterruptedException e) {
-//				log.warn(e);
+                // log.warn(e);
                 return;
             }
 
@@ -310,7 +310,7 @@ public class WatchMonitor extends Thread implements Closeable {
             for (WatchEvent<?> event : wk.pollEvents()) {
                 kind = event.kind();
                 if (null != filePath && false == this.filePath.endsWith(event.context().toString())) {
-//					log.debug("[{}] is not fit for [{}], pass it.", event.context(), this.filePath.getFileName());
+                    // log.debug("[{}] is not fit for [{}], pass it.", event.context(), this.filePath.getFileName());
                     continue;
                 }
 

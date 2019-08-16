@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CookiePool {
 
-    //key: host, value: cookies字符串
+    // key: host, value: cookies字符串
     private static Map<String, String> cookies = new ConcurrentHashMap<String, String>();
 
     /**

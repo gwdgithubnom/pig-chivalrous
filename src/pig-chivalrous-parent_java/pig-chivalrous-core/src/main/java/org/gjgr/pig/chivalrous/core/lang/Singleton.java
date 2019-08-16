@@ -1,7 +1,5 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
-import org.gjgr.pig.chivalrous.core.util.ClassUtil;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,7 +30,7 @@ public final class Singleton {
             synchronized (Singleton.class) {
                 obj = (T) pool.get(clazz);
                 if (null == obj) {
-                    obj = ClassUtil.newInstance(clazz, params);
+                    obj = ClassCommand.newInstance(clazz, params);
                     pool.put(clazz, obj);
                 }
             }
@@ -46,11 +44,11 @@ public final class Singleton {
      * 对象存在于池中返回，否则创建，每次调用此方法获得的对象为同一个对象<br>
      *
      * @param className 类名
-     * @param params 构造参数
+     * @param params    构造参数
      * @return 单例对象
      */
     public static <T> T get(String className, Object... params) {
-        final Class<T> clazz = ClassUtil.loadClass(className);
+        final Class<T> clazz = ClassCommand.loadClass(className);
         return get(clazz, params);
     }
 

@@ -25,16 +25,6 @@ public abstract class AbstractDataSource implements DataSource, Cloneable, Close
     }
 
     @Override
-    public int getLoginTimeout() throws SQLException {
-        return DriverManager.getLoginTimeout();
-    }
-
-    @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        DriverManager.setLoginTimeout(seconds);
-    }
-
-    @Override
     public <T> T unwrap(Class<T> iface) throws SQLException {
         throw new SQLException("Can't support unwrap method!");
     }
@@ -42,6 +32,16 @@ public abstract class AbstractDataSource implements DataSource, Cloneable, Close
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         throw new SQLException("Can't support isWrapperFor method!");
+    }
+
+    @Override
+    public int getLoginTimeout() throws SQLException {
+        return DriverManager.getLoginTimeout();
+    }
+
+    @Override
+    public void setLoginTimeout(int seconds) throws SQLException {
+        DriverManager.setLoginTimeout(seconds);
     }
 
     /**

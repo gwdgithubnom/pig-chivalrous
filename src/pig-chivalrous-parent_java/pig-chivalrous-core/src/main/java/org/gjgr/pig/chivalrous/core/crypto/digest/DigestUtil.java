@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.core.crypto.digest;
 
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
-import org.gjgr.pig.chivalrous.core.util.CharsetUtil;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 
+import javax.crypto.SecretKey;
 import java.io.File;
 import java.io.InputStream;
-import javax.crypto.SecretKey;
 
 /**
  * 摘要算法工具类
@@ -32,7 +32,7 @@ public final class DigestUtil {
     /**
      * 计算16位MD5摘要值
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return MD5摘要
      */
@@ -47,7 +47,7 @@ public final class DigestUtil {
      * @return MD5摘要
      */
     public static byte[] md5(String data) {
-        return md5(data, CharsetUtil.UTF_8);
+        return md5(data, CharsetCommand.UTF_8);
     }
 
     /**
@@ -85,7 +85,7 @@ public final class DigestUtil {
     /**
      * 计算16位MD5摘要值，并转为16进制字符串
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return MD5摘要的16进制表示
      */
@@ -100,7 +100,7 @@ public final class DigestUtil {
      * @return MD5摘要的16进制表示
      */
     public static String md5Hex(String data) {
-        return md5Hex(data, CharsetUtil.UTF_8);
+        return md5Hex(data, CharsetCommand.UTF_8);
     }
 
     /**
@@ -138,7 +138,7 @@ public final class DigestUtil {
     /**
      * 计算SHA-1摘要值
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return SHA-1摘要
      */
@@ -153,7 +153,7 @@ public final class DigestUtil {
      * @return MD5摘要
      */
     public static byte[] sha1(String data) {
-        return sha1(data, CharsetUtil.UTF_8);
+        return sha1(data, CharsetCommand.UTF_8);
     }
 
     /**
@@ -190,7 +190,7 @@ public final class DigestUtil {
     /**
      * 计算SHA-1摘要值，并转为16进制字符串
      *
-     * @param data 被摘要数据
+     * @param data    被摘要数据
      * @param charset 编码
      * @return SHA-1摘要的16进制表示
      */
@@ -205,7 +205,7 @@ public final class DigestUtil {
      * @return SHA-1摘要的16进制表示
      */
     public static String sha1Hex(String data) {
-        return sha1Hex(data, CharsetUtil.UTF_8);
+        return sha1Hex(data, CharsetCommand.UTF_8);
     }
 
     /**
@@ -234,7 +234,7 @@ public final class DigestUtil {
      * 创建HMac对象，调用digest方法可获得hmac值
      *
      * @param algorithm {@link HmacAlgorithm}
-     * @param key 密钥，如果为<code>null</code>生成随机密钥
+     * @param key       密钥，如果为<code>null</code>生成随机密钥
      * @return {@link HMac}
      * @since 3.0.3
      */
@@ -246,7 +246,7 @@ public final class DigestUtil {
      * 创建HMac对象，调用digest方法可获得hmac值
      *
      * @param algorithm {@link HmacAlgorithm}
-     * @param key 密钥{@link SecretKey}，如果为<code>null</code>生成随机密钥
+     * @param key       密钥{@link SecretKey}，如果为<code>null</code>生成随机密钥
      * @return {@link HMac}
      * @since 3.0.3
      */

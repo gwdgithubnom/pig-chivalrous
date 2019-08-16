@@ -21,7 +21,7 @@ public class HttpPostDemo {
         String result1 = HttpUtil.post(url, paramMap);
         Console.log(result1);
 
-        //链式构建请求
+        // 链式构建请求
         String result2 = HttpRequest.post(url)
                 .header(Header.USER_AGENT, "Hutool http")
                 .form(paramMap)

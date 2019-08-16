@@ -1,11 +1,11 @@
 package org.gjgr.pig.chivalrous.db.sql;
 
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.log.Log;
 import org.gjgr.pig.chivalrous.core.log.StaticLog;
-import org.gjgr.pig.chivalrous.core.util.ArrayUtil;
-import org.gjgr.pig.chivalrous.core.util.CollectionUtil;
-import org.gjgr.pig.chivalrous.core.util.ObjectUtil;
-import org.gjgr.pig.chivalrous.core.util.StrUtil;
 import org.gjgr.pig.chivalrous.db.DbRuntimeException;
 import org.gjgr.pig.chivalrous.db.DbUtil;
 import org.gjgr.pig.chivalrous.db.Entity;
@@ -25,29 +25,29 @@ import java.util.Map.Entry;
  * @author Looly
  */
 public class SqlBuilder {
-    private final static Log log = StaticLog.get();
+    private static final Log log = StaticLog.get();
 
     private static boolean showSql;
     private static boolean formatSql;
 
-    //--------------------------------------------------------------- Static methods start
-    final private StringBuilder sql = new StringBuilder();
+    // --------------------------------------------------------------- Static methods start
+    private final StringBuilder sql = new StringBuilder();
     /**
      * 占位符对应的值列表
      */
-    final private List<Object> paramValues = new ArrayList<Object>();
+    private final List<Object> paramValues = new ArrayList<Object>();
     /**
      * 包装器
      */
     private Wrapper wrapper;
-    //--------------------------------------------------------------- Static methods end
+    // --------------------------------------------------------------- Static methods end
 
-    //--------------------------------------------------------------- Enums start
+    // --------------------------------------------------------------- Enums start
 
-    //--------------------------------------------------------------- Constructor start
+    // --------------------------------------------------------------- Constructor start
     public SqlBuilder() {
     }
-    //--------------------------------------------------------------- Enums end
+    // --------------------------------------------------------------- Enums end
 
     public SqlBuilder(Wrapper wrapper) {
         this.wrapper = wrapper;
@@ -92,9 +92,9 @@ public class SqlBuilder {
     public SqlBuilder insert(Entity entity) {
         return this.insert(entity, DialectName.ANSI);
     }
-    //--------------------------------------------------------------- Constructor end
+    // --------------------------------------------------------------- Constructor end
 
-    //--------------------------------------------------------------- Builder start
+    // --------------------------------------------------------------- Builder start
 
     /**
      * 插入
@@ -104,15 +104,15 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder insert(Entity entity, DialectName dialectName) {
-        //验证
+        // 验证
         DbUtil.validateEntity(entity);
 
         if (null != wrapper) {
-            //包装字段名
+            // 包装字段名
             entity = wrapper.wrap(entity);
         }
 
-        final boolean isOracle = ObjectUtil.equal(dialectName, DialectName.ORACLE);//对Oracle的特殊处理
+        final boolean isOracle = ObjectCommand.equal(dialectName, DialectName.ORACLE); // 对Oracle的特殊处理
         final StringBuilder fields = new StringBuilder();
         final StringBuilder placeHolder = new StringBuilder();
 
@@ -122,18 +122,20 @@ public class SqlBuilder {
         for (Entry<String, Object> entry : entity.entrySet()) {
             field = entry.getKey();
             value = entry.getValue();
-            if (StrUtil.isNotBlank(field) && null != value) {//只对值为非空的数据做插入操作
+            if (StringCommand.isNotBlank(field) && null != value) {
+                // 只对值为非空的数据做插入操作
                 if (isFirst) {
                     isFirst = false;
                 } else {
-                    //非第一个参数，追加逗号
+                    // 非第一个参数，追加逗号
                     fields.append(", ");
                     placeHolder.append(", ");
                 }
 
                 fields.append(field);
-                if (isOracle && value instanceof String && StrUtil.endWithIgnoreCase((String) value, ".nextval")) {
-                    //Oracle的特殊自增键，通过字段名.nextval获得下一个值
+                if (isOracle && value instanceof String
+                        && StringCommand.endWithIgnoreCase((String) value, ".nextval")) {
+                    // Oracle的特殊自增键，通过字段名.nextval获得下一个值
                     placeHolder.append(value);
                 } else {
                     placeHolder.append("?");
@@ -155,12 +157,12 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder delete(String tableName) {
-        if (StrUtil.isBlank(tableName)) {
+        if (StringCommand.isBlank(tableName)) {
             throw new DbRuntimeException("Table name is blank !");
         }
 
         if (null != wrapper) {
-            //包装表名
+            // 包装表名
             tableName = wrapper.wrap(tableName);
         }
 
@@ -176,11 +178,11 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder update(Entity entity) {
-        //验证
+        // 验证
         DbUtil.validateEntity(entity);
 
         if (null != wrapper) {
-            //包装字段名
+            // 包装字段名
             entity = wrapper.wrap(entity);
         }
 
@@ -188,12 +190,12 @@ public class SqlBuilder {
         String key;
         for (Entry<String, Object> entry : entity.entrySet()) {
             key = entry.getKey();
-            if (StrUtil.isNotBlank(key)) {
+            if (StringCommand.isNotBlank(key)) {
                 if (paramValues.size() > 0) {
                     sql.append(", ");
                 }
                 sql.append(entry.getKey()).append(" = ? ");
-                paramValues.add(entry.getValue());//更新不对空做处理，因为存在清空字段的情况
+                paramValues.add(entry.getValue());// 更新不对空做处理，因为存在清空字段的情况
             }
         }
 
@@ -224,14 +226,14 @@ public class SqlBuilder {
             sql.append("DISTINCT ");
         }
 
-        if (CollectionUtil.isEmpty(fields)) {
+        if (CollectionCommand.isEmpty(fields)) {
             sql.append("*");
         } else {
             if (null != wrapper) {
-                //包装字段名
+                // 包装字段名
                 fields = wrapper.wrap(fields);
             }
-            sql.append(CollectionUtil.join(fields, StrUtil.COMMA));
+            sql.append(CollectionCommand.join(fields, StringCommand.COMMA));
         }
 
         return this;
@@ -264,16 +266,16 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder from(String... tableNames) {
-        if (ArrayUtil.isEmpty(tableNames) || StrUtil.hasBlank(tableNames)) {
+        if (ArrayCommand.isEmpty(tableNames) || StringCommand.hasBlank(tableNames)) {
             throw new DbRuntimeException("Table name is blank in table names !");
         }
 
         if (null != wrapper) {
-            //包装表名
+            // 包装表名
             tableNames = wrapper.wrap(tableNames);
         }
 
-        sql.append(" FROM ").append(ArrayUtil.join(tableNames, StrUtil.COMMA));
+        sql.append(" FROM ").append(ArrayCommand.join(tableNames, StringCommand.COMMA));
 
         return this;
     }
@@ -287,9 +289,9 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder where(LogicalOperator logicalOperator, Condition... conditions) {
-        if (ArrayUtil.isNotEmpty(conditions)) {
+        if (ArrayCommand.isNotEmpty(conditions)) {
             if (null != wrapper) {
-                //包装字段名
+                // 包装字段名
                 conditions = wrapper.wrap(conditions);
             }
             where(buildCondition(logicalOperator, conditions));
@@ -305,7 +307,7 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder where(String where) {
-        if (StrUtil.isNotBlank(where)) {
+        if (StringCommand.isNotBlank(where)) {
             sql.append(" WHERE ").append(where);
         }
         return this;
@@ -320,7 +322,9 @@ public class SqlBuilder {
      */
     @SuppressWarnings("unchecked")
     public <T> SqlBuilder in(String field, T... values) {
-        sql.append(wrapper.wrap(field)).append(" IN ").append("(").append(ArrayUtil.join(values, StrUtil.COMMA)).append(")");
+        sql.append(wrapper.wrap(field)).append(" IN ").append("(")
+                .append(ArrayCommand.join(values, StringCommand.COMMA))
+                .append(")");
         return this;
     }
 
@@ -331,13 +335,13 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder groupBy(String... fields) {
-        if (ArrayUtil.isNotEmpty(fields)) {
+        if (ArrayCommand.isNotEmpty(fields)) {
             if (null != wrapper) {
-                //包装字段名
+                // 包装字段名
                 fields = wrapper.wrap(fields);
             }
 
-            sql.append(" GROUP BY ").append(ArrayUtil.join(fields, StrUtil.COMMA));
+            sql.append(" GROUP BY ").append(ArrayCommand.join(fields, StringCommand.COMMA));
         }
 
         return this;
@@ -351,9 +355,9 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder having(LogicalOperator logicalOperator, Condition... conditions) {
-        if (ArrayUtil.isNotEmpty(conditions)) {
+        if (ArrayCommand.isNotEmpty(conditions)) {
             if (null != wrapper) {
-                //包装字段名
+                // 包装字段名
                 conditions = wrapper.wrap(conditions);
             }
             having(buildCondition(logicalOperator, conditions));
@@ -369,7 +373,7 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder having(String having) {
-        if (StrUtil.isNotBlank(having)) {
+        if (StringCommand.isNotBlank(having)) {
             sql.append(" HAVING ").append(having);
         }
         return this;
@@ -382,7 +386,7 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder orderBy(Order... orders) {
-        if (ArrayUtil.isEmpty(orders)) {
+        if (ArrayCommand.isEmpty(orders)) {
             return this;
         }
 
@@ -391,23 +395,23 @@ public class SqlBuilder {
         boolean isFirst = true;
         for (Order order : orders) {
             if (null != wrapper) {
-                //包装字段名
+                // 包装字段名
                 field = wrapper.wrap(order.getField());
             }
-            if (StrUtil.isBlank(field)) {
+            if (StringCommand.isBlank(field)) {
                 continue;
             }
 
-            //只有在非第一项前添加逗号
+            // 只有在非第一项前添加逗号
             if (isFirst) {
                 isFirst = false;
             } else {
-                sql.append(StrUtil.COMMA);
+                sql.append(StringCommand.COMMA);
             }
             sql.append(field);
             final Direction direction = order.getDirection();
             if (null != direction) {
-                sql.append(StrUtil.SPACE).append(direction);
+                sql.append(StringCommand.SPACE).append(direction);
             }
         }
         return this;
@@ -421,14 +425,14 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder join(String tableName, Join join) {
-        if (StrUtil.isBlank(tableName)) {
+        if (StringCommand.isBlank(tableName)) {
             throw new DbRuntimeException("Table name is blank !");
         }
 
         if (null != join) {
-            sql.append(StrUtil.SPACE).append(join).append(" JOIN ");
+            sql.append(StringCommand.SPACE).append(join).append(" JOIN ");
             if (null != wrapper) {
-                //包装表名
+                // 包装表名
                 tableName = wrapper.wrap(tableName);
             }
             sql.append(tableName);
@@ -445,9 +449,9 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder on(LogicalOperator logicalOperator, Condition... conditions) {
-        if (ArrayUtil.isNotEmpty(conditions)) {
+        if (ArrayCommand.isNotEmpty(conditions)) {
             if (null != wrapper) {
-                //包装字段名
+                // 包装字段名
                 conditions = wrapper.wrap(conditions);
             }
             on(buildCondition(logicalOperator, conditions));
@@ -464,7 +468,7 @@ public class SqlBuilder {
      * @return 自己
      */
     public SqlBuilder on(String on) {
-        if (StrUtil.isNotBlank(on)) {
+        if (StringCommand.isNotBlank(on)) {
             this.sql.append(" ON ").append(on);
         }
         return this;
@@ -505,7 +509,7 @@ public class SqlBuilder {
     public List<Object> getParamValues() {
         return paramValues;
     }
-    //--------------------------------------------------------------- Builder end
+    // --------------------------------------------------------------- Builder end
 
     /**
      * 获得占位符对应的值列表<br>
@@ -552,8 +556,8 @@ public class SqlBuilder {
      * @return 构建后的SQL语句条件部分
      */
     private String buildCondition(LogicalOperator logicalOperator, Condition... conditions) {
-        if (ArrayUtil.isEmpty(conditions)) {
-            return StrUtil.EMPTY;
+        if (ArrayCommand.isEmpty(conditions)) {
+            return StringCommand.EMPTY;
         }
         if (null == logicalOperator) {
             logicalOperator = LogicalOperator.AND;
@@ -562,22 +566,22 @@ public class SqlBuilder {
         final StringBuilder conditionStr = new StringBuilder();
         boolean isFirst = true;
         for (Condition condition : conditions) {
-            //添加逻辑运算符
+            // 添加逻辑运算符
             if (isFirst) {
                 isFirst = false;
             } else {
-                conditionStr.append(StrUtil.SPACE).append(logicalOperator).append(StrUtil.SPACE);
+                conditionStr.append(StringCommand.SPACE).append(logicalOperator).append(StringCommand.SPACE);
             }
 
-            //添加条件表达式
-            conditionStr.append(condition.getField()).append(StrUtil.SPACE).append(condition.getOperator());
+            // 添加条件表达式
+            conditionStr.append(condition.getField()).append(StringCommand.SPACE).append(condition.getOperator());
 
             if (condition.isPlaceHolder()) {
-                //使用条件表达式占位符
+                // 使用条件表达式占位符
                 conditionStr.append(" ?");
                 paramValues.add(condition.getValue());
             } else {
-                //直接使用条件值
+                // 直接使用条件值
                 conditionStr.append(condition.getValue());
             }
         }
@@ -585,7 +589,7 @@ public class SqlBuilder {
         return conditionStr.toString();
     }
 
-    //--------------------------------------------------------------- private method start
+    // --------------------------------------------------------------- private method start
 
     /**
      * SQL中多表关联用的关键字
@@ -610,5 +614,5 @@ public class SqlBuilder {
          */
         FULL
     }
-    //--------------------------------------------------------------- private method end
+    // --------------------------------------------------------------- private method end
 }
