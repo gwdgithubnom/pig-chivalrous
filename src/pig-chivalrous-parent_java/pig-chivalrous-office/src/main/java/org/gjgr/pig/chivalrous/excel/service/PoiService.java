@@ -1,6 +1,5 @@
 package org.gjgr.pig.chivalrous.excel.service;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -27,8 +26,6 @@ public class PoiService {
         try {
             workbook = WorkbookFactory.create(fileInputStream);
         } catch (IOException e) {
-            logger.info(e.toString());
-        } catch (InvalidFormatException e) {
             logger.info(e.toString());
         }
 
@@ -61,9 +58,6 @@ public class PoiService {
             return sheet;
         } catch (IOException e) {
             logger.error(e.toString());
-            return null;
-        } catch (InvalidFormatException e) {
-            logger.equals(e);
             return null;
         }
 

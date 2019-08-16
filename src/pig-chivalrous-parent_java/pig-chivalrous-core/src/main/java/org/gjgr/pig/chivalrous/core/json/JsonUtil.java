@@ -1756,6 +1756,140 @@
  * </ul>
  * @param object The object to wrap
  * @return The wrapped value
+ * <p>
+ * 创建JsonObject
+ * @return JsonObject
+ * <p>
+ * 创建 JsonArray
+ * @return JsonArray
+ * <p>
+ * Json字符串转JsonObject对象
+ * @param JsonStr Json字符串
+ * @return JsonObject
+ * <p>
+ * Json字符串转JsonObject对象
+ * @param obj Bean对象或者Map
+ * @return JsonObject
+ * <p>
+ * Json字符串转JsonArray
+ * @param JsonStr Json字符串
+ * @return JsonArray
+ * <p>
+ * Description : 带参数构造函数, 初始化模式名,名称和数据源类型
+ * @param schema ： 模式名
+ * @param name ： 名称
+ * @param type ： 数据源类型
+ * <p>
+ * Description:
+ * </p>
+ * <p>
+ * 对象转换成Json字符串
+ * @param obj
+ * @return Json字符串转成对象
+ * @param str
+ * @param type
+ * @return Json字符串转成对象
+ * @param str
+ * @param type
+ * @return 转换对象为Json<br>
+ * 支持的对象：<br>
+ * String: 转换为相应的对象<br>
+ * Array Collection：转换为JsonArray<br>
+ * Bean对象：转为JsonObject
+ * @param obj 对象
+ * @return Json
+ * <p>
+ * XML字符串转为JsonObject
+ * @param xmlStr XML字符串
+ * @return JsonObject
+ * <p>
+ * Map转化为JsonObject
+ * @param beanMapWithHashSetValue {@link Map}
+ * @return JsonObject
+ * <p>
+ * ResourceBundle转化为JsonObject
+ * @param bundle ResourceBundle文件
+ * @return JsonObject
+ * <p>
+ * 读取Json
+ * @param file Json文件
+ * @param charset 编码
+ * @return Json（包括JsonObject和JsonArray）
+ * @throws IORuntimeException
+ * <p>
+ * 读取JsonObject
+ * @param file Json文件
+ * @param charset 编码
+ * @return JsonObject
+ * @throws IORuntimeException
+ * <p>
+ * 读取JsonArray
+ * @param file Json文件
+ * @param charset 编码
+ * @return JsonArray
+ * @throws IORuntimeException
+ * <p>
+ * 转为Json字符串
+ * @param Json Json
+ * @param indentFactor 每一级别的缩进
+ * @return Json字符串
+ * <p>
+ * 转为Json字符串
+ * @param Json Json
+ * @return Json字符串
+ * <p>
+ * 转为Json字符串
+ * @param Json Json
+ * @return Json字符串
+ * <p>
+ * 转换为Json字符串
+ * @param obj 被转为Json的对象
+ * @return Json字符串
+ * <p>
+ * 转换为格式化后的Json字符串
+ * @param obj Bean对象
+ * @return Json字符串
+ * <p>
+ * 转换为XML字符串
+ * @param Json Json
+ * @return XML字符串
+ * <p>
+ * 转为实体类对象，转换异常将被抛出
+ * @param Json JsonObject
+ * @param beanClass 实体类对象
+ * @return 实体类对象
+ * <p>
+ * 转为实体类对象
+ * @param Json JsonObject
+ * @param beanClass 实体类对象
+ * @return 实体类对象
+ * <p>
+ * 对所有双引号做转义处理（使用双反斜杠做转义）<br>
+ * 为了能在HTML中较好的显示，会将&lt;/转义为&lt;\/<br>
+ * Json字符串中不能包含控制字符和未经转义的引号和反斜杠
+ * @param string A String
+ * @return A String correctly formatted for insertion in a Json text.
+ * <p>
+ * 对所有双引号做转义处理（使用双反斜杠做转义）<br>
+ * 为了能在HTML中较好的显示，会将&lt;/转义为&lt;\/<br>
+ * Json字符串中不能包含控制字符和未经转义的引号和反斜杠
+ * @param string A String
+ * @param writer Writer
+ * @return A String correctly formatted for insertion in a Json text.
+ * @throws IOException
+ * <p>
+ * 在需要的时候包装对象<br>
+ * 包装包括：
+ * <ul>
+ * <li><code>null</code> -> <code>JsonNull.NULL</code></li>
+ * <li>array or collection -> JsonArray</li>
+ * <li>beanMapWithHashSetValue -> JsonObject</li>
+ * <li>standard property (Double, String, et al) -> 原对象</li>
+ * <li>来自于java包 -> 字符串</li>
+ * <li>其它 -> 尝试包装为JsonObject，否则返回<code>null</code></li>
+ * </ul>
+ * @param object The object to wrap
+ * @return The wrapped value
  *//*
  *
  * public final class JsonUtil {

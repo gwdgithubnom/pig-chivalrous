@@ -18,11 +18,11 @@ public class Log4jAppender {
         Logger logger = LoggerFactory.getLogger(MessageLogAppender.class);
         logger.info("test");
         logger.info("", new HashMap<>());
-        try {
-            Thread.sleep(1000 * 30);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000 * 30);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

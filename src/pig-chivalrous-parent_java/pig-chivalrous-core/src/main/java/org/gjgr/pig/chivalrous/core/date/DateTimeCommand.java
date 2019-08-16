@@ -2388,4 +2388,19 @@ public class DateTimeCommand {
     public static DateTimeFormatter dateTimeFormatter(Locale locale, TimeZone timeZone, String style) {
         return DateTimeFormatter.getInstance(style, timeZone, locale);
     }
+
+
+    public static long timestampLimit(long l, int i) {
+        i = (l + "").length() - i;
+        if (i > 0) {
+            for (int j = 0; j < i; j++) {
+                l = l / 10;
+            }
+        } else if (i < 0) {
+            for (int j = 0; j < -i; j++) {
+                l = l * 10;
+            }
+        }
+        return l;
+    }
 }

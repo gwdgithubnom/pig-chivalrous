@@ -112,7 +112,19 @@
  * @param beanClass Bean Class
  * @param isIgnoreError 是否忽略注入错误
  * @return Bean
+ * @param request ServletRequest
+ * @param bean Bean
+ * @param isIgnoreError 是否忽略注入错误
+ * @return Bean
+ * <p>
+ * ServletRequest 参数转Bean
+ * @param request ServletRequest
+ * @param beanClass Bean Class
+ * @param isIgnoreError 是否忽略注入错误
+ * @return Bean
  * @since 3.0.4
+ * <p>
+ * ServletRequest 参数转Bean
  * <p>
  * ServletRequest 参数转Bean
  * <p>

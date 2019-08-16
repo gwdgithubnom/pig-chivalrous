@@ -20,10 +20,16 @@ import com.google.common.base.MoreObjects;
 import com.google.common.io.Resources;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
+import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.log.SystemLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -45,6 +51,41 @@ public class LocationCommand {
     private static String webRootPath;
     private static String rootClassPath;
 
+    public static String absolutePath(String path) {
+        if (path == null) {
+            path = StringCommand.EMPTY;
+        } else if (FileCommand.isExist(path)) {
+            return path;
+        } else {
+            path = normalize(path);
+            if (StringCommand.C_SLASH == path.charAt(0) || path.matches("^[a-zA-Z]:/.*")) {
+                // 给定的路径已经是绝对路径了
+                return path;
+            }
+        }
+        // 兼容Spring风格的ClassPath路径，去除前缀，不区分大小写
+        path = StringCommand.removePrefixIgnoreCase(path, "classpath:");
+        path = StringCommand.removePrefix(path, StringCommand.SLASH);
+
+        // 相对于ClassPath路径
+        ClassLoader classLoader = ClassCommand.getClassLoader();
+        URL url = classLoader.getResource(path);
+        String resultPath = url != null ? url.getPath() : ClassCommand.getClassPath() + path;
+        return resultPath;
+    }
+
+    public static String path(String path) {
+        String resultPath = absolutePath(path);
+        try {
+            resultPath = UriCommand.decode(resultPath);
+        } catch (Exception e) {
+            SystemLogger.warn("format path failed {}", resultPath);
+            resultPath = normalize(resultPath);
+        }
+        return resultPath;
+    }
+
+
     public static String pathValue(Class clazz, String path) {
         String check = pathValue(path);
         if (!FileCommand.isExist(check)) {
@@ -53,12 +94,139 @@ public class LocationCommand {
         return check;
     }
 
-    public static String valuePath(String path) {
+    public static String valuePath(String path) throws FileNotFoundException {
         String p = pathValue(path);
         if (!FileCommand.isExist(p)) {
             p = path;
+        } else {
+            throw new FileNotFoundException("not found path" + path);
         }
         return p;
+    }
+
+
+    /**
+     * 获取绝对路径<br/>
+     * 此方法不会判定给定路径是否有效（文件或目录存在）
+     *
+     * @param path      相对路径
+     * @param baseClass 相对路径所相对的类
+     * @return 绝对路径
+     */
+    public static String getAbsolutePath(String path, Class<?> baseClass) {
+        if (path == null) {
+            path = StringCommand.EMPTY;
+        }
+        if (baseClass == null) {
+            return getAbsolutePath(path);
+        }
+        // return baseClass.getResource(path).getPath();
+        path = StringCommand.removePrefix(FileCommand.PATH_FILE_PRE, baseClass.getResource(path).getPath());
+        return path;
+    }
+
+    /**
+     * 获取绝对路径，相对于ClassPath的目录<br>
+     * 如果给定就是绝对路径，则返回原路径，原路径把所有\替换为/<br>
+     * 兼容Spring风格的路径表示，例如：classpath:config/example.setting也会被识别后转换
+     *
+     * @param path 相对路径
+     * @return 绝对路径
+     */
+    public static String getAbsolutePath(String path) {
+        String resultPath = path(path);
+        return pathValue(resultPath);
+    }
+
+    /**
+     * 获取标准的绝对路径
+     *
+     * @param file 文件
+     * @return 绝对路径
+     */
+    public static String getAbsolutePath(File file) {
+        if (file == null) {
+            return null;
+        }
+        try {
+            return file.getCanonicalPath();
+        } catch (IOException e) {
+            return file.getAbsolutePath();
+        }
+    }
+
+    /**
+     * 修复路径<br>
+     * 1. 统一用 / <br>
+     * 2. 多个 / 转换为一个 3. 去除两边空格 4. .. 和 . 转换为绝对路径 5. 去掉前缀，例如file:
+     *
+     * @param path 原路径
+     * @return 修复后的路径
+     */
+    public static String normalize(String path) {
+        if (path == null) {
+            return null;
+        }
+        String pathToUse = path.replaceAll("[/\\\\]{1,}", "/").trim();
+
+        int prefixIndex = pathToUse.indexOf(StringCommand.COLON);
+        String prefix = "";
+        if (prefixIndex != -1) {
+            prefix = pathToUse.substring(0, prefixIndex + 1);
+            if (prefix.contains("/")) {
+                prefix = "";
+            } else {
+                pathToUse = pathToUse.substring(prefixIndex + 1);
+            }
+        }
+        if (pathToUse.startsWith(StringCommand.SLASH)) {
+            prefix = prefix + StringCommand.SLASH;
+            pathToUse = pathToUse.substring(1);
+        }
+
+        List<String> pathList = StringCommand.split(pathToUse, StringCommand.C_SLASH);
+        List<String> pathElements = new LinkedList<String>();
+        int tops = 0;
+
+        for (int i = pathList.size() - 1; i >= 0; i--) {
+            String element = pathList.get(i);
+            if (StringCommand.DOT.equals(element)) {
+                // 当前目录，丢弃
+            } else if (StringCommand.DOUBLE_DOT.equals(element)) {
+                tops++;
+            } else {
+                if (tops > 0) {
+                    // Merging path element with element corresponding to top path.
+                    tops--;
+                } else {
+                    // Normal path element found.
+                    pathElements.add(0, element);
+                }
+            }
+        }
+
+        // Remaining top paths need to be retained.
+        for (int i = 0; i < tops; i++) {
+            pathElements.add(0, StringCommand.DOUBLE_DOT);
+        }
+
+        return prefix + CollectionCommand.join(pathElements, StringCommand.SLASH);
+    }
+
+
+    public static String getPathFromEnv(String path) {
+        String check = path;
+        if (System.getenv("basedir") != null) {
+            check = System.getProperty("basedir") == null ? path
+                    : System.getProperty("basedir") + File.separator + path;
+        } else if (System.getenv("BASEDIR") != null) {
+            check = System.getProperty("BASEDIR") == null ? path
+                    : System.getProperty("BASEDIR") + File.separator + path;
+        } else if (System.getenv("user.dir") != null) {
+            check = System.getProperty("user.dir") == null ? path
+                    : System.getProperty("user.dir") + File.separator + path;
+        }
+        return check;
     }
 
     public static String pathValue(String path) {
@@ -66,23 +234,17 @@ public class LocationCommand {
         if (!FileCommand.isExist(check)) {
             if (System.getenv(path) != null) {
                 check = System.getenv(path);
-            } else {
-                if (System.getenv("basedir") != null) {
-                    check = System.getProperty("basedir") == null ? path
-                            : System.getProperty("basedir") + File.separator + path;
-                } else {
-                    check = System.getProperty("user.dir") == null ? path
-                            : System.getProperty("user.dir") + File.separator + path;
-                }
             }
             if (!FileCommand.isExist(check)) {
                 check = LocationCommand.userDir() + File.separator + path;
                 if (!FileCommand.isExist(check)) {
                     check = LocationCommand.classPath() + File.separator + path;
+                    if (!FileCommand.isExist(check)) {
+                        check = getPathFromEnv(path);
+                    }
                     // could try use other
                 }
             }
-
         }
         return check;
     }

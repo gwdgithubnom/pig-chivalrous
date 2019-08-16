@@ -107,4 +107,19 @@ public class MessageBuilder {
         return message(code, "exception", message);
     }
 
+    public static Message message(MessageStatus messageStatus) {
+        Message message = new Message();
+        if (messageStatus == null) {
+            message.setCode(0);
+            message.setType("info");
+            message.setMessage("^_^");
+        } else {
+            int i = messageStatus.value();
+            message.setCode(i);
+            message.setMessage(messageStatus.getReasonPhrase());
+            message.setType(messageStatus.type());
+        }
+        return message;
+    }
+
 }

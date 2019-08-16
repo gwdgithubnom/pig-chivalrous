@@ -885,6 +885,22 @@ public final class CodeCommand {
         }
 
         /**
+         * <p>remove the spaces to one space</p>
+         *
+         * @param string
+         * @return
+         */
+        public static String spaceEscape(String string) {
+            string = string.replaceAll("[ ]{2,}", "");
+            return string;
+        }
+
+        public static String lineEscape(String string) {
+            string = string.replaceAll("\n|\r", "");
+            return string;
+        }
+
+        /**
          * <p>Escape {@code input} according to the given {@link CharSequenceTranslator}.</p>
          *
          * @param input the String to escape

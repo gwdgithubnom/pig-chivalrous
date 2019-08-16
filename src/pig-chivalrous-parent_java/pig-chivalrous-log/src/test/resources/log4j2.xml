@@ -277,13 +277,10 @@
           </MessageLogAppender>-->
     </Appenders>
     <Loggers>
-        <Logger name="org.hibernate.validator.internal" additivity="false" level="error">
-            <AppenderRef ref="console"/>
-        </Logger>
-        <Logger name="org.gjgr" additivity="false" level="debug">
+        <Logger name="org.gjgr" additivity="true" level="debug">
             <AppenderRef ref="test"/>
         </Logger>
-        <Root level="error">
+        <Root level="debug">
             <AppenderRef ref="console"/>
         </Root>
     </Loggers>

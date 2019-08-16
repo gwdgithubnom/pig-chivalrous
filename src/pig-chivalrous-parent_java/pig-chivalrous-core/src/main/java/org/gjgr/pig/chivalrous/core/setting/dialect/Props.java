@@ -6,6 +6,7 @@ import org.gjgr.pig.chivalrous.core.getter.OptBasicTypeGetter;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.io.resource.ClassPathResource;
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
 import org.gjgr.pig.chivalrous.core.io.resource.UrlResource;
 import org.gjgr.pig.chivalrous.core.io.watch.SimpleWatcher;
 import org.gjgr.pig.chivalrous.core.io.watch.WatchMonitor;
@@ -364,7 +365,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
      * @param clazz 相对的类
      */
     public void store(String path, Class<?> clazz) {
-        this.store(FileCommand.getAbsolutePath(path, clazz));
+        this.store(LocationCommand.getAbsolutePath(path, clazz));
     }
     // ----------------------------------------------------------------------- Set end
 }

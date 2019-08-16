@@ -7,7 +7,7 @@
         <Property name="MM">${date:MM}</Property>
         <Property name="dd">${date:dd}</Property>
         <Property name="morePath">logs/more</Property>
-        <Property name="pattern"> %d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} [micsql-web] %style{${sys:PID}}{magenta} [%t] %style{%c.%M(%F:%L)}{cyan}:</Property>
+        <Property name="pattern"> %d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} [pig-chivalrous-redis] %style{${sys:PID}}{magenta} [%t] %style{%c.%M(%F:%L)}{cyan}:</Property>
     </Properties>
     <Appenders>
         <RollingFile name="all" fileName="${path}/all.log" append="true"

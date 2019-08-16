@@ -29,7 +29,7 @@ public class SystemLogger {
     }
 
     public static boolean warn(String string, Object... objects) {
-        logger.info(string, objects);
+        logger.warn(string, objects);
         return true;
     }
 

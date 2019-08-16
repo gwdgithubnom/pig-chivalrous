@@ -143,8 +143,11 @@ public enum MessageStatus {
                 return status;
             }
         }
-
         return null;
+    }
+
+    public String type() {
+        return this.type;
     }
 
     public MessageStatus changeType(String type) {

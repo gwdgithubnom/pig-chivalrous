@@ -24,6 +24,12 @@
         </dependency>
         <dependency>
             <groupId>org.gjgr.pig</groupId>
+            <artifactId>pig-chivalrous-langed</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.gjgr.pig</groupId>
             <artifactId>pig-chivalrous-lang</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>

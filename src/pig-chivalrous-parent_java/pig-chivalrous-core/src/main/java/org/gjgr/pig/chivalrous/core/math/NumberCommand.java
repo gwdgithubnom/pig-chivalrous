@@ -7,10 +7,16 @@ import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 数字工具类<br>
@@ -41,6 +47,8 @@ public final class NumberCommand {
      * 默认除法运算精度
      */
     private static final int DEFAUT_DIV_SCALE = 10;
+    // ------------------------------------------------------------------------------------------- isXXX
+    private static Pattern pattern = Pattern.compile("[\\d|,|\\.]+");
 
     private NumberCommand() {
     }
@@ -107,6 +115,8 @@ public final class NumberCommand {
         return div(v1, v2, scale, RoundingMode.HALF_UP);
     }
 
+    // ------------------------------------------------------------------------------------------- round
+
     /**
      * 提供(相对)精确的除法运算,当发生除不尽的情况时,由scale指定精确度
      *
@@ -124,8 +134,6 @@ public final class NumberCommand {
         BigDecimal b2 = new BigDecimal(Double.toString(v2));
         return b1.divide(b2, scale, roundingMode).doubleValue();
     }
-
-    // ------------------------------------------------------------------------------------------- round
 
     /**
      * 保留固定位数小数<br>
@@ -180,6 +188,8 @@ public final class NumberCommand {
         return b.setScale(scale, roundingMode).doubleValue();
     }
 
+    // ------------------------------------------------------------------------------------------- decimalFormat
+
     /**
      * 保留小数位，采用四舍五入
      *
@@ -190,8 +200,6 @@ public final class NumberCommand {
     public static String roundStr(double number, int digit) {
         return String.format("%." + digit + 'f', number);
     }
-
-    // ------------------------------------------------------------------------------------------- decimalFormat
 
     /**
      * 格式化double<br>
@@ -238,7 +246,35 @@ public final class NumberCommand {
         return new DecimalFormat(pattern).format(value);
     }
 
-    // ------------------------------------------------------------------------------------------- isXXX
+    public static Number parse(String s) {
+        Matcher matcher = pattern.matcher(s);
+        Number number = null;
+        if (matcher.find()) {
+            s = s.substring(matcher.start(), matcher.end());
+            try {
+                number = NumberFormat.getInstance().parse(s);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return number;
+    }
+
+    public static List<Number> parseList(String s) {
+        List<Number> numbers = new ArrayList<>();
+        Matcher matcher = pattern.matcher(s);
+        while (matcher.find()) {
+            s = s.substring(matcher.start(), matcher.end());
+            Number number = null;
+            try {
+                number = NumberFormat.getInstance().parse(s);
+                numbers.add(number);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return numbers;
+    }
 
     /**
      * 是否为数字

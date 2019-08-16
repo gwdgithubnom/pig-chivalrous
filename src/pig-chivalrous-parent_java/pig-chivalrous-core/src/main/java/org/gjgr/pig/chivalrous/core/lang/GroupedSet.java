@@ -67,12 +67,15 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>> {
         if (null == pathBaseClassLoader) {
             pathBaseClassLoader = StringCommand.EMPTY;
         }
-
-        final URL url = UriCommand.getURL(pathBaseClassLoader);
-        if (url == null) {
+        try {
+            final URL url = UriCommand.getURL(pathBaseClassLoader);
+            if (url == null) {
+                throw new RuntimeException(StringCommand.format("Can not find GroupSet file: [{}]", pathBaseClassLoader));
+            }
+            this.init(url, charset);
+        } catch (Exception e) {
             throw new RuntimeException(StringCommand.format("Can not find GroupSet file: [{}]", pathBaseClassLoader));
         }
-        this.init(url, charset);
     }
 
     /**

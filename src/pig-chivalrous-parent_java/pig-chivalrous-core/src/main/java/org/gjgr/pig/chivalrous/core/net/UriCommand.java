@@ -1,13 +1,18 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import org.apache.commons.lang3.StringUtils;
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
+import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -150,12 +155,69 @@ public class UriCommand {
     }
 
     /**
+     * 获得path部分<br>
+     * URI -> http://www.aaa.bbb/search?scope=ccc&q=ddd PATH -> /search
+     *
+     * @param uriStr URI路径
+     * @return path
+     * @throws UtilException URISyntaxException
+     */
+    public static String getPath(String uriStr) {
+        URI uri = null;
+        try {
+            uri = new URI(uriStr);
+        } catch (URISyntaxException e) {
+            throw new UtilException(e);
+        }
+
+        return uri == null ? null : uri.getPath();
+    }
+
+    /**
+     * Resolve the given resource location to a {@code java.net.URL}.
+     * <p>
+     * Does not check whether the URL actually exists; simply returns the URL that the given location would correspond
+     * to.
+     *
+     * @param resourceLocation the resource location to resolve: either a "classpath:" pseudo URL, a "file:" URL, or a
+     *                         plain file path
+     * @return a corresponding URL object
+     * @throws FileNotFoundException if the resource cannot be resolved to a URL
+     */
+    public static URL getURL(String resourceLocation) throws FileNotFoundException {
+        AssertCommand.notNull(resourceLocation, "Resource location must not be null");
+        if (resourceLocation.startsWith(FileCommand.CLASSPATH_URL_PREFIX)) {
+            String path = resourceLocation.substring(FileCommand.CLASSPATH_URL_PREFIX.length());
+            ClassLoader cl = ClassCommand.getDefaultClassLoader();
+            URL url = (cl != null ? cl.getResource(path) : ClassLoader.getSystemResource(path));
+            if (url == null) {
+                String description = "class path resource [" + path + "]";
+                throw new FileNotFoundException(description +
+                        " cannot be resolved to URL because it does not exist");
+            }
+            return url;
+        }
+        try {
+            // try URL
+            return new URL(resourceLocation);
+        } catch (MalformedURLException ex) {
+            // no URL -> treat as file path
+            try {
+                return new File(resourceLocation).toURI().toURL();
+            } catch (MalformedURLException ex2) {
+                throw new FileNotFoundException("Resource location [" + resourceLocation +
+                        "] is neither a URL not a well-formed file path");
+            }
+        }
+    }
+
+    /**
      * 获得URL
      *
      * @param pathBaseClassLoader 相对路径（相对于classes）
      * @return URL
      */
-    public static URL getURL(String pathBaseClassLoader) {
+    public static URL getURLFromClassLocation(String pathBaseClassLoader) {
         return ClassCommand.getClassLoader().getResource(pathBaseClassLoader);
     }
 
@@ -222,6 +284,16 @@ public class UriCommand {
         return "http://" + url;
     }
 
+    public static String formatUrl(String url, String scheme) {
+        if (StringCommand.isBlank(url)) {
+            return null;
+        }
+        if (url.startsWith(scheme)) {
+            return url;
+        }
+        return scheme + url;
+    }
+
     /**
      * 补全相对路径
      *
@@ -262,6 +334,10 @@ public class UriCommand {
         }
     }
 
+    public static String encode(String url) {
+        return encode(url, CharsetCommand.UTF_8);
+    }
+
     /**
      * 解码URL<br>
      * 将%开头的16进制表示的内容解码。
@@ -280,23 +356,33 @@ public class UriCommand {
     }
 
     /**
-     * 获得path部分<br>
-     * URI -> http://www.aaa.bbb/search?scope=ccc&q=ddd PATH -> /search
+     * Return whether the given resource location is a URL: either a special "classpath" pseudo URL or a standard URL.
      *
-     * @param uriStr URI路径
-     * @return path
-     * @throws UtilException URISyntaxException
+     * @param resourceLocation the location String to check
+     * @return whether the location qualifies as a URL
+     * @see # FileCommand.CLASSPATH_URL_PREFIX
+     * @see java.net.URL
      */
-    public static String getPath(String uriStr) {
-        URI uri = null;
-        try {
-            uri = new URI(uriStr);
-        } catch (URISyntaxException e) {
-            throw new UtilException(e);
+    public static boolean isUrl(@Nullable String resourceLocation) {
+        if (resourceLocation == null) {
+            return false;
         }
-
-        return uri == null ? null : uri.getPath();
+        if (resourceLocation.startsWith(FileCommand.CLASSPATH_URL_PREFIX)) {
+            return true;
+        }
+        try {
+            new URL(resourceLocation);
+            return true;
+        } catch (MalformedURLException ex) {
+            return false;
+        }
     }
+
+
+    public static String decode(String url) {
+        return decode(url, CharsetCommand.UTF_8);
+    }
+
 
     /**
      * 转URL为URI
@@ -322,5 +408,18 @@ public class UriCommand {
         } catch (URISyntaxException e) {
             throw new UtilException(e);
         }
+    }
+
+    public String encodeSpaces(String url) {
+        String path = StringUtils.substringBefore(url, "?");
+        path = StringUtils.replace(path, " ", "%20");
+        String qs = StringUtils.substringAfter(url, "?");
+        if (StringUtils.isNotBlank(qs)) {
+            qs = StringUtils.replace(qs, " ", "+");
+            url = path + "?" + qs;
+        } else {
+            url = path;
+        }
+        return url;
     }
 }

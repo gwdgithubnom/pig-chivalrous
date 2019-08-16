@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
@@ -9,6 +10,7 @@
         <module>pig-chivalrous-test</module>
         <module>pig-chivalrous-data</module>
         <module>pig-chivalrous-io</module>
+        <module>pig-chivalrous-langed</module>
         <module>pig-chivalrous-lang</module>
         <module>pig-chivalrous-image</module>
         <module>pig-chivalrous-language</module>
@@ -49,12 +51,13 @@
         <project.reporting.encoding>UTF-8</project.reporting.encoding>
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
-        <base.org.apache.commons.lang3.version>3.7</base.org.apache.commons.lang3.version>
+        <base.org.apache.commons.lang3.version>3.8.1</base.org.apache.commons.lang3.version>
         <com.mchange.version>0.9.5.2</com.mchange.version>
         <com.google.guava.version>26.0-jre</com.google.guava.version>
         <com.zaxxer.version>2.4.11</com.zaxxer.version>
         <commons.cli.version>1.4</commons.cli.version>
-        <data.image.com.facebook.fresco.animated.webp.version>1.11.0</data.image.com.facebook.fresco.animated.webp.version>
+        <data.image.com.facebook.fresco.animated.webp.version>1.11.0
+        </data.image.com.facebook.fresco.animated.webp.version>
         <debug.org.assertj.version>1.5.0</debug.org.assertj.version>
         <database.com.alibaba.druid.version>1.0.27</database.com.alibaba.druid.version>
         <database.org.apache.tomcat.jdbc.version>8.5.11</database.org.apache.tomcat.jdbc.version>
@@ -62,17 +65,18 @@
         <database.redis.clients.version>2.9.0</database.redis.clients.version>
         <file.commons.io.version>2.6</file.commons.io.version>
         <file.org.apache.commons.io.version>1.3.2</file.org.apache.commons.io.version>
-        <json.com.alibaba.fastjson.version>1.2.47</json.com.alibaba.fastjson.version>
+        <json.com.alibaba.fastjson.version>1.2.58</json.com.alibaba.fastjson.version>
         <json.com.google.code.gson.version>2.8.5</json.com.google.code.gson.version>
         <log.log4j.version>1.2.17</log.log4j.version>
         <log.org.slf4j.version>1.7.25</log.org.slf4j.version>
         <log.commons.logging.version>1.2</log.commons.logging.version>
         <log.org.apache.logging.log4j.version>2.11.0</log.org.apache.logging.log4j.version>
-        <network.org.apache.httpcomponents.httpclient.version>4.5.6</network.org.apache.httpcomponents.httpclient.version>
+        <network.org.apache.httpcomponents.httpclient.version>4.5.6
+        </network.org.apache.httpcomponents.httpclient.version>
         <middleware.org.apache.camel.version>2.22.0</middleware.org.apache.camel.version>
         <math.org.apache.commons.math.version>3.6.1</math.org.apache.commons.math.version>
         <network.commons.net.version>3.6</network.commons.net.version>
-        <office.org.apache.poi.version>3.14</office.org.apache.poi.version>
+        <office.org.apache.poi.version>4.1.0</office.org.apache.poi.version>
         <test.org.mockito.version>1.10.19</test.org.mockito.version>
         <test.junt.version>4.12</test.junt.version>
         <test.org.junit.jupiter.version>5.3.1</test.org.junit.jupiter.version>
@@ -99,7 +103,7 @@
         <lang.commons.daemon.version>1.1.0</lang.commons.daemon.version>
         <codec.commons.codec.version>1.4</codec.commons.codec.version>
         <codec.org.jcodec.version>0.2.3</codec.org.jcodec.version>
-        <lang.org.apache.commons.collections>4.2</lang.org.apache.commons.collections>
+        <lang.org.apache.commons.collections>4.3</lang.org.apache.commons.collections>
         <lang.org.apache.commons.configuration>2.4</lang.org.apache.commons.configuration>
         <log.commons.logging.version>1.2</log.commons.logging.version>
         <mail.org.apache.commons.email.version>1.4</mail.org.apache.commons.email.version>
@@ -155,6 +159,10 @@
                     <exclusion>
                         <groupId>org.apache.commons</groupId>
                         <artifactId>commons-lang3</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -502,9 +510,19 @@
                 <version>${log.org.apache.logging.log4j.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-to-slf4j</artifactId>
+                <version>${log.org.apache.logging.log4j.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${log.org.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-jul</artifactId>
+                <version>${log.org.apache.logging.log4j.version}</version>
             </dependency>
             <!--  log4j  -->
             <dependency>
@@ -756,7 +774,7 @@
                 </dependencies>
                 <configuration>
                     <rules>
-                        <DependencyConvergence />
+                        <DependencyConvergence/>
                         <banDuplicateClasses>
                             <ignoreClasses>
                                 <!--  example of ignoring one specific class  -->
@@ -1134,7 +1152,7 @@
                 <plugin.install.skip>true</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
-                <profile.maven.release.plugin.arguments />
+                <profile.maven.release.plugin.arguments/>
             </properties>
         </profile>
         <profile>
@@ -1149,7 +1167,7 @@
                 <plugin.install.skip>true</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
-                <profile.maven.release.plugin.arguments />
+                <profile.maven.release.plugin.arguments/>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -1184,7 +1202,7 @@
                 <plugin.install.skip>false</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
-                <profile.maven.release.plugin.arguments />
+                <profile.maven.release.plugin.arguments/>
             </properties>
         </profile>
         <profile>
@@ -1262,4 +1280,5 @@
             </url>
         </repository>
     </repositories>
+
 </project>

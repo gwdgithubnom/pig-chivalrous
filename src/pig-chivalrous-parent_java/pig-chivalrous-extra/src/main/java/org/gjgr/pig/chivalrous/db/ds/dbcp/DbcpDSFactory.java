@@ -123,6 +123,18 @@
  * @param key1 属性名
  * @param key2 备用属性名
  * @return 值
+ * <p>
+ * 数据源池
+ * <p>
+ * 创建数据源
+ * @param group 分组
+ * @return Dbcp数据源 {@link BasicDataSource}
+ * <p>
+ * 获得指定KEY对应的值，key1和key2为属性的两个名字，可以互作别名
+ * @param setting 属性
+ * @param key1 属性名
+ * @param key2 备用属性名
+ * @return 值
  *//*
  *
  * public class DbcpDSFactory extends DSFactory {
