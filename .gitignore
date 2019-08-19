@@ -26,13 +26,15 @@
 *.iml
 # Compiled class file
 *.class
-
+deploy.xml
+*/deploy.xml
 # Log file
 *.log
-
+repo
 # BlueJ files
 *.ctxt
-
+*.releaseBackup
+release.properties
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -50,20 +52,4 @@
 !dist/*.jar
 dist/logs/*
 dist/sample/logs/*
-out/**
-build/**
-**/dependency-reduced-pom.xml
 
-developer4j/\.idea/
-
-developer4j/tools-core-developer/target/
-
-developer4j/tools-core-developer/core\.iml
-
-developer4j/tools-core-developer/tools-core-developer\.iml
-
-developer4j/tools-db-developer/target/
-
-*.iml
-
-developer4j/tools-excel-developer/target/
