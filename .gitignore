@@ -11,6 +11,19 @@
 **/.idea
 *.impl
 *.iml
+**/target
+/.settings
+/.project
+/.classpath
+/.idea
+*.impl
+**/**/*.impl
+**/**/*.iml
+**/*.impl
+**/*.iml
+**/.idea
+*.impl
+*.iml
 # Compiled class file
 *.class
 
