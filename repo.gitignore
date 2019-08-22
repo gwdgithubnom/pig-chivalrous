@@ -1,0 +1,190 @@
+ <distributionManagement>
+        <!--
+       <repository>
+                   <uniqueVersion>false</uniqueVersion>
+                   <id>central</id>
+                   <name>c3-jm-i2-artifactory01.bj-releases</name>
+                   <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-releases</url>
+                   <layout>maven-2-default</layout>
+               </repository>
+               <snapshotRepository>
+                   <uniqueVersion>false</uniqueVersion>
+                   <id>snapshots</id>
+                   <name>c3-jm-i2-artifactory01.bj-snapshots</name>
+                   <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-snapshots</url>
+                   <layout>maven-2-default</layout>
+               </snapshotRepository>
+       -->
+        <repository>
+            <id>archiva.internal</id>
+            <name>Internal Release Repository</name>
+            <url>
+                http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>archiva.snapshots</id>
+            <name>Internal Snapshot Repository</name>
+            <url>
+                http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+ <distributionManagement>
+        <!--
+       <repository>
+                   <uniqueVersion>false</uniqueVersion>
+                   <id>central</id>
+                   <name>c3-jm-i2-artifactory01.bj-releases</name>
+                   <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-releases</url>
+                   <layout>maven-2-default</layout>
+               </repository>
+               <snapshotRepository>
+                   <uniqueVersion>false</uniqueVersion>
+                   <id>snapshots</id>
+                   <name>c3-jm-i2-artifactory01.bj-snapshots</name>
+                   <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-snapshots</url>
+                   <layout>maven-2-default</layout>
+               </snapshotRepository>
+       -->
+        <repository>
+            <id>archiva.internal</id>
+            <name>Internal Release Repository</name>
+            <url>
+                http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>archiva.snapshots</id>
+            <name>Internal Snapshot Repository</name>
+            <url>
+                http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+
+
+
+<distributionManagement>
+        <!--
+       <repository>
+                   <uniqueVersion>false</uniqueVersion>
+                   <id>central</id>
+                   <name>c3-jm-i2-artifactory01.bj-releases</name>
+                   <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-releases</url>
+                   <layout>maven-2-default</layout>
+               </repository>
+               <snapshotRepository>
+                   <uniqueVersion>false</uniqueVersion>
+                   <id>snapshots</id>
+                   <name>c3-jm-i2-artifactory01.bj-snapshots</name>
+                   <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-snapshots</url>
+                   <layout>maven-2-default</layout>
+               </snapshotRepository>
+       -->
+        <repository>
+            <id>archiva.internal</id>
+            <name>Internal Release Repository</name>
+            <url>
+                http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>archiva.snapshots</id>
+            <name>Internal Snapshot Repository</name>
+            <url>
+                http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+
+<repositories>
+                <repository>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <id>0</id>
+                    <name>test center</name>
+                    <url>
+                        http://nexus.d.xiaomi.net/nexus/content/groups/public/
+                    </url>
+                </repository>
+            </repositories>
+
+
+ <distributionManagement>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>central</id>
+            <name>c3-jm-i2-artifactory01.bj-releases</name>
+            <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-releases</url>
+            <layout>maven-2-default</layout>
+        </repository>
+        <snapshotRepository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>snapshots</id>
+            <name>c3-jm-i2-artifactory01.bj-snapshots</name>
+            <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-snapshots</url>
+            <layout>maven-2-default</layout>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+     <repository>
+                <id>archiva.internal</id>
+                <name>Internal Release Repository</name>
+                <url>http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
+                </url>
+            </repository>
+            <snapshotRepository>
+                <id>archiva.snapshots</id>
+                <name>Internal Snapshot Repository</name>
+                <url>http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
+                </url>
+            </snapshotRepository>
+
+
+
+
+
+
+
+
+
+            <distributionManagement>
+                    <!--
+                   <repository>
+                               <uniqueVersion>false</uniqueVersion>
+                               <id>central</id>
+                               <name>c3-jm-i2-artifactory01.bj-releases</name>
+                               <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-releases</url>
+                               <layout>maven-2-default</layout>
+                           </repository>
+                           <snapshotRepository>
+                               <uniqueVersion>false</uniqueVersion>
+                               <id>snapshots</id>
+                               <name>c3-jm-i2-artifactory01.bj-snapshots</name>
+                               <url>http://artifactory.d.xiaomi.net:80/artifactory/artifactory-snapshots</url>
+                               <layout>maven-2-default</layout>
+                           </snapshotRepository>
+                   -->
+                    <repository>
+                        <id>archiva.internal</id>
+                        <name>Internal Release Repository</name>
+                        <url>
+                            http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
+                        </url>
+                    </repository>
+                    <snapshotRepository>
+                        <id>archiva.snapshots</id>
+                        <name>Internal Snapshot Repository</name>
+                        <url>
+                            http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
+                        </url>
+                    </snapshotRepository>
+                </distributionManagement>

@@ -30,7 +30,6 @@ deploy.xml
 */deploy.xml
 # Log file
 *.log
-repo.gitignore
 repo
 # BlueJ files
 *.ctxt
