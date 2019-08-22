@@ -21,16 +21,12 @@
             <artifactId>pig-chivalrous-exclude</artifactId>
             <scope>provided</scope>
             <version>0.0.3-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-io</groupId>
-                    <artifactId>commons-io</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
+            <groupId>org.gjgr.pig</groupId>
+            <artifactId>pig-chivalrous-lang</artifactId>
+            <version>0.0.3-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

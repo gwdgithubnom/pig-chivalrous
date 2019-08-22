@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * @Author gwd
  * @Time 08-24-2018 Friday
- * @Description: global-browser-mipush:
+ * @Description:
  * @Target:
  * @More:
  */

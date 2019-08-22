@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @Author gwd
  * @Time 01-30-2019 Wednesday
- * @Description: global-news-feed:
+ * @Description:
  * @Target:
  * @More:
  */
