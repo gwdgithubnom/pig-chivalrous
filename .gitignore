@@ -1,4 +1,5 @@
 **/target
+repo.gitignore
 /.settings
 /.project
 /.classpath
