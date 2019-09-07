@@ -13,7 +13,6 @@
 
 package org.gjgr.pig.chivalrous.core.json;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -127,10 +126,6 @@ public class JsonCommand {
             // ?super T
         }
         return null;
-    }
-
-    public static JsonObject convert(JSONObject jsonObject) {
-        return fromJson(jsonObject.toString(), JsonObject.class);
     }
 
     public static com.google.gson.JsonElement convert(JsonObject jsonObject) {
