@@ -2,11 +2,7 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-<<<<<<< 8e8c4bdddc73483dff679055d061b29b91dff1fb
         <version>0.0.1.20200201G-SNAPSHOT</version>
-=======
-        <version>0.0.3.20190923</version>
->>>>>>> [maven-release-plugin] prepare release v0.0.3.20190923
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -15,15 +11,10 @@
     <packaging>jar</packaging>
     <name>pig-chivalrous-extra</name>
     <url>http://maven.apache.org</url>
-<<<<<<< 8e8c4bdddc73483dff679055d061b29b91dff1fb
     <version>0.0.1.20200201G-SNAPSHOT</version>
-=======
-    <version>0.0.3.20190923</version>
->>>>>>> [maven-release-plugin] prepare release v0.0.3.20190923
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.gjgr.pig</groupId>

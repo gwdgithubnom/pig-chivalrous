@@ -3,12 +3,20 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
+<<<<<<< cb48732129dcf6a5ed743aa6b6b33aefac186a40
         <version>0.0.1.20200201G-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>0.0.1.20200201G-SNAPSHOT</version>
     <groupId>org.gjgr.pig</groupId>
+=======
+        <version>0.0.3.20190924-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <version>0.0.3.20190924-SNAPSHOT</version>
+>>>>>>> [maven-release-plugin] prepare for next development iteration
     <artifactId>pig-chivalrous-log</artifactId>
     <packaging>jar</packaging>
     <name>pig-chivalrous-log</name>
@@ -21,7 +29,11 @@
             <groupId>org.gjgr.pig</groupId>
             <artifactId>pig-chivalrous-exclude</artifactId>
             <scope>provided</scope>
+<<<<<<< cb48732129dcf6a5ed743aa6b6b33aefac186a40
             <version>0.0.1.20200201G-SNAPSHOT</version>
+=======
+            <version>0.0.3.20190924-SNAPSHOT</version>
+>>>>>>> [maven-release-plugin] prepare for next development iteration
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
