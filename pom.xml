@@ -1519,70 +1519,70 @@
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
             </plugin>
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-javadoc-plugin</artifactId>-->
-                <!--<version>2.10.4</version>-->
-                <!--<configuration>-->
-                    <!--<skip>true</skip>-->
-                    <!--<encoding>UTF-8</encoding>-->
-                    <!--<doctitle>pig-chivalrous</doctitle>-->
-                    <!--<locale>en_US</locale>-->
-                    <!--<skip>${plugin.site.skip}</skip>-->
-                    <!--<tags>-->
-                        <!--<tag>-->
-                            <!--<name>Author</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>file created by author:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>Time</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>file created time:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>Target</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>the job and target:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>More</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>more information about:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>Description</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>description information:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>param</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>method param:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>return</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>method return item:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>throws</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>this method would throws exception:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>TODO</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>will todo work:</head>-->
-                        <!--</tag>-->
-                        <!--<tag>-->
-                            <!--<name>todo</name>-->
-                            <!--<placement>a</placement>-->
-                            <!--<head>will to do work:</head>-->
-                        <!--</tag>-->
-                    <!--</tags>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <configuration>
+                    <skip>true</skip>
+                    <encoding>UTF-8</encoding>
+                    <doctitle>pig-chivalrous</doctitle>
+                    <locale>en_US</locale>
+                    <skip>${plugin.site.skip}</skip>
+                    <tags>
+                        <tag>
+                            <name>Author</name>
+                            <placement>a</placement>
+                            <head>file created by author:</head>
+                        </tag>
+                        <tag>
+                            <name>Time</name>
+                            <placement>a</placement>
+                            <head>file created time:</head>
+                        </tag>
+                        <tag>
+                            <name>Target</name>
+                            <placement>a</placement>
+                            <head>the job and target:</head>
+                        </tag>
+                        <tag>
+                            <name>More</name>
+                            <placement>a</placement>
+                            <head>more information about:</head>
+                        </tag>
+                        <tag>
+                            <name>Description</name>
+                            <placement>a</placement>
+                            <head>description information:</head>
+                        </tag>
+                        <tag>
+                            <name>param</name>
+                            <placement>a</placement>
+                            <head>method param:</head>
+                        </tag>
+                        <tag>
+                            <name>return</name>
+                            <placement>a</placement>
+                            <head>method return item:</head>
+                        </tag>
+                        <tag>
+                            <name>throws</name>
+                            <placement>a</placement>
+                            <head>this method would throws exception:</head>
+                        </tag>
+                        <tag>
+                            <name>TODO</name>
+                            <placement>a</placement>
+                            <head>will todo work:</head>
+                        </tag>
+                        <tag>
+                            <name>todo</name>
+                            <placement>a</placement>
+                            <head>will to do work:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
@@ -1734,20 +1734,4 @@
             </url>
         </repository>
     </repositories>
-    <distributionManagement>
-        <repository>
-            <id>archiva.internal</id>
-            <name>Internal Release Repository</name>
-            <url>
-                http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>archiva.snapshots</id>
-            <name>Internal Snapshot Repository</name>
-            <url>
-                http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
-            </url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
