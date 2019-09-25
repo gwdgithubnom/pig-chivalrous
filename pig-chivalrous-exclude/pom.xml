@@ -2,7 +2,7 @@
     <parent>
         <groupId>org.gjgr.pig</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.3.20190926</version>
+        <version>0.0.3.20190927-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>pig-chivalrous-exclude</artifactId>
@@ -16,5 +16,5 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>0.0.3.20190926</version>
+    <version>0.0.3.20190927-SNAPSHOT</version>
 </project>
