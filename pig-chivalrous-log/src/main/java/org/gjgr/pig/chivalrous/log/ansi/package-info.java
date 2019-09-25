@@ -17,7 +17,7 @@
 /**
  * Support classes to provide ANSI color output.
  *
- * @see org.springframework.boot.ansi.AnsiOutput
+ * org.springframework.boot.ansi.AnsiOutput
  */
 
 package org.gjgr.pig.chivalrous.log.ansi;
