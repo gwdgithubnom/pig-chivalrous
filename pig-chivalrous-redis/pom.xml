@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.3.20190921</version>
+        <version>0.0.3.20190922-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
     <artifactId>pig-chivalrous-redis</artifactId>
     <packaging>jar</packaging>
     <name>pig-chivalrous-redis</name>
-    <version>0.0.3.20190921</version>
+    <version>0.0.3.20190922-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -21,7 +21,7 @@
             <groupId>org.gjgr.pig</groupId>
             <artifactId>pig-chivalrous-exclude</artifactId>
             <scope>provided</scope>
-            <version>0.0.3.20190921</version>
+            <version>0.0.3.20190922-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>redis.clients</groupId>
