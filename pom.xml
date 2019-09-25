@@ -1764,63 +1764,19 @@
             </build>
         </profile>
     </profiles>
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>aliyun-central</id>-->
-<!--            <name>aliyun central</name>-->
-<!--            <url>https://maven.aliyun.com/repository/central</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun-google</id>-->
-<!--            <name>aliyun google</name>-->
-<!--            <url>https://maven.aliyun.com/repository/google</url>-->
-<!--        </repository>-->
-<!--        &lt;!&ndash;-->
-<!--                jcenter-->
-<!--                &ndash;&gt;-->
-<!--        <repository>-->
-<!--            <id>aliyun-jcenter</id>-->
-<!--            <name>aliyun jcenter</name>-->
-<!--            <url>https://maven.aliyun.com/repository/jcenter</url>-->
-<!--        </repository>-->
-<!--        &lt;!&ndash;-->
-<!--               aliyun-->
-<!--                &ndash;&gt;-->
-<!--        <repository>-->
-<!--            <id>aliyun-public</id>-->
-<!--            <name>aliyun public</name>-->
-<!--            <url>https://maven.aliyun.com/repository/public</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun-release</id>-->
-<!--            <name>aliyun release</name>-->
-<!--            <url>https://maven.aliyun.com/repository/releases</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun-snapshots</id>-->
-<!--            <name>apache snapshots</name>-->
-<!--            <url>https://maven.aliyun.com/repository/apache-snapshots</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>sonatype-org</id>-->
-<!--            <name>sonatype org</name>-->
-<!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
-
     <distributionManagement>
         <repository>
-            <id>sonatype.releases</id>
+            <id>archiva.internal</id>
             <name>Internal Release Repository</name>
             <url>
-                https://oss.sonatype.org/service/local/staging/deploy/maven2
+                http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
             </url>
         </repository>
         <snapshotRepository>
-            <id>sonatype.snapshots</id>
+            <id>archiva.snapshots</id>
             <name>Internal Snapshot Repository</name>
             <url>
-                https://oss.sonatype.org/content/repositories/snapshots
+                http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
             </url>
         </snapshotRepository>
     </distributionManagement>
