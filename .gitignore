@@ -38,7 +38,7 @@ repo
 release.properties
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-
+pom.xml
 # Package Files #
 *.jar
 *.war

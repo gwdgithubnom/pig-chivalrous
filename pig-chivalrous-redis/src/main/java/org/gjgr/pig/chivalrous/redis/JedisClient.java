@@ -1,5 +1,8 @@
 package org.gjgr.pig.chivalrous.redis;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.gjgr.pig.chivalrous.log.SystemLogger;
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.BinaryJedisPubSub;
@@ -29,10 +32,6 @@ import redis.clients.jedis.params.sortedset.ZAddParams;
 import redis.clients.jedis.params.sortedset.ZIncrByParams;
 import redis.clients.util.Pool;
 import redis.clients.util.Slowlog;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @Author gwd
@@ -70,41 +69,6 @@ public class JedisClient extends Jedis {
         String string = getJedis().set(key, value);
         free();
         return string;
-    }
-
-    public Jedis jedis() {
-        return jedis.get();
-    }
-
-    public Jedis getJedis() {
-        if (jedis.get() != null) {
-            return jedis.get();
-        } else {
-            Jedis j = getResource(this.jedisPool);
-            jedis.set(j);
-            return jedis.get();
-        }
-    }
-
-    public synchronized void free() {
-        try {
-            // this.jedis.flushAll();
-            Jedis j = this.jedis.get();
-            this.jedis.remove();
-            if (j != null) {
-                j.close();
-            }
-            //SystemLogger.info("return jedis to pool.");
-        } catch (Exception e) {
-            if (this.jedis.get().isConnected()) {
-                SystemLogger.error("not free the jedis {}", e);
-                e.printStackTrace();
-            } else {
-                SystemLogger.info("close jedis failed but resource has been free.");
-            }
-        } finally {
-            this.jedis.remove();
-        }
     }
 
     @Override
@@ -480,7 +444,6 @@ public class JedisClient extends Jedis {
         return o;
     }
 
-
     @Override
     public Set<String> smembers(String key) {
         Set<String> o = getJedis().smembers(key);
@@ -494,7 +457,6 @@ public class JedisClient extends Jedis {
         free();
         return o;
     }
-
 
     @Override
     public String spop(String key) {
@@ -517,14 +479,12 @@ public class JedisClient extends Jedis {
         return o;
     }
 
-
     @Override
     public Long scard(String key) {
         Long o = getJedis().scard(key);
         free();
         return o;
     }
-
 
     @Override
     public Boolean sismember(String key, String member) {
@@ -1807,6 +1767,41 @@ public class JedisClient extends Jedis {
         return o;
     }
 
+    public Jedis jedis() {
+        return jedis.get();
+    }
+
+    public Jedis getJedis() {
+        if (jedis.get() != null) {
+            return jedis.get();
+        } else {
+            Jedis j = getResource(this.jedisPool);
+            jedis.set(j);
+            return jedis.get();
+        }
+    }
+
+    public synchronized void free() {
+        try {
+            // this.jedis.flushAll();
+            Jedis j = this.jedis.get();
+            this.jedis.remove();
+            if (j != null) {
+                j.close();
+            }
+            //SystemLogger.info("return jedis to pool.");
+        } catch (Exception e) {
+            if (this.jedis.get().isConnected()) {
+                SystemLogger.error("not free the jedis {}", e);
+                e.printStackTrace();
+            } else {
+                SystemLogger.info("release jedis failed but resource has been free.");
+            }
+        } finally {
+            this.jedis.remove();
+        }
+    }
+
     @Override
     public String ping() {
         String o = getJedis().ping();
@@ -2450,7 +2445,6 @@ public class JedisClient extends Jedis {
         free();
         return o;
     }
-
 
     @Override
     public void connect() {
