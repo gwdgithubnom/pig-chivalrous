@@ -2,7 +2,7 @@
     <parent>
         <groupId>org.gjgr.pig</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.3.20190927-SNAPSHOT</version>
+        <version>0.0.3.20190925</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>pig-chivalrous-model</artifactId>
@@ -13,7 +13,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>0.0.3.20190927-SNAPSHOT</version>
+    <version>0.0.3.20190925</version>
     <dependencies>
         <dependency>
             <groupId>org.gjgr.pig</groupId>
