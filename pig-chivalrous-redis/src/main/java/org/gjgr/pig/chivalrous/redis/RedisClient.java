@@ -46,7 +46,7 @@ public final class RedisClient {
                 JedisPool jedisPool = (JedisPool) oo;
                 jedisPool.close();
             } else {
-                throw new RuntimeException("not found the target close method for the object founded. {}" + object.getClass().getName());
+                throw new RuntimeException("not found the target release method for the object founded. {}" + object.getClass().getName());
             }
             redisConnector.put(redisConfig.hashString(), object);
         } else {
@@ -146,7 +146,7 @@ public final class RedisClient {
         return redisConnector.get(key + "");
     }
 
-    public boolean close() {
+    public boolean release() {
         if (redisConnector.size() > 0 && redisConnector.containsKey(id)) {
             try {
                 Object o = redisConnector(id);
