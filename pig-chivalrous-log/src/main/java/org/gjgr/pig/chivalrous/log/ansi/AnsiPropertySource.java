@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * {@links PropertyResolver} for {@link AnsiStyle}, {@link AnsiColor} and {@link AnsiBackground} elements. Supports
+ * PropertyResolver for {@link AnsiStyle}, {@link AnsiColor} and {@link AnsiBackground} elements. Supports
  * properties of the form {@code AnsiStyle.BOLD}, {@code AnsiColor.RED} or {@code AnsiBackground.GREEN}. Also supports a
  * prefix of {@code Ansi.} which is an aggregation of everything (with background colors prefixed {@code BG_}).
  *
