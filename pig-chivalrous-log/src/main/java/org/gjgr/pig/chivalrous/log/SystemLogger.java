@@ -3,14 +3,8 @@ package org.gjgr.pig.chivalrous.log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @Author gwd
- * @Time 01-30-2019 Wednesday
- * @Description:
- * @Target:
- * @More:
- */
 public class SystemLogger {
+
     private static Logger logger = LoggerFactory.getLogger(SystemLogger.class);
 
     public static boolean info(String string, Object... objects) {
