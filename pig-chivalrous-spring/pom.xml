@@ -2,7 +2,7 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.3.20190917</version>
+        <version>0.0.3.20190918-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.gjgr.pig</groupId>
@@ -11,13 +11,13 @@
     <packaging>jar</packaging>
     <name>pig-chivalrous-spring</name>
     <url>http://maven.apache.org</url>
-    <version>0.0.3.20190917</version>
+    <version>0.0.3.20190918-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>org.gjgr.pig</groupId>
             <artifactId>pig-chivalrous-exclude</artifactId>
             <scope>provided</scope>
-            <version>0.0.3.20190917</version>
+            <version>0.0.3.20190918-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
