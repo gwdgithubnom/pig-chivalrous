@@ -2,13 +2,13 @@
 	<parent>
 		<groupId>org.gjgr</groupId>
 		<artifactId>pig-chivalrous-parent</artifactId>
-		<version>0.0.1.20200201G-SNAPSHOT</version>
+		<version>0.0.1.20200202G</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.gjgr.pig</groupId>
 	<artifactId>pig-chivalrous-thrift</artifactId>
-	<version>0.0.1.20200201G-SNAPSHOT</version>
+	<version>0.0.1.20200202G</version>
 	<packaging>jar</packaging>
 
 	<name>pig-chivalrous-thrift</name>
@@ -25,7 +25,7 @@
 			<version>4.8</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -70,8 +70,8 @@
 			            <configuration>
 			                <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
 			                <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
-			            </configuration>       
-			            <phase>test-compile</phase> 
+			            </configuration>
+			            <phase>test-compile</phase>
 			            <goals>
 			                <goal>generate</goal>
 			            </goals>

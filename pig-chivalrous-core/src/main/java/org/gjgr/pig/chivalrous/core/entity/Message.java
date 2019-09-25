@@ -109,6 +109,7 @@ public class Message implements Serializable, Cloneable {
         }
     }
 
+
     public static <T> T deserialize(Object data, Class<T> clazz) {
         if (data != null && !data.equals("")) {
             String stringData = null;
@@ -240,6 +241,7 @@ public class Message implements Serializable, Cloneable {
         return (T) serialize(this.datum);
     }
 
+
     public <T> T dataDeserialize(Class<T> clazz) {
         return deserialize(this.data, clazz);
     }
@@ -255,6 +257,7 @@ public class Message implements Serializable, Cloneable {
             return null;
         }
     }
+
 
     public <T> T deserializeDatum(Class<T> clazz) {
         try {

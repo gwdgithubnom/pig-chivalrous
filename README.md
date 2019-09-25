@@ -77,8 +77,8 @@ choose target wanted module
 
 ```` xml
 <dependencies>
-  <groupId>org.gjgr.pig</groupId>    
-  <artifactId>pig-chivalrous-core</artifactId> 
+  <groupId>org.gjgr.pig</groupId>
+  <artifactId>pig-chivalrous-core</artifactId>
   <version>yyyy.mm.dd.n-SNAPSHOT</artifactId>
 </dependencies>
 ````

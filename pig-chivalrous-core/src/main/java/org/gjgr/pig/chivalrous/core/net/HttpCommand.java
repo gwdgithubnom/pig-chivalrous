@@ -1,11 +1,24 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -27,7 +40,7 @@ public class HttpCommand {
     private static Logger logger = LoggerFactory.getLogger(HttpCommand.class);
 
     public static CookieStore cookieStore(HttpClientBuilder httpClientBuilder, Map<String, String> stringMap,
-                                          String domain) {
+            String domain) {
         if (stringMap == null) {
             httpClientBuilder.disableCookieManagement();
             return null;
@@ -65,12 +78,19 @@ public class HttpCommand {
         return cookieStore;
     }
 
+    protected static Message messageReturn(Integer code, String url, String type) {
+        Message message = new Message();
+        message.getInfo().put("url", url);
+        message.setType(type);
+        message.setTimestamp(System.currentTimeMillis());
+        message.setCode(code);
+        return message;
+    }
+
     public static Message httpURLConnection(HttpURLConnection httpURLConnection, String data)
             throws IOException {
+        Message message = messageReturn(200, httpURLConnection.getURL().toString(), "simple");
         DataInputStream dataInputStream = null;
-        Message message = new Message();
-        message.getInfo().put("url", httpURLConnection.toString());
-        message.getInfo().put("data", data);
         if (!httpURLConnection.getRequestProperties().containsKey("Content-Language")) {
             httpURLConnection.setRequestProperty("Content-Language", "en-US");
         }
@@ -144,6 +164,113 @@ public class HttpCommand {
 
     public static Message post(String targetURL, String data, String contentType) throws IOException {
         return post(targetURL, data, contentType, 0);
+    }
+
+    public static Message get(String url, JsonObject data, String urlParms, Map<String, String> params,
+            Map<String, String> headers) {
+        Message message = messageReturn(200, url, "get");
+        message.setDatum(data);
+        GetMethod getMethod = new GetMethod(url);
+        if (headers != null) {
+            headers.forEach((k, v) -> {
+                getMethod.addRequestHeader(k, v);
+            });
+            message.getInfo().put("header", headers);
+        }
+        if (urlParms != null) {
+            getMethod.setQueryString(
+                    (getMethod.getQueryString() == null ? "" : getMethod.getQueryString()) + "&" + urlParms);
+        }
+        if (data != null) {
+            JsonObject jsonObject = data.getAsJsonObject();
+            Iterator<String> iterator = jsonObject.keySet().iterator();
+            if (params == null) {
+                params = new HashMap<>();
+            }
+            while (iterator.hasNext()) {
+                String key = iterator.next();
+                params.put(key, jsonObject.get(key).toString());
+            }
+        }
+        if (params != null) {
+            StringBuffer stringBuffer =
+                    new StringBuffer(getMethod.getQueryString() == null ? "" : getMethod.getQueryString() + "&");
+            for (Map.Entry<String, String> item : params.entrySet()) {
+                stringBuffer.append(item.getKey() + "=" + item.getValue() + "&");
+            }
+            getMethod.setQueryString(stringBuffer.toString());
+            message.getInfo().put("param", params);
+        }
+        HttpClient httpClient = new HttpClient();
+        try {
+            int response = httpClient.executeMethod(getMethod);
+            message.setCode(response);
+            String result = getMethod.getResponseBodyAsString();
+            message.setData(result);
+        } catch (IOException e) {
+            message.setMessage(e.getMessage());
+            if (message.getCode() == 200) {
+                message.setCode(-1);
+            }
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    public static Message post(String url, JsonElement data,Map<String, String> formParams, Map<String, String> params, Map<String, String> headers) {
+        Message message = messageReturn(200, url, "post");
+        message.setDatum(data);
+        message.getInfo().put("url", url);
+        PostMethod postMethod = new PostMethod(url);
+        // postMethod.setRequestHeader("Content-Type", "application/json");
+        try {
+            if(data!=null){
+                if (headers.containsKey("Content-Type")) {
+                    postMethod.setRequestEntity(new StringRequestEntity(data.toString(), headers.get("Content-Type"), "UTF-8"));
+                } else if (headers.containsKey("content-type")) {
+                    postMethod.setRequestEntity(new StringRequestEntity(data.toString(), headers.get("Content-Type"), "UTF-8"));
+                } else {
+                    postMethod.setRequestEntity(new StringRequestEntity(data.toString(), "application/json", "UTF-8"));
+                }
+            }
+            if(formParams!=null){
+                List<NameValuePair> nameValuePairList = new LinkedList<>();
+                formParams.forEach((k, v) -> {
+                    nameValuePairList.add(new NameValuePair(k,v));
+                });
+                postMethod.setRequestBody(nameValuePairList.toArray(new NameValuePair[1]));
+            }
+        } catch (UnsupportedEncodingException e) {
+            message.setMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        // postMethod.setRequestBody(params);
+        if (params != null) {
+            HttpMethodParams httpMethodParams = new HttpMethodParams();
+            params.forEach((k, v) -> {
+                httpMethodParams.setParameter(k, v);
+            });
+            postMethod.setParams(httpMethodParams);
+            message.getInfo().put("param", params);
+        }
+        if (headers != null) {
+            headers.forEach((k, v) -> {
+                postMethod.addRequestHeader(k, v);
+            });
+            message.getInfo().put("header", headers);
+        }
+        HttpClient httpClient = new HttpClient();
+        try {
+            int response = httpClient.executeMethod(postMethod);
+            message.setCode(response);
+            String result = postMethod.getResponseBodyAsString();
+            message.setData(result);
+        } catch (IOException e) {
+            message.setMessage(e.getMessage());
+            message.setCode(-1);
+            e.printStackTrace();
+        }
+        return message;
     }
 
     public static Message doGet(String targetURL) {

@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20200201G-SNAPSHOT</version>
+    <version>0.0.1.20200202G</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -24,18 +24,34 @@
         <module>pig-chivalrous-web</module>
         <module>pig-chivalrous-spring</module>
         <module>pig-chivalrous-thrift</module>
+        <module>pig-chivalrous-sample</module>
     </modules>
     <packaging>pom</packaging>
     <name>pig-chivalrous-parent</name>
     <url>http://maven.apache.org</url>
     <description>A tool collection for java, scala, python.</description>
+    <organization>
+        <name>GJGR</name>
+        <url>http://gjgr.com/</url>
+    </organization>
     <developers>
         <developer>
             <id>gongwendong</id>
             <name>gongwendong</name>
             <email>gwd163nom@163.com</email>
+            <url>http://chivalrous.pig.gjgr.com/</url>
+            <organization>GJGR</organization>
+            <organizationUrl>http://gjgr.com/</organizationUrl>
+            <timezone>Asia/Shanghai</timezone>
+            <properties>
+                <picUrl>https://avatars0.githubusercontent.com/u/13328198</picUrl>
+            </properties>
         </developer>
     </developers>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/gwdgithubnom/pig-chivalrous/issues</url>
+    </issueManagement>
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
@@ -49,7 +65,7 @@
         <developerConnection>
             scm:git:git@github.com:gwdgithubnom/pig-chivalrous.git
         </developerConnection>
-        <url>http://github.com:gwdgithubnom/pig-chivalrous.git</url>
+        <url>https://github.com/gwdgithubnom/pig-chivalrous</url>
         <tag>v0.0.1.20191010</tag>
     </scm>
     <properties>
@@ -1155,7 +1171,7 @@
                 </dependencies>
                 <configuration>
                     <linkXRef>false</linkXRef>
-                    <configLocation>src/main/lib/check/checkstyle.xml</configLocation>
+                    <configLocation>./src/main/lib/check/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <failOnViolation>false</failOnViolation>
                     <failsOnError>false</failsOnError>
@@ -1426,15 +1442,21 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <configuration>
-                    <skipSource>true</skipSource>
-                </configuration>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>deploy-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>copy-prod-resources</id>
@@ -1540,25 +1562,25 @@
                     </dependency>
                 </dependencies>
             </plugin>
-        </plugins>
-    </build>
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.0.0</version>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <skip>true</skip>
+                    <aggregate>true</aggregate>
                     <encoding>UTF-8</encoding>
+                    <failOnError>false</failOnError>
                     <doctitle>pig-chivalrous</doctitle>
                     <locale>en_US</locale>
-                    <skip>${plugin.site.skip}</skip>
+                    <skip>${plugin.validate.skip}</skip>
                     <tags>
                         <tag>
                             <name>Author</name>
@@ -1612,6 +1634,29 @@
                         </tag>
                     </tags>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -1744,26 +1789,9 @@
                 <plugin.deploy.skip>true</plugin.deploy.skip>
                 <profile.maven.release.plugin.arguments />
             </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
+
 <!--    <repositories>-->
 <!--        <repository>-->
 <!--            <id>aliyun-central</id>-->
@@ -1807,7 +1835,6 @@
 <!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
 <!--        </repository>-->
 <!--    </repositories>-->
-
     <distributionManagement>
         <repository>
             <id>sonatype.releases</id>
