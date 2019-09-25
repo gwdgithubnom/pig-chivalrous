@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.3.20190919</version>
+    <version>0.0.3.20190920-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -43,7 +43,7 @@
             scm:git:git@github.com:gwdgithubnom/pig-chivalrous.git
         </developerConnection>
         <url>http://github.com:gwdgithubnom/pig-chivalrous.git</url>
-        <tag>v0.0.3.20190919</tag>
+        <tag>v0.0.1</tag>
     </scm>
     <properties>
         <project.version>0.0.3</project.version>
