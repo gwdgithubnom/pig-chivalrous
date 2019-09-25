@@ -1,9 +1,8 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3.20190926</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -44,7 +43,7 @@
             scm:git:git@github.com:gwdgithubnom/pig-chivalrous.git
         </developerConnection>
         <url>http://github.com:gwdgithubnom/pig-chivalrous.git</url>
-        <tag>v0.0.1</tag>
+        <tag>v0.0.3.20190926</tag>
     </scm>
     <properties>
         <project.version>0.0.3</project.version>
@@ -1228,7 +1227,7 @@
                 </dependencies>
                 <configuration>
                     <rules>
-                        <DependencyConvergence/>
+                        <DependencyConvergence />
                         <banDuplicateClasses>
                             <ignoreClasses>
                                 <!--  example of ignoring one specific class  -->
@@ -1606,7 +1605,7 @@
                 <plugin.install.skip>true</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
-                <profile.maven.release.plugin.arguments/>
+                <profile.maven.release.plugin.arguments />
             </properties>
         </profile>
         <profile>
@@ -1621,7 +1620,7 @@
                 <plugin.install.skip>true</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
-                <profile.maven.release.plugin.arguments/>
+                <profile.maven.release.plugin.arguments />
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -1656,7 +1655,7 @@
                 <plugin.install.skip>false</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
-                <profile.maven.release.plugin.arguments/>
+                <profile.maven.release.plugin.arguments />
             </properties>
         </profile>
         <profile>
