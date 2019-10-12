@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.3.20190902-SNAPSHOT</version>
+    <version>0.0.1.20191010-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -1764,20 +1764,44 @@
             </build>
         </profile>
     </profiles>
-    <distributionManagement>
+    <repositories>
         <repository>
-            <id>archiva.internal</id>
-            <name>Internal Release Repository</name>
+            <id>aliyun-central</id>
+            <name>aliyun central</name>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </repository>
+        <repository>
+            <id>aliyun-google</id>
+            <name>aliyun google</name>
+            <url>https://maven.aliyun.com/repository/google</url>
+        </repository>
+        <!--
+                jcenter
+                -->
+        <repository>
+            <id>aliyun-jcenter</id>
+            <name>aliyun jcenter</name>
+            <url>https://maven.aliyun.com/repository/jcenter</url>
+        </repository>
+        <!--
+               aliyun
+                -->
+        <repository>
+            <id>aliyun-public</id>
+            <name>aliyun public</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+        <repository>
+            <id>aliyun-release</id>
+            <name>aliyun release</name>
+            <url>https://maven.aliyun.com/repository/releases</url>
+        </repository>
+        <repository>
+            <id>aliyun-snapshots</id>
+            <name>apache snapshots</name>
             <url>
-                http://nexus.d.xiaomi.net/nexus/content/repositories/releases/
+                https://maven.aliyun.com/repository/apache-snapshots
             </url>
         </repository>
-        <snapshotRepository>
-            <id>archiva.snapshots</id>
-            <name>Internal Snapshot Repository</name>
-            <url>
-                http://nexus.d.xiaomi.net/nexus/content/repositories/snapshots/
-            </url>
-        </snapshotRepository>
-    </distributionManagement>
+    </repositories>
 </project>
