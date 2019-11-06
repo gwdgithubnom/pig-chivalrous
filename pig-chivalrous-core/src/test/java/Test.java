@@ -1,6 +1,8 @@
+import org.gjgr.pig.chivalrous.core.crypto.CryptoCommand;
 import org.gjgr.pig.chivalrous.core.json.JsonCommand;
 
 import java.io.IOException;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
 
 /**
  * @Author gwd
@@ -11,6 +13,17 @@ import java.io.IOException;
  */
 public class Test {
     private static final int MAX_DIGITS = 10; // log10(Integer.MAX_VALUE) ~= 9.3
+
+    @org.junit.Test
+    public void testCrypo(){
+        String s = "abc";
+        String ss = testGet();
+        System.out.println(ss);
+    }
+
+    public <T> T testGet(){
+        return null;
+    }
 
     /**
      * Appends all digits to the given buffer.
