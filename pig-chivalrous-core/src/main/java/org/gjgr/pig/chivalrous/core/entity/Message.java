@@ -109,7 +109,8 @@ public class Message implements Serializable, Cloneable {
         }
     }
 
-    public static <T> T deserialize(Object data, Class<T> clazz) {
+
+    public static <T> T deserialize(Object data, Class clazz) {
         if (data != null && !data.equals("")) {
             String stringData = null;
             if (data.getClass().isPrimitive() || data instanceof String) {
@@ -240,15 +241,16 @@ public class Message implements Serializable, Cloneable {
         return (T) serialize(this.datum);
     }
 
-    public <T> T dataDeserialize(Class<T> clazz) {
+
+    public <T> T dataDeserialize(Class clazz) {
         return deserialize(this.data, clazz);
     }
 
-    public <T> T datumDeserialize(Class<T> clazz) {
+    public <T> T datumDeserialize(Class clazz) {
         return deserialize(this.datum, clazz);
     }
 
-    public <T> T deserializeData(Class<T> clazz) {
+    public <T> T deserializeData(Class clazz) {
         try {
             return deserialize(this.data, clazz);
         } catch (Exception e) {
@@ -256,7 +258,8 @@ public class Message implements Serializable, Cloneable {
         }
     }
 
-    public <T> T deserializeDatum(Class<T> clazz) {
+
+    public <T> T deserializeDatum(Class clazz) {
         try {
             return deserialize(this.datum, clazz);
         } catch (Exception e) {
