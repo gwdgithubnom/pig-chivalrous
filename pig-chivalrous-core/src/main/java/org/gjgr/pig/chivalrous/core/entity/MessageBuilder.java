@@ -25,6 +25,10 @@ public class MessageBuilder {
         return message;
     }
 
+    public static Message message(int code) {
+        return MessageStatus.message(code);
+    }
+
     public static Message message(int code, String type, String str, Object data, Object datum, HashMap info) {
         Message message = new Message();
         message.setCode(code);
@@ -73,10 +77,6 @@ public class MessageBuilder {
 
     public static Message message(int code, String type) {
         return message(code, type, null, null, null, null);
-    }
-
-    public static Message message(int code) {
-        return message(code, "notify", null, null, null, null);
     }
 
     public static Message info(int code) {

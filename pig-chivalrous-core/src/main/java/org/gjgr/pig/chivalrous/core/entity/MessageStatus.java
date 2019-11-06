@@ -106,6 +106,7 @@ public enum MessageStatus {
     NOT_EXTENDED(510, "fatal", "Not Extended"),
     NETWORK_AUTHENTICATION_REQUIRED(511, "fatal", "Network Authentication Required"),
     Exception(900, "exception", "Exception"),
+    UNKNOWN_STATUS_EXCEPTION(1024, "exception", "Unknown Exception"),
     MAIL(25, "email", "mail"),
     CP_ARTICLE(-1655481367, "article", "Cp article message"),
     ARTICLE(-732377866, "article", "Article message"),
@@ -114,7 +115,7 @@ public enum MessageStatus {
     CRAWLER(1025508116, "crawler", "Crawler message"),
     VIDEO(112202875, "video", "Video message");
     private final int value;
-    private final String reasonPhrase;
+    private String reasonPhrase;
     private String type;
 
     private MessageStatus(int value, String type, String reasonPhrase) {
@@ -136,7 +137,6 @@ public enum MessageStatus {
     public static MessageStatus resolve(int statusCode) {
         MessageStatus[] var1 = values();
         int var2 = var1.length;
-
         for (int var3 = 0; var3 < var2; ++var3) {
             MessageStatus status = var1[var3];
             if (status.value == statusCode) {
@@ -146,12 +146,36 @@ public enum MessageStatus {
         return null;
     }
 
+    public static Message message(int code) {
+        MessageStatus messageStatus = null;
+        try {
+            messageStatus = MessageStatus.valueOf(code);
+        } catch (Exception e) {
+            try {
+                messageStatus = MessageStatus.resolve(code);
+            } catch (Exception ee) {
+                messageStatus = MessageStatus.UNKNOWN_STATUS_EXCEPTION;
+                messageStatus.appendReasonPhrase("code " + code);
+            }
+        }
+        return MessageBuilder.message(messageStatus);
+    }
+
+    public Message message() {
+        return MessageBuilder.message(this);
+    }
+
     public String type() {
         return this.type;
     }
 
     public MessageStatus changeType(String type) {
         this.type = type;
+        return this;
+    }
+
+    public MessageStatus appendReasonPhrase(String phrase) {
+        this.reasonPhrase = this.reasonPhrase + " " + phrase;
         return this;
     }
 
