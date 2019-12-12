@@ -54,7 +54,7 @@
         <java.source.version>1.8</java.source.version>
         <java.target.version>1.8</java.target.version>
         <base.org.apache.commons.lang3.version>3.8.1</base.org.apache.commons.lang3.version>
-        <com.mchange.version>0.9.5.3</com.mchange.version>
+        <com.mchange.version>0.9.5.4</com.mchange.version>
         <com.google.guava.version>26.0-jre</com.google.guava.version>
         <com.zaxxer.version>2.4.11</com.zaxxer.version>
         <commons.cli.version>1.4</commons.cli.version>
@@ -74,7 +74,7 @@
         <log.org.slf4j.version>1.7.25</log.org.slf4j.version>
         <log.commons.logging.version>1.2</log.commons.logging.version>
         <log.org.apache.logging.log4j.version>2.11.0</log.org.apache.logging.log4j.version>
-        <middleware.org.apache.camel.version>2.24.0</middleware.org.apache.camel.version>
+        <middleware.org.apache.camel.version>3.0.0</middleware.org.apache.camel.version>
         <math.org.apache.commons.math.version>3.6.1</math.org.apache.commons.math.version>
         <network.commons.net.version>3.6</network.commons.net.version>
         <network.org.apache.httpcomponents.httpclient.version>4.5.6</network.org.apache.httpcomponents.httpclient.version>
@@ -90,7 +90,7 @@
         <test.org.hamcrest.core.version>1.3</test.org.hamcrest.core.version>
         <test.org.hamcrest.library.version>1.3</test.org.hamcrest.library.version>
         <yml.org.yaml.snakeyaml.version>1.23</yml.org.yaml.snakeyaml.version>
-        <xml.com.thoughtworks.xstream.version>1.4.11</xml.com.thoughtworks.xstream.version>
+        <xml.com.thoughtworks.xstream.version>1.4.11.1</xml.com.thoughtworks.xstream.version>
         <xml.dom4j.version>1.6.1</xml.dom4j.version>
         <xml.org.dom4j.version>2.1.1</xml.org.dom4j.version>
         <xml.org.jsoup.version>1.10.3</xml.org.jsoup.version>
@@ -1117,12 +1117,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.27</version>
+                        <version>8.26</version>
                     </dependency>
                 </dependencies>
                 <configuration>
