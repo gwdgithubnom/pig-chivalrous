@@ -75,36 +75,13 @@ cd to src do mvn pom.xml operation, or run the specific py work.
 
 choose target wanted module
 
-```` xml
-<dependencies>
-  <groupId>org.gjgr.pig</groupId>    
-  <artifactId>pig-chivalrous-core</artifactId> 
-  <version>yyyy.mm.dd.n-SNAPSHOT</artifactId>
-</dependencies>
-````
+  <dependencies>
+       <groupId>org.gjgr.pig</groupId>
+       <artifactId>pig-chivalrous-core</artifactId>
+       <version>yyyy.mm.dd.n-SNAPSHOT</artifactId>
+   </dependencies>
+
 ## Reference
 
 [gjgr - dev](https://github.com/gwdgithubnom/gjgr)
-
-## Related Links
-
-- [rabbit-articulate](https://github.com/gwdgithubnom/rabbit-articulate)
-
-- [ox-patient](https://github.com/gwdgithubnom/ox-patient)
-
-- [snake-deep](https://github.com/gwdgithubnom/snake-deep)
-
-- [monkey-clever](https://github.com/gwdgithubnom/monkey-clever)
-
-- [kindlebird](https://github.com/gwdgithubnom/kindlebird)
-
-- [rooster-deep-thinkers](https://github.com/gwdgithubnom/rooster-deep-thinkers)
-
-- [tiger-sensitive](https://github.com/gwdgithubnom/tiger-sensitive)
-
-- [dragon-healthy](https://github.com/gwdgithubnom/dragon-healthy)
-
-- [dog-loyalty](https://github.com/gwdgithubnom/dog-loyalty)
-
-- [goat-elegant](https://github.com/gwdgithubnom/goat-elegant)
 
