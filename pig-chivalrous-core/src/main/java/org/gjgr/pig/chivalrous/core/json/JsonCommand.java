@@ -24,22 +24,6 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
-import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
-import org.gjgr.pig.chivalrous.core.io.file.FileReader;
-import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
-import org.gjgr.pig.chivalrous.core.json.bean.Json;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
-import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
-import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
-import org.gjgr.pig.chivalrous.core.lang.StringCommand;
-import org.gjgr.pig.chivalrous.core.xml.XmlBetweenJsonObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.lang.model.type.TypeVariable;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -57,10 +41,26 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import javax.lang.model.type.TypeVariable;
+import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.file.FileReader;
+import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
+import org.gjgr.pig.chivalrous.core.json.bean.Json;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
+import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
+import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.xml.XmlBetweenJsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is used for ... ClassName: JSONHelper
@@ -167,6 +167,22 @@ public class JsonCommand {
         return jsonElement;
     }
 
+    public static com.google.gson.JsonArray listStringJsonArray(List<String> strings) {
+        com.google.gson.JsonArray jsonArray = new com.google.gson.JsonArray();
+        if (strings != null) {
+            for (String s : strings) {
+                jsonArray.add(new JsonPrimitive(s));
+            }
+            return jsonArray;
+        } else {
+            return jsonArray;
+        }
+    }
+
+    public static com.google.gson.JsonArray listStringJsonArray(Set<String> strings) {
+        return listStringJsonArray(new LinkedList<>(strings));
+    }
+
     public static com.google.gson.JsonArray jsonArray(String str) {
         JsonElement jsonElement = jsonElement(str);
         if (jsonElement.isJsonArray()) {
@@ -259,7 +275,7 @@ public class JsonCommand {
      * @param type
      * @return
      */
-    public static <T> T fromJson(String str, Class type) {
+    public static <T> T fromJson(String str, Class<T> type) {
         if (gson == null) {
             gson = new Gson();
         }
@@ -272,7 +288,7 @@ public class JsonCommand {
         }
     }
 
-    public static <T> T fromObject(Object object, Class clazz) {
+    public static <T> T fromObject(Object object, Class<T> clazz) {
         String json = JsonCommand.toJson(object);
         return to(json, clazz);
     }
@@ -307,14 +323,14 @@ public class JsonCommand {
         return toArrayList(toJson(jsonElement), clazz);
     }
 
-    public static <T> T to(String str, Class clazz) {
+    public static <T> T to(String str, Class<T> clazz) {
         if (clazz.isArray()) {
 
         }
         return fromJson(str, clazz);
     }
 
-    public static <T> T to(JsonElement jsonElement, Class clazz) {
+    public static <T> T to(JsonElement jsonElement, Class<T> clazz) {
         String string = toJson(jsonElement);
         return to(string, clazz);
     }
@@ -459,7 +475,7 @@ public class JsonCommand {
     /**
      * 读取JSON
      *
-     * @param file    JSON文件
+     * @param file JSON文件
      * @param charset 编码
      * @return Json（包括JSONObject和JSONArray）
      * @throws IORuntimeException
@@ -471,7 +487,7 @@ public class JsonCommand {
     /**
      * 读取JSONObject
      *
-     * @param file    JSON文件
+     * @param file JSON文件
      * @param charset 编码
      * @return JsonObject
      * @throws IORuntimeException
@@ -483,7 +499,7 @@ public class JsonCommand {
     /**
      * 读取JSONArray
      *
-     * @param file    JSON文件
+     * @param file JSON文件
      * @param charset 编码
      * @return JsonArray
      * @throws IORuntimeException
@@ -495,7 +511,7 @@ public class JsonCommand {
     /**
      * 转为JSON字符串
      *
-     * @param json         Json
+     * @param json Json
      * @param indentFactor 每一级别的缩进
      * @return JSON字符串
      */
