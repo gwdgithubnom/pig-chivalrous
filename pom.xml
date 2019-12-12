@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20191031-SNAPSHOT</version>
+    <version>0.0.1.20191114-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -23,6 +23,7 @@
         <module>pig-chivalrous-extra</module>
         <module>pig-chivalrous-web</module>
         <module>pig-chivalrous-spring</module>
+        <module>pig-chivalrous-thrift</module>
     </modules>
     <packaging>pom</packaging>
     <name>pig-chivalrous-parent</name>
@@ -73,11 +74,12 @@
         <log.org.slf4j.version>1.7.25</log.org.slf4j.version>
         <log.commons.logging.version>1.2</log.commons.logging.version>
         <log.org.apache.logging.log4j.version>2.11.0</log.org.apache.logging.log4j.version>
-        <network.org.apache.httpcomponents.httpclient.version>4.5.6
-        </network.org.apache.httpcomponents.httpclient.version>
         <middleware.org.apache.camel.version>2.24.0</middleware.org.apache.camel.version>
         <math.org.apache.commons.math.version>3.6.1</math.org.apache.commons.math.version>
         <network.commons.net.version>3.6</network.commons.net.version>
+        <network.org.apache.httpcomponents.httpclient.version>4.5.6</network.org.apache.httpcomponents.httpclient.version>
+        <network.org.apache.httpcomponents.httpcore>4.4.10</network.org.apache.httpcomponents.httpcore>
+        <network.org.apache.httpcomponents.httpasyncclient.version>4.1.4</network.org.apache.httpcomponents.httpasyncclient.version>
         <office.org.apache.poi.version>4.1.0</office.org.apache.poi.version>
         <test.org.mockito.version>1.10.19</test.org.mockito.version>
         <test.junt.version>4.12</test.junt.version>
@@ -210,10 +212,6 @@
                 </version>
                 <exclusions>
                     <exclusion>
-                        <groupId>org.apache.httpcomponents</groupId>
-                        <artifactId>httpcore</artifactId>
-                    </exclusion>
-                    <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
@@ -224,6 +222,10 @@
                 <artifactId>httpasyncclient</artifactId>
                 <version>4.1.4</version>
                 <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpcore</artifactId>
+                    </exclusion>
                     <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
@@ -238,12 +240,6 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
                 <version>4.4.12</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.httpcomponents</groupId>
-                        <artifactId>httpcore</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore-nio -->
             <dependency>
@@ -255,6 +251,12 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpmime</artifactId>
                 <version>4.5.10</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpclient</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -1127,8 +1129,8 @@
                     <linkXRef>false</linkXRef>
                     <configLocation>src/main/lib/check/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
-                    <failOnViolation>true</failOnViolation>
-                    <failsOnError>true</failsOnError>
+                    <failOnViolation>false</failOnViolation>
+                    <failsOnError>false</failsOnError>
                     <includeResources>false</includeResources>
                     <violationSeverity>info</violationSeverity>
                     <maxAllowedViolations>0</maxAllowedViolations>

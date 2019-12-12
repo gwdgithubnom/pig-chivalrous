@@ -1,15 +1,19 @@
 package org.gjgr.pig.chivalrous.redis;
 
+import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
 import org.gjgr.pig.chivalrous.core.lang.NonNull;
 import org.gjgr.pig.chivalrous.core.net.UriBuilder;
 import org.gjgr.pig.chivalrous.core.net.UriCommand;
+import org.gjgr.pig.chivalrous.core.util.RandomCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author gwd
@@ -19,6 +23,8 @@ import java.util.Map;
  * @More:
  */
 public class RedisCommand {
+
+    private static Logger logger = LoggerFactory.getLogger(RedisCommand.class);
 
     public static RedisClient redisClient(RedisConfig redisConfig) {
         return redisConfig.build();
@@ -31,6 +37,54 @@ public class RedisCommand {
         } else {
             return null;
         }
+    }
+
+    public static boolean redisUnlock(RedisClient redisClient, String lockKey, String key) {
+        long l = redisClient.jedisCommands().del(lockKey);
+        logger.debug("set redis lock, do unlock operation {} about {} in {}", l, key, lockKey);
+        return true;
+    }
+
+    public static boolean redisLock(RedisClient redisClient, String lockKey, String key, Long expireSeconds) {
+        boolean status = false;
+        try {
+            int i = 0;
+            while (i < 3) {
+                long l = redisClient.jedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
+                redisClient.jedisCommands().expire(lockKey, expireSeconds.intValue());
+                if (l > 0) {
+                    status = true;
+                    break;
+                } else {
+                    Thread.sleep(RandomCommand.randomInt(6000));
+                    i++;
+                }
+                if (i == 3) {
+                    try {
+                        Number number = NumberFormat.getInstance().parse(redisClient.jedisCommands().get(lockKey));
+                        if (System.currentTimeMillis() - number.longValue() > 3600000) {
+                            redisClient.jedisCommands().del(lockKey);
+                            l = redisClient.jedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
+                            redisClient.jedisCommands().expire(lockKey, expireSeconds.intValue());
+                            if (l > 0) {
+                                status = true;
+                            } else {
+                                logger.debug("get locked item failed {}", key);
+                            }
+                        } else {
+                            logger.debug("current key is been locked {} about {}", lockKey, number.longValue());
+                        }
+                        redisClient.jedisCommands().del(lockKey);
+                    } catch (Exception e) {
+                        logger.error("redis lock failed, parse lock failed {}", lockKey);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("redis lock item failed for item {}", Arrays.toString(e.getStackTrace()) + " " + e.getMessage());
+        }
+        logger.debug("get redis lock, do lock operation {} about {} in {}", status, key, lockKey);
+        return status;
     }
 
     public static RedisConfig redisConfig(YmlNode ymlNode) {

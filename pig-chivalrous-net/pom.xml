@@ -3,11 +3,11 @@
     <parent>
         <groupId>org.gjgr.pig</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20191031-SNAPSHOT</version>
+        <version>0.0.1.20191114-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.1.20191031-SNAPSHOT</version>
+    <version>0.0.1.20191114-SNAPSHOT</version>
     <artifactId>pig-chivalrous-net</artifactId>
     <packaging>jar</packaging>
     <name>pig-chivalrous-net</name>
@@ -20,7 +20,7 @@
             <groupId>org.gjgr.pig</groupId>
             <artifactId>pig-chivalrous-exclude</artifactId>
             <scope>provided</scope>
-            <version>0.0.1.20191031-SNAPSHOT</version>
+            <version>0.0.1.20191114-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.httpcomponents</groupId>
@@ -31,6 +31,10 @@
                     <artifactId>commons-net</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

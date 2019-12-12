@@ -1,5 +1,11 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Map;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -9,13 +15,6 @@ import org.gjgr.pig.chivalrous.core.entity.MessageBuilder;
 import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Map;
 
 /**
  * @Author gwd
@@ -125,7 +124,7 @@ public class HttpCommand {
         return message;
     }
 
-    public static Message post(String targetURL, String data, String contentType) throws IOException {
+    public static Message post(String targetURL, String data, String contentType, int timeOut) throws IOException {
         URL url = new URL(targetURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -135,8 +134,16 @@ public class HttpCommand {
         if (data != null) {
             connection.setRequestProperty("Content-Length", Integer.toString(data.getBytes().length));
         }
+        if (timeOut > 0) {
+            connection.setConnectTimeout(timeOut);
+            connection.setReadTimeout(timeOut);
+        }
         Message dataInputStream = httpURLConnection(connection, data);
         return dataInputStream;
+    }
+
+    public static Message post(String targetURL, String data, String contentType) throws IOException {
+        return post(targetURL, data, contentType, 0);
     }
 
     public static Message doGet(String targetURL) {
