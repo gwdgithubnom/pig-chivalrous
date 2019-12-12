@@ -76,9 +76,13 @@ cd to src do mvn pom.xml operation, or run the specific py work.
 choose target wanted module
 
   <dependencies>
+
        <groupId>org.gjgr.pig</groupId>
+
        <artifactId>pig-chivalrous-core</artifactId>
+
        <version>yyyy.mm.dd.n-SNAPSHOT</artifactId>
+
    </dependencies>
 
 ## Reference
