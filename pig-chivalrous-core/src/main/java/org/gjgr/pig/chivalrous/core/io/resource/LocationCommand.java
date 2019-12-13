@@ -18,7 +18,9 @@ package org.gjgr.pig.chivalrous.core.io.resource;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.io.Resources;
+import java.io.InputStream;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.file.jar.JarCommand;
 import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
@@ -318,10 +320,6 @@ public class LocationCommand {
     public static String getPackagePath(Object object) {
         Package p = object.getClass().getPackage();
         return p != null ? p.getName().replaceAll("\\.", "/") : "";
-    }
-
-    public static File getFileFromJar(String file) {
-        throw new RuntimeException("Not finish. Do not use this method.");
     }
 
     public static String getWebRootPath() {
