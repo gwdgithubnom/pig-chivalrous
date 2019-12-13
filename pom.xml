@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20191031-SNAPSHOT</version>
+    <version>0.0.1.20191116G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -1799,9 +1799,29 @@
         <repository>
             <id>aliyun-snapshots</id>
             <name>apache snapshots</name>
-            <url>
-                https://maven.aliyun.com/repository/apache-snapshots
-            </url>
+            <url>https://maven.aliyun.com/repository/apache-snapshots</url>
+        </repository>
+        <repository>
+            <id>sonatype-org</id>
+            <name>sonatype org</name>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
         </repository>
     </repositories>
+    <distributionManagement>
+        <repository>
+            <id>sonatype.releases</id>
+            <name>Internal Release Repository</name>
+            <url>
+                https://oss.sonatype.org/service/local/staging/deploy/maven2
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>sonatype.snapshots</id>
+            <name>Internal Snapshot Repository</name>
+            <url>
+                https://oss.sonatype.org/content/repositories/snapshots
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
