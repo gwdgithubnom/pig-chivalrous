@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20191116G-SNAPSHOT</version>
+    <version>0.0.1.20200201G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -103,6 +103,8 @@
         <xml.org.ogce.xpp3.version>1.1.6</xml.org.ogce.xpp3.version>
         <xml.apis.version>1.4.01</xml.apis.version>
         <xml.javax.xml.stream.version>1.0-2</xml.javax.xml.stream.version>
+        <xml.javax.xml.bind.jaxb.version>2.3.1</xml.javax.xml.bind.jaxb.version>
+        <xml.com.sun.xml.bind.jaxb.version>2.3.2</xml.com.sun.xml.bind.jaxb.version>
         <plugin.maven.source.plugin.version>2.2.1</plugin.maven.source.plugin.version>
         <plugin.maven.compiler.version>3.1</plugin.maven.compiler.version>
         <plugin.maven.enforcer.version>3.0.0-M2</plugin.maven.enforcer.version>
@@ -111,7 +113,7 @@
         <plugin.org.owsp.dependency.version>3.3.2</plugin.org.owsp.dependency.version>
         <plugin.org.scoverage.maven.version>1.3.0</plugin.org.scoverage.maven.version>
         <lang.commons.daemon.version>1.1.0</lang.commons.daemon.version>
-        <codec.commons.codec.version>1.4</codec.commons.codec.version>
+        <codec.commons.codec.version>1.13</codec.commons.codec.version>
         <codec.org.jcodec.version>0.2.3</codec.org.jcodec.version>
         <lang.org.apache.commons.collections>4.3</lang.org.apache.commons.collections>
         <lang.org.apache.commons.configuration>2.4</lang.org.apache.commons.configuration>
@@ -505,6 +507,16 @@
                 <groupId>javax.xml.stream</groupId>
                 <artifactId>stax-api</artifactId>
                 <version>${xml.javax.xml.stream.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${xml.javax.xml.bind.jaxb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${xml.com.sun.xml.bind.jaxb.version}</version>
             </dependency>
             <!--  数据库连接池  -->
             <dependency>
@@ -1133,7 +1145,7 @@
                 </dependencies>
                 <configuration>
                     <linkXRef>false</linkXRef>
-                    <configLocation>src/main/lib/check/checkstyle.xml</configLocation>
+                    <configLocation>./src/main/lib/check/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <failOnViolation>false</failOnViolation>
                     <failsOnError>false</failsOnError>
@@ -1144,7 +1156,7 @@
                     <excludes>src/test/resources/*</excludes>
                     <consoleOutput>true</consoleOutput>
                     <encoding>UTF-8</encoding>
-                    <skip>${plugin.validate.skip}</skip>
+                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -1594,7 +1606,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.3</version>
+                <version>3.0.0</version>
                 <configuration>
                     <skip>${plugin.site.skip}</skip>
                 </configuration>
@@ -1701,50 +1713,92 @@
                 </profile.maven.release.plugin.arguments>
             </properties>
         </profile>
+        <profile>
+            <id>sonatype-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <plugin.skip>true</plugin.skip>
+                <plugin.validate.skip>false</plugin.validate.skip>
+                <plugin.compile.skip>false</plugin.compile.skip>
+                <plugin.test.skip>true</plugin.test.skip>
+                <plugin.package.skip>true</plugin.package.skip>
+                <plugin.verify.skip>true</plugin.verify.skip>
+                <plugin.install.skip>true</plugin.install.skip>
+                <plugin.site.skip>true</plugin.site.skip>
+                <plugin.deploy.skip>true</plugin.deploy.skip>
+                <profile.maven.release.plugin.arguments />
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
-    <repositories>
-        <repository>
-            <id>aliyun-central</id>
-            <name>aliyun central</name>
-            <url>https://maven.aliyun.com/repository/central</url>
-        </repository>
-        <repository>
-            <id>aliyun-google</id>
-            <name>aliyun google</name>
-            <url>https://maven.aliyun.com/repository/google</url>
-        </repository>
-        <!--
-                jcenter
-                -->
-        <repository>
-            <id>aliyun-jcenter</id>
-            <name>aliyun jcenter</name>
-            <url>https://maven.aliyun.com/repository/jcenter</url>
-        </repository>
-        <!--
-               aliyun
-                -->
-        <repository>
-            <id>aliyun-public</id>
-            <name>aliyun public</name>
-            <url>https://maven.aliyun.com/repository/public</url>
-        </repository>
-        <repository>
-            <id>aliyun-release</id>
-            <name>aliyun release</name>
-            <url>https://maven.aliyun.com/repository/releases</url>
-        </repository>
-        <repository>
-            <id>aliyun-snapshots</id>
-            <name>apache snapshots</name>
-            <url>https://maven.aliyun.com/repository/apache-snapshots</url>
-        </repository>
-        <repository>
-            <id>sonatype-org</id>
-            <name>sonatype org</name>
-            <url>https://oss.sonatype.org/content/repositories/releases/</url>
-        </repository>
-    </repositories>
+
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>aliyun-central</id>-->
+<!--            <name>aliyun central</name>-->
+<!--            <url>https://maven.aliyun.com/repository/central</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>aliyun-google</id>-->
+<!--            <name>aliyun google</name>-->
+<!--            <url>https://maven.aliyun.com/repository/google</url>-->
+<!--        </repository>-->
+<!--        &lt;!&ndash;-->
+<!--                jcenter-->
+<!--                &ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>aliyun-jcenter</id>-->
+<!--            <name>aliyun jcenter</name>-->
+<!--            <url>https://maven.aliyun.com/repository/jcenter</url>-->
+<!--        </repository>-->
+<!--        &lt;!&ndash;-->
+<!--               aliyun-->
+<!--                &ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>aliyun-public</id>-->
+<!--            <name>aliyun public</name>-->
+<!--            <url>https://maven.aliyun.com/repository/public</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>aliyun-release</id>-->
+<!--            <name>aliyun release</name>-->
+<!--            <url>https://maven.aliyun.com/repository/releases</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>aliyun-snapshots</id>-->
+<!--            <name>apache snapshots</name>-->
+<!--            <url>https://maven.aliyun.com/repository/apache-snapshots</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>sonatype-org</id>-->
+<!--            <name>sonatype org</name>-->
+<!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
     <distributionManagement>
         <repository>
             <id>sonatype.releases</id>
@@ -1761,5 +1815,4 @@
             </url>
         </snapshotRepository>
     </distributionManagement>
-
 </project>
