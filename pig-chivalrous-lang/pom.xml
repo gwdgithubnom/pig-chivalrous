@@ -3,11 +3,11 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20200201G-SNAPSHOT</version>
+        <version>0.0.1.20200202G-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.1.20200201G-SNAPSHOT</version>
+    <version>0.0.1.20200202G-SNAPSHOT</version>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-lang</artifactId>
     <packaging>jar</packaging>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.gjgr.pig</groupId>
             <artifactId>pig-chivalrous-exclude</artifactId>
-            <version>0.0.1.20200201G-SNAPSHOT</version>
+            <version>0.0.1.20200202G-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

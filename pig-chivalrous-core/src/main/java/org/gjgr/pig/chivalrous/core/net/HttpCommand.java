@@ -1,11 +1,20 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import com.google.gson.JsonObject;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -64,13 +73,19 @@ public class HttpCommand {
         }
         return cookieStore;
     }
+    protected static Message messageReturn(Integer code,String url,String type){
+        Message message = new Message();
+        message.getInfo().put("url", url);
+        message.setType(type);
+        message.setTimestamp(System.currentTimeMillis());
+        message.setCode(code);
+        return message;
+    }
 
     public static Message httpURLConnection(HttpURLConnection httpURLConnection, String data)
             throws IOException {
+        Message message  = messageReturn(200, httpURLConnection.getURL().toString(),"simple");
         DataInputStream dataInputStream = null;
-        Message message = new Message();
-        message.getInfo().put("url", httpURLConnection.toString());
-        message.getInfo().put("data", data);
         if (!httpURLConnection.getRequestProperties().containsKey("Content-Language")) {
             httpURLConnection.setRequestProperty("Content-Language", "en-US");
         }
@@ -145,6 +160,102 @@ public class HttpCommand {
     public static Message post(String targetURL, String data, String contentType) throws IOException {
         return post(targetURL, data, contentType, 0);
     }
+
+
+    public Message get(String url, JsonObject jsonObject, String urlParms, Map<String, String> params,
+                          Map<String, String> headers) {
+        Message message = messageReturn(200,url,"get");
+        message.setDatum(jsonObject);
+        GetMethod getMethod = new GetMethod(url);
+        if (headers != null) {
+            headers.forEach((k, v) -> {
+                getMethod.addRequestHeader(k, v);
+            });
+            message.getInfo().put("header",headers);
+        }
+        if (urlParms != null) {
+            getMethod.setQueryString(
+                (getMethod.getQueryString() == null ? "" : getMethod.getQueryString()) + "&" + urlParms);
+        }
+        if(jsonObject!=null){
+           Iterator<String> iterator = jsonObject.keySet().iterator();
+           if(params==null){
+               params=new HashMap<>();
+           }
+           while (iterator.hasNext()){
+                String key = iterator.next();
+                params.put(key,jsonObject.get(key).toString());
+           }
+        }
+        if (params != null) {
+            StringBuffer stringBuffer =
+                new StringBuffer(getMethod.getQueryString() == null ? "" : getMethod.getQueryString() + "&");
+            for (Map.Entry<String, String> item : params.entrySet()) {
+                stringBuffer.append(item.getKey() + "=" + item.getValue() + "&");
+            }
+            getMethod.setQueryString(stringBuffer.toString());
+            message.getInfo().put("param",params);
+        }
+        HttpClient httpClient = new HttpClient();
+        try {
+            int response = httpClient.executeMethod(getMethod);
+            message.setCode(response);
+            String result = getMethod.getResponseBodyAsString();
+            message.setData(result);
+        } catch (IOException e) {
+            message.setMessage(e.getMessage());
+            if(message.getCode()==200){
+                message.setCode(-1);
+            }
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+
+    public Message post(String url, JsonObject data, Map<String, String> params, Map<String, String> headers) {
+        Message message = messageReturn(200,url,"get");
+        message.setDatum(data);
+        message.getInfo().put("url",url);
+        PostMethod postMethod = new PostMethod(url);
+        postMethod.setRequestHeader("Content-Type", "application/json");
+        try {
+            postMethod.setRequestEntity(new StringRequestEntity(data.toString(), "application/json", "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            message.setMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        // postMethod.setRequestBody(params);
+        if (params != null) {
+            HttpMethodParams httpMethodParams = new HttpMethodParams();
+            params.forEach((k, v) -> {
+                httpMethodParams.setParameter(k, v);
+            });
+            postMethod.setParams(httpMethodParams);
+            message.getInfo().put("param",params);
+        }
+        if (headers != null) {
+            headers.forEach((k, v) -> {
+                postMethod.addRequestHeader(k, v);
+            });
+            message.getInfo().put("header",headers);
+        }
+        HttpClient httpClient = new HttpClient();
+        try {
+            int response = httpClient.executeMethod(postMethod);
+            message.setCode(response);
+            String result = postMethod.getResponseBodyAsString();
+            message.setData(result);
+        } catch (IOException e) {
+            message.setMessage(e.getMessage());
+            if(message.getCode()==200){
+                message.setCode(-1);
+            }
+            e.printStackTrace();
+        }
+        return message;
+    }
+
 
     public static Message doGet(String targetURL) {
         Message data = null;
