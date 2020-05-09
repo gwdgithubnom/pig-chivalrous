@@ -347,7 +347,7 @@ public final class FileCommand {
      */
     public static List<File> lsFileList(String path) {
         List<File> files = null;
-        if (!FileCommand.isExist(path)) {
+        if (FileCommand.isExist(path)) {
             files = Arrays.asList(FileCommand.lsFile(path));
         } else {
             files = new ArrayList<File>();
@@ -1074,16 +1074,19 @@ public final class FileCommand {
         }
 
         final String[] files = src.list();
-        for (String file : files) {
-            File srcFile = new File(src, file);
-            File destFile = new File(dest, file);
-            // 递归复制
-            if (src.isDirectory()) {
-                internalCopyDir(srcFile, destFile, isOverride);
-            } else {
-                internalCopyFile(srcFile, destFile, isOverride);
+        if(files!=null){
+            for (String file : files) {
+                File srcFile = new File(src, file);
+                File destFile = new File(dest, file);
+                // 递归复制
+                if (src.isDirectory()) {
+                    internalCopyDir(srcFile, destFile, isOverride);
+                } else {
+                    internalCopyFile(srcFile, destFile, isOverride);
+                }
             }
         }
+
     }
 
     /**

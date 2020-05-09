@@ -1949,18 +1949,24 @@ public class DateTimeCommand {
     public static int getIntervalDays(String date, String otherDate) {
         return getIntervalDays(StringToDate(date), StringToDate(otherDate));
     }
-
+    public static int getOffsetDays(String date, String otherDate) {
+        return getOffsetDays(StringToDate(date), StringToDate(otherDate));
+    }
     /**
      * @param date      日期
      * @param otherDate 另一个日期
      * @return 相差天数。如果失败则返回-1
      */
     public static int getIntervalDays(Date date, Date otherDate) {
-        int num = -1;
+        return Math.abs(getOffsetDays(date,otherDate));
+    }
+
+    public static int getOffsetDays(Date date, Date otherDate) {
+        int num = Integer.MAX_VALUE;
         Date dateTmp = StringToDate(DateTimeCommand.getDate(date), DateStyle.YYYY_MM_DD);
         Date otherDateTmp = StringToDate(DateTimeCommand.getDate(otherDate), DateStyle.YYYY_MM_DD);
         if (dateTmp != null && otherDateTmp != null) {
-            long time = Math.abs(dateTmp.getTime() - otherDateTmp.getTime());
+            long time = (dateTmp.getTime() - otherDateTmp.getTime());
             num = (int) (time / (24 * 60 * 60 * 1000));
         }
         return num;
