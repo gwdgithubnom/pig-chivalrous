@@ -1145,7 +1145,7 @@
                 </dependencies>
                 <configuration>
                     <linkXRef>false</linkXRef>
-                    <configLocation>./src/main/lib/check/checkstyle.xml</configLocation>
+                    <configLocation>src/main/lib/check/checkstyle.xml</configLocation>
                     <encoding>UTF-8</encoding>
                     <failOnViolation>false</failOnViolation>
                     <failsOnError>false</failsOnError>
