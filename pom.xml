@@ -220,6 +220,10 @@
                 </version>
                 <exclusions>
                     <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpcore</artifactId>
+                    </exclusion>
+                    <exclusion>
                         <groupId>commons-logging</groupId>
                         <artifactId>commons-logging</artifactId>
                     </exclusion>
@@ -248,6 +252,12 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore</artifactId>
                 <version>4.4.12</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.httpcomponents</groupId>
+                        <artifactId>httpcore</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore-nio -->
             <dependency>
@@ -1754,8 +1764,6 @@
             </build>
         </profile>
     </profiles>
-<<<<<<< 71ee68c55c7a74f5823df1595a966fc347b74767
-
 <!--    <repositories>-->
 <!--        <repository>-->
 <!--            <id>aliyun-central</id>-->
