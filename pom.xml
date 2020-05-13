@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20200202G-SNAPSHOT</version>
+    <version>0.0.1.20200202G</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -1808,7 +1808,6 @@
 <!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
 <!--        </repository>-->
 <!--    </repositories>-->
-
     <distributionManagement>
         <repository>
             <id>sonatype.releases</id>
