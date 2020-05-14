@@ -9,7 +9,7 @@
     <artifactId>pig-chivalrous-model</artifactId>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <name>pig-chivalrous-web</name>
+    <name>pig-chivalrous-model</name>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
