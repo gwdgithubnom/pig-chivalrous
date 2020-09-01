@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.JedisCommands;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -40,7 +41,7 @@ public class RedisCommand {
     }
 
     public static boolean redisUnlock(RedisClient redisClient, String lockKey, String key) {
-        long l = redisClient.jedisCommands().del(lockKey);
+        long l = redisClient.getJedisCommands().del(lockKey);
         logger.debug("set redis lock, do unlock operation {} about {} in {}", l, key, lockKey);
         return true;
     }
@@ -50,8 +51,8 @@ public class RedisCommand {
         try {
             int i = 0;
             while (i < 3) {
-                long l = redisClient.jedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
-                redisClient.jedisCommands().expire(lockKey, expireSeconds.intValue());
+                long l = redisClient.getJedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
+                redisClient.getJedisCommands().expire(lockKey, expireSeconds.intValue());
                 if (l > 0) {
                     status = true;
                     break;
@@ -61,11 +62,11 @@ public class RedisCommand {
                 }
                 if (i == 3) {
                     try {
-                        Number number = NumberFormat.getInstance().parse(redisClient.jedisCommands().get(lockKey));
+                        Number number = NumberFormat.getInstance().parse(redisClient.getJedisCommands().get(lockKey));
                         if (System.currentTimeMillis() - number.longValue() > 3600000) {
-                            redisClient.jedisCommands().del(lockKey);
-                            l = redisClient.jedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
-                            redisClient.jedisCommands().expire(lockKey, expireSeconds.intValue());
+                            redisClient.getJedisCommands().del(lockKey);
+                            l = redisClient.getJedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
+                            redisClient.getJedisCommands().expire(lockKey, expireSeconds.intValue());
                             if (l > 0) {
                                 status = true;
                             } else {
@@ -74,7 +75,49 @@ public class RedisCommand {
                         } else {
                             logger.debug("current key is been locked {} about {}", lockKey, number.longValue());
                         }
-                        redisClient.jedisCommands().del(lockKey);
+                        redisClient.getJedisCommands().del(lockKey);
+                    } catch (Exception e) {
+                        logger.error("redis lock failed, parse lock failed {}", lockKey);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("redis lock item failed for item {}", Arrays.toString(e.getStackTrace()) + " " + e.getMessage());
+        }
+        logger.debug("get redis lock, do lock operation {} about {} in {}", status, key, lockKey);
+        return status;
+    }
+
+    public static boolean redisLock(JedisCommands jedisCommands, String lockKey, String key, Long expireSeconds) {
+        boolean status = false;
+        try {
+            int i = 0;
+            while (i < 3) {
+                long l = jedisCommands.setnx(lockKey, System.currentTimeMillis() + "");
+                jedisCommands.expire(lockKey, expireSeconds.intValue());
+                if (l > 0) {
+                    status = true;
+                    break;
+                } else {
+                    Thread.sleep(RandomCommand.randomInt(6000));
+                    i++;
+                }
+                if (i == 3) {
+                    try {
+                        Number number = NumberFormat.getInstance().parse(jedisCommands.get(lockKey));
+                        if (System.currentTimeMillis() - number.longValue() > 3600000) {
+                            jedisCommands.del(lockKey);
+                            l = jedisCommands.setnx(lockKey, System.currentTimeMillis() + "");
+                            jedisCommands.expire(lockKey, expireSeconds.intValue());
+                            if (l > 0) {
+                                status = true;
+                            } else {
+                                logger.debug("get locked item failed {}", key);
+                            }
+                        } else {
+                            logger.debug("current key is been locked {} about {}", lockKey, number.longValue());
+                        }
+                        jedisCommands.del(lockKey);
                     } catch (Exception e) {
                         logger.error("redis lock failed, parse lock failed {}", lockKey);
                     }

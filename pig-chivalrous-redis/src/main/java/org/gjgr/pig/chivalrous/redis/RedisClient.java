@@ -19,6 +19,8 @@ public final class RedisClient {
     private static ConcurrentHashMap<String, Object> redisConnector = new ConcurrentHashMap<>();
     private String id;
 
+    private static ThreadLocal<JedisCommands> jedisCommandsThreadLocal = new ThreadLocal<>();
+
     protected RedisClient(String id) {
         this.id = id;
     }
@@ -136,6 +138,13 @@ public final class RedisClient {
         } else {
             throw new RuntimeException("has not found any redis command support about " + JedisCommands.class.getName());
         }
+    }
+
+    public JedisCommands getJedisCommands(){
+        if(jedisCommandsThreadLocal.get()==null){
+            jedisCommandsThreadLocal.set(jedisCommands());
+        }
+        return jedisCommandsThreadLocal.get();
     }
 
     protected Object redisConnector(String key) {

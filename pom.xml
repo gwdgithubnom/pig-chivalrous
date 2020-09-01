@@ -25,6 +25,7 @@
         <module>pig-chivalrous-spring</module>
         <module>pig-chivalrous-thrift</module>
         <module>pig-chivalrous-sample</module>
+        <module>pig-chivalrous-spark</module>
     </modules>
     <packaging>pom</packaging>
     <name>pig-chivalrous-parent</name>
