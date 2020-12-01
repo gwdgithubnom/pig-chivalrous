@@ -6,14 +6,14 @@ package org.gjgr.pig.chivalrous.core.json.bean;
  *
  * @author Looly
  */
-public class JsonNull {
+public class NullJson {
 
     /**
      * <code>NULL</code> 对象用于减少歧义来表示Java 中的<code>null</code> <br>
      * <code>NULL.equals(null)</code> 返回 <code>true</code>. <br>
      * <code>NULL.toString()</code> 返回 <code>"null"</code>.
      */
-    public static final JsonNull NULL = new JsonNull();
+    public static final NullJson NULL = new NullJson();
 
     /**
      * A Null object is equal to the null value and to itself. 对象与其本身和<code>null</code>值相等

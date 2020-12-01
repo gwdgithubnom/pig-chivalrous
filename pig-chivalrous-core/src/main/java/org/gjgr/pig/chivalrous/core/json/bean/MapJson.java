@@ -34,7 +34,7 @@ import java.util.Set;
  *
  * @author looly
  */
-public class JsonObject extends JsonGetter<String> implements Json, Map<String, Object> {
+public class MapJson extends JsonGetter<String> implements Json, Map<String, Object> {
 
     /**
      * JSON的KV持有Map
@@ -44,20 +44,20 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
     /**
      * 空构造
      */
-    public JsonObject() {
+    public MapJson() {
 
     }
 
     /**
      * 使用其他<code>JsonObject</code>构造新的<code>JsonObject</code>，并只加入指定name对应的键值对。
      *
-     * @param jsonObject A JsonObject.
+     * @param mapJson A JsonObject.
      * @param names      需要的name列表
      */
-    public JsonObject(JsonObject jsonObject, String... names) {
+    public MapJson(MapJson mapJson, String... names) {
         for (String name : names) {
             try {
-                this.putOnce(name, jsonObject.getObj(name));
+                this.putOnce(name, mapJson.getObj(name));
             } catch (Exception ignore) {
             }
         }
@@ -69,7 +69,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @param x {@link JsonTokener}
      * @throws JsonException 语法错误
      */
-    public JsonObject(JsonTokener x) throws JsonException {
+    public MapJson(JsonTokener x) throws JsonException {
         init(x);
     }
 
@@ -83,7 +83,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      *
      * @param source JavaBean或者Map对象或者String
      */
-    public JsonObject(Object source) {
+    public MapJson(Object source) {
         if (null != source) {
             if (source instanceof Map) {
                 for (final Entry<?, ?> e : ((Map<?, ?>) source).entrySet()) {
@@ -107,7 +107,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @param pojo  包含需要字段的Bean对象
      * @param names 需要构建JSONObject的字段名列表
      */
-    public JsonObject(Object pojo, String[] names) {
+    public MapJson(Object pojo, String[] names) {
         Class<?> c = pojo.getClass();
         for (String name : names) {
             try {
@@ -123,7 +123,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @param source 以大括号 {} 包围的字符串，其中KEY和VALUE使用 : 分隔，每个键值对使用逗号分隔
      * @throws JsonException JSON字符串语法错误
      */
-    public JsonObject(String source) throws JsonException {
+    public MapJson(String source) throws JsonException {
         this(new JsonTokener(source));
     }
 
@@ -142,10 +142,10 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * key对应值是否为<code>null</code>或无此key
      *
      * @param key 键
-     * @return true 无此key或值为<code>null</code>或{@link JsonNull#NULL}返回<code>false</code>，其它返回<code>true</code>
+     * @return true 无此key或值为<code>null</code>或{@link NullJson#NULL}返回<code>false</code>，其它返回<code>true</code>
      */
     public boolean isNull(String key) {
-        return JsonNull.NULL.equals(this.getObj(key));
+        return NullJson.NULL.equals(this.getObj(key));
     }
 
     /**
@@ -155,11 +155,11 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @return A JsonArray of values.
      * @throws JsonException If any of the values are non-finite numbers.
      */
-    public JsonArray toJSONArray(Collection<String> names) throws JsonException {
+    public ListJson toJSONArray(Collection<String> names) throws JsonException {
         if (CollectionCommand.isEmpty(names)) {
             return null;
         }
-        final JsonArray ja = new JsonArray();
+        final ListJson ja = new ListJson();
         Object value;
         for (String name : names) {
             value = this.get(name);
@@ -246,7 +246,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @throws JsonException 值是无穷数字抛出此异常
      */
     @Override
-    public JsonObject put(String key, Object value) throws JsonException {
+    public MapJson put(String key, Object value) throws JsonException {
         if (key == null) {
             throw new NullPointerException("Null key.");
         }
@@ -304,7 +304,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @return this.
      * @throws JsonException 值是无穷数字、键重复抛出异常
      */
-    public JsonObject putOnce(String key, Object value) throws JsonException {
+    public MapJson putOnce(String key, Object value) throws JsonException {
         if (key != null && value != null) {
             if (rawHashMap.containsKey(key)) {
                 throw new JsonException(StringCommand.format("Duplicate key \"{}\"", key));
@@ -322,7 +322,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @return this.
      * @throws JsonException 值是无穷数字
      */
-    public JsonObject putOpt(String key, Object value) throws JsonException {
+    public MapJson putOpt(String key, Object value) throws JsonException {
         if (key != null && value != null) {
             this.put(key, value);
         }
@@ -338,15 +338,15 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @return this.
      * @throws JsonException If the value is an invalid number or if the key is null.
      */
-    public JsonObject accumulate(String key, Object value) throws JsonException {
+    public MapJson accumulate(String key, Object value) throws JsonException {
         InternalJsonUtil.testValidity(value);
         Object object = this.getObj(key);
         if (object == null) {
-            this.put(key, value instanceof JsonArray ? new JsonArray().put(value) : value);
-        } else if (object instanceof JsonArray) {
-            ((JsonArray) object).put(value);
+            this.put(key, value instanceof ListJson ? new ListJson().put(value) : value);
+        } else if (object instanceof ListJson) {
+            ((ListJson) object).put(value);
         } else {
-            this.put(key, new JsonArray().put(object).put(value));
+            this.put(key, new ListJson().put(object).put(value));
         }
         return this;
     }
@@ -359,13 +359,13 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @return this.
      * @throws JsonException 如果给定键为<code>null</code>或者键对应的值存在且为非JSONArray
      */
-    public JsonObject append(String key, Object value) throws JsonException {
+    public MapJson append(String key, Object value) throws JsonException {
         InternalJsonUtil.testValidity(value);
         Object object = this.getObj(key);
         if (object == null) {
-            this.put(key, new JsonArray().put(value));
-        } else if (object instanceof JsonArray) {
-            this.put(key, ((JsonArray) object).put(value));
+            this.put(key, new ListJson().put(value));
+        } else if (object instanceof ListJson) {
+            this.put(key, ((ListJson) object).put(value));
         } else {
             throw new JsonException("JsonObject [" + key + "] is not a JsonArray.");
         }
@@ -380,7 +380,7 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
      * @throws JsonException If there is already a property with this name that is not an Integer, Long, Double, or
      *                       Float.
      */
-    public JsonObject increment(String key) throws JsonException {
+    public MapJson increment(String key) throws JsonException {
         Object value = this.getObj(key);
         if (value == null) {
             this.put(key, 1);
@@ -411,24 +411,24 @@ public class JsonObject extends JsonGetter<String> implements Json, Map<String, 
     @Override
     public boolean equals(Object other) {
         try {
-            if (!(other instanceof JsonObject)) {
+            if (!(other instanceof MapJson)) {
                 return false;
             }
             Set<String> set = this.keySet();
-            if (!set.equals(((JsonObject) other).keySet())) {
+            if (!set.equals(((MapJson) other).keySet())) {
                 return false;
             }
             Iterator<String> iterator = set.iterator();
             while (iterator.hasNext()) {
                 String name = iterator.next();
                 Object valueThis = this.getObj(name);
-                Object valueOther = ((JsonObject) other).getObj(name);
-                if (valueThis instanceof JsonObject) {
-                    if (!((JsonObject) valueThis).equals(valueOther)) {
+                Object valueOther = ((MapJson) other).getObj(name);
+                if (valueThis instanceof MapJson) {
+                    if (!((MapJson) valueThis).equals(valueOther)) {
                         return false;
                     }
-                } else if (valueThis instanceof JsonArray) {
-                    if (!((JsonArray) valueThis).equals(valueOther)) {
+                } else if (valueThis instanceof ListJson) {
+                    if (!((ListJson) valueThis).equals(valueOther)) {
                         return false;
                     }
                 } else if (!valueThis.equals(valueOther)) {

@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20200203G-SNAPSHOT</version>
+    <version>0.0.1.20201112G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -1273,6 +1273,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <fail>false</fail>
                     <rules>
                         <DependencyConvergence />
                         <banDuplicateClasses>
@@ -1836,20 +1837,20 @@
 <!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
 <!--        </repository>-->
 <!--    </repositories>-->
-    <distributionManagement>
-        <repository>
-            <id>sonatype.releases</id>
-            <name>Internal Release Repository</name>
-            <url>
-                https://oss.sonatype.org/service/local/staging/deploy/maven2
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>sonatype.snapshots</id>
-            <name>Internal Snapshot Repository</name>
-            <url>
-                https://oss.sonatype.org/content/repositories/snapshots
-            </url>
-        </snapshotRepository>
-    </distributionManagement>
+        <distributionManagement>
+            <repository>
+                <id>sonatype.releases</id>
+                <name>Internal Release Repository</name>
+                <url>
+                    https://oss.sonatype.org/service/local/staging/deploy/maven2
+                </url>
+            </repository>
+            <snapshotRepository>
+                <id>sonatype.snapshots</id>
+                <name>Internal Snapshot Repository</name>
+                <url>
+                    https://oss.sonatype.org/content/repositories/snapshots
+                </url>
+            </snapshotRepository>
+        </distributionManagement>
 </project>

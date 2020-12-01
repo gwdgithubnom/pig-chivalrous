@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.net;
 
+import java.io.Serializable;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
@@ -27,7 +28,7 @@ import java.util.Map;
  * @Target:
  * @More:
  */
-public class UriBuilder {
+public class UriBuilder implements Serializable {
 
     private String scheme;
     private String encodedSchemeSpecificPart;

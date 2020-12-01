@@ -1,7 +1,7 @@
 package org.gjgr.pig.chivalrous.core.json;
 
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
+import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
+import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
 
 /**
  * JSON支持<br>
@@ -9,7 +9,7 @@ import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
  *
  * @author Looly
  */
-public class JsonSupport implements JsonString {
+public class SupportJson implements StringJson {
 
     /**
      * Json String转Bean
@@ -18,14 +18,14 @@ public class JsonSupport implements JsonString {
      * @param ignoreError 是否忽略转换错误
      */
     public void parse(String jsonString, boolean ignoreError) {
-        new JsonObject(jsonString).toBean(this, ignoreError);
+        new MapJson(jsonString).toBean(this, ignoreError);
     }
 
     /**
      * @return JSON对象
      */
-    public JsonObject toJSON() {
-        return new JsonObject(this);
+    public MapJson toJSON() {
+        return new MapJson(this);
     }
 
     @Override

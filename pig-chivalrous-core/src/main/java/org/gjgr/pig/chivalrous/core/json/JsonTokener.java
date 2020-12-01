@@ -1,8 +1,8 @@
 package org.gjgr.pig.chivalrous.core.json;
 
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
+import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
+import org.gjgr.pig.chivalrous.core.json.bean.NullJson;
+import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -341,10 +341,10 @@ public class JsonTokener {
                 return this.nextString(c);
             case '{':
                 this.back();
-                return new JsonObject(this);
+                return new MapJson(this);
             case '[':
                 this.back();
-                return new JsonArray(this);
+                return new ListJson(this);
             default:
                 break;
         }
@@ -411,12 +411,12 @@ public class JsonTokener {
     }
 
     /**
-     * 转为 {@link JsonArray}
+     * 转为 {@link ListJson}
      *
-     * @return {@link JsonArray}
+     * @return {@link ListJson}
      */
-    public JsonArray toJSONArray() {
-        JsonArray jsonArray = new JsonArray();
+    public ListJson toJSONArray() {
+        ListJson listJson = new ListJson();
         if (this.nextClean() != '[') {
             throw this.syntaxError("A JsonArray text must start with '['");
         }
@@ -425,26 +425,26 @@ public class JsonTokener {
             while (true) {
                 if (this.nextClean() == ',') {
                     this.back();
-                    jsonArray.add(JsonNull.NULL);
+                    listJson.add(NullJson.NULL);
                 } else {
                     this.back();
-                    jsonArray.add(this.nextValue());
+                    listJson.add(this.nextValue());
                 }
                 switch (this.nextClean()) {
                     case ',':
                         if (this.nextClean() == ']') {
-                            return jsonArray;
+                            return listJson;
                         }
                         this.back();
                         break;
                     case ']':
-                        return jsonArray;
+                        return listJson;
                     default:
                         throw this.syntaxError("Expected a ',' or ']'");
                 }
             }
         }
-        return jsonArray;
+        return listJson;
     }
 
     /**

@@ -46,6 +46,12 @@ public class RedisCommand {
         return true;
     }
 
+    public static boolean redisUnlock(JedisCommands jedisCommands, String lockKey, String key) {
+        long l = jedisCommands.del(lockKey);
+        logger.debug("set redis lock, do unlock operation {} about {} in {}", l, key, lockKey);
+        return true;
+    }
+
     public static boolean redisLock(RedisClient redisClient, String lockKey, String key, Long expireSeconds) {
         boolean status = false;
         try {
@@ -191,9 +197,21 @@ public class RedisCommand {
         return redisConfig;
     }
 
+    public static RedisConfig redisConfig(@NonNull String url, int port, String password, boolean type) {
+        String[] urls = new String[1];
+        urls[0] = url;
+        String[] ports = new String[1];
+        ports[0] = port + "";
+        return redisConfig(urls, ports, password, false);
+    }
+
     public static RedisClient redis(@NonNull String[] urls, String[] ports, String password, boolean type) {
         RedisConfig redisConfig = redisConfig(urls, ports, password, type);
         return redisClient(redisConfig);
+    }
+
+    public static RedisConfig redisConfig(@NonNull String url, int port) {
+        return redisConfig(url, port, null, false);
     }
 
     public static RedisClient redis(@NonNull String url, int port, String password, boolean type) {
@@ -206,6 +224,22 @@ public class RedisCommand {
 
     public static RedisClient redis(@NonNull String url, int port) {
         return redis(url, port, null, false);
+    }
+
+    public static RedisConfig redisConfig(@NonNull String uri, String password, boolean type) {
+        String[] uris = uri.split(";");
+        String[] urls = new String[uris.length];
+        String[] ports = new String[uris.length];
+        for (int i = 0; i < uris.length; i++) {
+            String[] u = uris[i].split(":");
+            if (u.length == 1) {
+                throw new UnsupportedOperationException("could not parse the uri, format style: ip1:port1" + uri);
+            } else {
+                urls[i] = u[0];
+                ports[i] = u[1];
+            }
+        }
+        return redisConfig(urls, ports, password, type);
     }
 
     public static RedisClient redis(@NonNull String uri, String password, boolean type) {
@@ -222,6 +256,10 @@ public class RedisCommand {
             }
         }
         return redis(urls, ports, password, type);
+    }
+
+    public static RedisConfig redisConfig(@NonNull String uri, boolean type) {
+        return redisConfig(uri, null, type);
     }
 
     /**
@@ -243,10 +281,18 @@ public class RedisCommand {
         }
     }
 
+    public static RedisConfig redisConfig(@NonNull String uri) {
+        if (uri.contains(";")) {
+            return redisConfig(uri, null, true);
+        } else {
+            return redisConfig(uri, null, false);
+        }
+    }
+
     public static JedisPool jedisPool(RedisConfig redisConfig) {
         HostAndPort hostAndPort = redisConfig.getBase().iterator().next();
         JedisPool jedisPool =
-                new JedisPool(redisConfig.getGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort());
+            new JedisPool(redisConfig.getGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort());
         return jedisPool;
     }
 

@@ -6,7 +6,7 @@ package org.gjgr.pig.chivalrous.core.json.bean;
  *
  * @author Looly
  */
-public interface JsonString {
+public interface StringJson {
 
     /**
      * 自定义转JSON字符串的方法

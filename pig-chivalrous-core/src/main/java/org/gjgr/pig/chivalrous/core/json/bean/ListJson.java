@@ -21,7 +21,7 @@ import java.util.ListIterator;
  *
  * @author looly
  */
-public class JsonArray extends JsonGetter<Integer> implements Json, List<Object> {
+public class ListJson extends JsonGetter<Integer> implements Json, List<Object> {
 
     /**
      * 持有原始数据的List
@@ -34,7 +34,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
     /**
      * 构造
      */
-    public JsonArray() {
+    public ListJson() {
         this.rawArrayList = new ArrayList<Object>();
     }
 
@@ -44,7 +44,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      * @param x A {@link JsonTokener}
      * @throws JsonException If there is a syntax error.
      */
-    public JsonArray(JsonTokener x) throws JsonException {
+    public ListJson(JsonTokener x) throws JsonException {
         this();
         if (x.nextClean() != '[') {
             throw x.syntaxError("A JsonArray text must start with '['");
@@ -54,7 +54,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
             for (; ; ) {
                 if (x.nextClean() == ',') {
                     x.back();
-                    this.rawArrayList.add(JsonNull.NULL);
+                    this.rawArrayList.add(NullJson.NULL);
                 } else {
                     x.back();
                     this.rawArrayList.add(x.nextValue());
@@ -81,7 +81,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      * @param source JSON数组字符串
      * @throws JsonException If there is a syntax error.
      */
-    public JsonArray(String source) throws JsonException {
+    public ListJson(String source) throws JsonException {
         this(new JsonTokener(source));
     }
 
@@ -90,7 +90,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      *
      * @throws JsonException 非数组或集合
      */
-    public JsonArray(Object arrayOrCollection) throws JsonException {
+    public ListJson(Object arrayOrCollection) throws JsonException {
         this();
         if (arrayOrCollection.getClass().isArray()) {
             // 数组
@@ -117,7 +117,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      * @return true if the value at the index is null, or if there is no value.
      */
     public boolean isNull(int index) {
-        return JsonNull.NULL.equals(this.getObj(index));
+        return NullJson.NULL.equals(this.getObj(index));
     }
 
     /**
@@ -146,12 +146,12 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
     }
 
     /**
-     * Append an object value. This increases the array's length by one. 加入元素，数组长度+1，等同于 {@link JsonArray#add(Object)}
+     * Append an object value. This increases the array's length by one. 加入元素，数组长度+1，等同于 {@link ListJson#add(Object)}
      *
      * @param value 值，可以是： Boolean, Double, Integer, JsonArray, JsonObject, Long, or String, or the JsonNull.NULL。
      * @return this.
      */
-    public JsonArray put(Object value) {
+    public ListJson put(Object value) {
         this.add(value);
         return this;
     }
@@ -164,7 +164,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      * @return this.
      * @throws JsonException index < 0 或者非有限的数字
      */
-    public JsonArray put(int index, Object value) throws JsonException {
+    public ListJson put(int index, Object value) throws JsonException {
         this.add(index, value);
         return this;
     }
@@ -177,22 +177,22 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof JsonArray)) {
+        if (!(other instanceof ListJson)) {
             return false;
         }
         int len = this.size();
-        if (len != ((JsonArray) other).size()) {
+        if (len != ((ListJson) other).size()) {
             return false;
         }
         for (int i = 0; i < len; i += 1) {
             Object valueThis = this.getObj(i);
-            Object valueOther = ((JsonArray) other).getObj(i);
-            if (valueThis instanceof JsonObject) {
-                if (!((JsonObject) valueThis).equals(valueOther)) {
+            Object valueOther = ((ListJson) other).getObj(i);
+            if (valueThis instanceof MapJson) {
+                if (!((MapJson) valueThis).equals(valueOther)) {
                     return false;
                 }
-            } else if (valueThis instanceof JsonArray) {
-                if (!((JsonArray) valueThis).equals(valueOther)) {
+            } else if (valueThis instanceof ListJson) {
+                if (!((ListJson) valueThis).equals(valueOther)) {
                     return false;
                 }
             } else if (!valueThis.equals(valueOther)) {
@@ -223,11 +223,11 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
      * @return A JsonObject，无名或值返回null
      * @throws JsonException 如果任何一个名为null
      */
-    public JsonObject toJSONObject(JsonArray names) throws JsonException {
+    public MapJson toJSONObject(ListJson names) throws JsonException {
         if (names == null || names.size() == 0 || this.size() == 0) {
             return null;
         }
-        JsonObject jo = new JsonObject();
+        MapJson jo = new MapJson();
         for (int i = 0; i < names.size(); i += 1) {
             jo.put(names.getStr(i), this.getObj(i));
         }
@@ -383,7 +383,7 @@ public class JsonArray extends JsonGetter<Integer> implements Json, List<Object>
             this.rawArrayList.set(index, JsonCommand.wrap(element));
         } else {
             while (index != this.size()) {
-                this.add(JsonNull.NULL);
+                this.add(NullJson.NULL);
             }
             this.put(element);
         }
