@@ -1,15 +1,15 @@
 package org.gjgr.pig.chivalrous.core.json.bean;
 
+import java.io.Writer;
 import org.gjgr.pig.chivalrous.core.json.JsonException;
 
-import java.io.Writer;
-
 /**
- * JSON接口
+ * <code>JsonString</code>接口定义了一个<code>toJSONString()</code><br>
+ * 实现此接口的类可以通过实现<code>toJSONString()</code>方法来改变转JSON字符串的方式。
  *
  * @author Looly
  */
-public interface Json {
+public interface StringJson extends JsonString{
 
     /**
      * 将JSON内容写入Writer，无缩进<br>
@@ -32,13 +32,4 @@ public interface Json {
      * @throws JsonException
      */
     public Writer write(Writer writer, int indentFactor, int indent) throws JsonException;
-
-    /**
-     * 转换为JSON字符串
-     *
-     * @param indentFactor 每一级别的缩进
-     * @return JSON字符串
-     * @throws JsonException
-     */
-    public String toJSONString(int indentFactor) throws JsonException;
 }

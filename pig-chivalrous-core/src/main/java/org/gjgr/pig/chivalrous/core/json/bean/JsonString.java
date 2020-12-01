@@ -1,8 +1,11 @@
 package org.gjgr.pig.chivalrous.core.json.bean;
 
+import org.gjgr.pig.chivalrous.core.json.JsonException;
+
+import java.io.Writer;
+
 /**
- * <code>JsonString</code>接口定义了一个<code>toJSONString()</code><br>
- * 实现此接口的类可以通过实现<code>toJSONString()</code>方法来改变转JSON字符串的方式。
+ * JSON接口
  *
  * @author Looly
  */
@@ -14,4 +17,14 @@ public interface JsonString {
      * @return JSON字符串
      */
     public String toJSONString();
+
+    /**
+     * 转换为JSON字符串
+     *
+     * @param indentFactor 每一级别的缩进
+     * @return JSON字符串
+     * @throws JsonException
+     */
+    public String toJSONString(int indentFactor) throws JsonException;
+
 }

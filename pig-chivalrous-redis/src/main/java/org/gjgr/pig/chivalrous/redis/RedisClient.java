@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.redis;
 
+import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -13,11 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by zhangchuang on 16/2/17.
  */
-public final class RedisClient {
+public final class RedisClient implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisClient.class);
     private static ConcurrentHashMap<String, Object> redisConnector = new ConcurrentHashMap<>();
     private String id;
+
+    private static ThreadLocal<JedisCommands> jedisCommandsThreadLocal = new ThreadLocal<>();
 
     protected RedisClient(String id) {
         this.id = id;
@@ -27,16 +30,16 @@ public final class RedisClient {
         return redisConnector.get(id);
     }
 
-    protected static synchronized boolean put(RedisConfig redisConfig, Object object) {
+    protected static synchronized boolean build(RedisConfig redisConfig, Object object) {
         if (redisConnector.containsKey(redisConfig.hashString())) {
             return false;
         } else {
             redisConnector.put(redisConfig.hashString(), object);
+            return true;
         }
-        return true;
     }
 
-    public static synchronized boolean add(RedisConfig redisConfig, Object object) throws IOException {
+    public static synchronized boolean reBuild(RedisConfig redisConfig, Object object) throws IOException {
         if (redisConnector.containsKey(redisConfig.hashString())) {
             Object oo = redisConnector.get(redisConfig.hashString());
             if (oo instanceof JedisCluster) {
@@ -136,6 +139,13 @@ public final class RedisClient {
         } else {
             throw new RuntimeException("has not found any redis command support about " + JedisCommands.class.getName());
         }
+    }
+
+    public JedisCommands getJedisCommands(){
+        if(jedisCommandsThreadLocal.get()==null){
+            jedisCommandsThreadLocal.set(jedisCommands());
+        }
+        return jedisCommandsThreadLocal.get();
     }
 
     protected Object redisConnector(String key) {

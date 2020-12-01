@@ -261,7 +261,6 @@ public class HttpCommand {
         }
         HttpClient httpClient = new HttpClient();
         try {
-            //http://intranet.c3.bigbi-data-source.lxowqcppbl.elb.xiaomi.com/bigbi/api/dataupload.do?tableId=1617&vCode=31dddfbed891467681011ae329337f30&overwrite=false&date=${date-1}
             int response = httpClient.executeMethod(postMethod);
             message.setCode(response);
             String result = postMethod.getResponseBodyAsString();

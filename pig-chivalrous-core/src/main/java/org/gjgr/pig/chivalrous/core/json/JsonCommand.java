@@ -46,15 +46,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.Supplier;
 import javax.lang.model.type.TypeVariable;
 import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
 import org.gjgr.pig.chivalrous.core.io.file.FileReader;
 import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
-import org.gjgr.pig.chivalrous.core.json.bean.Json;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
 import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
+import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
+import org.gjgr.pig.chivalrous.core.json.bean.NullJson;
+import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
+import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
@@ -71,35 +72,17 @@ import org.slf4j.LoggerFactory;
  */
 public class JsonCommand {
 
-    private static Gson gson = null;
     private static GsonBuilder gsonBuilder = new GsonBuilder();
     private static Logger logger = LoggerFactory.getLogger(JsonCommand.class);
+    private static ThreadLocal<Gson> gsonThreadLocal = ThreadLocal.withInitial(new Supplier<Gson>() {
+        @Override
+        public Gson get() {
+            return new Gson();
+        }
+    });
 
     static {
         gsonBuilder.serializeNulls();
-    }
-
-    static {
-        if (gson == null) {
-            gson = new Gson();
-        }
-    }
-
-    /**
-     * Description : 带参数构造函数, 初始化模式名,名称和数据源类型
-     *
-     * @param schema ： 模式名
-     * @param name ： 名称
-     * @param type ： 数据源类型
-     *            <p>
-     *            Description:
-     *            </p>
-     */
-
-    static {
-        if (gson == null) {
-            gson = new Gson();
-        }
     }
 
     public JsonCommand() {
@@ -121,15 +104,15 @@ public class JsonCommand {
             // T \ E
         } else if (type instanceof GenericArrayType) {
             // List<>[], T[] array
-            return (T) Arrays.asList(gson.fromJson(str, type));
+            return (T) Arrays.asList(gsonThreadLocal.get().fromJson(str, type));
         } else if (type instanceof WildcardType) {
             // ?super T
         }
         return null;
     }
 
-    public static com.google.gson.JsonElement convert(JsonObject jsonObject) {
-        JsonElement jsonElement = jsonObject.gson();
+    public static com.google.gson.JsonElement convert(MapJson mapJson) {
+        JsonElement jsonElement = mapJson.gson();
         return jsonElement;
     }
 
@@ -140,14 +123,12 @@ public class JsonCommand {
      * @return
      */
     public static String toJson(Object obj) {
-        if (gson == null) {
-            gson = new Gson();
-        }
+        Gson gson = gsonThreadLocal.get();
         return gson.toJson(obj);
     }
 
     public static String json(Object object) {
-        Gson gson = gsonBuilder.create();
+        Gson gson = gsonThreadLocal.get();
         return gson.toJson(object);
     }
 
@@ -214,21 +195,27 @@ public class JsonCommand {
      * @return
      */
     public static String serializer(Object ts,
-                                    final String dateformat) {
+                                    final String dateFormat) {
         String jsonStr = null;
-        gson = new GsonBuilder()
+        Gson gson = null;
+        if (dateFormat == null) {
+            gson = gsonThreadLocal.get();
+        } else {
+            gson = new GsonBuilder()
                 .registerTypeHierarchyAdapter(Date.class,
-                        new JsonSerializer<Date>() {
-                            @Override
-                            public JsonElement serialize(Date src,
-                                                         Type typeOfSrc,
-                                                         JsonSerializationContext context) {
-                                SimpleDateFormat format = new SimpleDateFormat(
-                                        dateformat);
-                                return new JsonPrimitive(format.format(src));
-                            }
-                        })
-                .setDateFormat(dateformat).create();
+                    new JsonSerializer<Date>() {
+                        @Override
+                        public JsonElement serialize(Date src,
+                                                     Type typeOfSrc,
+                                                     JsonSerializationContext context) {
+                            SimpleDateFormat format = new SimpleDateFormat(
+                                dateFormat);
+                            return new JsonPrimitive(format.format(src));
+                        }
+                    })
+                .setDateFormat(dateFormat).create();
+            gsonThreadLocal.set(gson);
+        }
         if (gson != null) {
             jsonStr = gson.toJson(ts);
         }
@@ -246,12 +233,16 @@ public class JsonCommand {
     public static <T> T serializer(String jsonStr, Class<T> cl,
                                    final String pattern) {
         Object obj = null;
-        gson = new GsonBuilder()
+        Gson gson = null;
+        if (pattern == null) {
+            gson = gsonThreadLocal.get();
+        } else {
+            gson = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                     @Override
                     public Date deserialize(JsonElement json, Type typeOfT,
                                             JsonDeserializationContext context)
-                            throws JsonParseException {
+                        throws JsonParseException {
                         SimpleDateFormat format = new SimpleDateFormat(pattern);
                         String dateStr = json.getAsString();
                         try {
@@ -262,6 +253,8 @@ public class JsonCommand {
                         return null;
                     }
                 }).setDateFormat(pattern).create();
+            gsonThreadLocal.set(gson);
+        }
         if (gson != null) {
             obj = gson.fromJson(jsonStr, cl);
         }
@@ -276,15 +269,12 @@ public class JsonCommand {
      * @return
      */
     public static <T> T fromJson(String str, Class<T> type) {
-        if (gson == null) {
-            gson = new Gson();
-        }
         if (type.getName().equalsIgnoreCase(com.google.gson.JsonObject.class.getName())
-                || type.getName().equalsIgnoreCase(com.google.gson.JsonArray.class.getName())
-                || type.getName().equalsIgnoreCase(com.google.gson.JsonElement.class.getName())) {
+            || type.getName().equalsIgnoreCase(com.google.gson.JsonArray.class.getName())
+            || type.getName().equalsIgnoreCase(com.google.gson.JsonElement.class.getName())) {
             return (T) type.cast(fromJson(str));
         } else {
-            return (T) gson.fromJson(str, type);
+            return (T) gsonThreadLocal.get().fromJson(str, type);
         }
     }
 
@@ -295,7 +285,7 @@ public class JsonCommand {
 
     public static <T> List<T> toArrayList(String json, Class<T> clazz) {
         Object[] array = (Object[]) java.lang.reflect.Array.newInstance(clazz, 0);
-        array = gson.fromJson(json, array.getClass());
+        array = gsonThreadLocal.get().fromJson(json, array.getClass());
         List<T> list = new ArrayList<T>();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
@@ -315,7 +305,7 @@ public class JsonCommand {
 
     public static <T> T[] toArray(String json, Class<T> clazz) {
         Object[] array = (Object[]) java.lang.reflect.Array.newInstance(clazz, 0);
-        array = gson.fromJson(json, array.getClass());
+        array = gsonThreadLocal.get().fromJson(json, array.getClass());
         return (T[]) array;
     }
 
@@ -363,7 +353,7 @@ public class JsonCommand {
      * @return JsonObject
      */
     public static com.google.gson.JsonObject fromMap(Map<?, ?> map) {
-        JsonElement jsonElement = new JsonObject(map).gson();
+        JsonElement jsonElement = new MapJson(map).gson();
         if (jsonElement.isJsonObject()) {
             return jsonElement.getAsJsonObject();
         }
@@ -376,16 +366,16 @@ public class JsonCommand {
      * @param bundle ResourceBundle文件
      * @return JsonObject
      */
-    public static JsonObject fromResourceBundle(ResourceBundle bundle) {
-        JsonObject jsonObject = new JsonObject();
+    public static MapJson fromResourceBundle(ResourceBundle bundle) {
+        MapJson mapJson = new MapJson();
         Enumeration<String> keys = bundle.getKeys();
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
             if (key != null) {
-                InternalJsonUtil.propertyPut(jsonObject, key, bundle.getString(key));
+                InternalJsonUtil.propertyPut(mapJson, key, bundle.getString(key));
             }
         }
-        return jsonObject;
+        return mapJson;
     }
 
     /**
@@ -393,8 +383,8 @@ public class JsonCommand {
      *
      * @return JsonObject
      */
-    private static JsonObject newJsonObject() {
-        return new JsonObject();
+    private static MapJson newJsonObject() {
+        return new MapJson();
     }
 
     /**
@@ -402,8 +392,8 @@ public class JsonCommand {
      *
      * @return JsonArray
      */
-    private static JsonArray newJsonArray() {
-        return new JsonArray();
+    private static ListJson newJsonArray() {
+        return new ListJson();
     }
 
     /**
@@ -412,8 +402,8 @@ public class JsonCommand {
      * @param jsonStr JSON字符串
      * @return JsonObject
      */
-    private static JsonObject newJsonObject(String jsonStr) {
-        return new JsonObject(jsonStr);
+    private static MapJson newJsonObject(String jsonStr) {
+        return new MapJson(jsonStr);
     }
 
     /**
@@ -422,8 +412,8 @@ public class JsonCommand {
      * @param obj Bean对象或者Map
      * @return JsonObject
      */
-    private static JsonObject newJsonObject(Object obj) {
-        return new JsonObject(obj);
+    private static MapJson newJsonObject(Object obj) {
+        return new MapJson(obj);
     }
 
     /**
@@ -432,8 +422,8 @@ public class JsonCommand {
      * @param jsonStr JSON字符串
      * @return JsonArray
      */
-    public static JsonArray newJsonArray(String jsonStr) {
-        return new JsonArray(jsonStr);
+    public static ListJson newJsonArray(String jsonStr) {
+        return new ListJson(jsonStr);
     }
 
     /**
@@ -446,14 +436,14 @@ public class JsonCommand {
      * @param obj 对象
      * @return Json
      */
-    public static Json newJson(Object obj) {
+    public static JsonString newJson(Object obj) {
         if (null == obj) {
             return null;
         }
 
-        Json json = null;
-        if (obj instanceof Json) {
-            json = (Json) obj;
+        JsonString json = null;
+        if (obj instanceof JsonString) {
+            json = (JsonString) obj;
         } else if (obj instanceof String) {
             String jsonStr = ((String) obj).trim();
             if (jsonStr.startsWith("[")) {
@@ -463,10 +453,10 @@ public class JsonCommand {
             }
         } else if (obj instanceof Collection || obj.getClass().isArray()) {
             // 列表
-            json = new JsonArray(obj);
+            json = new ListJson(obj);
         } else {
             // 对象
-            json = new JsonObject(obj);
+            json = new MapJson(obj);
         }
 
         return json;
@@ -480,7 +470,7 @@ public class JsonCommand {
      * @return Json（包括JSONObject和JSONArray）
      * @throws IORuntimeException
      */
-    public static Json readJSON(File file, Charset charset) throws IORuntimeException {
+    public static JsonString readJSON(File file, Charset charset) throws IORuntimeException {
         return newJson(FileReader.create(file, charset).readString());
     }
 
@@ -492,7 +482,7 @@ public class JsonCommand {
      * @return JsonObject
      * @throws IORuntimeException
      */
-    public static JsonObject readJSONObject(File file, Charset charset) throws IORuntimeException {
+    public static MapJson readJSONObject(File file, Charset charset) throws IORuntimeException {
         return newJsonObject(FileReader.create(file, charset).readString());
     }
 
@@ -504,7 +494,7 @@ public class JsonCommand {
      * @return JsonArray
      * @throws IORuntimeException
      */
-    public static JsonArray readJSONArray(File file, Charset charset) throws IORuntimeException {
+    public static ListJson readJSONArray(File file, Charset charset) throws IORuntimeException {
         return newJsonArray(FileReader.create(file, charset).readString());
     }
 
@@ -515,7 +505,7 @@ public class JsonCommand {
      * @param indentFactor 每一级别的缩进
      * @return JSON字符串
      */
-    public static String string(Json json, int indentFactor) {
+    public static String string(StringJson json, int indentFactor) {
         return json.toJSONString(indentFactor);
     }
 
@@ -529,7 +519,7 @@ public class JsonCommand {
      * @param json Json
      * @return JSON字符串
      */
-    public static String string(Json json) {
+    public static String string(StringJson json) {
         return json.toJSONString(0);
     }
 
@@ -539,7 +529,7 @@ public class JsonCommand {
      * @param json Json
      * @return JSON字符串
      */
-    public static String stringPretty(Json json) {
+    public static String stringPretty(StringJson json) {
         return json.toJSONString(4);
     }
 
@@ -551,7 +541,7 @@ public class JsonCommand {
      */
     public static String string(Object obj) {
         String str = null;
-        gson = new Gson();
+        Gson gson = gsonThreadLocal.get();
         try {
             str = gson.toJson(obj);
         } catch (Exception e) {
@@ -579,7 +569,7 @@ public class JsonCommand {
      * @param json Json
      * @return XML字符串
      */
-    public static String stringXml(Json json) {
+    public static String stringXml(JsonString json) {
         return XmlBetweenJsonObject.toString(json);
     }
 
@@ -689,35 +679,35 @@ public class JsonCommand {
     public static Object wrap(Object object) {
         try {
             if (object == null) {
-                return JsonNull.NULL;
+                return NullJson.NULL;
             }
-            if (object instanceof Json
-                    || JsonNull.NULL.equals(object)
-                    || object instanceof JsonString
-                    || object instanceof CharSequence
-                    || object instanceof Number
-                    || ObjectCommand.isBasicType(object)) {
+            if (object instanceof JsonString
+                || NullJson.NULL.equals(object)
+                || object instanceof StringJson
+                || object instanceof CharSequence
+                || object instanceof Number
+                || ObjectCommand.isBasicType(object)) {
                 return object;
             }
 
             if (object instanceof Collection) {
                 Collection<?> coll = (Collection<?>) object;
-                return new JsonArray(coll);
+                return new ListJson(coll);
             }
             if (ArrayCommand.isArray(object)) {
-                return new JsonArray(object);
+                return new ListJson(object);
             }
             if (object instanceof Map) {
                 Map<?, ?> map = (Map<?, ?>) object;
-                return new JsonObject(map);
+                return new MapJson(map);
             }
             Package objectPackage = object.getClass().getPackage();
             String objectPackageName = objectPackage != null ? objectPackage.getName() : "";
             if (objectPackageName.startsWith("java.") || objectPackageName.startsWith("javax.")
-                    || object.getClass().getClassLoader() == null) {
+                || object.getClass().getClassLoader() == null) {
                 return object.toString();
             }
-            return new JsonObject(object);
+            return new MapJson(object);
         } catch (Exception exception) {
             return null;
         }
@@ -1033,7 +1023,7 @@ public class JsonCommand {
         for (Map.Entry<String, JsonElement> sss : ss) {
             if (left.has(sss.getKey())) {
                 throw new UnsupportedOperationException(
-                        "left jsonObject and right jsonObject has conflict key:" + sss.getKey());
+                    "left jsonObject and right jsonObject has conflict key:" + sss.getKey());
             }
             left.add(sss.getKey(), sss.getValue());
         }

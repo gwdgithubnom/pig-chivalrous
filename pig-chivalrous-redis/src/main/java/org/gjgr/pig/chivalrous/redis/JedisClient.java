@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.redis;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,7 +41,7 @@ import redis.clients.util.Slowlog;
  * @Target:
  * @More:
  */
-public class JedisClient extends Jedis {
+public class JedisClient extends Jedis implements Serializable {
 
     private static ThreadLocal<Jedis> jedis = new ThreadLocal<>();
     private JedisPool jedisPool;

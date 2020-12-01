@@ -3,12 +3,12 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20200202G</version>
+        <version>0.0.1.20201112G-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-office</artifactId>
-    <version>0.0.1.20200202G</version>
+    <version>0.0.1.20201112G-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>pig-chivalrous-office</name>
     <url>http://maven.apache.org</url>
@@ -20,7 +20,7 @@
             <groupId>org.gjgr.pig</groupId>
             <artifactId>pig-chivalrous-exclude</artifactId>
             <scope>provided</scope>
-            <version>0.0.1.20200202G</version>
+            <version>0.0.1.20201112G-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.poi</groupId>

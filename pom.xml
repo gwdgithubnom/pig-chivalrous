@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20200202G</version>
+    <version>0.0.1.20201112G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -24,6 +24,8 @@
         <module>pig-chivalrous-web</module>
         <module>pig-chivalrous-spring</module>
         <module>pig-chivalrous-thrift</module>
+        <module>pig-chivalrous-sample</module>
+        <module>pig-chivalrous-spark</module>
     </modules>
     <packaging>pom</packaging>
     <name>pig-chivalrous-parent</name>
@@ -1271,6 +1273,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
+                    <fail>false</fail>
                     <rules>
                         <DependencyConvergence />
                         <banDuplicateClasses>
@@ -1367,7 +1370,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.0.4</version>
                 <executions>
                     <execution>
                         <goals>
@@ -1834,20 +1837,20 @@
 <!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
 <!--        </repository>-->
 <!--    </repositories>-->
-    <distributionManagement>
-        <repository>
-            <id>sonatype.releases</id>
-            <name>Internal Release Repository</name>
-            <url>
-                https://oss.sonatype.org/service/local/staging/deploy/maven2
-            </url>
-        </repository>
-        <snapshotRepository>
-            <id>sonatype.snapshots</id>
-            <name>Internal Snapshot Repository</name>
-            <url>
-                https://oss.sonatype.org/content/repositories/snapshots
-            </url>
-        </snapshotRepository>
-    </distributionManagement>
+        <distributionManagement>
+            <repository>
+                <id>sonatype.releases</id>
+                <name>Internal Release Repository</name>
+                <url>
+                    https://oss.sonatype.org/service/local/staging/deploy/maven2
+                </url>
+            </repository>
+            <snapshotRepository>
+                <id>sonatype.snapshots</id>
+                <name>Internal Snapshot Repository</name>
+                <url>
+                    https://oss.sonatype.org/content/repositories/snapshots
+                </url>
+            </snapshotRepository>
+        </distributionManagement>
 </project>

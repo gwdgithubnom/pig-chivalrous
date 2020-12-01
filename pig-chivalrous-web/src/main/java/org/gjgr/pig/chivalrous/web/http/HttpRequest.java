@@ -3,7 +3,7 @@ package org.gjgr.pig.chivalrous.web.http;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
-import org.gjgr.pig.chivalrous.core.json.bean.Json;
+import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.Base64;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
@@ -372,7 +372,7 @@ public class HttpRequest extends HttpBase<HttpRequest> {
      *
      * @param json JSON请求体
      */
-    public HttpRequest body(Json json) {
+    public HttpRequest body(JsonString json) {
         this.body(json.toString());
 
         String contentTypeJson = "application/newJson";

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.JedisCommands;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -40,7 +41,13 @@ public class RedisCommand {
     }
 
     public static boolean redisUnlock(RedisClient redisClient, String lockKey, String key) {
-        long l = redisClient.jedisCommands().del(lockKey);
+        long l = redisClient.getJedisCommands().del(lockKey);
+        logger.debug("set redis lock, do unlock operation {} about {} in {}", l, key, lockKey);
+        return true;
+    }
+
+    public static boolean redisUnlock(JedisCommands jedisCommands, String lockKey, String key) {
+        long l = jedisCommands.del(lockKey);
         logger.debug("set redis lock, do unlock operation {} about {} in {}", l, key, lockKey);
         return true;
     }
@@ -50,8 +57,8 @@ public class RedisCommand {
         try {
             int i = 0;
             while (i < 3) {
-                long l = redisClient.jedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
-                redisClient.jedisCommands().expire(lockKey, expireSeconds.intValue());
+                long l = redisClient.getJedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
+                redisClient.getJedisCommands().expire(lockKey, expireSeconds.intValue());
                 if (l > 0) {
                     status = true;
                     break;
@@ -61,11 +68,11 @@ public class RedisCommand {
                 }
                 if (i == 3) {
                     try {
-                        Number number = NumberFormat.getInstance().parse(redisClient.jedisCommands().get(lockKey));
+                        Number number = NumberFormat.getInstance().parse(redisClient.getJedisCommands().get(lockKey));
                         if (System.currentTimeMillis() - number.longValue() > 3600000) {
-                            redisClient.jedisCommands().del(lockKey);
-                            l = redisClient.jedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
-                            redisClient.jedisCommands().expire(lockKey, expireSeconds.intValue());
+                            redisClient.getJedisCommands().del(lockKey);
+                            l = redisClient.getJedisCommands().setnx(lockKey, System.currentTimeMillis() + "");
+                            redisClient.getJedisCommands().expire(lockKey, expireSeconds.intValue());
                             if (l > 0) {
                                 status = true;
                             } else {
@@ -74,7 +81,49 @@ public class RedisCommand {
                         } else {
                             logger.debug("current key is been locked {} about {}", lockKey, number.longValue());
                         }
-                        redisClient.jedisCommands().del(lockKey);
+                        redisClient.getJedisCommands().del(lockKey);
+                    } catch (Exception e) {
+                        logger.error("redis lock failed, parse lock failed {}", lockKey);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.error("redis lock item failed for item {}", Arrays.toString(e.getStackTrace()) + " " + e.getMessage());
+        }
+        logger.debug("get redis lock, do lock operation {} about {} in {}", status, key, lockKey);
+        return status;
+    }
+
+    public static boolean redisLock(JedisCommands jedisCommands, String lockKey, String key, Long expireSeconds) {
+        boolean status = false;
+        try {
+            int i = 0;
+            while (i < 3) {
+                long l = jedisCommands.setnx(lockKey, System.currentTimeMillis() + "");
+                jedisCommands.expire(lockKey, expireSeconds.intValue());
+                if (l > 0) {
+                    status = true;
+                    break;
+                } else {
+                    Thread.sleep(RandomCommand.randomInt(6000));
+                    i++;
+                }
+                if (i == 3) {
+                    try {
+                        Number number = NumberFormat.getInstance().parse(jedisCommands.get(lockKey));
+                        if (System.currentTimeMillis() - number.longValue() > 3600000) {
+                            jedisCommands.del(lockKey);
+                            l = jedisCommands.setnx(lockKey, System.currentTimeMillis() + "");
+                            jedisCommands.expire(lockKey, expireSeconds.intValue());
+                            if (l > 0) {
+                                status = true;
+                            } else {
+                                logger.debug("get locked item failed {}", key);
+                            }
+                        } else {
+                            logger.debug("current key is been locked {} about {}", lockKey, number.longValue());
+                        }
+                        jedisCommands.del(lockKey);
                     } catch (Exception e) {
                         logger.error("redis lock failed, parse lock failed {}", lockKey);
                     }
@@ -148,9 +197,21 @@ public class RedisCommand {
         return redisConfig;
     }
 
+    public static RedisConfig redisConfig(@NonNull String url, int port, String password, boolean type) {
+        String[] urls = new String[1];
+        urls[0] = url;
+        String[] ports = new String[1];
+        ports[0] = port + "";
+        return redisConfig(urls, ports, password, false);
+    }
+
     public static RedisClient redis(@NonNull String[] urls, String[] ports, String password, boolean type) {
         RedisConfig redisConfig = redisConfig(urls, ports, password, type);
         return redisClient(redisConfig);
+    }
+
+    public static RedisConfig redisConfig(@NonNull String url, int port) {
+        return redisConfig(url, port, null, false);
     }
 
     public static RedisClient redis(@NonNull String url, int port, String password, boolean type) {
@@ -163,6 +224,22 @@ public class RedisCommand {
 
     public static RedisClient redis(@NonNull String url, int port) {
         return redis(url, port, null, false);
+    }
+
+    public static RedisConfig redisConfig(@NonNull String uri, String password, boolean type) {
+        String[] uris = uri.split(";");
+        String[] urls = new String[uris.length];
+        String[] ports = new String[uris.length];
+        for (int i = 0; i < uris.length; i++) {
+            String[] u = uris[i].split(":");
+            if (u.length == 1) {
+                throw new UnsupportedOperationException("could not parse the uri, format style: ip1:port1" + uri);
+            } else {
+                urls[i] = u[0];
+                ports[i] = u[1];
+            }
+        }
+        return redisConfig(urls, ports, password, type);
     }
 
     public static RedisClient redis(@NonNull String uri, String password, boolean type) {
@@ -179,6 +256,10 @@ public class RedisCommand {
             }
         }
         return redis(urls, ports, password, type);
+    }
+
+    public static RedisConfig redisConfig(@NonNull String uri, boolean type) {
+        return redisConfig(uri, null, type);
     }
 
     /**
@@ -200,10 +281,18 @@ public class RedisCommand {
         }
     }
 
+    public static RedisConfig redisConfig(@NonNull String uri) {
+        if (uri.contains(";")) {
+            return redisConfig(uri, null, true);
+        } else {
+            return redisConfig(uri, null, false);
+        }
+    }
+
     public static JedisPool jedisPool(RedisConfig redisConfig) {
         HostAndPort hostAndPort = redisConfig.getBase().iterator().next();
         JedisPool jedisPool =
-                new JedisPool(redisConfig.getGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort());
+            new JedisPool(redisConfig.getGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort());
         return jedisPool;
     }
 

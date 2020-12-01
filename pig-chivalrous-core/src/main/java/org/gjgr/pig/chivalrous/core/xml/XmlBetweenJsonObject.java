@@ -2,8 +2,8 @@ package org.gjgr.pig.chivalrous.core.xml;
 
 import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
 import org.gjgr.pig.chivalrous.core.json.JsonException;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
+import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
+import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
 
 import java.util.Iterator;
 
@@ -128,11 +128,11 @@ public class XmlBetweenJsonObject {
      * @return true if the close tag is processed.
      * @throws JsonException
      */
-    private static boolean parse(XmlTokener x, JsonObject context, String name, boolean keepStrings)
+    private static boolean parse(XmlTokener x, MapJson context, String name, boolean keepStrings)
             throws JsonException {
         char c;
         int i;
-        JsonObject jsonobject = null;
+        MapJson jsonobject = null;
         String string;
         String tagName;
         Object token;
@@ -213,7 +213,7 @@ public class XmlBetweenJsonObject {
         } else {
             tagName = (String) token;
             token = null;
-            jsonobject = new JsonObject();
+            jsonobject = new MapJson();
             for (; ; ) {
                 if (token == null) {
                     token = x.nextToken();
@@ -296,7 +296,7 @@ public class XmlBetweenJsonObject {
      * @return A JsonObject containing the structured data from the XmlBetweenJsonObject string.
      * @throws JsonException Thrown if there is an errors while parsing the string
      */
-    public static JsonObject toJSONObject(String string) throws JsonException {
+    public static MapJson toJSONObject(String string) throws JsonException {
         return toJSONObject(string, false);
     }
 
@@ -317,8 +317,8 @@ public class XmlBetweenJsonObject {
      * @return A JsonObject containing the structured data from the XmlBetweenJsonObject string.
      * @throws JsonException Thrown if there is an errors while parsing the string
      */
-    public static JsonObject toJSONObject(String string, boolean keepStrings) throws JsonException {
-        JsonObject jo = new JsonObject();
+    public static MapJson toJSONObject(String string, boolean keepStrings) throws JsonException {
+        MapJson jo = new MapJson();
         XmlTokener x = new XmlTokener(string);
         while (x.more() && x.skipPast("<")) {
             parse(x, jo, null, keepStrings);
@@ -347,14 +347,14 @@ public class XmlBetweenJsonObject {
      */
     public static String toString(Object object, String tagName) throws JsonException {
         StringBuilder sb = new StringBuilder();
-        JsonArray ja;
-        JsonObject jo;
+        ListJson ja;
+        MapJson jo;
         String key;
         Iterator<String> keys;
         String string;
         Object value;
 
-        if (object instanceof JsonObject) {
+        if (object instanceof MapJson) {
 
             // Emit <tagName>
             if (tagName != null) {
@@ -364,7 +364,7 @@ public class XmlBetweenJsonObject {
             }
 
             // Loop thru the keys.
-            jo = (JsonObject) object;
+            jo = (MapJson) object;
             keys = jo.keySet().iterator();
             while (keys.hasNext()) {
                 key = keys.next();
@@ -372,14 +372,14 @@ public class XmlBetweenJsonObject {
                 if (value == null) {
                     value = "";
                 } else if (value.getClass().isArray()) {
-                    value = new JsonArray(value);
+                    value = new ListJson(value);
                 }
                 string = value instanceof String ? (String) value : null;
 
                 // Emit content in body
                 if ("content".equals(key)) {
-                    if (value instanceof JsonArray) {
-                        ja = (JsonArray) value;
+                    if (value instanceof ListJson) {
+                        ja = (ListJson) value;
                         int i = 0;
                         for (Object val : ja) {
                             if (i > 0) {
@@ -394,10 +394,10 @@ public class XmlBetweenJsonObject {
 
                     // Emit an array of similar keys
 
-                } else if (value instanceof JsonArray) {
-                    ja = (JsonArray) value;
+                } else if (value instanceof ListJson) {
+                    ja = (ListJson) value;
                     for (Object val : ja) {
-                        if (val instanceof JsonArray) {
+                        if (val instanceof ListJson) {
                             sb.append('<');
                             sb.append(key);
                             sb.append('>');
@@ -433,11 +433,11 @@ public class XmlBetweenJsonObject {
 
         if (object != null) {
             if (object.getClass().isArray()) {
-                object = new JsonArray(object);
+                object = new ListJson(object);
             }
 
-            if (object instanceof JsonArray) {
-                ja = (JsonArray) object;
+            if (object instanceof ListJson) {
+                ja = (ListJson) object;
                 for (Object val : ja) {
                     // XmlBetweenJsonObject does not have good support for arrays. If an array
                     // appears in a place where XmlBetweenJsonObject is lacking, synthesize an

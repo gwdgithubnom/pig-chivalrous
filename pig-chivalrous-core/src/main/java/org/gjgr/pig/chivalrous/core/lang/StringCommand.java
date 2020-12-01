@@ -1,5 +1,7 @@
 package org.gjgr.pig.chivalrous.core.lang;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -3631,6 +3633,41 @@ public final class StringCommand {
             }
         }
         return sb.toString();
+    }
+
+    public static String join(List object,String joiner){
+        return Joiner.on(joiner).join(object);
+    }
+
+    public static List<String> splict(String object,String splitter){
+        return Splitter.on(splitter).splitToList(object);
+    }
+
+
+    public static String join(List object){
+        return Joiner.on("\t").join(object);
+    }
+
+    public static List<String> splict(String object){
+        return Splitter.on("\t").splitToList(object);
+    }
+
+
+    public static String joinByHT(List object){
+        return Joiner.on((char) 0x09).join(object);
+    }
+
+    public static List<String> splictByHT(String object){
+        return Splitter.on((char) 0x09).splitToList(object);
+    }
+
+
+    public static String joinByVT(List object){
+        return Joiner.on((char) 0x0B).join(object);
+    }
+
+    public static List<String> splictByVT(String object){
+        return Splitter.on((char) 0x0B).splitToList(object);
     }
 
 }

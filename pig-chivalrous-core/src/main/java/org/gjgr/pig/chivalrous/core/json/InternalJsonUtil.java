@@ -3,11 +3,11 @@ package org.gjgr.pig.chivalrous.core.json;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.convert.ConvertException;
 import org.gjgr.pig.chivalrous.core.convert.ConverterRegistry;
-import org.gjgr.pig.chivalrous.core.json.bean.Json;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonArray;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonNull;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
 import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
+import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
+import org.gjgr.pig.chivalrous.core.json.bean.NullJson;
+import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
+import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
 import org.gjgr.pig.chivalrous.core.lang.BeanUtil;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
@@ -43,22 +43,22 @@ public final class InternalJsonUtil {
             throws JsonException, IOException {
         if (value == null || value.equals(null)) {
             writer.write("null");
-        } else if (value instanceof Json) {
-            ((Json) value).write(writer, indentFactor, indent);
+        } else if (value instanceof StringJson) {
+            ((StringJson) value).write(writer, indentFactor, indent);
         } else if (value instanceof Map) {
-            new JsonObject((Map<?, ?>) value).write(writer, indentFactor, indent);
+            new MapJson((Map<?, ?>) value).write(writer, indentFactor, indent);
         } else if (value instanceof Collection) {
-            new JsonArray((Collection<?>) value).write(writer, indentFactor, indent);
+            new ListJson((Collection<?>) value).write(writer, indentFactor, indent);
         } else if (value.getClass().isArray()) {
-            new JsonArray(value).write(writer, indentFactor, indent);
+            new ListJson(value).write(writer, indentFactor, indent);
         } else if (value instanceof Number) {
             writer.write(NumberCommand.toStr((Number) value));
         } else if (value instanceof Boolean) {
             writer.write(value.toString());
-        } else if (value instanceof JsonString) {
+        } else if (value instanceof StringJson) {
             Object o;
             try {
-                o = ((JsonString) value).toJSONString();
+                o = ((StringJson) value).toJSONString();
             } catch (Exception e) {
                 throw new JsonException(e);
             }
@@ -113,24 +113,24 @@ public final class InternalJsonUtil {
         if (value == null || value.equals(null)) {
             return "null";
         }
-        if (value instanceof JsonString) {
+        if (value instanceof StringJson) {
             try {
-                return ((JsonString) value).toJSONString();
+                return ((StringJson) value).toJSONString();
             } catch (Exception e) {
                 throw new JsonException(e);
             }
         } else if (value instanceof Number) {
             return NumberCommand.toStr((Number) value);
-        } else if (value instanceof Boolean || value instanceof JsonObject || value instanceof JsonArray) {
+        } else if (value instanceof Boolean || value instanceof MapJson || value instanceof ListJson) {
             return value.toString();
         } else if (value instanceof Map) {
             Map<?, ?> map = (Map<?, ?>) value;
-            return new JsonObject(map).toString();
+            return new MapJson(map).toString();
         } else if (value instanceof Collection) {
             Collection<?> coll = (Collection<?>) value;
-            return new JsonArray(coll).toString();
+            return new ListJson(coll).toString();
         } else if (value.getClass().isArray()) {
-            return new JsonArray(value).toString();
+            return new ListJson(value).toString();
         } else {
             return JsonCommand.quote(value.toString());
         }
@@ -145,7 +145,7 @@ public final class InternalJsonUtil {
     public static Object stringToValue(String string) {
         Double d;
         if (null == string || "null".equalsIgnoreCase(string)) {
-            return JsonNull.NULL;
+            return NullJson.NULL;
         }
 
         if (StringCommand.EMPTY.equals(string)) {
@@ -190,48 +190,48 @@ public final class InternalJsonUtil {
      * 将Property的键转化为JSON形式<br>
      * 用于识别类似于：com.luxiaolei.package.hutool这类用点隔开的键
      *
-     * @param jsonObject JsonObject
+     * @param mapJson JsonObject
      * @param key        键
      * @param value      值
      * @return JsonObject
      */
-    public static JsonObject propertyPut(JsonObject jsonObject, Object key, Object value) {
+    public static MapJson propertyPut(MapJson mapJson, Object key, Object value) {
         String keyStr = Convert.toStr(key);
         String[] path = StringCommand.split(keyStr, StringCommand.DOT);
         int last = path.length - 1;
-        JsonObject target = jsonObject;
+        MapJson target = mapJson;
         for (int i = 0; i < last; i += 1) {
             String segment = path[i];
-            JsonObject nextTarget = target.getJSONObject(segment);
+            MapJson nextTarget = target.getJSONObject(segment);
             if (nextTarget == null) {
-                nextTarget = new JsonObject();
+                nextTarget = new MapJson();
                 target.put(segment, nextTarget);
             }
             target = nextTarget;
         }
         target.put(path[last], value);
-        return jsonObject;
+        return mapJson;
     }
 
     /**
      * JSON或者
      *
-     * @param jsonObject  JSON对象
+     * @param mapJson  JSON对象
      * @param bean        目标Bean
      * @param ignoreError 是否忽略转换错误
      * @return 目标Bean
      */
-    public static <T> T toBean(final JsonObject jsonObject, T bean, final boolean ignoreError) {
+    public static <T> T toBean(final MapJson mapJson, T bean, final boolean ignoreError) {
         return BeanUtil.fillBean(bean, new BeanUtil.ValueProvider<String>() {
 
             @Override
             public Object value(String key, Class<?> valueType) {
-                return jsonConvert(valueType, jsonObject.get(key), ignoreError);
+                return jsonConvert(valueType, mapJson.get(key), ignoreError);
             }
 
             @Override
             public boolean containsKey(String key) {
-                return jsonObject.containsKey(key);
+                return mapJson.containsKey(key);
             }
 
         }, BeanUtil.CopyOptions.create().setIgnoreError(ignoreError));
@@ -263,7 +263,7 @@ public final class InternalJsonUtil {
         if (null == targetValue) {
 
             // 子对象递归转换
-            if (value instanceof JsonObject) {
+            if (value instanceof MapJson) {
                 targetValue = JsonCommand.fromJson(value.toString(), type);
             }
         }

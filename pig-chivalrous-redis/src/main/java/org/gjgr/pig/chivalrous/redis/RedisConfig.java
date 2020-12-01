@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.redis;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.log.SystemLogger;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
@@ -20,7 +21,7 @@ import java.util.Set;
  *
  * @author gwd
  */
-public final class RedisConfig {
+public final class RedisConfig implements Serializable {
 
     private Set<HostAndPort> base = new HashSet<>();
     private int soTimeout = 3000;
@@ -304,10 +305,18 @@ public final class RedisConfig {
         private synchronized RedisClient newRedisClient(RedisClient redisClient, Class clazz) {
             if (clazz.isAssignableFrom(JedisPool.class)) {
                 JedisPool jedisPool = buildJedisPool(redisClient);
-                redisClient.put(me(), jedisPool);
+                try {
+                    redisClient.reBuild(me(), jedisPool);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else {
                 JedisCluster jedisCluster = buildJedisCluster(redisClient);
-                redisClient.put(me(), jedisCluster);
+                try {
+                    redisClient.reBuild(me(), jedisCluster);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return redisClient;
         }
@@ -315,18 +324,10 @@ public final class RedisConfig {
         private synchronized RedisClient redisClient(RedisClient redisClient, Class clazz) {
             if (clazz.isAssignableFrom(JedisPool.class)) {
                 JedisPool jedisPool = buildJedisPool(redisClient);
-                try {
-                    redisClient.add(me(), jedisPool);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                redisClient.build(me(), jedisPool);
             } else {
                 JedisCluster jedisCluster = buildJedisCluster(redisClient);
-                try {
-                    redisClient.add(me(), jedisCluster);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                redisClient.build(me(), jedisCluster);
             }
             return redisClient;
         }

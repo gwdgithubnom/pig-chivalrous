@@ -6,7 +6,7 @@ import org.apache.http.NameValuePair;
 import org.gjgr.pig.chivalrous.core.Command;
 import org.gjgr.pig.chivalrous.core.entity.Message;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonObject;
+import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.net.UriBuilder;
@@ -367,7 +367,7 @@ public final class MailCommand {
                 String string = object.toString();
                 result = string.replaceAll(Pattern.quote("{{row}}"), row);
                 result = result.replaceAll(Pattern.quote("{{column}}"), row);
-            } else if (object instanceof JsonObject) {
+            } else if (object instanceof MapJson) {
                 // skip
             } else {
                 logger.warn("did not support other type.");

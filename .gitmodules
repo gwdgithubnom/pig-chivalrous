@@ -1,0 +1,3 @@
+[submodule "pig-chivalrous-spark/src/spark"]
+	path = pig-chivalrous-spark/src/spark
+	url = git@github.com:apache/spark.git
