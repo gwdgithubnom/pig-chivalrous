@@ -304,7 +304,7 @@ public final class FileCommand {
      * @param location
      * @return
      */
-    public static InputStream file(Class clazz, String location) {
+    public static InputStream inputStream(Class clazz, String location) {
         InputStream inputStream = null;
         String path = location;
         boolean status = false;
@@ -3252,6 +3252,11 @@ public final class FileCommand {
         return inputStream;
     }
 
+    public static InputStream getResourceAsStream(String filename){
+        InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
+        return inputStream;
+    }
+
     public static InputStream getResource(String filename) {
         InputStream inputStream;
         if (isExist(filename)) {
@@ -3269,9 +3274,7 @@ public final class FileCommand {
                 inputStream = inputStream(LocationCommand.pathValue(filename));
             } catch (RuntimeException e) {
                 try {
-                    inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
-                } catch (Exception eeeee) {
-
+                   inputStream =  getResourceAsStream(filename);
                 } finally {
                     if (inputStream == null) {
                         try {

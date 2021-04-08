@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.gjgr.pig.chivalrous.log.SystemLogger;
-import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.BinaryJedisPubSub;
 import redis.clients.jedis.BitOP;
 import redis.clients.jedis.BitPosParams;
@@ -15,24 +14,18 @@ import redis.clients.jedis.GeoCoordinate;
 import redis.clients.jedis.GeoRadiusResponse;
 import redis.clients.jedis.GeoUnit;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisMonitor;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.Pipeline;
-import redis.clients.jedis.PipelineBlock;
 import redis.clients.jedis.ScanParams;
 import redis.clients.jedis.ScanResult;
 import redis.clients.jedis.SortingParams;
 import redis.clients.jedis.Transaction;
-import redis.clients.jedis.TransactionBlock;
 import redis.clients.jedis.Tuple;
 import redis.clients.jedis.ZParams;
-import redis.clients.jedis.params.geo.GeoRadiusParam;
-import redis.clients.jedis.params.sortedset.ZAddParams;
-import redis.clients.jedis.params.sortedset.ZIncrByParams;
-import redis.clients.util.Pool;
-import redis.clients.util.Slowlog;
+import redis.clients.jedis.params.ZIncrByParams;
+import redis.clients.jedis.util.Slowlog;
 
 /**
  * @Author gwd
@@ -68,13 +61,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public String set(String key, String value) {
         String string = getJedis().set(key, value);
-        free();
-        return string;
-    }
-
-    @Override
-    public String set(String key, String value, String nxxx, String expx, long time) {
-        String string = getJedis().set(key, value, nxxx, expx, time);
         free();
         return string;
     }
@@ -558,22 +544,8 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public Long zadd(String key, double score, String member, ZAddParams params) {
-        Long o = getJedis().zadd(key, score, member, params);
-        free();
-        return o;
-    }
-
-    @Override
     public Long zadd(String key, Map<String, Double> scoreMembers) {
         Long o = getJedis().zadd(key, scoreMembers);
-        free();
-        return o;
-    }
-
-    @Override
-    public Long zadd(String key, Map<String, Double> scoreMembers, ZAddParams params) {
-        Long o = getJedis().zadd(key, scoreMembers, params);
         free();
         return o;
     }
@@ -595,13 +567,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public Double zincrby(String key, double score, String member) {
         Double o = getJedis().zincrby(key, score, member);
-        free();
-        return o;
-    }
-
-    @Override
-    public Double zincrby(String key, double score, String member, ZIncrByParams params) {
-        Double o = getJedis().zincrby(key, score, member, params);
         free();
         return o;
     }
@@ -693,20 +658,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public List<String> brpop(String... args) {
         List<String> o = getJedis().brpop(args);
-        free();
-        return o;
-    }
-
-    @Override
-    public List<String> blpop(String arg) {
-        List<String> o = getJedis().blpop(arg);
-        free();
-        return o;
-    }
-
-    @Override
-    public List<String> brpop(String arg) {
-        List<String> o = getJedis().brpop(arg);
         free();
         return o;
     }
@@ -980,13 +931,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public String echo(String string) {
         String o = getJedis().echo(string);
-        free();
-        return o;
-    }
-
-    @Override
-    public Long linsert(String key, BinaryClient.LIST_POSITION where, String pivot, String value) {
-        Long o = getJedis().linsert(key, where, pivot, value);
         free();
         return o;
     }
@@ -1272,13 +1216,6 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public Long pexpire(String key, int milliseconds) {
-        Long o = getJedis().pexpire(key, milliseconds);
-        free();
-        return o;
-    }
-
-    @Override
     public Long pexpire(String key, long milliseconds) {
         Long o = getJedis().pexpire(key, milliseconds);
         free();
@@ -1300,29 +1237,8 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public String psetex(String key, int milliseconds, String value) {
-        String o = getJedis().psetex(key, milliseconds, value);
-        free();
-        return o;
-    }
-
-    @Override
     public String psetex(String key, long milliseconds, String value) {
         String o = getJedis().psetex(key, milliseconds, value);
-        free();
-        return o;
-    }
-
-    @Override
-    public String set(String key, String value, String nxxx) {
-        String o = getJedis().set(key, value, nxxx);
-        free();
-        return o;
-    }
-
-    @Override
-    public String set(String key, String value, String nxxx, String expx, int time) {
-        String o = getJedis().set(key, value, nxxx, expx, time);
         free();
         return o;
     }
@@ -1344,62 +1260,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public String migrate(String host, int port, String key, int destinationDb, int timeout) {
         String o = getJedis().migrate(host, port, key, destinationDb, timeout);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<String> scan(int cursor) {
-        ScanResult<String> o = getJedis().scan(cursor);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<String> scan(int cursor, ScanParams params) {
-        ScanResult<String> o = getJedis().scan(cursor, params);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<Map.Entry<String, String>> hscan(String key, int cursor) {
-        ScanResult<Map.Entry<String, String>> o = getJedis().hscan(key, cursor);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<Map.Entry<String, String>> hscan(String key, int cursor, ScanParams params) {
-        ScanResult<Map.Entry<String, String>> o = getJedis().hscan(key, cursor, params);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<String> sscan(String key, int cursor) {
-        ScanResult<String> o = getJedis().sscan(key, cursor);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<String> sscan(String key, int cursor, ScanParams params) {
-        ScanResult<String> o = getJedis().sscan(key, cursor, params);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<Tuple> zscan(String key, int cursor) {
-        ScanResult<Tuple> o = getJedis().zscan(key, cursor);
-        free();
-        return o;
-    }
-
-    @Override
-    public ScanResult<Tuple> zscan(String key, int cursor, ScanParams params) {
-        ScanResult<Tuple> o = getJedis().zscan(key, cursor, params);
         free();
         return o;
     }
@@ -1477,13 +1337,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public String clusterMeet(String ip, int port) {
         String o = getJedis().clusterMeet(ip, port);
-        free();
-        return o;
-    }
-
-    @Override
-    public String clusterReset(JedisCluster.Reset resetType) {
-        String o = getJedis().clusterReset(resetType);
         free();
         return o;
     }
@@ -1643,13 +1496,6 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public void setDataSource(Pool<Jedis> jedisPool) {
-        getJedis().setDataSource(jedisPool);
-        free();
-        return;
-    }
-
-    @Override
     public Long pfadd(String key, String... elements) {
         Long o = getJedis().pfadd(key, elements);
         free();
@@ -1741,22 +1587,8 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public List<GeoRadiusResponse> georadius(String key, double longitude, double latitude, double radius, GeoUnit unit, GeoRadiusParam param) {
-        List<GeoRadiusResponse> o = getJedis().georadius(key, longitude, latitude, radius, unit, param);
-        free();
-        return o;
-    }
-
-    @Override
     public List<GeoRadiusResponse> georadiusByMember(String key, String member, double radius, GeoUnit unit) {
         List<GeoRadiusResponse> o = getJedis().georadiusByMember(key, member, radius, unit);
-        free();
-        return o;
-    }
-
-    @Override
-    public List<GeoRadiusResponse> georadiusByMember(String key, String member, double radius, GeoUnit unit, GeoRadiusParam param) {
-        List<GeoRadiusResponse> o = getJedis().georadiusByMember(key, member, radius, unit, param);
         free();
         return o;
     }
@@ -1813,13 +1645,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public String set(byte[] key, byte[] value) {
         String o = getJedis().set(key, value);
-        free();
-        return o;
-    }
-
-    @Override
-    public String set(byte[] key, byte[] value, byte[] nxxx, byte[] expx, long time) {
-        String o = getJedis().set(key, value, nxxx, expx, time);
         free();
         return o;
     }
@@ -2336,22 +2161,8 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public Long zadd(byte[] key, double score, byte[] member, ZAddParams params) {
-        Long o = getJedis().zadd(key, score, member, params);
-        free();
-        return o;
-    }
-
-    @Override
     public Long zadd(byte[] key, Map<byte[], Double> scoreMembers) {
         Long o = getJedis().zadd(key, scoreMembers);
-        free();
-        return o;
-    }
-
-    @Override
-    public Long zadd(byte[] key, Map<byte[], Double> scoreMembers, ZAddParams params) {
-        Long o = getJedis().zadd(key, scoreMembers, params);
         free();
         return o;
     }
@@ -2441,13 +2252,6 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public List<Object> multi(TransactionBlock jedisTransaction) {
-        List<Object> o = getJedis().multi(jedisTransaction);
-        free();
-        return o;
-    }
-
-    @Override
     public void connect() {
         getJedis().connect();
         free();
@@ -2525,20 +2329,6 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public List<byte[]> blpop(byte[] arg) {
-        List<byte[]> o = getJedis().blpop(arg);
-        free();
-        return o;
-    }
-
-    @Override
-    public List<byte[]> brpop(byte[] arg) {
-        List<byte[]> o = getJedis().brpop(arg);
-        free();
-        return o;
-    }
-
-    @Override
     public List<byte[]> blpop(byte[]... args) {
         List<byte[]> o = getJedis().blpop(args);
         free();
@@ -2555,13 +2345,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public String auth(String password) {
         String o = getJedis().auth(password);
-        free();
-        return o;
-    }
-
-    @Override
-    public List<Object> pipelined(PipelineBlock jedisPipeline) {
-        List<Object> o = getJedis().pipelined(jedisPipeline);
         free();
         return o;
     }
@@ -2931,13 +2714,6 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public Long linsert(byte[] key, BinaryClient.LIST_POSITION where, byte[] pivot, byte[] value) {
-        Long o = getJedis().linsert(key, where, pivot, value);
-        free();
-        return o;
-    }
-
-    @Override
     public String debug(DebugParams params) {
         String o = getJedis().debug(params);
         free();
@@ -3026,13 +2802,6 @@ public class JedisClient extends Jedis implements Serializable {
         getJedis().psubscribe(jedisPubSub, patterns);
         free();
         return;
-    }
-
-    @Override
-    public Long getDB() {
-        Long o = getJedis().getDB();
-        free();
-        return o;
     }
 
     @Override
@@ -3134,20 +2903,6 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public List<byte[]> slowlogGetBinary() {
-        List<byte[]> o = getJedis().slowlogGetBinary();
-        free();
-        return o;
-    }
-
-    @Override
-    public List<byte[]> slowlogGetBinary(long entries) {
-        List<byte[]> o = getJedis().slowlogGetBinary(entries);
-        free();
-        return o;
-    }
-
-    @Override
     public Long objectRefcount(byte[] key) {
         Long o = getJedis().objectRefcount(key);
         free();
@@ -3204,13 +2959,6 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public Long pexpire(byte[] key, int milliseconds) {
-        Long o = getJedis().pexpire(key, milliseconds);
-        free();
-        return o;
-    }
-
-    @Override
     public Long pexpire(byte[] key, long milliseconds) {
         Long o = getJedis().pexpire(key, milliseconds);
         free();
@@ -3232,29 +2980,8 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public String psetex(byte[] key, int milliseconds, byte[] value) {
-        String o = getJedis().psetex(key, milliseconds, value);
-        free();
-        return o;
-    }
-
-    @Override
     public String psetex(byte[] key, long milliseconds, byte[] value) {
         String o = getJedis().psetex(key, milliseconds, value);
-        free();
-        return o;
-    }
-
-    @Override
-    public String set(byte[] key, byte[] value, byte[] nxxx) {
-        String o = getJedis().set(key, value, nxxx);
-        free();
-        return o;
-    }
-
-    @Override
-    public String set(byte[] key, byte[] value, byte[] nxxx, byte[] expx, int time) {
-        String o = getJedis().set(key, value, nxxx, expx, time);
         free();
         return o;
     }
@@ -3290,13 +3017,6 @@ public class JedisClient extends Jedis implements Serializable {
     @Override
     public List<String> time() {
         List<String> o = getJedis().time();
-        free();
-        return o;
-    }
-
-    @Override
-    public String migrate(byte[] host, int port, byte[] key, int destinationDb, int timeout) {
-        String o = getJedis().migrate(host, port, key, destinationDb, timeout);
         free();
         return o;
     }
@@ -3442,30 +3162,10 @@ public class JedisClient extends Jedis implements Serializable {
     }
 
     @Override
-    public List<GeoRadiusResponse> georadius(byte[] key, double longitude, double latitude, double radius, GeoUnit unit, GeoRadiusParam param) {
-        List<GeoRadiusResponse> o = getJedis().georadius(key, longitude, latitude, radius, unit, param);
-        free();
-        return o;
-    }
-
-    @Override
     public List<GeoRadiusResponse> georadiusByMember(byte[] key, byte[] member, double radius, GeoUnit unit) {
         List<GeoRadiusResponse> o = getJedis().georadiusByMember(key, member, radius, unit);
         free();
         return o;
     }
 
-    @Override
-    public List<GeoRadiusResponse> georadiusByMember(byte[] key, byte[] member, double radius, GeoUnit unit, GeoRadiusParam param) {
-        List<GeoRadiusResponse> o = getJedis().georadiusByMember(key, member, radius, unit, param);
-        free();
-        return o;
-    }
-
-    @Override
-    public List<byte[]> bitfield(byte[] key, byte[]... arguments) {
-        List<byte[]> o = getJedis().bitfield(key, arguments);
-        free();
-        return o;
-    }
 }

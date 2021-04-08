@@ -5,11 +5,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
-import redis.clients.jedis.JedisCommands;
 import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
+import redis.clients.jedis.commands.JedisCommands;
 
 /**
  * Created by zhangchuang on 16/2/17.
@@ -24,6 +24,10 @@ public final class RedisClient implements Serializable {
 
     protected RedisClient(String id) {
         this.id = id;
+    }
+
+    public String getId(){
+        return id;
     }
 
     public static synchronized Object get(String id) {
@@ -64,11 +68,11 @@ public final class RedisClient implements Serializable {
             if (object instanceof JedisPool) {
                 return (JedisPool) object;
             } else if (object instanceof JedisCluster) {
-                throw new UnsupportedOperationException("target is not Jedis cluster type. jedis cluster type");
+                throw new UnsupportedOperationException("target is not Jedis cluster type. jedis cluster type in "+id);
             } else if (object instanceof JedisCommands) {
-                throw new UnsupportedOperationException("target is not Jedis Pool type and not Jedis cluster type. try used jedis Commands");
+                throw new UnsupportedOperationException("target is not Jedis Pool type and not Jedis cluster type. try used jedis Commands in "+id);
             } else {
-                throw new RuntimeException("not support the target type:" + object.getClass());
+                throw new RuntimeException("not support the target type:" + object.getClass()+" at id "+id);
             }
         } else {
             throw new RuntimeException("has not found any redis command support");
@@ -81,11 +85,11 @@ public final class RedisClient implements Serializable {
             if (object instanceof JedisCluster) {
                 return (JedisCluster) object;
             } else if (object instanceof JedisPool) {
-                throw new UnsupportedOperationException("target is not Jedis Pool type. is Jedis cluster type");
+                throw new UnsupportedOperationException("target is not Jedis Pool type. is Jedis cluster type in "+id);
             } else if (object instanceof JedisCommands) {
-                throw new UnsupportedOperationException("target is not Jedis Pool type and not Jedis cluster. try used jedis Commands");
+                throw new UnsupportedOperationException("target is not Jedis Pool type and not Jedis cluster. try used jedis Commands in "+id);
             } else {
-                throw new RuntimeException("not support the target type:" + object.getClass());
+                throw new RuntimeException("not support the target type:" + object.getClass()+" at id "+id);
             }
         } else {
             throw new RuntimeException("has not found any redis command support");
@@ -114,10 +118,10 @@ public final class RedisClient implements Serializable {
                 return (JedisCommands) object;
             } else if (object instanceof JedisPool) {
                 JedisPool jedisPool = (JedisPool) object;
-                logger.debug("take a jedis command and need human to release.");
+                logger.debug("take a jedis command and need human to release. "+id);
                 return jedisPool.getResource();
             } else {
-                throw new RuntimeException("not support the target type:" + object.getClass());
+                throw new RuntimeException("not support the target type:" + object.getClass()+" at id "+id);
             }
         } else {
             throw new RuntimeException("has not found any redis command support about " + JedisCommands.class.getName());
@@ -183,11 +187,7 @@ public final class RedisClient implements Serializable {
                 j.close();
             } else if (object instanceof JedisCluster) {
                 JedisCluster jedisCluster = (JedisCluster) object;
-                try {
-                    jedisCluster.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                jedisCluster.close();
             } else if (object instanceof JedisPool) {
                 JedisPool jedisPool = (JedisPool) object;
                 jedisPool.close();
