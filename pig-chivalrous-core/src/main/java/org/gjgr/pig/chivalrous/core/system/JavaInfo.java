@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
+
 /**
  * 代表Java Implementation的信息。
  */
-public class JavaInfo {
+public class JavaInfo implements Serializable {
 
     private final String JAVA_VERSION = JavaSystemCommand.get("java.version", false);
     private final float JAVA_VERSION_FLOAT = getJavaVersionAsFloat();

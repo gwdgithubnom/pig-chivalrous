@@ -1,16 +1,12 @@
 package org.gjgr.pig.chivalrous.core.json;
 
-import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
-import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
-
 /**
  * JSON支持<br>
  * 继承此类实现实体类与JSON的相互转换
  *
  * @author Looly
  */
-public class SupportJson implements StringJson {
-
+public class SupportJson implements JsonString {
     /**
      * Json String转Bean
      *
@@ -33,6 +29,11 @@ public class SupportJson implements StringJson {
         return toJSON().toString();
     }
 
+    @Override
+    public String toJSONString(int indentFactor) throws JsonException {
+        return toJSON().toJSONString();
+    }
+
     /**
      * 美化的JSON（使用回车缩进显示JSON），用于打印输出debug
      *
@@ -46,4 +47,5 @@ public class SupportJson implements StringJson {
     public String toString() {
         return toJSONString();
     }
+
 }

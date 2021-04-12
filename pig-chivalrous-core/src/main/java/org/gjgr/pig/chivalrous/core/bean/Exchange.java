@@ -1,5 +1,7 @@
 package org.gjgr.pig.chivalrous.core.bean;
 
+import java.io.Serializable;
+
 /**
  * @Author gwd
  * @Time 12-12-2018 Wednesday
@@ -7,5 +9,5 @@ package org.gjgr.pig.chivalrous.core.bean;
  * @Target:
  * @More:
  */
-public class Exchange {
+public class Exchange implements Serializable {
 }

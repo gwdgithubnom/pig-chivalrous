@@ -2,8 +2,8 @@ package org.gjgr.pig.chivalrous.core.xml;
 
 import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
 import org.gjgr.pig.chivalrous.core.json.JsonException;
-import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
-import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
+import org.gjgr.pig.chivalrous.core.json.ListJson;
+import org.gjgr.pig.chivalrous.core.json.MapJson;
 
 import java.util.Iterator;
 

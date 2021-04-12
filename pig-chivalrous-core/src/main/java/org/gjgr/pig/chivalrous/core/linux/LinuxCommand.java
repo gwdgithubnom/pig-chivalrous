@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.linux;
 
+import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +14,7 @@ import java.io.InputStreamReader;
  * @Target:
  * @More:
  */
-public abstract class LinuxCommand {
+public abstract class LinuxCommand implements Serializable {
 
     protected Logger logger = LoggerFactory.getLogger(LinuxCommand.class);
     protected String command;

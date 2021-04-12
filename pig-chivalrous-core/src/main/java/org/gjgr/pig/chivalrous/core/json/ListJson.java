@@ -1,10 +1,4 @@
-package org.gjgr.pig.chivalrous.core.json.bean;
-
-import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-import org.gjgr.pig.chivalrous.core.json.JsonException;
-import org.gjgr.pig.chivalrous.core.json.JsonGetter;
-import org.gjgr.pig.chivalrous.core.json.JsonTokener;
+package org.gjgr.pig.chivalrous.core.json;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -21,7 +15,7 @@ import java.util.ListIterator;
  *
  * @author looly
  */
-public class ListJson extends JsonGetter<Integer> implements Json, List<Object> {
+public class ListJson extends JsonGetter<Integer> implements StringJson, List<Object> {
 
     /**
      * 持有原始数据的List
@@ -272,6 +266,11 @@ public class ListJson extends JsonGetter<Integer> implements Json, List<Object> 
         } catch (IOException e) {
             throw new JsonException(e);
         }
+    }
+
+    @Override
+    public String toJSONString() {
+        return toJSONString(0);
     }
 
     /**

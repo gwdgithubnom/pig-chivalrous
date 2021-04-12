@@ -1,12 +1,7 @@
-package org.gjgr.pig.chivalrous.core.json.bean;
+package org.gjgr.pig.chivalrous.core.json;
 
 import com.google.gson.JsonParser;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
-import org.gjgr.pig.chivalrous.core.json.InternalJsonUtil;
-import org.gjgr.pig.chivalrous.core.json.JsonCommand;
-import org.gjgr.pig.chivalrous.core.json.JsonException;
-import org.gjgr.pig.chivalrous.core.json.JsonGetter;
-import org.gjgr.pig.chivalrous.core.json.JsonTokener;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
@@ -34,7 +29,7 @@ import java.util.Set;
  *
  * @author looly
  */
-public class MapJson extends JsonGetter<String> implements Json, Map<String, Object> {
+public class MapJson extends JsonGetter<String> implements StringJson, Map<String, Object> {
 
     /**
      * JSON的KV持有Map
@@ -506,6 +501,11 @@ public class MapJson extends JsonGetter<String> implements Json, Map<String, Obj
         } catch (IOException exception) {
             throw new JsonException(exception);
         }
+    }
+
+    @Override
+    public String toJSONString() {
+        return toJSONString(0);
     }
 
     /**

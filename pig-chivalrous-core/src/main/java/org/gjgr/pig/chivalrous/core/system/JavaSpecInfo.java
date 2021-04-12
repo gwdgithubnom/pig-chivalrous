@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
+
 /**
  * 代表Java Specification的信息。
  */
-public class JavaSpecInfo {
+public class JavaSpecInfo implements Serializable {
 
     private final String JAVA_SPECIFICATION_NAME = JavaSystemCommand.get("java.specification.name", false);
     private final String JAVA_SPECIFICATION_VERSION = JavaSystemCommand.get("java.specification.version", false);

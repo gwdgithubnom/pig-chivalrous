@@ -16,6 +16,7 @@
 
 package org.gjgr.pig.chivalrous.core.kit;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.core.lang.ConstEnumStringValue;
 
 import java.io.File;
@@ -28,7 +29,7 @@ import java.util.Properties;
 /**
  * Prop. Prop can load properties file from CLASSPATH or File object.
  */
-public class Prop {
+public class Prop implements Serializable {
 
     private Properties properties = null;
 

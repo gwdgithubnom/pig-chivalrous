@@ -29,7 +29,7 @@ import java.util.Map;
  * @More:
  */
 public class UriBuilder implements Serializable {
-
+    protected static final long serialVersionUID = 1024L;
     private String scheme;
     private String encodedSchemeSpecificPart;
     private String encodedAuthority;

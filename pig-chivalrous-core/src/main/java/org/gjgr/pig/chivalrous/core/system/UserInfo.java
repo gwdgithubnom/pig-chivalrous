@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
+
 /**
  * 代表当前用户的信息。
  */
-public class UserInfo {
+public class UserInfo implements Serializable {
 
     private final String USER_NAME = JavaSystemCommand.get("user.name", false);
     private final String USER_HOME = JavaSystemCommand.get("user.home", false);

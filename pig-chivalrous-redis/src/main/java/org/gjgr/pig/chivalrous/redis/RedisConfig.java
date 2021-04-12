@@ -1,6 +1,9 @@
 package org.gjgr.pig.chivalrous.redis;
 
 import java.io.Serializable;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.gjgr.pig.chivalrous.core.json.GsonObject;
+import org.gjgr.pig.chivalrous.core.json.JsonCommand;
 import org.gjgr.pig.chivalrous.log.SystemLogger;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
@@ -29,26 +32,32 @@ public final class RedisConfig implements Serializable {
     private int maxAttempts = 5;
     private int connectionTimeout = 10000;
     private String password;
+    private GsonObject gsonObject = new GsonObject();
 
     /**
      * default is JedisPool
      */
     private int status = 0;
 
-    private JedisPoolConfig genericObjectPoolConfig = new JedisPoolConfig();
 
     public int status() {
         return status;
     }
 
-    public int setNoCluster() {
+    public JedisPoolConfig setNoCluster() {
         status = -1;
+        JedisPoolConfig genericObjectPoolConfig = new JedisPoolConfig();
         genericObjectPoolConfig.setTestWhileIdle(true);
         genericObjectPoolConfig.setMinEvictableIdleTimeMillis(60000);
         genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(30000);
         genericObjectPoolConfig.setNumTestsPerEvictionRun(-1);
         genericObjectPoolConfig.setTestWhileIdle(true);
-        return status;
+        gsonObject = JsonCommand.gsonObject(genericObjectPoolConfig);
+        return genericObjectPoolConfig;
+    }
+
+    public GenericObjectPoolConfig buildGenericObjectPoolConfig(){
+        return JsonCommand.fromJson(gsonObject.toString(),GenericObjectPoolConfig.class);
     }
 
     public RedisConfig getCluster() {
@@ -121,14 +130,6 @@ public final class RedisConfig implements Serializable {
 
     public void setBase(Set<HostAndPort> base) {
         this.base = base;
-    }
-
-    public JedisPoolConfig getGenericObjectPoolConfig() {
-        return genericObjectPoolConfig;
-    }
-
-    public void setGenericObjectPoolConfig(JedisPoolConfig genericObjectPoolConfig) {
-        this.genericObjectPoolConfig = genericObjectPoolConfig;
     }
 
     public boolean add(String url, String port) {
@@ -280,10 +281,10 @@ public final class RedisConfig implements Serializable {
             JedisPool jedisPool = null;
             HostAndPort hostAndPort = base.iterator().next();
             if (password == null) {
-                jedisPool = new JedisPool(genericObjectPoolConfig, hostAndPort.getHost(), hostAndPort.getPort(),
+                jedisPool = new JedisPool(buildGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort(),
                         timeout, password);
             } else {
-                jedisPool = new JedisPool(genericObjectPoolConfig, hostAndPort.getHost(), hostAndPort.getPort(),
+                jedisPool = new JedisPool(buildGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort(),
                         timeout);
             }
             return jedisPool;
@@ -294,10 +295,10 @@ public final class RedisConfig implements Serializable {
             JedisCluster jedisCluster = null;
             if (password == null) {
                 jedisCluster =
-                        new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, genericObjectPoolConfig);
+                        new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts,buildGenericObjectPoolConfig());
             } else {
                 jedisCluster = new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, password,
-                        genericObjectPoolConfig);
+                    JsonCommand.fromJson(gsonObject.toString(), GenericObjectPoolConfig.class));
             }
             return jedisCluster;
         }

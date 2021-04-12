@@ -6,7 +6,8 @@ import org.apache.http.NameValuePair;
 import org.gjgr.pig.chivalrous.core.Command;
 import org.gjgr.pig.chivalrous.core.entity.Message;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
+import org.gjgr.pig.chivalrous.core.json.MapJson;
+import org.gjgr.pig.chivalrous.core.json.GsonObject;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.net.UriBuilder;
@@ -368,7 +369,8 @@ public final class MailCommand {
                 result = string.replaceAll(Pattern.quote("{{row}}"), row);
                 result = result.replaceAll(Pattern.quote("{{column}}"), row);
             } else if (object instanceof MapJson) {
-                // skip
+            } else if (object instanceof GsonObject) {
+                throw new RuntimeException("did not implement the method of GsonObject"); // skip
             } else {
                 logger.warn("did not support other type.");
             }

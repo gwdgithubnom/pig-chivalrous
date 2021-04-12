@@ -1,13 +1,9 @@
 package org.gjgr.pig.chivalrous.core.json;
 
+import com.google.gson.JsonNull;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.convert.ConvertException;
 import org.gjgr.pig.chivalrous.core.convert.ConverterRegistry;
-import org.gjgr.pig.chivalrous.core.json.bean.Json;
-import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
-import org.gjgr.pig.chivalrous.core.json.bean.NullJson;
-import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
-import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
 import org.gjgr.pig.chivalrous.core.lang.BeanUtil;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
@@ -39,12 +35,12 @@ public final class InternalJsonUtil {
      * @throws JsonException
      * @throws IOException
      */
-    public static final Writer writeValue(Writer writer, Object value, int indentFactor, int indent)
+    protected static final Writer writeValue(Writer writer, Object value, int indentFactor, int indent)
             throws JsonException, IOException {
         if (value == null || value.equals(null)) {
             writer.write("null");
-        } else if (value instanceof Json) {
-            ((Json) value).write(writer, indentFactor, indent);
+        } else if (value instanceof StringJson) {
+            ((StringJson) value).write(writer, indentFactor, indent);
         } else if (value instanceof Map) {
             new MapJson((Map<?, ?>) value).write(writer, indentFactor, indent);
         } else if (value instanceof Collection) {
@@ -76,7 +72,7 @@ public final class InternalJsonUtil {
      * @param indent
      * @throws IOException
      */
-    public static final void indent(Writer writer, int indent) throws IOException {
+    protected static final void indent(Writer writer, int indent) throws IOException {
         for (int i = 0; i < indent; i += 1) {
             writer.write(' ');
         }
@@ -88,7 +84,7 @@ public final class InternalJsonUtil {
      * @param obj 被检查的对象
      * @throws JsonException If o is a non-finite number.
      */
-    public static void testValidity(Object obj) throws JsonException {
+    protected static void testValidity(Object obj) throws JsonException {
         if (false == ObjectCommand.isValidIfNumber(obj)) {
             throw new JsonException("Json does not allow non-finite numbers.");
         }
@@ -109,7 +105,7 @@ public final class InternalJsonUtil {
      * @return 字符串
      * @throws JsonException If the value is or contains an invalid number.
      */
-    public static String valueToString(Object value) throws JsonException {
+    protected static String valueToString(Object value) throws JsonException {
         if (value == null || value.equals(null)) {
             return "null";
         }
@@ -151,10 +147,10 @@ public final class InternalJsonUtil {
         if (StringCommand.EMPTY.equals(string)) {
             return string;
         }
-        if ("true".equalsIgnoreCase(string)) {
+        if ("true".equalsIgnoreCase(string.toLowerCase())) {
             return Boolean.TRUE;
         }
-        if ("false".equalsIgnoreCase(string)) {
+        if ("false".equalsIgnoreCase(string.toLowerCase())) {
             return Boolean.FALSE;
         }
 
@@ -195,7 +191,7 @@ public final class InternalJsonUtil {
      * @param value      值
      * @return JsonObject
      */
-    public static MapJson propertyPut(MapJson mapJson, Object key, Object value) {
+    protected static MapJson propertyPut(MapJson mapJson, Object key, Object value) {
         String keyStr = Convert.toStr(key);
         String[] path = StringCommand.split(keyStr, StringCommand.DOT);
         int last = path.length - 1;
@@ -221,7 +217,7 @@ public final class InternalJsonUtil {
      * @param ignoreError 是否忽略转换错误
      * @return 目标Bean
      */
-    public static <T> T toBean(final MapJson mapJson, T bean, final boolean ignoreError) {
+    protected static <T> T toBean(final MapJson mapJson, T bean, final boolean ignoreError) {
         return BeanUtil.fillBean(bean, new BeanUtil.ValueProvider<String>() {
 
             @Override
@@ -247,7 +243,7 @@ public final class InternalJsonUtil {
      * @return 目标类型的值
      * @throws ConvertException 转换失败
      */
-    public static <T> T jsonConvert(Class<T> type, Object value, boolean ignoreError) throws ConvertException {
+    protected static <T> T jsonConvert(Class<T> type, Object value, boolean ignoreError) throws ConvertException {
         if (null == value) {
             return null;
         }

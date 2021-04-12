@@ -1,11 +1,12 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * 代表当前运行的JRE的信息。
  */
-public class JavaRuntimeInfo {
+public class JavaRuntimeInfo implements Serializable {
 
     private final String JAVA_RUNTIME_NAME = JavaSystemCommand.get("java.runtime.name", false);
     private final String JAVA_RUNTIME_VERSION = JavaSystemCommand.get("java.runtime.version", false);

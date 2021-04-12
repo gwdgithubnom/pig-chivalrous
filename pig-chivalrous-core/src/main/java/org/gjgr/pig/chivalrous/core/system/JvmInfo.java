@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
+
 /**
  * 代表Java Virtual Machine Implementation的信息。
  */
-public class JvmInfo {
+public class JvmInfo implements Serializable {
 
     private final String JAVA_VM_NAME = JavaSystemCommand.get("java.vm.name", false);
     private final String JAVA_VM_VERSION = JavaSystemCommand.get("java.vm.version", false);
