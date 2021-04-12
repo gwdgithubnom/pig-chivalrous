@@ -1,8 +1,9 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 
-public class RuntimeInfo {
+public class RuntimeInfo implements Serializable {
 
     private Runtime currentRuntime = Runtime.getRuntime();
 

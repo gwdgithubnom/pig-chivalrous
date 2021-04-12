@@ -1,10 +1,5 @@
 package org.gjgr.pig.chivalrous.core.json;
 
-import java.io.Writer;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
-import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
-import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
-
 /**
  * JSON支持<br>
  * 继承此类实现实体类与JSON的相互转换
@@ -12,7 +7,6 @@ import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
  * @author Looly
  */
 public class SupportJson implements JsonString {
-
     /**
      * Json String转Bean
      *

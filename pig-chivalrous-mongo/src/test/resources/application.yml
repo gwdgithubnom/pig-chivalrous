@@ -1,0 +1,3 @@
+mongodb:
+    default:
+        mongodb://root:123@10.221.96.138:27017?database=test

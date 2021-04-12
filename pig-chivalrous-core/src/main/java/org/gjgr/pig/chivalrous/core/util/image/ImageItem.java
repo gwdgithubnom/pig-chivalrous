@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
+import java.io.Serializable;
 
 /**
  * @Author gwd
@@ -12,7 +13,7 @@ import java.awt.image.ImageProducer;
  * @Target:
  * @More:
  */
-public class ImageItem extends Image {
+public class ImageItem extends Image implements Serializable {
 
     @Override
     public int getWidth(ImageObserver observer) {

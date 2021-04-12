@@ -1,5 +1,6 @@
-package org.gjgr.pig.chivalrous.core.json.bean;
+package org.gjgr.pig.chivalrous.core.json;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.core.json.JsonException;
 
 import java.io.Writer;
@@ -9,7 +10,7 @@ import java.io.Writer;
  *
  * @author Looly
  */
-public interface JsonString {
+public interface JsonString extends Serializable {
 
     /**
      * 自定义转JSON字符串的方法

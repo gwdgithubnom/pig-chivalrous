@@ -1,7 +1,6 @@
-package org.gjgr.pig.chivalrous.core.json.bean;
+package org.gjgr.pig.chivalrous.core.json;
 
 import java.io.Writer;
-import org.gjgr.pig.chivalrous.core.json.JsonException;
 
 /**
  * <code>JsonString</code>接口定义了一个<code>toJSONString()</code><br>

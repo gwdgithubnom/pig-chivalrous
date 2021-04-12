@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.media;
 
+import javax.imageio.ImageIO;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;

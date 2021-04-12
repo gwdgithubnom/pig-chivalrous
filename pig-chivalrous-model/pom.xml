@@ -2,7 +2,7 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20201112G-SNAPSHOT</version>
+        <version>0.0.1.20201204G-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.gjgr.pig</groupId>
@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <version>0.0.1.20201112G-SNAPSHOT</version>
+    <version>0.0.1.20201204G-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>org.gjgr.pig</groupId>

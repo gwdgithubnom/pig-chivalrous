@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.entity.view;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.core.entity.ItemStyle;
 import org.gjgr.pig.chivalrous.core.entity.Node;
 
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by gwd on 11/4/2016.
  */
-public class NodeList {
+public class NodeList implements Serializable {
     private String name = "undefine";
     private String type = "scatter";
     private boolean large = true;

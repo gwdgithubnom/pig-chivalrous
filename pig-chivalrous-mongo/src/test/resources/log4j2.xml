@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Properties>
+        <Property name="path">logs</Property>
+        <Property name="style">style</Property>
+        <Property name="yyyy">${date:yyyy}</Property>
+        <Property name="MM">${date:MM}</Property>
+        <Property name="dd">${date:dd}</Property>
+        <Property name="morePath">logs/more</Property>
+        <Property name="pattern">%d{MM-dd-yyyy HH:mm:ss.SSS} [%t] (%F:%L) %-5p - %marker %-5level %logger{36} ## %m%n
+        </Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="all" fileName="${path}/all.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="OFF" maxLevel="ALL" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="trace" fileName="${path}/trace.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="trace" maxLevel="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="debug" fileName="${path}/debug.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="debug" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="info" fileName="${path}/info.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="info" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="warn" fileName="${path}/warn.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="warn" maxLevel="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="error" fileName="${path}/error.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="error" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="fatal" fileName="${path}/fatal.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="fatal" maxLevel="FATAL" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="TRACE" fileName="${morePath}/TRACE.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="OFF" maxLevel="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="DEBUG" fileName="${morePath}/DEBUG.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="OFF" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="INFO" fileName="${morePath}/INFO.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="OFF" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="WARN" fileName="${morePath}/WARN.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="OFF" maxLevel="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="ERROR" fileName="${morePath}/ERROR.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="OFF" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="FATAL" fileName="${morePath}/FATAL.log" append="true"
+                     filePattern="${path}/$${date:yyyy}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <LevelRangeFilter minLevel="OFF" maxLevel="FATAL" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1" compressionLevel="9">
+                <Delete basePath="${path}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <IfLastModified age="7d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+
+        <!--  <MessageLogAppender name="marker">
+              <Filters>
+                  <MarkerFilter marker="SPIDER_JSON" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                  <MarkerFilter marker="SPIDER_STATUS" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                  <MarkerFilter marker="SPIDER_THREAD" onMatch="ACCEPT" onMismatch="DENY"/>
+              </Filters>
+              <PatternLayout pattern="%d{MM-dd-yyyy HH:mm:ss.SSS} [%t] %-5p (%F:%L) - %marker %-5level %logger{36} - %m%n"/>
+          </MessageLogAppender>-->
+    </Appenders>
+    <Loggers>
+        <logger name="org.gjgr" additivity="false" level="debug">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="all"/>
+            <AppenderRef ref="info"/>
+            <AppenderRef ref="debug"/>
+            <AppenderRef ref="warn"/>
+            <AppenderRef ref="error"/>
+            <AppenderRef ref="fatal"/>
+            <AppenderRef ref="trace"/>
+        </logger>
+        <Root level="warn">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

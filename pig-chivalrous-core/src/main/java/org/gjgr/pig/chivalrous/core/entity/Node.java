@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by gwd on 11/4/2016.
  */
-public class Node implements Cloneable {
+public class Node implements Serializable, Cloneable {
 
     private double x = 0;
     private double y = 0;

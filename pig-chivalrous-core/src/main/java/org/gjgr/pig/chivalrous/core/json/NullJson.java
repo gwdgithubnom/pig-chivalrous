@@ -1,4 +1,6 @@
-package org.gjgr.pig.chivalrous.core.json.bean;
+package org.gjgr.pig.chivalrous.core.json;
+
+import java.io.Serializable;
 
 /**
  * 用于定义<code>null</code>，与Javascript中null相对应<br>
@@ -6,7 +8,7 @@ package org.gjgr.pig.chivalrous.core.json.bean;
  *
  * @author Looly
  */
-public class NullJson {
+public class NullJson implements Serializable {
 
     /**
      * <code>NULL</code> 对象用于减少歧义来表示Java 中的<code>null</code> <br>

@@ -3,7 +3,7 @@ package org.gjgr.pig.chivalrous.web.http;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileUtil;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
+import org.gjgr.pig.chivalrous.core.json.JsonString;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.Base64;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;

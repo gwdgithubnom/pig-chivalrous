@@ -1,9 +1,11 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
+
 /**
  * 代表当前OS的信息。
  */
-public class OsInfo {
+public class OsInfo implements Serializable {
 
     private final String OS_VERSION = JavaSystemCommand.get("os.version", false);
     private final String OS_ARCH = JavaSystemCommand.get("os.arch", false);
@@ -56,6 +58,22 @@ public class OsInfo {
      */
     public final String getName() {
         return OS_NAME;
+    }
+
+    /**
+     * check the system is linux, windows, mac
+     * @return
+     */
+    public final String getOsType(){
+        if(isWindows()){
+            return "windows";
+        }else if(isLinux()){
+            return "linux";
+        }else if(isMac()){
+            return "mac";
+        }else{
+            return "others";
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by gwd on 11/4/2016.
  */
-public class NodeList {
+public class NodeList implements Serializable,Cloneable {
     private String name = "undefine";
     private String type = "scatter";
     private boolean large = true;

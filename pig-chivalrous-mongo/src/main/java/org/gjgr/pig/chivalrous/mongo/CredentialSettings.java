@@ -1,7 +1,10 @@
 package org.gjgr.pig.chivalrous.mongo;
 
 import com.google.gson.JsonObject;
+import java.io.Serializable;
+import org.gjgr.pig.chivalrous.core.json.GsonObject;
 import org.gjgr.pig.chivalrous.core.json.JsonCommand;
+import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 
 /**
  * @author gongwendong
@@ -10,27 +13,27 @@ import org.gjgr.pig.chivalrous.core.json.JsonCommand;
  * @target:
  * @more:
  */
-public class CredentialSettings {
+public class CredentialSettings implements Serializable {
+    protected static final long serialVersionUID = 1024L;
+
     private final String FIELD_USERNAME = "username";
     private final String FIELD_PASSWORD = "password";
     private final String FIELD_AUTH_DB = "authDB";
-
     private boolean auth;
-
     private String username;
     private String authDatabase;
     private String password;
 
     public void init(String string) {
-        JsonObject jsonObject = JsonCommand.jsonObject(string);
-        if (null == settingNode || settingNode.isMissingNode()) {
+        GsonObject settingNode = JsonCommand.gsonObject(string);
+        if (null == settingNode || settingNode.isJsonNull()) {
             auth = false;
         }
-        this.username = settingNode.path(FIELD_USERNAME).asText();
-        this.password = settingNode.path(FIELD_PASSWORD).asText();
-        this.authDatabase = settingNode.path(FIELD_AUTH_DB).asText();
+        this.username = settingNode.getAsString(FIELD_USERNAME);
+        this.password = settingNode.getAsString(FIELD_PASSWORD);
+        this.authDatabase = settingNode.getAsString(FIELD_AUTH_DB);
 
-        auth = StringUtils.isNotBlank(username) && StringUtils.isNotBlank(password) && StringUtils.isNotBlank(authDatabase);
+        auth = StringCommand.isNotBlank(username) && StringCommand.isNotBlank(password) && StringCommand.isNotBlank(authDatabase);
     }
 
     public String getUsername() {

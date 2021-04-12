@@ -1,8 +1,6 @@
 package org.gjgr.pig.chivalrous.core.json;
 
 import org.gjgr.pig.chivalrous.core.getter.OptNullBasicTypeFromObjectGetter;
-import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
-import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
 
 /**
  * 用于JSON的Getter类，提供各种类型的Getter方法

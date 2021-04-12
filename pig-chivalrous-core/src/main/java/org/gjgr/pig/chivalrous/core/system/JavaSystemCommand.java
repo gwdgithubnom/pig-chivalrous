@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.system;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.lang.Console;
 import org.gjgr.pig.chivalrous.core.lang.Singleton;
@@ -14,7 +15,7 @@ import java.util.Properties;
  *
  * @author Looly
  */
-public final class JavaSystemCommand {
+public final class JavaSystemCommand implements Serializable {
 
     /***** Java运行时环境信息 *****/
     // Java 运行时环境规范名称

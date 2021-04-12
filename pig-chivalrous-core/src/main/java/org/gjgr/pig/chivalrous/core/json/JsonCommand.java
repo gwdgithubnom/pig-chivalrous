@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -32,7 +33,10 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,18 +55,13 @@ import javax.lang.model.type.TypeVariable;
 import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
 import org.gjgr.pig.chivalrous.core.io.file.FileReader;
 import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
-import org.gjgr.pig.chivalrous.core.json.bean.JsonString;
-import org.gjgr.pig.chivalrous.core.json.bean.ListJson;
-import org.gjgr.pig.chivalrous.core.json.bean.NullJson;
-import org.gjgr.pig.chivalrous.core.json.bean.MapJson;
-import org.gjgr.pig.chivalrous.core.json.bean.StringJson;
+import org.gjgr.pig.chivalrous.core.json.strategy.SuperclassExclusionStrategy;
 import org.gjgr.pig.chivalrous.core.lang.ArrayCommand;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
 import org.gjgr.pig.chivalrous.core.xml.XmlBetweenJsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 /**
  * This class is used for ... ClassName: JSONHelper
  *
@@ -72,7 +71,6 @@ import org.slf4j.LoggerFactory;
  */
 public class JsonCommand {
 
-    private static GsonBuilder gsonBuilder = new GsonBuilder();
     private static Logger logger = LoggerFactory.getLogger(JsonCommand.class);
     private static ThreadLocal<Gson> gsonThreadLocal = ThreadLocal.withInitial(new Supplier<Gson>() {
         @Override
@@ -81,22 +79,36 @@ public class JsonCommand {
         }
     });
 
-    static {
-        gsonBuilder.serializeNulls();
-    }
+//    private static ThreadLocal<Gson> jsonThreadLocal = ThreadLocal.withInitial(new Supplier<Gson>() {
+//        @Override
+//        public Gson get() {
+//            GsonBuilder builder = new GsonBuilder();
+//            builder.addDeserializationExclusionStrategy(new SuperclassExclusionStrategy());
+//            builder.addSerializationExclusionStrategy(new SuperclassExclusionStrategy());
+//            return builder.create();
+//        }
+//    });
+
+//    private static GsonBuilder gsonBuilder = new GsonBuilder();
+//    static {
+//        gsonBuilder.serializeNulls();
+//    }
 
     public JsonCommand() {
         // TODO Auto-generated constructor stub
     }
 
+    @Deprecated
     public static JsonElement parseJsonElement(String str) {
         return new JsonParser().parse(str);
     }
 
+    @Deprecated
     public static <T> T parse(String str, TypeToken typeToken) {
         return new Gson().fromJson(str, typeToken.getType());
     }
 
+    @Deprecated
     public static <T> T parse(String str, Type type) {
         if (type instanceof ParameterizedType) {
             // Collection Map<String, Object> map Class<?> Holder<String>
@@ -116,17 +128,6 @@ public class JsonCommand {
         return jsonElement;
     }
 
-    /**
-     * 对象转换成json字符串
-     *
-     * @param obj
-     * @return
-     */
-    public static String toJson(Object obj) {
-        Gson gson = gsonThreadLocal.get();
-        return gson.toJson(obj);
-    }
-
     public static String json(Object object) {
         Gson gson = gsonThreadLocal.get();
         return gson.toJson(object);
@@ -142,11 +143,6 @@ public class JsonCommand {
         return new JsonParser().parse(str);
     }
 
-    public static com.google.gson.JsonArray jsonArray(Object object) {
-        String string = json(object);
-        com.google.gson.JsonArray jsonElement = jsonArray(string);
-        return jsonElement;
-    }
 
     public static com.google.gson.JsonArray listStringJsonArray(List<String> strings) {
         com.google.gson.JsonArray jsonArray = new com.google.gson.JsonArray();
@@ -162,6 +158,12 @@ public class JsonCommand {
 
     public static com.google.gson.JsonArray listStringJsonArray(Set<String> strings) {
         return listStringJsonArray(new LinkedList<>(strings));
+    }
+
+    public static com.google.gson.JsonArray jsonArray(Object object) {
+        String string = json(object);
+        com.google.gson.JsonArray jsonElement = jsonArray(string);
+        return jsonElement;
     }
 
     public static com.google.gson.JsonArray jsonArray(String str) {
@@ -186,6 +188,19 @@ public class JsonCommand {
         } else {
             return new com.google.gson.JsonObject();
         }
+    }
+
+    public static GsonObject gsonObject(Object object){
+        String string = json(object);
+        GsonObject jsonElement = gsonObject(string);
+        return jsonElement;
+    }
+
+    public static GsonObject gsonObject(String str){
+        JsonObject jsonObject = jsonObject(str);
+        GsonObject gsonObject = new GsonObject();
+        gsonObject.members.entrySet().addAll(jsonObject.entrySet());
+        return gsonObject;
     }
 
     /**
@@ -261,26 +276,9 @@ public class JsonCommand {
         return (T) obj;
     }
 
-    /**
-     * json字符串转成对象
-     *
-     * @param str
-     * @param type
-     * @return
-     */
-    public static <T> T fromJson(String str, Class<T> type) {
-        if (type.getName().equalsIgnoreCase(com.google.gson.JsonObject.class.getName())
-            || type.getName().equalsIgnoreCase(com.google.gson.JsonArray.class.getName())
-            || type.getName().equalsIgnoreCase(com.google.gson.JsonElement.class.getName())) {
-            return (T) type.cast(fromJson(str));
-        } else {
-            return (T) gsonThreadLocal.get().fromJson(str, type);
-        }
-    }
 
-    public static <T> T fromObject(Object object, Class<T> clazz) {
-        String json = JsonCommand.toJson(object);
-        return to(json, clazz);
+    public static <T> List<T> toArrayList(JsonElement jsonElement, Class<T> clazz) {
+        return toArrayList(toJson(jsonElement), clazz);
     }
 
     public static <T> List<T> toArrayList(String json, Class<T> clazz) {
@@ -295,6 +293,13 @@ public class JsonCommand {
         return list;
     }
 
+
+    public static <T> T[] toArray(String json, Class<T> clazz) {
+        Object[] array = (Object[]) java.lang.reflect.Array.newInstance(clazz, 0);
+        array = gsonThreadLocal.get().fromJson(json, array.getClass());
+        return (T[]) array;
+    }
+
     public static <T> List<T> toList(String json, Class<T> clazz) {
         // ArrayList<T> data= (ArrayList<T>) fromJson(json,
         // new TypeToken<ArrayList<T>>() {
@@ -303,21 +308,12 @@ public class JsonCommand {
         return toArrayList(json, clazz);
     }
 
-    public static <T> T[] toArray(String json, Class<T> clazz) {
-        Object[] array = (Object[]) java.lang.reflect.Array.newInstance(clazz, 0);
-        array = gsonThreadLocal.get().fromJson(json, array.getClass());
-        return (T[]) array;
-    }
-
-    public static <T> List<T> toArrayList(JsonElement jsonElement, Class<T> clazz) {
-        return toArrayList(toJson(jsonElement), clazz);
-    }
-
     public static <T> T to(String str, Class<T> clazz) {
         if (clazz.isArray()) {
-
+           return (T) toArray(str,clazz);
+        }else{
+            return fromJson(str, clazz);
         }
-        return fromJson(str, clazz);
     }
 
     public static <T> T to(JsonElement jsonElement, Class<T> clazz) {
@@ -325,9 +321,42 @@ public class JsonCommand {
         return to(string, clazz);
     }
 
-    public static JsonElement fromJson(String str) {
+    /**
+     * 对象转换成json字符串
+     *
+     * @param obj
+     * @return
+     */
+    public static String toJson(Object obj) {
+        Gson gson = gsonThreadLocal.get();
+        return gson.toJson(obj);
+    }
+
+    public static JsonElement toJsonElement(String str) {
         JsonParser jsonParser = new JsonParser();
         return jsonParser.parse(str);
+    }
+
+    public static <T> T fromObject(Object object, Class<T> clazz) {
+        String json = JsonCommand.toJson(object);
+        return to(json, clazz);
+    }
+
+    /**
+     * json字符串转成对象
+     *
+     * @param str
+     * @param type
+     * @return
+     */
+    public static <T> T fromJson(String str, Class<T> type) {
+        if (type.getName().equalsIgnoreCase(com.google.gson.JsonObject.class.getName())
+            || type.getName().equalsIgnoreCase(com.google.gson.JsonArray.class.getName())
+            || type.getName().equalsIgnoreCase(com.google.gson.JsonElement.class.getName())) {
+            return (T) type.cast(toJsonElement(str));
+        } else {
+            return (T) gsonThreadLocal.get().fromJson(str, type);
+        }
     }
 
     /**
@@ -1042,9 +1071,58 @@ public class JsonCommand {
         return left;
     }
 
-    public static com.google.gson.JsonObject mergeInRight(com.google.gson.JsonObject left,
-                                                          com.google.gson.JsonObject right) {
-        return mergeInLeft(right, left);
+    public static JsonPrimitive jsonPrimitive(Object object){
+        if (object instanceof String) {
+            return new JsonPrimitive(object.toString());
+        } else if (object instanceof Timestamp) {
+            return new JsonPrimitive(((Timestamp) object).getTime());
+        } else if (object instanceof Long) {
+            return new JsonPrimitive(((Long) object).longValue());
+        } else if (object instanceof Integer) {
+            return new JsonPrimitive(((Integer) object).intValue());
+        } else if (object instanceof Short) {
+            return new JsonPrimitive(((Short) object).shortValue());
+        } else if (object instanceof Character) {
+            return new JsonPrimitive((Character)object);
+        } else if (object instanceof Float) {
+            return new JsonPrimitive(((Float) object).floatValue());
+        } else if (object instanceof Double) {
+            return new JsonPrimitive(((Double) object).doubleValue());
+        } else if (object instanceof Boolean) {
+            return new JsonPrimitive(((Boolean) object).booleanValue());
+        } else if (object instanceof Byte) {
+            return new JsonPrimitive(((Byte) object).byteValue());
+        } else if (object instanceof BigDecimal) {
+            return new JsonPrimitive(((BigDecimal) object).toString());
+        } else if (object instanceof BigInteger) {
+            return new JsonPrimitive(object.toString());
+        } else if (object instanceof JsonElement) {
+            return new JsonPrimitive(object.toString());
+        } else if (object instanceof Map) {
+            return new JsonPrimitive(JsonCommand.jsonObject(object).toString());
+        } else if (object instanceof List) {
+            return new JsonPrimitive(JsonCommand.json(object));
+        } else if (object instanceof Set) {
+            return new JsonPrimitive(JsonCommand.json(object));
+        } else if (object.getClass() == int.class) {
+            return new JsonPrimitive(object.toString());
+        } else if (object.getClass() == long.class) {
+            return new JsonPrimitive(object.toString());
+        } else if (object.getClass() == double.class) {
+            return new JsonPrimitive(object.toString());
+        } else if (object.getClass() == float.class) {
+            return new JsonPrimitive(object.toString());
+        } else if (object.getClass() == short.class) {
+            return new JsonPrimitive(object.toString());
+        } else if (object.getClass() == byte.class) {
+            return new JsonPrimitive(object.toString());
+        } else if (object.getClass() == boolean.class) {
+            return new JsonPrimitive(object.toString());
+        } else if (object.getClass() == char.class) {
+            return new JsonPrimitive(object.toString());
+        } else {
+            throw new IllegalStateException("Type mapping implemented for Presto type: " + JsonCommand.toJson(object));
+        }
     }
 
 }

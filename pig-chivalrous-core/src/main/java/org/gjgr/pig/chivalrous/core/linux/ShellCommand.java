@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public abstract class ShellCommand extends Thread {
+public abstract class ShellCommand extends Thread implements Serializable {
 
     public static final String RWXR_XR_X = "rwxr-xr-x";
     public static final String PID = "pid";
