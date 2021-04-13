@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20201204G-SNAPSHOT</version>
+    <version>0.0.1.20201205G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -1498,19 +1498,21 @@
                         <skipSource>false</skipSource>
                     </configuration>
                     <executions>
+                        <!-- This id must match the -Prelease-profile id value or else sources will be "uploaded" twice, which causes Nexus to fail -->
                         <execution>
+                            <id>attach-sources</id>
                             <phase>compile</phase>
                             <goals>
                                 <goal>jar</goal>
                             </goals>
                         </execution>
-                        <execution>
-                            <id>deploy-sources</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
+<!--                        <execution>-->
+<!--                            <id>deploy-sources</id>-->
+<!--                            <phase>package</phase>-->
+<!--                            <goals>-->
+<!--                                <goal>jar</goal>-->
+<!--                            </goals>-->
+<!--                        </execution>-->
                     </executions>
                 </plugin>
                 <plugin>

@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20201204G-SNAPSHOT</version>
+        <version>0.0.1.20201205G-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -11,7 +11,7 @@
     <artifactId>pig-chivalrous-mongo</artifactId>
     <packaging>jar</packaging>
     <name>pig-chivalrous-mongo</name>
-    <version>0.0.1.20201204G-SNAPSHOT</version>
+    <version>0.0.1.20201205G-SNAPSHOT</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
