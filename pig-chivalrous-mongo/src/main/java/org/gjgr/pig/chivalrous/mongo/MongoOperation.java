@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @more: mongodb://localhost:27017
  */
 public class MongoOperation {
-    private static Logger logger = LoggerFactory.getLogger(MongoOperation.class);
+    private static final Logger logger = LoggerFactory.getLogger(MongoOperation.class);
     MongoConfiguration mongoConfiguration;
     MongoClient mongoClient;
 

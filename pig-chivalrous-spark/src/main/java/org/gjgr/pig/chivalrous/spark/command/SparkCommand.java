@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.function.Consumer;
 import org.apache.spark.SparkConf;
 import org.gjgr.pig.chivalrous.core.command.JavaCommand;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
 import picocli.CommandLine;
@@ -41,7 +42,7 @@ abstract class SparkCommand extends JavaCommand {
                 properties.load(inputStream);
             } catch (Error | Exception e) {
                 try {
-                    properties.load(FileCommand.getResource(filePath));
+                    properties.load(IoCommand.inputStream(filePath));
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }

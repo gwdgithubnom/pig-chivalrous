@@ -187,8 +187,8 @@ public class BufferImageCropTest {
         try {
             BufferImageCropTest jpg = new BufferImageCropTest();
             jpg.setPicScale(0.5); // 将原图片缩小一半
-            String srcFileName = LocationCommand.classPath() + File.separator + "1.jpg";
-            String targetFileName = LocationCommand.classPath() + File.separator + "100.jpg";
+            String srcFileName = LocationCommand.getClassDir() + File.separator + "1.jpg";
+            String targetFileName = LocationCommand.getClassDir() + File.separator + "100.jpg";
             jpg.transform(srcFileName, targetFileName);
         } catch (Exception e) {
             e.printStackTrace();

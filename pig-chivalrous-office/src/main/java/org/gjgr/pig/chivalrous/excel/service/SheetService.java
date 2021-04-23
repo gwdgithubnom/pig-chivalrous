@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SheetService {
 
-    private Logger logger = LoggerFactory.getLogger(SheetService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(SheetService.class.getName());
 
     private Sheet sheet = null;
 

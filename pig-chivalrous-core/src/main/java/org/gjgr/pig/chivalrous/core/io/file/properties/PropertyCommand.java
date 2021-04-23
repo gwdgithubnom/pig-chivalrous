@@ -42,7 +42,7 @@ public class PropertyCommand {
         Properties p = new Properties();
         for (String path : paths) {
             try {
-                p.load(FileCommand.inputStream(path));
+                p.load(IoCommand.inputStream(path));
             } catch (IOException e) {
                 e.printStackTrace();
             }

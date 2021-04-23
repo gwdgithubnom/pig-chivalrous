@@ -7,7 +7,7 @@ import org.slf4j.helpers.MessageFormatter;
 
 public class SystemLogger {
 
-    private static Logger logger = LoggerFactory.getLogger(SystemLogger.class);
+    private static final Logger logger = LoggerFactory.getLogger(SystemLogger.class);
 
     public static boolean info(String string, Object... objects) {
         logger.info(string, objects);

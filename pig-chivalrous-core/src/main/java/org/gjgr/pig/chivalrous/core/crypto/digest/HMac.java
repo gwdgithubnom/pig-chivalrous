@@ -152,7 +152,7 @@ public class HMac {
     public byte[] digest(File file) {
         InputStream in = null;
         try {
-            in = FileCommand.bufferedInputStream(file);
+            in = IoCommand.bufferedInputStream(file);
             return digest(in);
         } catch (IOException e) {
             throw new CryptoException(e);

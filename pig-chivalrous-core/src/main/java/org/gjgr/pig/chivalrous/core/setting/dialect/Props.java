@@ -350,7 +350,7 @@ public final class Props extends Properties implements BasicTypeGetter<String>, 
     public void store(String absolutePath) {
         try {
             FileCommand.touch(absolutePath);
-            super.store(FileCommand.bufferedOutputStream(absolutePath), null);
+            super.store(IoCommand.bufferedOutputStream(absolutePath), null);
         } catch (FileNotFoundException e) {
             // 不会出现这个异常
         } catch (IOException e) {

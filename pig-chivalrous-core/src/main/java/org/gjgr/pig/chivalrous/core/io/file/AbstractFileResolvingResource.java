@@ -123,7 +123,7 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
         if (url.getProtocol().startsWith(FileCommand.URL_PROTOCOL_VFS)) {
             return VfsResourceDelegate.getResource(url).getFile();
         }
-        return FileCommand.getFile(url, getDescription());
+        return FileCommand.file(url);
     }
 
     /**
@@ -186,7 +186,7 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
             if (actualUrl.getProtocol().startsWith(FileCommand.URL_PROTOCOL_VFS)) {
                 return VfsResourceDelegate.getResource(actualUrl).getFile();
             }
-            return FileCommand.getFile(actualUrl, "Jar URL");
+            return FileCommand.file(actualUrl);
         } else {
             return getFile();
         }
@@ -220,7 +220,7 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
         if (uri.getScheme().startsWith(FileCommand.URL_PROTOCOL_VFS)) {
             return VfsResourceDelegate.getResource(uri).getFile();
         }
-        return FileCommand.getFile(uri, getDescription());
+        return FileCommand.file(uri);
     }
 
     /**

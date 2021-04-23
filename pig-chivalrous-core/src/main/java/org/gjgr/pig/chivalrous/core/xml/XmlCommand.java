@@ -62,7 +62,7 @@ public class XmlCommand {
      * 在XML中无效的字符 正则
      */
     public static final String INVALID_REGEX = "[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]";
-    private static Logger logger = LoggerFactory.getLogger(XmlCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(XmlCommand.class);
 
     // -------------------------------------------------------------------------------------- Read
 

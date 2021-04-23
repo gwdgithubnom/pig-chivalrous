@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * @More:
  */
 public class UriCommand {
-    private static Logger logger = LoggerFactory.getLogger(UriCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(UriCommand.class);
 
     public static UriBuilder uriBuilder() {
         return new UriBuilder();
@@ -302,7 +302,7 @@ public class UriCommand {
      * @return 相对路径
      * @throws UtilException MalformedURLException
      */
-    public static String complateUrl(String baseUrl, String relativePath) {
+    public static String completeUrl(String baseUrl, String relativePath) {
         baseUrl = formatUrl(baseUrl);
         if (StringCommand.isBlank(baseUrl)) {
             return null;
@@ -392,6 +392,12 @@ public class UriCommand {
      * @throws URISyntaxException
      */
     public static URI toURI(URL url) {
+        AssertCommand.notNull(url, "Resource URL must not be null");
+        if (!"file".equals(url.getProtocol())) {
+            logger.warn(
+                url + " cannot be resolved to absolute file path " +
+                    "because it does not reside in the file system: ");
+        }
         return toURI(url.toString());
     }
 

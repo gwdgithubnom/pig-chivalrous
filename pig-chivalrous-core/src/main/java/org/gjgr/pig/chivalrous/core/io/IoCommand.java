@@ -1,8 +1,12 @@
 package org.gjgr.pig.chivalrous.core.io;
 
+import java.net.URL;
 import org.apache.commons.lang3.StringUtils;
 import org.gjgr.pig.chivalrous.core.convert.Convert;
 import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
+import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
+import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
+import org.gjgr.pig.chivalrous.core.io.stream.BOMInputStream;
 import org.gjgr.pig.chivalrous.core.io.stream.FastByteArrayOutputStream;
 import org.gjgr.pig.chivalrous.core.io.stream.StreamProgress;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
@@ -41,6 +45,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * IO工具类
@@ -63,6 +69,7 @@ public final class IoCommand {
     public static final int EOF = -1;
     private static final String DEFAULT_ENCODING = Charset.defaultCharset().name();
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final Logger logger = LoggerFactory.getLogger(IoCommand.class);
 
     private IoCommand() {
     }
@@ -853,18 +860,227 @@ public final class IoCommand {
      * @see java.lang.ClassLoader#getResourceAsStream(String)
      * @see java.lang.Class#getResourceAsStream(String)
      */
-    public InputStream getInputStream(Class clazz, String path, ClassLoader classLoader) throws IOException {
-        InputStream is;
-        if (clazz != null) {
-            is = clazz.getResourceAsStream(path);
-        } else if (classLoader != null) {
-            is = classLoader.getResourceAsStream(path);
-        } else {
-            is = ClassLoader.getSystemResourceAsStream(path);
+    public static InputStream getInputStream(String path, Class clazz, ClassLoader classLoader) {
+        InputStream is = null;
+        if(FileCommand.isExist(path)){
+            try {
+                is =  new FileInputStream(path);
+            } catch (FileNotFoundException e) {
+                logger.error("found in File, but load file failed {}",path);
+            }
+        }else {
+            String dir = LocationCommand.userDir();
+            if(FileCommand.isExist(dir+File.separator+path)){
+                try {
+                    is =  new FileInputStream(dir+File.separator+path);
+                } catch (FileNotFoundException e) {
+                    logger.error("found in File, but load file failed {}",path);
+                }
+            }
         }
+        if(is ==null){
+            if (clazz != null) {
+                is = clazz.getResourceAsStream(path);
+                if (is ==null && classLoader != null) {
+                    is = classLoader.getResourceAsStream(path);
+                }else{
+                    is = clazz.getClassLoader().getResourceAsStream(path);
+                    if(is==null){
+                        is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+                        logger.warn("failed read by {}, use loader {}",clazz,Thread.currentThread().getContextClassLoader());
+                    }
+                }
+            }else{
+                is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+            }
+        }
+
         if (is == null) {
-            throw new FileNotFoundException(path + " cannot be opened because it does not exist");
+            logger.warn(path + " cannot be opened because it does not exist");
         }
         return is;
     }
+
+    public static InputStream tryInputStreamUserSystemExternal(String path,Class clazz, ClassLoader classLoader) {
+        InputStream inputStream;
+        if (System.getenv(path) != null) {
+            if (FileCommand.isExist(System.getenv(path))) {
+                inputStream = getInputStream(System.getProperty(path),clazz,classLoader);
+            } else {
+                inputStream = null;
+            }
+        } else {
+            inputStream = null;
+        }
+        if (inputStream == null) {
+            if (FileCommand.isExist(System.getProperty(path))) {
+                try {
+                    inputStream = getInputStream(System.getProperty(path),clazz,classLoader);
+                } catch (RuntimeException e) {
+                    inputStream = null;
+                }
+            } else {
+                inputStream = null;
+            }
+        }
+        return inputStream;
+    }
+
+
+    public static InputStream tryInputStreamUserSystemDefault(String key, String filename,Class clazz,ClassLoader classLoader) {
+        InputStream inputStream;
+        if (System.getProperty(key) != null) {
+            if (FileCommand.isExist(System.getProperty(key) + File.separator + (filename))) {
+                try {
+                    inputStream = getInputStream(System.getProperty(key) + File.separator + (filename),clazz,classLoader);
+                } catch (RuntimeException e) {
+                    inputStream = null;
+                }
+            } else {
+                inputStream = null;
+            }
+        } else {
+            inputStream = null;
+        }
+        if (inputStream == null) {
+            if (System.getenv(key) != null) {
+                if (FileCommand.isExist(System.getenv(key) + File.separator + (filename))) {
+                    try {
+                        inputStream = getInputStream(System.getenv(key) + File.separator + (filename),clazz,classLoader);
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    inputStream = null;
+                }
+            } else {
+                inputStream = null;
+            }
+        }
+        return inputStream;
+    }
+
+
+    public static InputStream inputStream(String path,Class clazz,ClassLoader classLoader) {
+        InputStream inputStream;
+        try {
+            inputStream = getInputStream(path,clazz,classLoader);
+        } catch (RuntimeException e) {
+            logger.error("failed read data ",e);
+            e.printStackTrace();
+            inputStream = null;
+        }
+        if (inputStream == null) {
+            inputStream = tryInputStreamUserSystemExternal(path,clazz,classLoader);
+            if(inputStream==null){
+                // LocationCommand.path(path)
+                inputStream = tryInputStreamUserSystemDefault("user.dir", path,clazz,classLoader);
+                if (inputStream == null) {
+                    inputStream = tryInputStreamUserSystemDefault("basedir", path,clazz,classLoader);
+                }
+                if (inputStream == null) {
+                    logger.warn("should define the {} file location.", path);
+                }
+            }
+        }
+        return inputStream;
+    }
+
+    /**
+     * find file by clazz path location, and return the @See InputStreem
+     *
+     * @param clazz
+     * @param path
+     * @return
+     */
+    public static InputStream inputStream(String path,Class clazz) {
+        return inputStream(path,clazz,null);
+    }
+
+
+    public static InputStream inputStream(String path){
+        return inputStream(path,null,null);
+    }
+
+    /**
+     * 获得输入流
+     *
+     * @param file 文件
+     * @return 输入流
+     * @throws FileNotFoundException
+     */
+    public static BufferedInputStream bufferedInputStream(File file) throws FileNotFoundException {
+        return new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
+    }
+
+    public static BufferedInputStream bufferedInputStream(InputStream inputStream){
+        return new BufferedInputStream(inputStream);
+    }
+
+    /**
+     * 获得输入流
+     *
+     * @param path 文件路径
+     * @return 输入流
+     * @throws FileNotFoundException
+     */
+    public static BufferedInputStream bufferedInputStream(String path) throws FileNotFoundException {
+        return bufferedInputStream(inputStream(path));
+    }
+
+    // -------------------------------------------------------------------------------------------- out start
+
+    /**
+     * 获得BOM输入流，用于处理带BOM头的文件
+     *
+     * @param file 文件
+     * @return 输入流
+     * @throws FileNotFoundException
+     */
+    public static BOMInputStream bomInputStream(File file) throws FileNotFoundException {
+        return new BOMInputStream(new FileInputStream(file));
+    }
+
+    public static InputStream debug(String path){
+        return inputStream(path);
+    }
+
+
+    /**
+     * 获得一个输出流对象
+     *
+     * @param file 文件
+     * @return 输出流对象
+     * @throws IOException
+     */
+    public static BufferedOutputStream bufferedOutputStream(File file) throws IOException {
+        return new BufferedOutputStream(new FileOutputStream(file));
+    }
+
+    /**
+     * 获得一个输出流对象
+     *
+     * @param path 输出到的文件路径，绝对路径
+     * @return 输出流对象
+     * @throws IOException
+     */
+    public static BufferedOutputStream bufferedOutputStream(String path) throws IOException {
+        return bufferedOutputStream(path);
+    }
+
+    public static InputStream inputStream(File file) {
+        return inputStream(file.getAbsolutePath());
+    }
+
+    public static InputStream inputStream(URL url) {
+        try {
+            return url.openStream();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+
+
+
 }

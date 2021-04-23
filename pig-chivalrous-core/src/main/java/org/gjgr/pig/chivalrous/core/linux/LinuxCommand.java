@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
  */
 public abstract class LinuxCommand implements Serializable {
 
-    protected Logger logger = LoggerFactory.getLogger(LinuxCommand.class);
+    protected static final Logger logger = LoggerFactory.getLogger(LinuxCommand.class);
     protected String command;
     protected StringBuffer more = new StringBuffer();
     private String help;

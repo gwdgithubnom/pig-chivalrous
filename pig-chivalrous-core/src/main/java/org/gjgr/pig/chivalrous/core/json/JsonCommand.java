@@ -71,7 +71,7 @@ import org.slf4j.LoggerFactory;
  */
 public class JsonCommand {
 
-    private static Logger logger = LoggerFactory.getLogger(JsonCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonCommand.class);
     private static ThreadLocal<Gson> gsonThreadLocal = ThreadLocal.withInitial(new Supplier<Gson>() {
         @Override
         public Gson get() {

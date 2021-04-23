@@ -1,6 +1,7 @@
 package org.gjgr.pig.chivalrous.core.util;
 
 import org.gjgr.pig.chivalrous.core.exceptions.UtilException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
 
 import javax.imageio.ImageIO;
@@ -419,7 +420,7 @@ public final class ImageCommand {
 
     public static BufferedImage commonImage(String url) {
         try {
-            InputStream inputStream = FileCommand.inputStream(url);
+            InputStream inputStream = IoCommand.inputStream(url);
             return ImageIO.read(inputStream);
         } catch (Exception e) {
             throw new RuntimeException("not found or did not support type, for url " + url);

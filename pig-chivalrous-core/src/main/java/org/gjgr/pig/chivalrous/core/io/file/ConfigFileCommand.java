@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.io.file;
 
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.yml.YmlCommand;
 import org.gjgr.pig.chivalrous.core.io.file.yml.YmlNode;
 import org.gjgr.pig.chivalrous.core.io.resource.LocationCommand;
@@ -21,7 +22,7 @@ import java.util.Vector;
  */
 public class ConfigFileCommand {
 
-    private static Logger logger = LoggerFactory.getLogger(ConfigFileCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConfigFileCommand.class);
     private static String rootPath = null;
 
     public static String getRootPath() {
@@ -37,7 +38,7 @@ public class ConfigFileCommand {
         if (System.getenv(filename) != null) {
             if (FileCommand.isExist(System.getenv(filename))) {
                 try {
-                    inputStream = FileCommand
+                    inputStream = IoCommand
                             .inputStream(System.getenv(filename));
                 } catch (RuntimeException e) {
                     inputStream = null;
@@ -52,7 +53,7 @@ public class ConfigFileCommand {
         if (inputStream == null) {
             if (FileCommand.isExist(System.getProperty(filename))) {
                 try {
-                    inputStream = FileCommand
+                    inputStream = IoCommand
                             .inputStream(System.getProperty(filename));
                 } catch (RuntimeException e) {
                     inputStream = null;
@@ -70,7 +71,7 @@ public class ConfigFileCommand {
         if (System.getProperty(key) != null) {
             if (FileCommand.isExist(System.getProperty(key) + File.separator + (filename))) {
                 try {
-                    inputStream = FileCommand
+                    inputStream = IoCommand
                             .inputStream(System.getProperty(key) + File.separator + (filename));
                 } catch (RuntimeException e) {
                     inputStream = null;
@@ -86,7 +87,7 @@ public class ConfigFileCommand {
             if (System.getenv(key) != null) {
                 if (FileCommand.isExist(System.getenv(key) + File.separator + (filename))) {
                     try {
-                        inputStream = FileCommand
+                        inputStream = IoCommand
                                 .inputStream(System.getenv(key) + File.separator + (filename));
                     } catch (RuntimeException e) {
                         e.printStackTrace();
@@ -106,7 +107,7 @@ public class ConfigFileCommand {
         InputStream inputStream;
         if (FileCommand.isExist(filename)) {
             try {
-                inputStream = FileCommand.inputStream(filename);
+                inputStream = IoCommand.inputStream(filename);
             } catch (RuntimeException e) {
                 e.printStackTrace();
                 inputStream = null;
@@ -116,7 +117,7 @@ public class ConfigFileCommand {
         }
         if (inputStream == null) {
             try {
-                inputStream = FileCommand.inputStream(LocationCommand.pathValue(filename));
+                inputStream = IoCommand.inputStream(LocationCommand.path(filename));
             } catch (RuntimeException e) {
                 try {
                     inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
@@ -125,7 +126,7 @@ public class ConfigFileCommand {
                 } finally {
                     if (inputStream == null) {
                         try {
-                            inputStream = FileCommand.inputStream(new File(System.getProperty(filename)));
+                            inputStream = IoCommand.inputStream(new File(System.getProperty(filename)));
                         } catch (Exception eeeee) {
                             inputStream = tryUserSystemDefault("user.dir", filename);
                             if (inputStream == null) {
@@ -174,11 +175,11 @@ public class ConfigFileCommand {
         logger.debug("check rootPath:{}, with base dir env:{}", rootPath, System.getProperty("basedir"));
         if (rootPath != null) {
             if (!FileCommand.isDirectory(rootPath)) {
-                path = LocationCommand.classPath() + File.separator + rootPath;
+                path = LocationCommand.getClassDir() + File.separator + rootPath;
                 if (!FileCommand.isDirectory(path)) {
-                    path = LocationCommand.classPath() + File.separator + rootPath;
+                    path = LocationCommand.getClassDir() + File.separator + rootPath;
                     if (!FileCommand.isDirectory(path)) {
-                        path = LocationCommand.classPath(clazz) + File.separator + rootPath;
+                        path = LocationCommand.getClassDir(clazz) + File.separator + rootPath;
                         if (!FileCommand.isDirectory(path)) {
                             path = System.getProperty("basedir") == null ? ""
                                     : System.getProperty("basedir") + File.separator + rootPath;
@@ -189,9 +190,9 @@ public class ConfigFileCommand {
                 path = rootPath;
             }
         } else {
-            path = LocationCommand.classPath() + File.separator + "config";
+            path = LocationCommand.getClassDir() + File.separator + "config";
             if (!FileCommand.isDirectory(path)) {
-                path = LocationCommand.classPath() + File.separator + "config";
+                path = LocationCommand.getClassDir() + File.separator + "config";
             }
         }
         List<String> xmlPaths = new Vector<>();

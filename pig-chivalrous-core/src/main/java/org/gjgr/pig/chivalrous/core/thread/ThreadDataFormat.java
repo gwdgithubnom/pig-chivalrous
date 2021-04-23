@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class ThreadDataFormat {
-    private static Logger logger = LoggerFactory.getLogger(ThreadDataFormat.class);
+    private static final Logger logger = LoggerFactory.getLogger(ThreadDataFormat.class);
     private ThreadLocal<DateFormat> threadLocal = new ThreadLocal<DateFormat>();
     private String pattern = "yyyy-MM-dd HH:mm:ss";
     private String timeZone = "Asia/Shanghai";
