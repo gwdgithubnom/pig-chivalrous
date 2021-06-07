@@ -3,12 +3,12 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20201207G-SNAPSHOT</version>
+        <version>0.0.1.20201207G</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-office</artifactId>
-    <version>0.0.1.20201207G-SNAPSHOT</version>
+    <version>0.0.1.20201207G</version>
     <packaging>jar</packaging>
     <name>pig-chivalrous-office</name>
     <url>http://maven.apache.org</url>
