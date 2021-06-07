@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20210901G-SNAPSHOT</version>
+    <version>0.0.1.20211003G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -88,7 +88,7 @@
         <database.com.alibaba.druid.version>1.0.27</database.com.alibaba.druid.version>
         <database.org.apache.tomcat.jdbc.version>8.5.11</database.org.apache.tomcat.jdbc.version>
         <database.org.apache.commons.dbcp2.version>2.1.1</database.org.apache.commons.dbcp2.version>
-        <database.redis.clients.version>3.5.1</database.redis.clients.version>
+        <database.redis.clients.version>3.7.0.1</database.redis.clients.version>
         <file.commons.io.version>2.6</file.commons.io.version>
         <file.org.apache.commons.io.version>1.3.2</file.org.apache.commons.io.version>
         <framwork.org.springframework.version>5.0.9.RELEASE</framwork.org.springframework.version>
@@ -98,7 +98,7 @@
         <log.log4j.version>1.2.17</log.log4j.version>
         <log.org.slf4j.version>1.7.25</log.org.slf4j.version>
         <log.commons.logging.version>1.2</log.commons.logging.version>
-        <log.org.apache.logging.log4j.version>2.14.1</log.org.apache.logging.log4j.version>
+        <log.org.apache.logging.log4j.version>2.16.0</log.org.apache.logging.log4j.version>
         <middleware.org.apache.camel.version>3.0.0</middleware.org.apache.camel.version>
         <math.org.apache.commons.math.version>3.6.1</math.org.apache.commons.math.version>
         <network.commons.net.version>3.6</network.commons.net.version>
@@ -774,6 +774,430 @@
                 <artifactId>jedis</artifactId>
                 <version>${database.redis.clients.version}</version>
             </dependency>
+            <!-- spring support -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jcl</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-expression</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!--      <dependency>
+                      <groupId>org.springframework</groupId>
+                      <artifactId>spring-context</artifactId>
+                      <version>${context.org.springframwork.spring.context.version}</version>
+                      <exclusions>
+                          &lt;!&ndash; <exclusion>
+                               <groupId>commons-logging</groupId>
+                               <artifactId>commons-logging</artifactId>
+                           </exclusion>&ndash;&gt;
+                          <exclusion>
+                              <groupId>org.springframework</groupId>
+                              <artifactId>spring-jcl</artifactId>
+                          </exclusion>
+                      </exclusions>
+                  </dependency>-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-aop</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-expression</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-slf4j-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-beans</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${framwork.org.springframework.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <optional>true</optional>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-slf4j-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <!-- sl4j -->
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-slf4j-impl</artifactId>
+                    </exclusion>
+                    <!-- log4j2-->
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.logging</groupId>
+                        <artifactId>jboss-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml</groupId>
+                        <artifactId>classmate</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.fasterxml</groupId>
+                        <artifactId>classmate</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jboss.logging</groupId>
+                        <artifactId>jboss-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>dom4j</groupId>
+                        <artifactId>dom4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <!-- sl4j -->
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-slf4j-impl</artifactId>
+                    </exclusion>
+                    <!-- log4j2-->
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <!-- sl4j -->
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-slf4j-impl</artifactId>
+                    </exclusion>
+                    <!-- log4j2-->
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-jcl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.yaml</groupId>
+                        <artifactId>snakeyaml</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-redis</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-tx</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.data</groupId>
+                        <artifactId>spring-data-commons</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-aop</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-log4j2</artifactId>
+                <version>${framwork.org.springframework.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-jul</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-slf4j-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
@@ -816,6 +1240,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -1082,13 +1510,13 @@
                                 <goal>jar</goal>
                             </goals>
                         </execution>
-<!--                        <execution>-->
-<!--                            <id>deploy-sources</id>-->
-<!--                            <phase>package</phase>-->
-<!--                            <goals>-->
-<!--                                <goal>jar</goal>-->
-<!--                            </goals>-->
-<!--                        </execution>-->
+                        <!--                        <execution>-->
+                        <!--                            <id>deploy-sources</id>-->
+                        <!--                            <phase>package</phase>-->
+                        <!--                            <goals>-->
+                        <!--                                <goal>jar</goal>-->
+                        <!--                            </goals>-->
+                        <!--                        </execution>-->
                     </executions>
                 </plugin>
                 <plugin>
@@ -1147,7 +1575,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>3.0.1</version>
                     <configuration>
                         <skip>${plugin.install.skip}</skip>
                     </configuration>
@@ -1585,7 +2013,7 @@
     </reporting>
     <profiles>
         <profile>
-            <id>davie</id>
+            <id>sonatype-davie</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>true</plugin.validate.skip>
@@ -1600,7 +2028,7 @@
             </properties>
         </profile>
         <profile>
-            <id>mini</id>
+            <id>sonatype-mini</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -1618,7 +2046,7 @@
             </activation>
         </profile>
         <profile>
-            <id>normal</id>
+            <id>sonatype-normal</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -1635,7 +2063,7 @@
             </properties>
         </profile>
         <profile>
-            <id>test</id>
+            <id>sonatype-test</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -1650,7 +2078,7 @@
             </properties>
         </profile>
         <profile>
-            <id>huge</id>
+            <id>sonatype-huge</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -1667,7 +2095,7 @@
             </properties>
         </profile>
         <profile>
-            <id>super</id>
+            <id>sonatype-super</id>
             <properties>
                 <plugin.skip>false</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -1690,7 +2118,6 @@
                     <name>performRelease</name>
                     <value>true</value>
                 </property>
-                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <plugin.skip>true</plugin.skip>
@@ -1699,7 +2126,7 @@
                 <plugin.test.skip>true</plugin.test.skip>
                 <plugin.package.skip>true</plugin.package.skip>
                 <plugin.verify.skip>true</plugin.verify.skip>
-                <plugin.install.skip>true</plugin.install.skip>
+                <plugin.install.skip>false</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
                 <profile.maven.release.plugin.arguments />
@@ -1707,65 +2134,63 @@
         </profile>
     </profiles>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>aliyun-central</id>-->
-<!--            <name>aliyun central</name>-->
-<!--            <url>https://maven.aliyun.com/repository/central</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun-google</id>-->
-<!--            <name>aliyun google</name>-->
-<!--            <url>https://maven.aliyun.com/repository/google</url>-->
-<!--        </repository>-->
-<!--        &lt;!&ndash;-->
-<!--                jcenter-->
-<!--                &ndash;&gt;-->
-<!--        <repository>-->
-<!--            <id>aliyun-jcenter</id>-->
-<!--            <name>aliyun jcenter</name>-->
-<!--            <url>https://maven.aliyun.com/repository/jcenter</url>-->
-<!--        </repository>-->
-<!--        &lt;!&ndash;-->
-<!--               aliyun-->
-<!--                &ndash;&gt;-->
-<!--        <repository>-->
-<!--            <id>aliyun-public</id>-->
-<!--            <name>aliyun public</name>-->
-<!--            <url>https://maven.aliyun.com/repository/public</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun-release</id>-->
-<!--            <name>aliyun release</name>-->
-<!--            <url>https://maven.aliyun.com/repository/releases</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun-snapshots</id>-->
-<!--            <name>apache snapshots</name>-->
-<!--            <url>https://maven.aliyun.com/repository/apache-snapshots</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>sonatype-org</id>-->
-<!--            <name>sonatype org</name>-->
-<!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
-    <!--
-        <distributionManagement>
-            <repository>
-                <id>sonatype.releases</id>
-                <name>Internal Release Repository</name>
-                <url>
-                    https://oss.sonatype.org/service/local/staging/deploy/maven2
-                </url>
-            </repository>
-            <snapshotRepository>
-                <id>sonatype.snapshots</id>
-                <name>Internal Snapshot Repository</name>
-                <url>
-                    https://oss.sonatype.org/content/repositories/snapshots
-                </url>
-            </snapshotRepository>
-        </distributionManagement>
-        -->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>aliyun-central</id>-->
+    <!--            <name>aliyun central</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/central</url>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>aliyun-google</id>-->
+    <!--            <name>aliyun google</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/google</url>-->
+    <!--        </repository>-->
+    <!--        &lt;!&ndash;-->
+    <!--                jcenter-->
+    <!--                &ndash;&gt;-->
+    <!--        <repository>-->
+    <!--            <id>aliyun-jcenter</id>-->
+    <!--            <name>aliyun jcenter</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/jcenter</url>-->
+    <!--        </repository>-->
+    <!--        &lt;!&ndash;-->
+    <!--               aliyun-->
+    <!--                &ndash;&gt;-->
+    <!--        <repository>-->
+    <!--            <id>aliyun-public</id>-->
+    <!--            <name>aliyun public</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/public</url>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>aliyun-release</id>-->
+    <!--            <name>aliyun release</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/releases</url>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>aliyun-snapshots</id>-->
+    <!--            <name>apache snapshots</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/apache-snapshots</url>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>sonatype-org</id>-->
+    <!--            <name>sonatype org</name>-->
+    <!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
+    <!--        <distributionManagement>-->
+    <!--            <repository>-->
+    <!--                <id>sonatype.releases</id>-->
+    <!--                <name>Internal Release Repository</name>-->
+    <!--                <url>-->
+    <!--                    https://oss.sonatype.org/service/local/staging/deploy/maven2-->
+    <!--                </url>-->
+    <!--            </repository>-->
+    <!--            <snapshotRepository>-->
+    <!--                <id>sonatype.snapshots</id>-->
+    <!--                <name>Internal Snapshot Repository</name>-->
+    <!--                <url>-->
+    <!--                    https://oss.sonatype.org/content/repositories/snapshots-->
+    <!--                </url>-->
+    <!--            </snapshotRepository>-->
+    <!--        </distributionManagement>-->
 </project>
