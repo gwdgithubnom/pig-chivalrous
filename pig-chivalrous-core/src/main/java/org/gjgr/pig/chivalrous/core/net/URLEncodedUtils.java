@@ -555,7 +555,8 @@ public class URLEncodedUtils {
         if (content == null) {
             return null;
         }
-        final ByteBuffer bb = ByteBuffer.allocate(content.length());
+        // CharsetCommand.utf8().decode(ByteBuffer.wrap(content.getBytes(CharsetCommand.utf8())));
+        final ByteBuffer bb = ByteBuffer.allocate(content.length()*4);
         final CharBuffer cb = CharBuffer.wrap(content);
         while (cb.hasRemaining()) {
             final char c = cb.get();
@@ -573,8 +574,14 @@ public class URLEncodedUtils {
                 }
             } else if (plusAsBlank && c == '+') {
                 bb.put((byte) ' ');
-            } else {
+            } else if(0<=c && c<=127) {
                 bb.put((byte) c);
+            } else {
+                // bb.put((byte) c);
+                CharBuffer charBuffer = CharBuffer.allocate(1);
+                charBuffer.put(c);
+                charBuffer.flip();
+                bb.put(charset.encode(charBuffer));
             }
         }
         bb.flip();
