@@ -35,7 +35,7 @@ public abstract class JavaCommand implements Runnable, CommandLine.IExitCodeExce
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec = null;
 
-    private final Logger logger = LoggerFactory.getLogger(JavaCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(JavaCommand.class);
 
     public JavaCommand() {
     }

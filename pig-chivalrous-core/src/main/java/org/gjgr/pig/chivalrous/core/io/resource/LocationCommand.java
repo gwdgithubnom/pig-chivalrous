@@ -16,11 +16,9 @@
 
 package org.gjgr.pig.chivalrous.core.io.resource;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.io.Resources;
-import java.io.InputStream;
+import java.net.MalformedURLException;
+import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
-import org.gjgr.pig.chivalrous.core.io.file.jar.JarCommand;
 import org.gjgr.pig.chivalrous.core.lang.AssertCommand;
 import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.CollectionCommand;
@@ -30,15 +28,12 @@ import org.gjgr.pig.chivalrous.log.SystemLogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * new File("..\path\abc.txt") 中的三个方法获取路径的方法 1： getPath() 获取相对路径，例如 ..\path\abc.txt 2： getAbslutlyPath() 获取绝对路径，但可能包含
@@ -53,57 +48,94 @@ public class LocationCommand {
     private static String webRootPath;
     private static String rootClassPath;
 
-    public static String absolutePath(String path) {
-        if (path == null) {
-            path = StringCommand.EMPTY;
-        } else if (FileCommand.isExist(path)) {
-            return path;
-        } else {
-            path = normalize(path);
-            if (StringCommand.C_SLASH == path.charAt(0) || path.matches("^[a-zA-Z]:/.*")) {
-                // 给定的路径已经是绝对路径了
-                return path;
-            }
-        }
-        // 兼容Spring风格的ClassPath路径，去除前缀，不区分大小写
-        path = StringCommand.removePrefixIgnoreCase(path, "classpath:");
-        path = StringCommand.removePrefix(path, StringCommand.SLASH);
-
-        // 相对于ClassPath路径
-        ClassLoader classLoader = ClassCommand.getClassLoader();
-        URL url = classLoader.getResource(path);
-        String resultPath = url != null ? url.getPath() : ClassCommand.getClassPath() + path;
-        return resultPath;
+    public static String debug(String locationUrl){
+        return location(locationUrl);
     }
 
-    public static String path(String path) {
-        String resultPath = absolutePath(path);
-        try {
-            resultPath = UriCommand.decode(resultPath);
-        } catch (Exception e) {
-            SystemLogger.warn("format path failed {}", resultPath);
-            resultPath = normalize(resultPath);
-        }
-        return resultPath;
+    public static String userDir() {
+        return System.getProperty("user.dir");
     }
 
-
-    public static String pathValue(Class clazz, String path) {
-        String check = pathValue(path);
+    public static String location(String path) {
+        String check = path(path);
         if (!FileCommand.isExist(check)) {
-            check = LocationCommand.classPath(clazz) + File.separator + path;
+            if (System.getenv(path) != null) {
+                check = System.getenv(path);
+            }
+            if (!FileCommand.isExist(check)) {
+                check = LocationCommand.userDir() + File.separator + path;
+                if (!FileCommand.isExist(check)) {
+                    check = LocationCommand.getClassDir() + File.separator + path;
+                    if (!FileCommand.isExist(check)) {
+                        check = getPathFromEnv(path);
+                    }
+                    // could try use other
+                }
+            }
         }
         return check;
     }
 
-    public static String valuePath(String path) throws FileNotFoundException {
-        String p = pathValue(path);
-        if (!FileCommand.isExist(p)) {
-            p = path;
-        } else {
-            throw new FileNotFoundException("not found path" + path);
+
+
+    public static String path(String path) {
+        ClassLoader cl = ClassCommand.getDefaultClassLoader();
+        return path(path,cl);
+    }
+
+    public static String path(String path,ClassLoader classLoader){
+        AssertCommand.notNull(path, "Resource location must not be null");
+        String resultPath = getAbsolutePath(path);
+        if(resultPath!=null){
+            try {
+                resultPath = UriCommand.decode(resultPath);
+            } catch (Exception e) {
+                SystemLogger.warn("format path failed {}", resultPath);
+                resultPath = normalize(resultPath);
+            }
+        }else{
+            if(path.startsWith(FileCommand.CLASSPATH_URL_PREFIX)){
+                path = path.substring(FileCommand.CLASSPATH_URL_PREFIX.length());
+            }
+            URL url = (classLoader != null ? classLoader.getResource(path) : ClassLoader.getSystemResource(path));
+            File file = FileCommand.file(url);
+            return file.getAbsolutePath();
         }
-        return p;
+
+        return resultPath;
+    }
+
+    public static Boolean isExist(URL url){
+        try {
+            return url.openStream()!=null;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public static Boolean isExist(String path){
+        return isExist(path,null);
+    }
+
+    public static Boolean isExist(String path,Class clazz){
+        try {
+            if(path!=null&&(IoCommand.getInputStream(path,clazz,null)!=null||isExist(new URL(path)))){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (MalformedURLException e) {
+            return false;
+        }
+    }
+
+
+    public static String path(String path,Class clazz) {
+        String check = path(path);
+        if (isExist(path)) {
+            check = LocationCommand.getClassDir(clazz) + File.separator + path;
+        }
+        return check;
     }
 
 
@@ -136,8 +168,7 @@ public class LocationCommand {
      * @return 绝对路径
      */
     public static String getAbsolutePath(String path) {
-        String resultPath = path(path);
-        return pathValue(resultPath);
+        return getAbsolutePath(new File(path));
     }
 
     /**
@@ -157,64 +188,6 @@ public class LocationCommand {
         }
     }
 
-    /**
-     * 修复路径<br>
-     * 1. 统一用 / <br>
-     * 2. 多个 / 转换为一个 3. 去除两边空格 4. .. 和 . 转换为绝对路径 5. 去掉前缀，例如file:
-     *
-     * @param path 原路径
-     * @return 修复后的路径
-     */
-    public static String normalize(String path) {
-        if (path == null) {
-            return null;
-        }
-        String pathToUse = path.replaceAll("[/\\\\]{1,}", "/").trim();
-
-        int prefixIndex = pathToUse.indexOf(StringCommand.COLON);
-        String prefix = "";
-        if (prefixIndex != -1) {
-            prefix = pathToUse.substring(0, prefixIndex + 1);
-            if (prefix.contains("/")) {
-                prefix = "";
-            } else {
-                pathToUse = pathToUse.substring(prefixIndex + 1);
-            }
-        }
-        if (pathToUse.startsWith(StringCommand.SLASH)) {
-            prefix = prefix + StringCommand.SLASH;
-            pathToUse = pathToUse.substring(1);
-        }
-
-        List<String> pathList = StringCommand.split(pathToUse, StringCommand.C_SLASH);
-        List<String> pathElements = new LinkedList<String>();
-        int tops = 0;
-
-        for (int i = pathList.size() - 1; i >= 0; i--) {
-            String element = pathList.get(i);
-            if (StringCommand.DOT.equals(element)) {
-                // 当前目录，丢弃
-            } else if (StringCommand.DOUBLE_DOT.equals(element)) {
-                tops++;
-            } else {
-                if (tops > 0) {
-                    // Merging path element with element corresponding to top path.
-                    tops--;
-                } else {
-                    // Normal path element found.
-                    pathElements.add(0, element);
-                }
-            }
-        }
-
-        // Remaining top paths need to be retained.
-        for (int i = 0; i < tops; i++) {
-            pathElements.add(0, StringCommand.DOUBLE_DOT);
-        }
-
-        return prefix + CollectionCommand.join(pathElements, StringCommand.SLASH);
-    }
-
 
     public static String getPathFromEnv(String path) {
         String check = path;
@@ -231,71 +204,23 @@ public class LocationCommand {
         return check;
     }
 
-    public static String pathValue(String path) {
-        String check = path;
-        if (!FileCommand.isExist(check)) {
-            if (System.getenv(path) != null) {
-                check = System.getenv(path);
-            }
-            if (!FileCommand.isExist(check)) {
-                check = LocationCommand.userDir() + File.separator + path;
-                if (!FileCommand.isExist(check)) {
-                    check = LocationCommand.classPath() + File.separator + path;
-                    if (!FileCommand.isExist(check)) {
-                        check = getPathFromEnv(path);
-                    }
-                    // could try use other
-                }
-            }
-        }
-        return check;
-    }
-
     public static URL getResource(String resourceName) {
-        ClassLoader loader =
-                MoreObjects.firstNonNull(
-                        Thread.currentThread().getContextClassLoader(), Resources.class.getClassLoader());
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if(loader==null){
+              loader = LocationCommand.class.getClassLoader();
+        }
         URL url = loader.getResource(resourceName);
-        checkArgument(url != null, "resource %s not found.", resourceName);
         return url;
     }
 
     @SuppressWarnings("rawtypes")
-    public static String getPath(Class clazz) {
+    public static String getClassPath(Class clazz) {
         String path = clazz.getResource("").getPath();
-        return new File(path).getAbsolutePath();
-    }
-
-    public static String getPath(Object object) {
-        String path = object.getClass().getResource("").getPath();
-        return new File(path).getAbsolutePath();
-    }
-
-    public static String classPath(Class clazz) {
-        String path = null;
-        try {
-            URL url = clazz.getResource("");
-            URI uri = url.toURI();
-            path = clazz.getResource("").getPath();
-
-            if (path.contains(".jar")) {
-                path = path.substring(path.indexOf(":/"), path.lastIndexOf("!/"));
-            } else {
-                path = userDir();
-            }
-            path = new File(path).getAbsolutePath();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        path = new File(path).getAbsolutePath();
         return path;
     }
 
-    public static String userDir() {
-        return System.getProperty("user.dir");
-    }
-
-    public static String classPath() {
+    public static String getClassDir() {
         if (rootClassPath == null) {
             try {
                 String path = null;
@@ -317,6 +242,24 @@ public class LocationCommand {
         return rootClassPath;
     }
 
+    public static String getClassDir(Class clazz){
+        String path = getClassPath(clazz);
+        if (path.contains(".jar")) {
+            path = path.substring(path.indexOf(":/"), path.lastIndexOf("!/"));
+        } else {
+            path = userDir();
+        }
+        return path;
+    }
+
+    public static String getObjectPath(Object object) {
+        return getClassPath(object.getClass());
+    }
+
+    public static String getObjectDir(Object object){
+        return getClassDir(object.getClass());
+    }
+
     public static String getPackagePath(Object object) {
         Package p = object.getClass().getPackage();
         return p != null ? p.getName().replaceAll("\\.", "/") : "";
@@ -326,7 +269,6 @@ public class LocationCommand {
         if (webRootPath == null) {
             webRootPath = detectWebRootPath();
         }
-        ;
         return webRootPath;
     }
 
@@ -445,6 +387,69 @@ public class LocationCommand {
     public static boolean pathEquals(String path1, String path2) {
         return cleanPath(path1).equals(cleanPath(path2));
     }
+
+
+    public static String normalize(String path){
+        return normalize(path,false);
+    }
+
+    /**
+     * 修复路径<br>
+     * 1. 统一用 / <br>
+     * 2. 多个 / 转换为一个 3. 去除两边空格 4. .. 和 . 转换为绝对路径 5. 去掉前缀，例如file:
+     *
+     * @param path 原路径
+     * @return 修复后的路径
+     */
+    public static String normalize(String path,boolean withPrefix) {
+        if (path == null) {
+            return null;
+        }
+        String pathToUse = path.replaceAll("[/\\\\]{1,}", "/").trim();
+        int prefixIndex = pathToUse.indexOf(StringCommand.COLON);
+        String prefix = "";
+        if (prefixIndex != -1) {
+            prefix = pathToUse.substring(0, prefixIndex + 1);
+            if (prefix.contains("/")) {
+                prefix = "";
+            } else {
+                pathToUse = pathToUse.substring(prefixIndex + 1);
+            }
+        }
+        if (pathToUse.startsWith(StringCommand.SLASH)) {
+            prefix = prefix + StringCommand.SLASH;
+            pathToUse = pathToUse.substring(1);
+        }
+
+        List<String> pathList = StringCommand.split(pathToUse, StringCommand.C_SLASH);
+        List<String> pathElements = new LinkedList<String>();
+        int tops = 0;
+
+        for (int i = pathList.size() - 1; i >= 0; i--) {
+            String element = pathList.get(i);
+            if (StringCommand.DOT.equals(element)) {
+                // 当前目录，丢弃
+            } else if (StringCommand.DOUBLE_DOT.equals(element)) {
+                tops++;
+            } else {
+                if (tops > 0) {
+                    // Merging path element with element corresponding to top path.
+                    tops--;
+                } else {
+                    // Normal path element found.
+                    pathElements.add(0, element);
+                }
+            }
+        }
+
+        // Remaining top paths need to be retained.
+        for (int i = 0; i < tops; i++) {
+            pathElements.add(0, StringCommand.DOUBLE_DOT);
+        }
+
+        return prefix + CollectionCommand.join(pathElements, StringCommand.SLASH);
+    }
+
 
     /**
      * Decode the given encoded URI component value. Based on the following rules:

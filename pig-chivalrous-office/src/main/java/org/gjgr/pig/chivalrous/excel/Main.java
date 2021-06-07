@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Main {
 
-    private static Logger logger = LoggerFactory.getLogger(Main.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(Main.class.getName());
 
     private static Workbook workbook = null;
 

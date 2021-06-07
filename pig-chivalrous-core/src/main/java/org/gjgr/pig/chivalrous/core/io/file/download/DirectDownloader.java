@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  * specific language governing permissions and limitations under the License.
  */
 public class DirectDownloader extends HttpConnector implements Runnable {
-    private static Logger logger = Logger.getLogger(DirectDownloader.class.getName());
+    private static final Logger logger = Logger.getLogger(DirectDownloader.class.getName());
     private final BlockingQueue<DownloadTask> tasks = new LinkedBlockingQueue<DownloadTask>();
     private final BlockingQueue<DownloadTask> onWork = new LinkedBlockingQueue<>();
     private int poolSize = 4;

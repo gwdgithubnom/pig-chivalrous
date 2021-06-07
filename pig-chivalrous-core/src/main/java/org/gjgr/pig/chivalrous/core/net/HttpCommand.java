@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @More:
  */
 public class HttpCommand {
-    private static Logger logger = LoggerFactory.getLogger(HttpCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpCommand.class);
 
     public static CookieStore cookieStore(HttpClientBuilder httpClientBuilder, Map<String, String> stringMap,
             String domain) {

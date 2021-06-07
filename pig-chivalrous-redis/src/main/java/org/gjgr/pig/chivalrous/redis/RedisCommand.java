@@ -25,7 +25,7 @@ import redis.clients.jedis.commands.JedisCommands;
  */
 public class RedisCommand {
 
-    private static Logger logger = LoggerFactory.getLogger(RedisCommand.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisCommand.class);
 
     public static RedisClient redisClient(RedisConfig redisConfig) {
         return redisConfig.build();

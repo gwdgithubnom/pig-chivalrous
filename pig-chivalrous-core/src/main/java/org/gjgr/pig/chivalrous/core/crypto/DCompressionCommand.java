@@ -100,7 +100,7 @@ public final class DCompressionCommand {
 
         ZipOutputStream out = null;
         try {
-            out = new ZipOutputStream(new CheckedOutputStream(FileCommand.bufferedOutputStream(zipFile), new CRC32()));
+            out = new ZipOutputStream(new CheckedOutputStream(IoCommand.bufferedOutputStream(zipFile), new CRC32()));
             for (File srcFile : srcFiles) {
                 // 如果只是压缩一个文件，则需要截取该文件的父目录
                 String srcRootDir = srcFile.getCanonicalPath();
@@ -229,7 +229,7 @@ public final class DCompressionCommand {
         BufferedInputStream in;
         try {
             gos = new GZIPOutputStream(bos);
-            in = FileCommand.bufferedInputStream(file);
+            in = IoCommand.bufferedInputStream(file);
             IoCommand.copy(in, gos);
             return bos.toByteArray();
         } finally {
@@ -348,7 +348,7 @@ public final class DCompressionCommand {
             BufferedInputStream in = null;
             try {
                 out.putNextEntry(new ZipEntry(subPath));
-                in = FileCommand.bufferedInputStream(file);
+                in = IoCommand.bufferedInputStream(file);
                 IoCommand.copy(in, out);
             } catch (IOException e) {
                 throw new UtilException(e);
@@ -416,7 +416,7 @@ public final class DCompressionCommand {
         OutputStream out = null;
         try {
             in = zipFile.getInputStream(zipEntry);
-            out = FileCommand.bufferedOutputStream(outItemFile);
+            out = IoCommand.bufferedOutputStream(outItemFile);
             IoCommand.copy(in, out);
         } finally {
             IoCommand.close(out);

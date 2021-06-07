@@ -1,5 +1,6 @@
 package org.gjgr.pig.chivalrous.core.io.resource;
 
+import java.io.Serializable;
 import org.gjgr.pig.chivalrous.core.io.IoCommand;
 import org.gjgr.pig.chivalrous.core.io.exception.IORuntimeException;
 import org.gjgr.pig.chivalrous.core.io.file.FileCommand;
@@ -17,7 +18,7 @@ import java.nio.charset.Charset;
  *
  * @author Looly
  */
-public class UrlResource {
+public class UrlResource implements Serializable,Cloneable {
     protected URL url;
 
     // -------------------------------------------------------------------------------------- Constructor start

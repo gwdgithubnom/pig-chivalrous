@@ -38,7 +38,7 @@ public final class MailCommand {
     private static final String row = "style=\"vertical-align: top; padding: 0;\" align=\"left\"";
     private static final String column =
             "class=\"center\" style=\"word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; color: #222222; font-family: 'Open Sans', 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; margin: 0; padding: 0px 0px 10px;\" align=\"center\" valign=\"top\"";
-    private static Logger logger = LoggerFactory.getLogger(Command.class);
+    private static final Logger logger = LoggerFactory.getLogger(Command.class);
 
     public static boolean sendTextMail(HtmlEmail email, String title, String textBody) {
         return sendMail(email, title, textBody, MailContentType.Text);

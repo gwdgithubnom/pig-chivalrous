@@ -17,6 +17,7 @@ import org.gjgr.pig.chivalrous.core.lang.ClassCommand;
 import org.gjgr.pig.chivalrous.core.lang.Nullable;
 import org.gjgr.pig.chivalrous.core.lang.ObjectCommand;
 import org.gjgr.pig.chivalrous.core.lang.StringCommand;
+import org.gjgr.pig.chivalrous.core.log.dialect.log4j.Log4jLog;
 import org.gjgr.pig.chivalrous.core.net.UriBuilder;
 import org.gjgr.pig.chivalrous.core.net.UriCommand;
 import org.gjgr.pig.chivalrous.core.nio.CharsetCommand;
@@ -172,111 +173,12 @@ public final class FileCommand {
     private static File defaultTempDir;
     private static Thread shutdownHook;
     private static boolean windowsOs = initWindowsOs();
-    private static Logger logger = LoggerFactory.getLogger(FileCommand.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(FileCommand.class);
 
     private FileCommand() {
     }
 
-    /**
-     * Delete the supplied {@link File} - for directories, recursively delete any nested directories or files as well.
-     * <p>
-     * Note: Like {@link File#delete()}, this method does not throw any exception but rather silently returns
-     * {@code false} in case of I/O errors. Consider using {@link #deleteRecursively(Path)} for NIO-style handling of
-     * I/O errors, clearly differentiating between non-existence and failure to delete an existing file.
-     *
-     * @param root the root {@code File} to delete
-     * @return {@code true} if the {@code File} was successfully deleted, otherwise {@code false}
-     */
-    public static boolean deleteRecursively(@Nullable File root) {
-        if (root == null) {
-            return false;
-        }
 
-        try {
-            return deleteRecursively(root.toPath());
-        } catch (IOException ex) {
-            return false;
-        }
-    }
-
-    /**
-     * Delete the supplied {@link File} - for directories, recursively delete any nested directories or files as well.
-     *
-     * @param root the root {@code File} to delete
-     * @return {@code true} if the {@code File} existed and was deleted, or {@code false} it it did not exist
-     * @throws IOException in the case of I/O errors
-     * @since 5.0
-     */
-    public static boolean deleteRecursively(@Nullable Path root) throws IOException {
-        if (root == null) {
-            return false;
-        }
-        if (!Files.exists(root)) {
-            return false;
-        }
-
-        Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                Files.delete(file);
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                Files.delete(dir);
-                return FileVisitResult.CONTINUE;
-            }
-        });
-        return true;
-    }
-
-    /**
-     * Recursively copy the contents of the {@code src} file/directory to the {@code dest} file/directory.
-     *
-     * @param src  the source directory
-     * @param dest the destination directory
-     * @throws IOException in the case of I/O errors
-     */
-    public static void copyRecursively(File src, File dest) throws IOException {
-        AssertCommand.notNull(src, "Source File must not be null");
-        AssertCommand.notNull(dest, "Destination File must not be null");
-        copyRecursively(src.toPath(), dest.toPath());
-    }
-
-    /**
-     * Recursively copy the contents of the {@code src} file/directory to the {@code dest} file/directory.
-     *
-     * @param src  the source directory
-     * @param dest the destination directory
-     * @throws IOException in the case of I/O errors
-     * @since 5.0
-     */
-    public static void copyRecursively(Path src, Path dest) throws IOException {
-        AssertCommand.notNull(src, "Source Path must not be null");
-        AssertCommand.notNull(dest, "Destination Path must not be null");
-        BasicFileAttributes srcAttr = Files.readAttributes(src, BasicFileAttributes.class);
-
-        if (srcAttr.isDirectory()) {
-            Files.walkFileTree(src, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    Files.createDirectories(dest.resolve(src.relativize(dir)));
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Files.copy(file, dest.resolve(src.relativize(file)), StandardCopyOption.REPLACE_EXISTING);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } else if (srcAttr.isRegularFile()) {
-            Files.copy(src, dest);
-        } else {
-            throw new IllegalArgumentException("Source File must denote a directory or file");
-        }
-    }
 
     /**
      * 列出目录文件<br>
@@ -298,51 +200,6 @@ public final class FileCommand {
     }
 
     /**
-     * find file by clazz path location, and return the @See InputStreem
-     *
-     * @param clazz
-     * @param location
-     * @return
-     */
-    public static InputStream inputStream(Class clazz, String location) {
-        InputStream inputStream = null;
-        String path = location;
-        boolean status = false;
-        try {
-            try {
-                inputStream = FileCommand.bufferedInputStream(path);
-            } catch (Exception e) {
-                path = LocationCommand.userDir();
-                path = path + File.separator + location;
-                try {
-                    inputStream = FileCommand.bufferedInputStream(path);
-                } catch (Exception ee) {
-                    path = LocationCommand.userDir();
-                    path = path + location;
-                    try {
-                        inputStream = FileCommand.bufferedInputStream(path);
-                    } catch (Exception eee) {
-                        inputStream = clazz.getResourceAsStream(location);
-                        status = true;
-                    }
-                }
-            }
-            if (inputStream == null) {
-                inputStream = clazz.getResourceAsStream(location);
-                status = true;
-            }
-            if (inputStream == null && status) {
-                if (!location.startsWith("/")) {
-                    inputStream = clazz.getResourceAsStream(File.separator + location);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return inputStream;
-    }
-
-    /**
      * return file list object.
      */
     public static List<File> lsFileList(String path) {
@@ -353,24 +210,6 @@ public final class FileCommand {
             files = new ArrayList<File>();
         }
         return files;
-    }
-
-    /**
-     * 列出目录下的目录
-     */
-    public static File[] dir(String path) {
-        File[] files = ls(path);
-        List<File> dirs = new ArrayList<File>();
-        for (File file : files) {
-            if (FileCommand.isDirectory(file)) {
-                dirs.add(file);
-            }
-        }
-        if (dirs.size() > 0) {
-            return dirs.toArray(new File[dirs.size()]);
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -393,102 +232,6 @@ public final class FileCommand {
     }
 
     /**
-     * 文件是否为空<br>
-     * 目录：里面没有文件时为空 文件：文件大小为0时为空
-     *
-     * @param file 文件
-     * @return 是否为空，当提供非目录时，返回false
-     */
-    public static boolean isEmpty(File file) {
-        if (null == file) {
-            return true;
-        }
-
-        if (file.isDirectory()) {
-            String[] subFiles = file.list();
-            if (ArrayCommand.isEmpty(subFiles)) {
-                return true;
-            }
-        } else if (file.isFile()) {
-            return file.length() <= 0;
-        }
-
-        return false;
-    }
-
-    /**
-     * 目录是否为空
-     *
-     * @param file 目录
-     * @return 是否为空，当提供非目录时，返回false
-     */
-    public static boolean isNotEmpty(File file) {
-        return false == isEmpty(file);
-    }
-
-    /**
-     * 目录是否为空
-     *
-     * @param dirPath 目录
-     * @return 是否为空
-     * @throws IOException IOException
-     */
-    public static boolean isDirEmpty(Path dirPath) {
-        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(dirPath)) {
-            return false == dirStream.iterator().hasNext();
-        } catch (IOException e) {
-            throw new IORuntimeException(e);
-        }
-    }
-
-    /**
-     * 目录是否为空
-     *
-     * @param dir 目录
-     * @return 是否为空
-     */
-    public static boolean isDirEmpty(File dir) {
-        return isDirEmpty(dir.toPath());
-    }
-
-    /**
-     * 递归遍历目录以及子目录中的所有文件<br>
-     * 如果提供file为文件，直接返回过滤结果
-     *
-     * @param file       当前遍历文件或目录
-     * @param fileFilter 文件过滤规则对象，选择要保留的文件，只对文件有效，不过滤目录
-     */
-    public static List<File> loopFiles(File file, FileFilter fileFilter) {
-        List<File> fileList = new ArrayList<File>();
-        if (file == null) {
-            return fileList;
-        } else if (file.exists() == false) {
-            return fileList;
-        }
-
-        if (file.isDirectory()) {
-            for (File tmp : file.listFiles()) {
-                fileList.addAll(loopFiles(tmp, fileFilter));
-            }
-        } else {
-            if (null == fileFilter || fileFilter.accept(file)) {
-                fileList.add(file);
-            }
-        }
-
-        return fileList;
-    }
-
-    /**
-     * 递归遍历目录以及子目录中的所有文件
-     *
-     * @param file 当前遍历文件
-     */
-    public static List<File> loopFiles(File file) {
-        return loopFiles(file, null);
-    }
-
-    /**
      * 获得指定目录下所有文件<br>
      * 不会扫描子目录
      *
@@ -496,7 +239,7 @@ public final class FileCommand {
      * @return 文件路径列表（如果是jar中的文件，则给定类似.jar!/xxx/xxx的路径）
      * @throws IOException
      */
-    public static List<String> listFileNames(String path) {
+    public static List<String> lsFileNamesList(String path) {
         if (path == null) {
             return null;
         }
@@ -538,196 +281,23 @@ public final class FileCommand {
     }
 
     /**
-     * 创建File对象，自动识别相对或绝对路径，相对路径将自动从ClassPath下寻找
-     *
-     * @param path 文件路径
-     * @return File
+     * 列出目录下的目录
      */
-    public static File file(String path) {
-        if (StringCommand.isBlank(path)) {
-            throw new NullPointerException("File path is blank!" + path);
-        }
-        return new File(LocationCommand.getAbsolutePath(path));
-    }
-
-    /**
-     * 创建File对象
-     *
-     * @param parent 父目录
-     * @param path   文件路径
-     * @return File
-     */
-    public static File file(String parent, String path) {
-        if (StringCommand.isBlank(path)) {
-            throw new NullPointerException("File path is blank!" + path);
-        }
-        return new File(parent, path);
-    }
-
-    /**
-     * 创建File对象
-     *
-     * @param parent 父文件对象
-     * @param path   文件路径
-     * @return File
-     */
-    public static File file(File parent, String path) {
-        if (StringCommand.isBlank(path)) {
-            throw new NullPointerException("File path is blank!" + path);
-        }
-        return new File(parent, path);
-    }
-
-    /**
-     * 创建File对象
-     *
-     * @param uri 文件URI
-     * @return File
-     */
-    public static File file(URI uri) {
-        if (uri == null) {
-            throw new NullPointerException("File uri is null!");
-        }
-        return new File(uri);
-    }
-
-    /**
-     * 创建File对象
-     *
-     * @param url 文件URL
-     * @return File
-     */
-    public static File file(URL url) {
-        return new File(UriCommand.toURI(url));
-    }
-
-    /**
-     * 判断文件是否存在，如果path为null，则返回false
-     *
-     * @param path 文件路径
-     * @return 如果存在返回true
-     */
-    public static boolean isExist(String path) {
-        return (path == null) ? false : new File(path).exists();
-    }
-
-    /**
-     * 判断文件是否存在，如果file为null，则返回false
-     *
-     * @param file 文件
-     * @return 如果存在返回true
-     */
-    public static boolean isExist(File file) {
-        return (file == null) ? false : file.exists();
-    }
-
-    /**
-     * 是否存在匹配文件
-     *
-     * @param directory 文件夹路径
-     * @param regexp    文件夹中所包含文件名的正则表达式
-     * @return 如果存在匹配文件返回true
-     */
-    public static boolean isExist(String directory, String regexp) {
-        File file = new File(directory);
-        if (!file.exists()) {
-            return false;
-        }
-
-        String[] fileList = file.list();
-        if (fileList == null) {
-            return false;
-        }
-
-        for (String fileName : fileList) {
-            if (fileName.matches(regexp)) {
-                return true;
+    public static File[] dir(String path) {
+        File[] files = ls(path);
+        List<File> dirs = new ArrayList<File>();
+        for (File file : files) {
+            if (FileCommand.isDirectory(file)) {
+                dirs.add(file);
             }
-
         }
-        return false;
-    }
-
-    /**
-     * 指定文件最后修改时间
-     *
-     * @param file 文件
-     * @return 最后修改时间
-     */
-    public static Date lastModifiedTime(File file) {
-        if (!isExist(file)) {
+        if (dirs.size() > 0) {
+            return dirs.toArray(new File[dirs.size()]);
+        } else {
             return null;
         }
-
-        return new Date(file.lastModified());
     }
 
-    /**
-     * 指定路径文件最后修改时间
-     *
-     * @param path 绝对路径
-     * @return 最后修改时间
-     */
-    public static Date lastModifiedTime(String path) {
-        return lastModifiedTime(new File(path));
-    }
-
-    /**
-     * 计算目录或文件的总大小<br>
-     * 当给定对象为文件时，直接调用 {@link File#length()}<br>
-     * 当给定对象为目录时，遍历目录下的所有文件和目录，递归计算其大小，求和返回
-     *
-     * @param file 目录或文件
-     * @return 总大小
-     */
-    public static long size(File file) {
-        AssertCommand.notNull(file, "file argument is null !");
-        if (false == file.exists()) {
-            throw new IllegalArgumentException(StringCommand.format("File [{}] not isExist !", file.getAbsolutePath()));
-        }
-
-        if (file.isDirectory()) {
-            long size = 0L;
-            File[] subFiles = file.listFiles();
-            if (ArrayCommand.isEmpty(subFiles)) {
-                return 0L;// empty directory
-            }
-            for (int i = 0; i < subFiles.length; i++) {
-                size += size(subFiles[i]);
-            }
-            return size;
-        } else {
-            return file.length();
-        }
-    }
-
-    /**
-     * 给定文件或目录的最后修改时间是否晚于给定时间
-     *
-     * @param file      文件或目录
-     * @param reference 参照文件
-     * @return 是否晚于给定时间
-     */
-    public static boolean newerThan(File file, File reference) {
-        if (null == file || false == reference.exists()) {
-            return true;// 文件一定比一个不存在的文件新
-        }
-        return newerThan(file, reference.lastModified());
-    }
-
-    /**
-     * 给定文件或目录的最后修改时间是否晚于给定时间
-     *
-     * @param file       文件或目录
-     * @param timeMillis 做为对比的时间
-     * @return 是否晚于给定时间
-     */
-    public static boolean newerThan(File file, long timeMillis) {
-        if (null == file || false == file.exists()) {
-            return false;// 不存在的文件一定比任何时间旧
-        }
-        return file.lastModified() > timeMillis;
-    }
 
     /**
      * 创建文件及其父目录，如果这个文件存在，直接返回这个文件<br>
@@ -890,6 +460,428 @@ public final class FileCommand {
             dir.mkdirs();
         }
         return dir;
+    }
+
+    /**
+     * 创建File对象，自动识别相对或绝对路径，相对路径将自动从ClassPath下寻找
+     * Resolve the given resource location to a {@code java.io.File}, i.e. to a file in the file system.
+     * <p>
+     * Does not check whether the file actually exists; simply returns the File that the given location would correspond
+     * to.
+     *
+     * @param resourceLocation the resource location to resolve: either a "classpath:" pseudo URL, a "file:" URL, or a
+     *                         plain file path
+     * @return a corresponding File object
+     * @throws FileNotFoundException if the resource cannot be resolved to a file in the file system
+     * @param resourceLocation 文件路径
+     * @return File
+     */
+    public static File file(String resourceLocation) {
+        AssertCommand.notNull(resourceLocation, "Resource location must not be null");
+        File file = new File(LocationCommand.getAbsolutePath(resourceLocation));
+        if(file!=null){
+            return file;
+        }else{
+            if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
+                String path = resourceLocation.substring(CLASSPATH_URL_PREFIX.length());
+                String description = "class path resource [" + path + "]";
+                ClassLoader cl = ClassCommand.getDefaultClassLoader();
+                URL url = (cl != null ? cl.getResource(path) : ClassLoader.getSystemResource(path));
+                if(url!=null){
+                    file = file(url);
+                }else{
+                    try {
+                        // try URL
+                        file = file(new URL(resourceLocation));
+                    } catch (MalformedURLException ex) {
+                        // no URL -> treat as file path
+                        file = new File(resourceLocation);
+                    }
+                }
+            }
+            if(file!=null){
+                return file;
+            }else{
+                return null;
+            }
+        }
+    }
+
+    /**
+     * 创建File对象
+     *
+     * @param parent 父目录
+     * @param path   文件路径
+     * @return File
+     */
+    public static File file(String parent, String path) {
+        if (StringCommand.isBlank(path)) {
+            throw new NullPointerException("File path is blank!" + path);
+        }
+        return new File(parent, path);
+    }
+
+    /**
+     * 创建File对象
+     *
+     * @param parent 父文件对象
+     * @param path   文件路径
+     * @return File
+     */
+    public static File file(File parent, String path) {
+        if (StringCommand.isBlank(path)) {
+            throw new NullPointerException("File path is blank!" + path);
+        }
+        return new File(parent, path);
+    }
+
+    /**
+     * 创建File对象
+     *
+     * @param uri 文件URI
+     * @return File
+     */
+    public static File file(URI uri) {
+        AssertCommand.notNull(uri, "Resource URI must not be null");
+        return new File(uri);
+    }
+
+    /**
+     * 创建File对象
+     *
+     * @param url 文件URL
+     * @return File
+     */
+    public static File file(URL url) {
+        return new File(UriCommand.toURI(url));
+    }
+
+    /**
+     * 判断文件是否存在，如果path为null，则返回false
+     *
+     * @param path 文件路径
+     * @return 如果存在返回true
+     */
+    public static boolean isExist(String path) {
+        return (path == null) ? false : new File(path).exists();
+    }
+
+    /**
+     * 判断文件是否存在，如果file为null，则返回false
+     *
+     * @param file 文件
+     * @return 如果存在返回true
+     */
+    public static boolean isExist(File file) {
+        return (file == null) ? false : file.exists();
+    }
+
+    /**
+     * 是否存在匹配文件
+     *
+     * @param directory 文件夹路径
+     * @param regexp    文件夹中所包含文件名的正则表达式
+     * @return 如果存在匹配文件返回true
+     */
+    public static boolean isExist(String directory, String regexp) {
+        File file = new File(directory);
+        if (!file.exists()) {
+            return false;
+        }
+
+        String[] fileList = file.list();
+        if (fileList == null) {
+            return false;
+        }
+
+        for (String fileName : fileList) {
+            if (fileName.matches(regexp)) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    /**
+     * 指定文件最后修改时间
+     *
+     * @param file 文件
+     * @return 最后修改时间
+     */
+    public static Date lastModifiedTime(File file) {
+        if (!isExist(file)) {
+            return null;
+        }
+
+        return new Date(file.lastModified());
+    }
+
+    /**
+     * 指定路径文件最后修改时间
+     *
+     * @param path 绝对路径
+     * @return 最后修改时间
+     */
+    public static Date lastModifiedTime(String path) {
+        return lastModifiedTime(new File(path));
+    }
+
+    /**
+     * 文件是否为空<br>
+     * 目录：里面没有文件时为空 文件：文件大小为0时为空
+     *
+     * @param file 文件
+     * @return 是否为空，当提供非目录时，返回false
+     */
+    public static boolean isEmpty(File file) {
+        if (null == file) {
+            return true;
+        }
+
+        if (file.isDirectory()) {
+            String[] subFiles = file.list();
+            if (ArrayCommand.isEmpty(subFiles)) {
+                return true;
+            }
+        } else if (file.isFile()) {
+            return file.length() <= 0;
+        }
+
+        return false;
+    }
+
+    /**
+     * 目录是否为空
+     *
+     * @param file 目录
+     * @return 是否为空，当提供非目录时，返回false
+     */
+    public static boolean isNotEmpty(File file) {
+        return false == isEmpty(file);
+    }
+
+    /**
+     * 目录是否为空
+     *
+     * @param dirPath 目录
+     * @return 是否为空
+     * @throws IOException IOException
+     */
+    public static boolean isDirEmpty(Path dirPath) {
+        try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(dirPath)) {
+            return false == dirStream.iterator().hasNext();
+        } catch (IOException e) {
+            throw new IORuntimeException(e);
+        }
+    }
+
+    /**
+     * 目录是否为空
+     *
+     * @param dir 目录
+     * @return 是否为空
+     */
+    public static boolean isDirEmpty(File dir) {
+        return isDirEmpty(dir.toPath());
+    }
+
+
+
+    /**
+     * Delete the supplied {@link File} - for directories, recursively delete any nested directories or files as well.
+     * <p>
+     * Note: Like {@link File#delete()}, this method does not throw any exception but rather silently returns
+     * {@code false} in case of I/O errors. Consider using {@link #deleteRecursively(Path)} for NIO-style handling of
+     * I/O errors, clearly differentiating between non-existence and failure to delete an existing file.
+     *
+     * @param root the root {@code File} to delete
+     * @return {@code true} if the {@code File} was successfully deleted, otherwise {@code false}
+     */
+    public static boolean deleteRecursively(@Nullable File root) {
+        if (root == null) {
+            return false;
+        }
+
+        try {
+            return deleteRecursively(root.toPath());
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+
+    /**
+     * Delete the supplied {@link File} - for directories, recursively delete any nested directories or files as well.
+     *
+     * @param root the root {@code File} to delete
+     * @return {@code true} if the {@code File} existed and was deleted, or {@code false} it it did not exist
+     * @throws IOException in the case of I/O errors
+     * @since 5.0
+     */
+    public static boolean deleteRecursively(@Nullable Path root) throws IOException {
+        if (root == null) {
+            return false;
+        }
+        if (!Files.exists(root)) {
+            return false;
+        }
+
+        Files.walkFileTree(root, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
+        return true;
+    }
+
+    /**
+     * Recursively copy the contents of the {@code src} file/directory to the {@code dest} file/directory.
+     *
+     * @param src  the source directory
+     * @param dest the destination directory
+     * @throws IOException in the case of I/O errors
+     */
+    public static void copyRecursively(File src, File dest) throws IOException {
+        AssertCommand.notNull(src, "Source File must not be null");
+        AssertCommand.notNull(dest, "Destination File must not be null");
+        copyRecursively(src.toPath(), dest.toPath());
+    }
+
+    /**
+     * Recursively copy the contents of the {@code src} file/directory to the {@code dest} file/directory.
+     *
+     * @param src  the source directory
+     * @param dest the destination directory
+     * @throws IOException in the case of I/O errors
+     * @since 5.0
+     */
+    public static void copyRecursively(Path src, Path dest) throws IOException {
+        AssertCommand.notNull(src, "Source Path must not be null");
+        AssertCommand.notNull(dest, "Destination Path must not be null");
+        BasicFileAttributes srcAttr = Files.readAttributes(src, BasicFileAttributes.class);
+
+        if (srcAttr.isDirectory()) {
+            Files.walkFileTree(src, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                    Files.createDirectories(dest.resolve(src.relativize(dir)));
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.copy(file, dest.resolve(src.relativize(file)), StandardCopyOption.REPLACE_EXISTING);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } else if (srcAttr.isRegularFile()) {
+            Files.copy(src, dest);
+        } else {
+            throw new IllegalArgumentException("Source File must denote a directory or file");
+        }
+    }
+
+
+    /**
+     * 递归遍历目录以及子目录中的所有文件<br>
+     * 如果提供file为文件，直接返回过滤结果
+     *
+     * @param file       当前遍历文件或目录
+     * @param fileFilter 文件过滤规则对象，选择要保留的文件，只对文件有效，不过滤目录
+     */
+    public static List<File> loopFiles(File file, FileFilter fileFilter) {
+        List<File> fileList = new ArrayList<File>();
+        if (file == null) {
+            return fileList;
+        } else if (file.exists() == false) {
+            return fileList;
+        }
+
+        if (file.isDirectory()) {
+            for (File tmp : file.listFiles()) {
+                fileList.addAll(loopFiles(tmp, fileFilter));
+            }
+        } else {
+            if (null == fileFilter || fileFilter.accept(file)) {
+                fileList.add(file);
+            }
+        }
+
+        return fileList;
+    }
+
+    /**
+     * 递归遍历目录以及子目录中的所有文件
+     *
+     * @param file 当前遍历文件
+     */
+    public static List<File> loopFiles(File file) {
+        return loopFiles(file, null);
+    }
+
+    /**
+     * 计算目录或文件的总大小<br>
+     * 当给定对象为文件时，直接调用 {@link File#length()}<br>
+     * 当给定对象为目录时，遍历目录下的所有文件和目录，递归计算其大小，求和返回
+     *
+     * @param file 目录或文件
+     * @return 总大小
+     */
+    public static long size(File file) {
+        AssertCommand.notNull(file, "file argument is null !");
+        if (false == file.exists()) {
+            throw new IllegalArgumentException(StringCommand.format("File [{}] not isExist !", file.getAbsolutePath()));
+        }
+
+        if (file.isDirectory()) {
+            long size = 0L;
+            File[] subFiles = file.listFiles();
+            if (ArrayCommand.isEmpty(subFiles)) {
+                return 0L;// empty directory
+            }
+            for (int i = 0; i < subFiles.length; i++) {
+                size += size(subFiles[i]);
+            }
+            return size;
+        } else {
+            return file.length();
+        }
+    }
+
+    /**
+     * 给定文件或目录的最后修改时间是否晚于给定时间
+     *
+     * @param file      文件或目录
+     * @param reference 参照文件
+     * @return 是否晚于给定时间
+     */
+    public static boolean newerThan(File file, File reference) {
+        if (null == file || false == reference.exists()) {
+            return true;// 文件一定比一个不存在的文件新
+        }
+        return newerThan(file, reference.lastModified());
+    }
+
+    /**
+     * 给定文件或目录的最后修改时间是否晚于给定时间
+     *
+     * @param file       文件或目录
+     * @param timeMillis 做为对比的时间
+     * @return 是否晚于给定时间
+     */
+    public static boolean newerThan(File file, long timeMillis) {
+        if (null == file || false == file.exists()) {
+            return false;// 不存在的文件一定比任何时间旧
+        }
+        return file.lastModified() > timeMillis;
     }
 
     // -------------------------------------------------------------------------------------------- name start
@@ -1451,60 +1443,6 @@ public final class FileCommand {
         }
     }
 
-    public static InputStream inputStream(File file) throws FileNotFoundException {
-        return bufferedInputStream(file);
-    }
-
-    public static InputStream inputStream(URL url) throws IOException {
-        return url.openStream();
-    }
-
-    public static InputStream inputStream(String path) throws RuntimeException {
-        try {
-            return inputStream(new URL(path));
-        } catch (Exception e) {
-            try {
-                return inputStream(FileCommand.file(path));
-            } catch (FileNotFoundException e1) {
-                throw new RuntimeException("unknown path exception, did not know path " + path);
-            }
-        }
-    }
-
-    /**
-     * 获得输入流
-     *
-     * @param file 文件
-     * @return 输入流
-     * @throws FileNotFoundException
-     */
-    public static BufferedInputStream bufferedInputStream(File file) throws FileNotFoundException {
-        return new BufferedInputStream(new FileInputStream(file));
-    }
-
-    /**
-     * 获得输入流
-     *
-     * @param path 文件路径
-     * @return 输入流
-     * @throws FileNotFoundException
-     */
-    public static BufferedInputStream bufferedInputStream(String path) throws FileNotFoundException {
-        return bufferedInputStream(file(path));
-    }
-
-    // -------------------------------------------------------------------------------------------- out start
-
-    /**
-     * 获得BOM输入流，用于处理带BOM头的文件
-     *
-     * @param file 文件
-     * @return 输入流
-     * @throws FileNotFoundException
-     */
-    public static BOMInputStream bomInputStream(File file) throws FileNotFoundException {
-        return new BOMInputStream(new FileInputStream(file));
-    }
 
     /**
      * 获得一个文件读取器
@@ -1537,7 +1475,7 @@ public final class FileCommand {
      * @throws IOException
      */
     public static BufferedReader bufferedReader(File file, String charsetName) throws IOException {
-        return IoCommand.getReader(bufferedInputStream(file), charsetName);
+        return IoCommand.getReader(IoCommand.bufferedInputStream(file), charsetName);
     }
 
     /**
@@ -1549,7 +1487,7 @@ public final class FileCommand {
      * @throws IOException
      */
     public static BufferedReader bufferedReader(File file, Charset charset) throws IOException {
-        return IoCommand.getReader(bufferedInputStream(file), charset);
+        return IoCommand.getReader(IoCommand.bufferedInputStream(file), charset);
     }
 
     /**
@@ -1604,7 +1542,7 @@ public final class FileCommand {
     public static String readUtfResource(String name) {
         String data = null;
         try {
-            data = readUtf8String(LocationCommand.pathValue(name));
+            data = readUtf8String(LocationCommand.path(name));
         } catch (Exception e) {
             readUtfResource(name, ClassLoader.getSystemClassLoader());
         }
@@ -1614,7 +1552,7 @@ public final class FileCommand {
     public static String readUtfResource(String name, ClassLoader classLoader) {
         String data = null;
         try {
-            data = readUtf8String(LocationCommand.pathValue(name));
+            data = readUtf8String(LocationCommand.path(name));
         } catch (Exception e) {
             logger.warn("try to used class loader to find resource.");
         }
@@ -1750,8 +1688,21 @@ public final class FileCommand {
      * @throws IORuntimeException
      */
     public static <T extends Collection<String>> T readLines(File file, String charset, T collection)
-            throws IORuntimeException {
-        return FileReader.create(file, CharsetCommand.charset(charset)).readLines(collection);
+        throws IORuntimeException {
+        FileReader fileReader = null;
+        try{
+            fileReader = FileReader.create(file, CharsetCommand.charset(charset));
+        }finally {
+            if(fileReader!=null){
+                return fileReader.readLines(collection);
+            }else{
+                try {
+                    return IoCommand.readLines(IoCommand.inputStream(file), charset, collection);
+                } catch (IOException e) {
+                    throw new IORuntimeException(e);
+                }
+            }
+        }
     }
 
     /**
@@ -1824,28 +1775,6 @@ public final class FileCommand {
     public static <T> T load(FileReader.ReaderHandler<T> readerHandler, String path, String charset)
             throws IORuntimeException {
         return FileReader.create(file(path), CharsetCommand.charset(charset)).read(readerHandler);
-    }
-
-    /**
-     * 获得一个输出流对象
-     *
-     * @param file 文件
-     * @return 输出流对象
-     * @throws IOException
-     */
-    public static BufferedOutputStream bufferedOutputStream(File file) throws IOException {
-        return new BufferedOutputStream(new FileOutputStream(touch(file)));
-    }
-
-    /**
-     * 获得一个输出流对象
-     *
-     * @param path 输出到的文件路径，绝对路径
-     * @return 输出流对象
-     * @throws IOException
-     */
-    public static BufferedOutputStream bufferedOutputStream(String path) throws IOException {
-        return bufferedOutputStream(touch(path));
     }
 
     /**
@@ -2184,53 +2113,6 @@ public final class FileCommand {
     }
 
     /**
-     * 将流的内容写入文件<br>
-     *
-     * @param dest 目标文件
-     * @param in   输入流
-     * @return dest
-     * @throws IORuntimeException
-     */
-    public static File writeFromStream(InputStream in, File dest) throws IORuntimeException {
-        return FileWriter.create(dest).writeFromStream(in);
-    }
-
-    /**
-     * 将流的内容写入文件<br>
-     *
-     * @param in           输入流
-     * @param fullFilePath 文件绝对路径
-     * @return dest
-     * @throws IORuntimeException
-     */
-    public static File writeFromStream(InputStream in, String fullFilePath) throws IORuntimeException {
-        return writeFromStream(in, touch(fullFilePath));
-    }
-
-    /**
-     * 将文件写入流中
-     *
-     * @param file 文件
-     * @param out  流
-     * @return File
-     * @throws IORuntimeException
-     */
-    public static File writeToStream(File file, OutputStream out) throws IORuntimeException {
-        return FileReader.create(file).writeToStream(out);
-    }
-
-    /**
-     * 将流的内容写入文件<br>
-     *
-     * @param fullFilePath 文件绝对路径
-     * @param out          输出流
-     * @throws IORuntimeException
-     */
-    public static void writeToStream(String fullFilePath, OutputStream out) throws IORuntimeException {
-        writeToStream(touch(fullFilePath), out);
-    }
-
-    /**
      * 可读的文件大小
      *
      * @param file 文件
@@ -2254,6 +2136,54 @@ public final class FileCommand {
         final String[] units = new String[] {"B", "kB", "MB", "GB", "TB", "EB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.##").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+    }
+
+    /**
+     * 将流的内容写入文件<br>
+     *
+     * @param fullFilePath 文件绝对路径
+     * @param out          输出流
+     * @throws IORuntimeException
+     */
+    public static void writeToStream(String fullFilePath, OutputStream out) throws IORuntimeException {
+        writeToStream(FileCommand.touch(fullFilePath), out);
+    }
+
+    /**
+     * 将文件写入流中
+     *
+     * @param file 文件
+     * @param out  流
+     * @return File
+     * @throws IORuntimeException
+     */
+    public static File writeToStream(File file, OutputStream out) throws IORuntimeException {
+        return FileReader.create(file).writeToStream(out);
+    }
+
+
+    /**
+     * 将流的内容写入文件<br>
+     *
+     * @param dest 目标文件
+     * @param in   输入流
+     * @return dest
+     * @throws IORuntimeException
+     */
+    public static File writeFromStream(InputStream in, File dest) throws IORuntimeException {
+        return FileWriter.create(dest).writeFromStream(in);
+    }
+
+    /**
+     * 将流的内容写入文件<br>
+     *
+     * @param in           输入流
+     * @param fullFilePath 文件绝对路径
+     * @return dest
+     * @throws IORuntimeException
+     */
+    public static File writeFromStream(InputStream in, String fullFilePath) throws IORuntimeException {
+        return writeFromStream(in, touch(fullFilePath));
     }
 
     private static boolean initWindowsOs() {
@@ -2779,7 +2709,7 @@ public final class FileCommand {
     }
 
     public static boolean downloader(String url) {
-        String path = LocationCommand.classPath() + File.separator + url.substring(url.lastIndexOf('/') + 1);
+        String path = LocationCommand.getClassDir() + File.separator + url.substring(url.lastIndexOf('/') + 1);
         return downloader(url, path);
     }
 
@@ -2862,107 +2792,6 @@ public final class FileCommand {
     public static boolean downloader(String url, String path) {
         DirectDownloader directDownloader = new DirectDownloader();
         return downloaderWithOutListener(directDownloader, url, path);
-    }
-
-
-    /**
-     * Resolve the given resource location to a {@code java.io.File}, i.e. to a file in the file system.
-     * <p>
-     * Does not check whether the file actually exists; simply returns the File that the given location would correspond
-     * to.
-     *
-     * @param resourceLocation the resource location to resolve: either a "classpath:" pseudo URL, a "file:" URL, or a
-     *                         plain file path
-     * @return a corresponding File object
-     * @throws FileNotFoundException if the resource cannot be resolved to a file in the file system
-     */
-    public static File getFile(String resourceLocation) throws FileNotFoundException {
-        AssertCommand.notNull(resourceLocation, "Resource location must not be null");
-        if (resourceLocation.startsWith(CLASSPATH_URL_PREFIX)) {
-            String path = resourceLocation.substring(CLASSPATH_URL_PREFIX.length());
-            String description = "class path resource [" + path + "]";
-            ClassLoader cl = ClassCommand.getDefaultClassLoader();
-            URL url = (cl != null ? cl.getResource(path) : ClassLoader.getSystemResource(path));
-            if (url == null) {
-                throw new FileNotFoundException(description +
-                        " cannot be resolved to absolute file path because it does not exist");
-            }
-            return getFile(url, description);
-        }
-        try {
-            // try URL
-            return getFile(new URL(resourceLocation));
-        } catch (MalformedURLException ex) {
-            // no URL -> treat as file path
-            return new File(resourceLocation);
-        }
-    }
-
-    /**
-     * Resolve the given resource URL to a {@code java.io.File}, i.e. to a file in the file system.
-     *
-     * @param resourceUrl the resource URL to resolve
-     * @return a corresponding File object
-     * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
-     */
-    public static File getFile(URL resourceUrl) throws FileNotFoundException {
-        return getFile(resourceUrl, "URL");
-    }
-
-    /**
-     * Resolve the given resource URL to a {@code java.io.File}, i.e. to a file in the file system.
-     *
-     * @param resourceUrl the resource URL to resolve
-     * @param description a description of the original resource that the URL was created for (for example, a class path
-     *                    location)
-     * @return a corresponding File object
-     * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
-     */
-    public static File getFile(URL resourceUrl, String description) throws FileNotFoundException {
-        AssertCommand.notNull(resourceUrl, "Resource URL must not be null");
-        if (!URL_PROTOCOL_FILE.equals(resourceUrl.getProtocol())) {
-            throw new FileNotFoundException(
-                    description + " cannot be resolved to absolute file path " +
-                            "because it does not reside in the file system: " + resourceUrl);
-        }
-        try {
-            return new File(toURI(resourceUrl).getSchemeSpecificPart());
-        } catch (URISyntaxException ex) {
-            // Fallback for URLs that are not valid URIs (should hardly ever happen).
-            return new File(resourceUrl.getFile());
-        }
-    }
-
-    /**
-     * Resolve the given resource URI to a {@code java.io.File}, i.e. to a file in the file system.
-     *
-     * @param resourceUri the resource URI to resolve
-     * @return a corresponding File object
-     * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
-     * @since 2.5
-     */
-    public static File getFile(URI resourceUri) throws FileNotFoundException {
-        return getFile(resourceUri, "URI");
-    }
-
-    /**
-     * Resolve the given resource URI to a {@code java.io.File}, i.e. to a file in the file system.
-     *
-     * @param resourceUri the resource URI to resolve
-     * @param description a description of the original resource that the URI was created for (for example, a class path
-     *                    location)
-     * @return a corresponding File object
-     * @throws FileNotFoundException if the URL cannot be resolved to a file in the file system
-     * @since 2.5
-     */
-    public static File getFile(URI resourceUri, String description) throws FileNotFoundException {
-        AssertCommand.notNull(resourceUri, "Resource URI must not be null");
-        if (!URL_PROTOCOL_FILE.equals(resourceUri.getScheme())) {
-            throw new FileNotFoundException(
-                    description + " cannot be resolved to absolute file path " +
-                            "because it does not reside in the file system: " + resourceUri);
-        }
-        return new File(resourceUri.getSchemeSpecificPart());
     }
 
     /**
@@ -3115,7 +2944,7 @@ public final class FileCommand {
     }
 
     public static boolean download(String src, String dec) {
-        dec = LocationCommand.pathValue(dec);
+        dec = LocationCommand.path(dec);
         return downloadWithDirectory(src, dec);
     }
 
@@ -3125,7 +2954,7 @@ public final class FileCommand {
         if (srcUrl == null) {
             throw new UnsupportedOperationException("should not be null for src URL object url when download:{}" + src);
         }
-        String realPath = LocationCommand.pathValue(dec);
+        String realPath = LocationCommand.path(dec);
         FileCommand.mkParentDirs(realPath);
         try {
             OutputStream outputStream = new FileOutputStream(realPath);
@@ -3182,117 +3011,5 @@ public final class FileCommand {
         return true;
     }
 
-    public static InputStream tryUserSystemExternal(String filename) {
-        InputStream inputStream;
-        if (System.getenv(filename) != null) {
-            if (FileCommand.isExist(System.getenv(filename))) {
-                try {
-                    inputStream = FileCommand
-                            .inputStream(System.getenv(filename));
-                } catch (RuntimeException e) {
-                    inputStream = null;
-                    e.printStackTrace();
-                }
-            } else {
-                inputStream = null;
-            }
-        } else {
-            inputStream = null;
-        }
-        if (inputStream == null) {
-            if (FileCommand.isExist(System.getProperty(filename))) {
-                try {
-                    inputStream = FileCommand
-                            .inputStream(System.getProperty(filename));
-                } catch (RuntimeException e) {
-                    inputStream = null;
-                    e.printStackTrace();
-                }
-            } else {
-                inputStream = null;
-            }
-        }
-        return inputStream;
-    }
-
-    public static InputStream tryUserSystemDefault(String key, String filename) {
-        InputStream inputStream;
-        if (System.getProperty(key) != null) {
-            if (FileCommand.isExist(System.getProperty(key) + File.separator + (filename))) {
-                try {
-                    inputStream = FileCommand
-                            .inputStream(System.getProperty(key) + File.separator + (filename));
-                } catch (RuntimeException e) {
-                    inputStream = null;
-                    e.printStackTrace();
-                }
-            } else {
-                inputStream = null;
-            }
-        } else {
-            inputStream = null;
-        }
-        if (inputStream == null) {
-            if (System.getenv(key) != null) {
-                if (FileCommand.isExist(System.getenv(key) + File.separator + (filename))) {
-                    try {
-                        inputStream = FileCommand
-                                .inputStream(System.getenv(key) + File.separator + (filename));
-                    } catch (RuntimeException e) {
-                        e.printStackTrace();
-                        inputStream = null;
-                    }
-                } else {
-                    inputStream = null;
-                }
-            } else {
-                inputStream = null;
-            }
-        }
-        return inputStream;
-    }
-
-    public static InputStream getResourceAsStream(String filename){
-        InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(filename);
-        return inputStream;
-    }
-
-    public static InputStream getResource(String filename) {
-        InputStream inputStream;
-        if (isExist(filename)) {
-            try {
-                inputStream = inputStream(filename);
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-                inputStream = null;
-            }
-        } else {
-            inputStream = tryUserSystemExternal(filename);
-        }
-        if (inputStream == null) {
-            try {
-                inputStream = inputStream(LocationCommand.pathValue(filename));
-            } catch (RuntimeException e) {
-                try {
-                   inputStream =  getResourceAsStream(filename);
-                } finally {
-                    if (inputStream == null) {
-                        try {
-                            inputStream = inputStream(new File(System.getProperty(filename)));
-                        } catch (Exception eeeee) {
-                            inputStream = tryUserSystemDefault("user.dir", filename);
-                            if (inputStream == null) {
-                                inputStream = tryUserSystemDefault("basedir", filename);
-                            }
-                            if (inputStream == null) {
-                                logger.warn("should define the {} file location.", filename);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return inputStream;
-    }
 
 }

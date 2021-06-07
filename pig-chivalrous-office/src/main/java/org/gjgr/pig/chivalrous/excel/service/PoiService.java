@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class PoiService {
 
-    private static Logger logger = LoggerFactory.getLogger(PoiService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(PoiService.class.getName());
 
     public static Workbook openWorkbook(FileInputStream fileInputStream) {
 
