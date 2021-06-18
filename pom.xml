@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20201208G-SNAPSHOT</version>
+    <version>0.0.1.20201207G</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -98,7 +98,7 @@
         <log.log4j.version>1.2.17</log.log4j.version>
         <log.org.slf4j.version>1.7.25</log.org.slf4j.version>
         <log.commons.logging.version>1.2</log.commons.logging.version>
-        <log.org.apache.logging.log4j.version>2.11.0</log.org.apache.logging.log4j.version>
+        <log.org.apache.logging.log4j.version>2.14.1</log.org.apache.logging.log4j.version>
         <middleware.org.apache.camel.version>3.0.0</middleware.org.apache.camel.version>
         <math.org.apache.commons.math.version>3.6.1</math.org.apache.commons.math.version>
         <network.commons.net.version>3.6</network.commons.net.version>
@@ -1243,6 +1243,10 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
             </plugin>
         </plugins>
@@ -1991,7 +1995,7 @@
     </reporting>
     <profiles>
         <profile>
-            <id>davie</id>
+            <id>sonatype-davie</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>true</plugin.validate.skip>
@@ -2006,7 +2010,7 @@
             </properties>
         </profile>
         <profile>
-            <id>mini</id>
+            <id>sonatype-mini</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -2024,7 +2028,7 @@
             </activation>
         </profile>
         <profile>
-            <id>normal</id>
+            <id>sonatype-normal</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -2041,7 +2045,7 @@
             </properties>
         </profile>
         <profile>
-            <id>test</id>
+            <id>sonatype-test</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -2056,7 +2060,7 @@
             </properties>
         </profile>
         <profile>
-            <id>huge</id>
+            <id>sonatype-huge</id>
             <properties>
                 <plugin.skip>true</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -2073,7 +2077,7 @@
             </properties>
         </profile>
         <profile>
-            <id>super</id>
+            <id>sonatype-super</id>
             <properties>
                 <plugin.skip>false</plugin.skip>
                 <plugin.validate.skip>false</plugin.validate.skip>
@@ -2105,7 +2109,7 @@
                 <plugin.test.skip>true</plugin.test.skip>
                 <plugin.package.skip>true</plugin.package.skip>
                 <plugin.verify.skip>true</plugin.verify.skip>
-                <plugin.install.skip>true</plugin.install.skip>
+                <plugin.install.skip>false</plugin.install.skip>
                 <plugin.site.skip>true</plugin.site.skip>
                 <plugin.deploy.skip>true</plugin.deploy.skip>
                 <profile.maven.release.plugin.arguments />
@@ -2156,20 +2160,33 @@
 <!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
 <!--        </repository>-->
 <!--    </repositories>-->
-        <distributionManagement>
-            <repository>
-                <id>sonatype.releases</id>
-                <name>Internal Release Repository</name>
-                <url>
-                    https://oss.sonatype.org/service/local/staging/deploy/maven2
-                </url>
-            </repository>
-            <snapshotRepository>
-                <id>sonatype.snapshots</id>
-                <name>Internal Snapshot Repository</name>
-                <url>
-                    https://oss.sonatype.org/content/repositories/snapshots
-                </url>
-            </snapshotRepository>
-        </distributionManagement>
+<!--        <distributionManagement>-->
+<!--            <repository>-->
+<!--                <id>sonatype.releases</id>-->
+<!--                <name>Internal Release Repository</name>-->
+<!--                <url>-->
+<!--                    https://oss.sonatype.org/service/local/staging/deploy/maven2-->
+<!--                </url>-->
+<!--            </repository>-->
+<!--            <snapshotRepository>-->
+<!--                <id>sonatype.snapshots</id>-->
+<!--                <name>Internal Snapshot Repository</name>-->
+<!--                <url>-->
+<!--                    https://oss.sonatype.org/content/repositories/snapshots-->
+<!--                </url>-->
+<!--            </snapshotRepository>-->
+<!--        </distributionManagement>-->
+    <distributionManagement>
+        <repository>
+            <id>jfrog.artifactory.central</id>
+            <name>artifactory-releases</name>
+            <url>https://pkgs.d.xiaomi.net:443/artifactory/maven-release-virtual</url>
+        </repository>
+        <snapshotRepository>
+            <id>jfrog.artifactory.snapshots</id>
+            <name>artifactory-snapshots</name>
+            <url>https://pkgs.d.xiaomi.net:443/artifactory/maven-snapshot-virtual</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>

@@ -403,31 +403,31 @@ public class Message implements Serializable, Cloneable {
     public String json() {
         String string = JsonCommand.json(this);
         JsonObject jsonObject = JsonCommand.jsonObject(string);
-        if (jsonObject.get("data").isJsonNull()) {
+        if (jsonObject.has("data")&&jsonObject.get("data").isJsonNull()) {
             jsonObject.remove("data");
         }
-        if (jsonObject.get("message").isJsonNull()) {
+        if (jsonObject.has("message")&&jsonObject.get("message").isJsonNull()) {
             jsonObject.remove("message");
         }
-        if (info.size() == 0 || jsonObject.get("info").isJsonNull()) {
+        if (info.size() == 0 || jsonObject.has("info")&&jsonObject.get("info").isJsonNull()) {
             jsonObject.remove("info");
         }
-        if (jsonObject.get("datum").isJsonNull()) {
+        if (jsonObject.has("datum")&&jsonObject.get("datum").isJsonNull()) {
             jsonObject.remove("datum");
         }
-        if (jsonObject.get("version").isJsonNull()) {
+        if (jsonObject.has("version")&&jsonObject.get("version").isJsonNull()) {
             jsonObject.remove("version");
         }
-        if (jsonObject.get("code").isJsonNull()) {
+        if (jsonObject.has("code")&&jsonObject.get("code").isJsonNull()) {
             jsonObject.remove("code");
         }
-        if (jsonObject.get("type").isJsonNull()) {
+        if (jsonObject.has("type")&&jsonObject.get("type").isJsonNull()) {
             jsonObject.remove("type");
         }
-        if (jsonObject.get("timestamp").isJsonNull()) {
+        if (jsonObject.has("timestamp")&&jsonObject.get("timestamp").isJsonNull()) {
             jsonObject.remove("timestamp");
         }
-        if (jsonObject.get("status").isJsonNull()) {
+        if (jsonObject.has("status")&&jsonObject.get("status").isJsonNull()) {
             jsonObject.remove("status");
         }
         return jsonObject.toString();
