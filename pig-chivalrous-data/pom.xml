@@ -3,11 +3,11 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20201205G-SNAPSHOT</version>
+        <version>0.0.1.20210901G-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.1.20201205G-SNAPSHOT</version>
+    <version>0.0.1.20210901G-SNAPSHOT</version>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-data</artifactId>
     <packaging>jar</packaging>

@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20201205G-SNAPSHOT</version>
+    <version>0.0.1.20210901G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -98,7 +98,7 @@
         <log.log4j.version>1.2.17</log.log4j.version>
         <log.org.slf4j.version>1.7.25</log.org.slf4j.version>
         <log.commons.logging.version>1.2</log.commons.logging.version>
-        <log.org.apache.logging.log4j.version>2.11.0</log.org.apache.logging.log4j.version>
+        <log.org.apache.logging.log4j.version>2.14.1</log.org.apache.logging.log4j.version>
         <middleware.org.apache.camel.version>3.0.0</middleware.org.apache.camel.version>
         <math.org.apache.commons.math.version>3.6.1</math.org.apache.commons.math.version>
         <network.commons.net.version>3.6</network.commons.net.version>
@@ -1557,7 +1557,7 @@
                             </goals>
                             <configuration>
                                 <target>
-                                    <delete file="${project.build.outputDirectory}/pig-chivalrous.jar"/>
+                                    <delete file="${project.build.outputDirectory}/pig-chivalrous.jar" />
                                 </target>
                             </configuration>
                         </execution>
