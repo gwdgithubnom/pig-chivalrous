@@ -32,7 +32,6 @@ public final class RedisConfig implements Serializable {
     private int maxAttempts = 5;
     private int connectionTimeout = 10000;
     private String password;
-    private GsonObject gsonObject = new GsonObject();
 
     /**
      * default is JedisPool
@@ -44,21 +43,10 @@ public final class RedisConfig implements Serializable {
         return status;
     }
 
-    public JedisPoolConfig setNoCluster() {
+    public void setNoCluster() {
         status = -1;
-        JedisPoolConfig genericObjectPoolConfig = new JedisPoolConfig();
-        genericObjectPoolConfig.setTestWhileIdle(true);
-        genericObjectPoolConfig.setMinEvictableIdleTimeMillis(60000);
-        genericObjectPoolConfig.setTimeBetweenEvictionRunsMillis(30000);
-        genericObjectPoolConfig.setNumTestsPerEvictionRun(-1);
-        genericObjectPoolConfig.setTestWhileIdle(true);
-        gsonObject = JsonCommand.gsonObject(genericObjectPoolConfig);
-        return genericObjectPoolConfig;
     }
 
-    public GenericObjectPoolConfig buildGenericObjectPoolConfig(){
-        return JsonCommand.fromJson(gsonObject.toString(),GenericObjectPoolConfig.class);
-    }
 
     public RedisConfig getCluster() {
         setCluster();
@@ -267,6 +255,14 @@ public final class RedisConfig implements Serializable {
         return that.hashCode() == this.hashCode();
     }
 
+    public JedisPoolConfig getJedisPoolConfig(){
+        JedisPoolConfig genericObjectPoolConfig = new JedisPoolConfig();
+        genericObjectPoolConfig.setTestWhileIdle(true);
+        genericObjectPoolConfig.setNumTestsPerEvictionRun(-1);
+        genericObjectPoolConfig.setTestWhileIdle(true);
+        return genericObjectPoolConfig;
+    }
+
     public String hashString() {
         return hashCode() + "";
     }
@@ -281,10 +277,10 @@ public final class RedisConfig implements Serializable {
             JedisPool jedisPool = null;
             HostAndPort hostAndPort = base.iterator().next();
             if (password == null) {
-                jedisPool = new JedisPool(buildGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort(),
+                jedisPool = new JedisPool(getJedisPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort(),
                         timeout, password);
             } else {
-                jedisPool = new JedisPool(buildGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort(),
+                jedisPool = new JedisPool(getJedisPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort(),
                         timeout);
             }
             return jedisPool;
@@ -293,12 +289,13 @@ public final class RedisConfig implements Serializable {
 
         public synchronized JedisCluster buildJedisCluster(RedisClient redisClient) {
             JedisCluster jedisCluster = null;
+
             if (password == null) {
                 jedisCluster =
-                        new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts,buildGenericObjectPoolConfig());
+                        new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts,getJedisPoolConfig());
             } else {
                 jedisCluster = new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, password,
-                    JsonCommand.fromJson(gsonObject.toString(), GenericObjectPoolConfig.class));
+                    getJedisPoolConfig());
             }
             return jedisCluster;
         }
@@ -307,14 +304,14 @@ public final class RedisConfig implements Serializable {
             if (clazz.isAssignableFrom(JedisPool.class)) {
                 JedisPool jedisPool = buildJedisPool(redisClient);
                 try {
-                    redisClient.reBuild(me(), jedisPool);
+                    RedisClient.reBuild(me(), jedisPool);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
                 JedisCluster jedisCluster = buildJedisCluster(redisClient);
                 try {
-                    redisClient.reBuild(me(), jedisCluster);
+                    RedisClient.reBuild(me(), jedisCluster);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -325,10 +322,10 @@ public final class RedisConfig implements Serializable {
         private synchronized RedisClient redisClient(RedisClient redisClient, Class clazz) {
             if (clazz.isAssignableFrom(JedisPool.class)) {
                 JedisPool jedisPool = buildJedisPool(redisClient);
-                redisClient.build(me(), jedisPool);
+                RedisClient.build(me(), jedisPool);
             } else {
                 JedisCluster jedisCluster = buildJedisCluster(redisClient);
-                redisClient.build(me(), jedisCluster);
+                RedisClient.build(me(), jedisCluster);
             }
             return redisClient;
         }

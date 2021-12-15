@@ -292,12 +292,12 @@ public class RedisCommand {
     public static JedisPool jedisPool(RedisConfig redisConfig) {
         HostAndPort hostAndPort = redisConfig.getBase().iterator().next();
         JedisPool jedisPool =
-            new JedisPool(redisConfig.buildGenericObjectPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort());
+            new JedisPool(redisConfig.getJedisPoolConfig(), hostAndPort.getHost(), hostAndPort.getPort());
         return jedisPool;
     }
 
     public static JedisCluster jedisCluster(RedisConfig redisConfig) {
-        JedisCluster jedisCluster = new JedisCluster(redisConfig.getBase(), redisConfig.buildGenericObjectPoolConfig());
+        JedisCluster jedisCluster = new JedisCluster(redisConfig.getBase(), redisConfig.getJedisPoolConfig());
         return jedisCluster;
     }
 

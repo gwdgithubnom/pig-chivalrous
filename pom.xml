@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gjgr</groupId>
     <artifactId>pig-chivalrous-parent</artifactId>
-    <version>0.0.1.20201207G</version>
+    <version>0.0.1.20211003G-SNAPSHOT</version>
     <modules>
         <module>pig-chivalrous-exclude</module>
         <module>pig-chivalrous-log</module>
@@ -88,7 +88,7 @@
         <database.com.alibaba.druid.version>1.0.27</database.com.alibaba.druid.version>
         <database.org.apache.tomcat.jdbc.version>8.5.11</database.org.apache.tomcat.jdbc.version>
         <database.org.apache.commons.dbcp2.version>2.1.1</database.org.apache.commons.dbcp2.version>
-        <database.redis.clients.version>3.5.1</database.redis.clients.version>
+        <database.redis.clients.version>3.7.0.1</database.redis.clients.version>
         <file.commons.io.version>2.6</file.commons.io.version>
         <file.org.apache.commons.io.version>1.3.2</file.org.apache.commons.io.version>
         <framwork.org.springframework.version>5.0.9.RELEASE</framwork.org.springframework.version>
@@ -98,7 +98,7 @@
         <log.log4j.version>1.2.17</log.log4j.version>
         <log.org.slf4j.version>1.7.25</log.org.slf4j.version>
         <log.commons.logging.version>1.2</log.commons.logging.version>
-        <log.org.apache.logging.log4j.version>2.14.1</log.org.apache.logging.log4j.version>
+        <log.org.apache.logging.log4j.version>2.16.0</log.org.apache.logging.log4j.version>
         <middleware.org.apache.camel.version>3.0.0</middleware.org.apache.camel.version>
         <math.org.apache.commons.math.version>3.6.1</math.org.apache.commons.math.version>
         <network.commons.net.version>3.6</network.commons.net.version>
@@ -1575,7 +1575,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>3.0.1</version>
                     <configuration>
                         <skip>${plugin.install.skip}</skip>
                     </configuration>
@@ -1973,6 +1973,24 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.8</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <delete file="${project.build.outputDirectory}/pig-chivalrous.jar" />
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -2100,7 +2118,6 @@
                     <name>performRelease</name>
                     <value>true</value>
                 </property>
-                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <plugin.skip>true</plugin.skip>
@@ -2176,17 +2193,4 @@
 <!--                </url>-->
 <!--            </snapshotRepository>-->
 <!--        </distributionManagement>-->
-    <distributionManagement>
-        <repository>
-            <id>jfrog.artifactory.central</id>
-            <name>artifactory-releases</name>
-            <url>https://pkgs.d.xiaomi.net:443/artifactory/maven-release-virtual</url>
-        </repository>
-        <snapshotRepository>
-            <id>jfrog.artifactory.snapshots</id>
-            <name>artifactory-snapshots</name>
-            <url>https://pkgs.d.xiaomi.net:443/artifactory/maven-snapshot-virtual</url>
-        </snapshotRepository>
-    </distributionManagement>
-
 </project>

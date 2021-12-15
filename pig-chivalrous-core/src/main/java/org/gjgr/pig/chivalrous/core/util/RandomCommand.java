@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
+import org.apache.commons.math3.random.RandomDataGenerator;
 
 /**
  * 随机工具类
@@ -62,6 +64,36 @@ public final class RandomCommand {
     public static int randomInt(int limit) {
         Random random = new Random();
         return random.nextInt(limit);
+    }
+
+    /**
+     * random the max and min
+     * @param min
+     * @param max
+     * @return
+     */
+    public static Long randomLong(long min, long max){
+        // Random random = new Random();
+        // int generatedInteger = new RandomDataGenerator().nextInt(leftLimit, rightLimit);
+        // long randomValue = LOWER_RANGE + (long)(random.nextDouble()*(UPPER_RANGE - LOWER_RANGE));
+        return ThreadLocalRandom.current().nextLong(min, max);
+    }
+
+    /**
+     * use thread random
+     * @param max
+     * @return
+     */
+    public static Long randomLong(Long max){
+        return ThreadLocalRandom.current().nextLong(max);
+    }
+
+    /**
+     * use thread random long to build a long value
+     * @return
+     */
+    public static Long randomLong(){
+        return ThreadLocalRandom.current().nextLong();
     }
 
     /**

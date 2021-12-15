@@ -2,27 +2,44 @@ package org.gjgr.pig.chivalrous.core.net;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpConnectionManager;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.http.HttpHost;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.protocol.HttpContext;
 import org.gjgr.pig.chivalrous.core.entity.Message;
 import org.gjgr.pig.chivalrous.core.entity.MessageBuilder;
 import org.gjgr.pig.chivalrous.core.io.stream.StreamCommand;
@@ -37,7 +54,144 @@ import org.slf4j.LoggerFactory;
  * @More:
  */
 public class HttpCommand {
+
     private static final Logger logger = LoggerFactory.getLogger(HttpCommand.class);
+    public static final ThreadLocal<HttpCommand> httpCommand = new ThreadLocal<HttpCommand>(){
+        @Override
+        protected HttpCommand initialValue() {
+            return new HttpCommand(HttpCommand.getDefaultCloseableHttpClient());
+        }
+    };
+
+    private CloseableHttpClient httpClient;
+
+    public HttpCommand(CloseableHttpClient httpClient){
+        this.httpClient = httpClient;
+    }
+
+    public String get(URI uri, String header) {
+        HttpGet get = new HttpGet(uri);
+        String[] split = header.split(":");
+        get.addHeader(split[0], split[1]);
+        return HttpCommand.httpUriRequest(httpClient,get);
+    }
+
+    public String get(URI uri) {
+        HttpGet get = new HttpGet(uri);
+        return HttpCommand.httpUriRequest(httpClient,get);
+    }
+
+    public String post(URI uri, char[] data) {
+        HttpPost post = new HttpPost(uri);
+        StringEntity entity = new StringEntity(String.copyValueOf(data), "UTF8");
+        post.setEntity(entity);
+        return HttpCommand.httpUriRequest(httpClient,post);
+    }
+
+
+    public CloseableHttpClient getCloseableHttpClient(){
+        return httpClient;
+    }
+
+
+    public static HttpCommand getHttpCommand(){
+        return httpCommand.get();
+    }
+
+
+    public static RequestConfig getDefaultRequestConfig(){
+        return getRequestConfig(1024,1024,1024);
+    }
+
+    public static RequestConfig getRequestConfig(int connectionTimeout,int socketTimeout,int connectionRequestTimeout){
+        RequestConfig config = RequestConfig.custom()
+            .setConnectTimeout(connectionTimeout)
+            .setSocketTimeout(socketTimeout)
+            .setConnectionRequestTimeout(connectionRequestTimeout)
+            .build();
+        return config;
+    }
+
+    public static PoolingHttpClientConnectionManager getDefaultPoolingHttpClientConnectionManager(){
+        return getPoolingHttpClientConnectionManager(100,10);
+    }
+
+    public static PoolingHttpClientConnectionManager getPoolingHttpClientConnectionManager(int maxTotal,int maxPerRoute){
+        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager();
+        connManager.setMaxTotal(maxTotal);
+        connManager.setDefaultMaxPerRoute(maxPerRoute);
+        return connManager;
+    }
+
+    public static HttpRequestRetryHandler getDefaultHttpRequestRetryHandler(){
+        return new HttpRequestRetryHandler() {
+            @Override
+            public boolean retryRequest(IOException e, int i, HttpContext httpContext) {
+                return false;
+            }
+        };
+    }
+
+    public static HttpClientBuilder getDefaultHttpClientBuilder(){
+        return getHttpClientBuilder(getDefaultPoolingHttpClientConnectionManager(),getDefaultRequestConfig(),getDefaultHttpRequestRetryHandler());
+    }
+
+    public static HttpClientBuilder getHttpClientBuilder(PoolingHttpClientConnectionManager httpConnectionManager,RequestConfig requestConfig,HttpRequestRetryHandler httpRequestRetryHandler){
+         return getHttpClientBuilder(5,httpConnectionManager,requestConfig,httpRequestRetryHandler);
+    }
+
+    public static HttpClientBuilder getHttpClientBuilder(int timeToLiveSeconds,PoolingHttpClientConnectionManager httpConnectionManager,RequestConfig requestConfig,HttpRequestRetryHandler httpRequestRetryHandler){
+        HttpClientBuilder builder = HttpClients.custom()
+            .setConnectionTimeToLive(timeToLiveSeconds, TimeUnit.SECONDS)
+            .setConnectionManager(httpConnectionManager)
+            .setDefaultRequestConfig(requestConfig)
+            .setRetryHandler(httpRequestRetryHandler);
+        if (System.getProperty("java.proxy.host") != null) {
+            String hostName = System.getProperty("java.proxy.host");
+            builder.setProxy(new HttpHost(hostName));
+        }
+        return builder;
+    }
+
+    public static CloseableHttpClient getDefaultCloseableHttpClient(){
+        return getDefaultHttpClientBuilder().build();
+    }
+
+    public CloseableHttpClient getCloseableHttpClient(HttpClientBuilder httpClientBuilder){
+        return httpClientBuilder.build();
+    }
+
+
+    public static String httpUriRequest(CloseableHttpClient httpClient,HttpUriRequest request) {
+        CloseableHttpResponse response = null;
+        StringBuilder contentBuilder = new StringBuilder();
+        String uri = request.getURI().toString();
+        try {
+            response = httpClient.execute(request);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            int lenght = 0;
+            char[] buffer = new char[1024];
+            while (lenght >= 0) {
+                contentBuilder.append(buffer, 0, lenght);
+                lenght = reader.read(buffer);
+            }
+            int status = response.getStatusLine().getStatusCode();
+            logger.debug("remote rest stream source request :: uri: {}, status: {}", uri, status);
+        } catch (IOException e) {
+            logger.error("request uri :" + uri + "something error occur", e);
+            return null;
+        } finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    logger.error("close request uri :" + uri + "something error occur", e);
+                }
+            }
+        }
+        return contentBuilder.toString();
+    }
+
 
     public static CookieStore cookieStore(HttpClientBuilder httpClientBuilder, Map<String, String> stringMap,
             String domain) {

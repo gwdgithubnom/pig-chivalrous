@@ -1,6 +1,9 @@
 package org.gjgr.pig.chivalrous.redis;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -10,6 +13,7 @@ import redis.clients.jedis.JedisPool;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import redis.clients.jedis.commands.JedisCommands;
+import redis.clients.jedis.exceptions.JedisException;
 
 /**
  * Created by zhangchuang on 16/2/17.
@@ -111,7 +115,7 @@ public final class RedisClient implements Serializable {
         }
     }
 
-    public JedisCommands redisCommands() {
+    public JedisCommands jedisCommands() {
         if (redisConnector.size() != 0) {
             Object object = redisConnector.get(id);
             if (object instanceof JedisCommands) {
@@ -128,7 +132,7 @@ public final class RedisClient implements Serializable {
         }
     }
 
-    public JedisCommands jedisCommands() {
+    public JedisCommands jedisClient() {
         if (redisConnector.size() != 0) {
             Object object = redisConnector.get(id);
             if (object instanceof JedisCommands) {
@@ -136,7 +140,7 @@ public final class RedisClient implements Serializable {
             } else if (object instanceof JedisPool) {
                 JedisPool jedisPool = (JedisPool) object;
                 logger.debug("take a jedis command and would auto release.");
-                return new JedisClient(jedisPool);
+                return jedisPool.getResource();
             } else {
                 throw new RuntimeException("not support the target type:" + object.getClass());
             }
@@ -152,18 +156,61 @@ public final class RedisClient implements Serializable {
         return jedisCommandsThreadLocal.get();
     }
 
-    protected Object redisConnector(String key) {
+    /**
+     * it would be return null
+     * for the redisClient has no resourc to connect redis.
+     * @return
+     */
+    public Object redisClient(){
+        if(id!=null){
+            return redisConnector.get(id);
+        }else{
+            return null;
+        }
+    }
+
+    public Set<Object> allRedisClient(){
+        return new HashSet(redisConnector.values());
+    }
+
+    public <T> T redisOperation(RedisOperation<T> operation){
+        Object connector = redisConnector.get(id);
+        T result = null;
+        if(connector !=null){
+           if(connector instanceof JedisCluster){
+               JedisCluster cluster = (JedisCluster) connector;
+               result = operation.jedisCommandsOperation(cluster);
+           }else if(connector instanceof JedisPool){
+               JedisPool jedisPool =(JedisPool) connector;
+               Jedis jedis = jedisPool.getResource();
+               try{
+                   result = operation.jedisCommandsOperation(jedis);
+               }catch(JedisException e){
+                   logger.error(" faild do jedis commands operation"+e);
+               }finally{
+                   if (jedis != null) {
+                       jedis.close();
+                   }
+               }
+           }
+           return result;
+        }else{
+            throw new IllegalStateException("in "+RedisClient.class.getName()+" has no connector for redisOperation method");
+        }
+    }
+
+    public Object redisClient(String key) {
         return redisConnector.get(key);
     }
 
-    protected Object redisConnector(Integer key) {
+    public Object redisClient(Integer key) {
         return redisConnector.get(key + "");
     }
 
     public boolean release() {
         if (redisConnector.size() > 0 && redisConnector.containsKey(id)) {
             try {
-                Object o = redisConnector(id);
+                Object o = redisClient(id);
                 if (o instanceof JedisPool) {
                     JedisPool jedisPool = (JedisPool) o;
                     jedisPool.close();

@@ -3,11 +3,11 @@
     <parent>
         <groupId>org.gjgr</groupId>
         <artifactId>pig-chivalrous-parent</artifactId>
-        <version>0.0.1.20201207G</version>
+        <version>0.0.1.20211003G-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.0.1.20201207G</version>
+    <version>0.0.1.20211003G-SNAPSHOT</version>
     <groupId>org.gjgr.pig</groupId>
     <artifactId>pig-chivalrous-log</artifactId>
     <packaging>jar</packaging>
@@ -88,6 +88,11 @@
         <!--<groupId>org.apache.logging.log4j</groupId>-->
         <!--<artifactId>log4j-to-slf4j</artifactId>-->
         <!--</dependency>-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>1.7.21</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>
