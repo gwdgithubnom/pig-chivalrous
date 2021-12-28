@@ -5,6 +5,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.gjgr.pig.chivalrous.core.json.GsonObject;
 import org.gjgr.pig.chivalrous.core.json.JsonCommand;
 import org.gjgr.pig.chivalrous.log.SystemLogger;
+import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
@@ -291,11 +292,13 @@ public final class RedisConfig implements Serializable {
             JedisCluster jedisCluster = null;
 
             if (password == null) {
-                jedisCluster =
-                        new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts,getJedisPoolConfig());
+                jedisCluster = new JedisCluster(base,
+                        DefaultJedisClientConfig.builder().timeoutMillis(soTimeout).connectionTimeoutMillis(connectionTimeout).build(),
+                        maxAttempts);
             } else {
-                jedisCluster = new JedisCluster(base, connectionTimeout, soTimeout, maxAttempts, password,
-                    getJedisPoolConfig());
+                jedisCluster = new JedisCluster(base,
+                        DefaultJedisClientConfig.builder().timeoutMillis(soTimeout).password(password).connectionTimeoutMillis(connectionTimeout).build(),
+                        maxAttempts);
             }
             return jedisCluster;
         }

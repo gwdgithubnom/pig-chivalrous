@@ -297,7 +297,7 @@ public class RedisCommand {
     }
 
     public static JedisCluster jedisCluster(RedisConfig redisConfig) {
-        JedisCluster jedisCluster = new JedisCluster(redisConfig.getBase(), redisConfig.getJedisPoolConfig());
+        JedisCluster jedisCluster = new JedisCluster(redisConfig.getBase());
         return jedisCluster;
     }
 
