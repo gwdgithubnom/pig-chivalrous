@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import java.beans.Introspector;
 import java.io.Closeable;
 import java.io.Externalizable;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
@@ -20,8 +21,10 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.UndeclaredThrowableException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -289,6 +292,47 @@ public final class ClassCommand {
         Field field = instance.getClass().getDeclaredField(fieldName);
         field.setAccessible(true);
         return field.get(instance);
+    }
+
+    public Class getClassInJar(String jarFile,String clazzName) {
+        File file = new File(jarFile);
+        try {
+            return getClassFromFile(file.toURL(),clazzName);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Class getClassFromFile(String url, String clazzName)  {
+        URL urlResource = null;
+        try {
+            urlResource = new URL(url);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getClassFromFile(urlResource,clazzName);
+    }
+
+    public Class getClassFromFile(URL urlResource, String clazzName) {
+        return getClassFromFile(new URL[]{urlResource},clazzName);
+    }
+
+    public Class getClassFromFile(URL[] urlResource, String clazzName) {
+        try {
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            ClassLoader custom = new URLClassLoader(urlResource,classLoader);
+            Class<?> clazz = null;
+            try {
+                clazz = custom.loadClass(clazzName);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return clazz;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
