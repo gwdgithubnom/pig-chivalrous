@@ -294,7 +294,7 @@ public final class ClassCommand {
         return field.get(instance);
     }
 
-    public Class getClassInJar(String jarFile,String clazzName) {
+    public static Class getClassInJar(String jarFile,String clazzName) {
         File file = new File(jarFile);
         try {
             return getClassFromFile(file.toURL(),clazzName);
@@ -304,7 +304,7 @@ public final class ClassCommand {
         }
     }
 
-    public Class getClassFromFile(String url, String clazzName)  {
+    public static Class getClassFromFile(String url, String clazzName)  {
         URL urlResource = null;
         try {
             urlResource = new URL(url);
@@ -314,11 +314,11 @@ public final class ClassCommand {
         return getClassFromFile(urlResource,clazzName);
     }
 
-    public Class getClassFromFile(URL urlResource, String clazzName) {
+    public static Class getClassFromFile(URL urlResource, String clazzName) {
         return getClassFromFile(new URL[]{urlResource},clazzName);
     }
 
-    public Class getClassFromFile(URL[] urlResource, String clazzName) {
+    public static Class getClassFromFile(URL[] urlResource, String clazzName) {
         try {
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             ClassLoader custom = new URLClassLoader(urlResource,classLoader);
